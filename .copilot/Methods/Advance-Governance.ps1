@@ -6,7 +6,13 @@ param(
 
   [string]$PermanentLogPath,
 
-  [string]$ProposalLogPath
+  [string]$ProposalLogPath,
+
+  [string]$ProposalValidationPath,
+
+  [string]$StabilizationPath,
+
+  [string]$RealRepoTestPlanPath
 )
 
 <#
@@ -14,9 +20,19 @@ Module: Advance-Governance.ps1
 Purpose: Validate native Workspace_GC governance readiness and log separation without staging or committing changes.
 Path: .copilot/Methods/Advance-Governance.ps1
 Authors: Workspace_GC Engine
-Version: 1.1.0
+Version: 2.5.0
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
+- 2026-08-01: Added real-repository adapter surface candidate count reporting.
+- 2026-08-01: Added real-repository dry-run confirmation requirement reporting.
+- 2026-08-01: Added real-repository dry-run status reporting.
+- 2026-08-01: Consolidated helper quality gates behind WorkspaceGCQualityGates module.
+- 2026-08-01: Added real-repository test plan and stabilization policy validation reporting.
+- 2026-08-01: Added Workspace_GC stabilization state and sibling repository ignore validation output.
+- 2026-08-01: Added proposal disposition summary output.
+- 2026-08-01: Grouped generated artifact changes separately from reviewable pending changes.
+- 2026-08-01: Added optional accepted/rejected/modified proposal validation fixture check.
+- 2026-08-01: Added normalized proposal disposition validation.
 - 2026-08-01: Added validation for structured step proposal registry.
 - 2026-08-01: Added validation for step-oriented and permanent accepted governance logs.
 - 2026-08-01: Added native governance advancement check for Gemini/Continue migration.
@@ -24,6 +40,8 @@ Changelog:
 
 $workspaceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+Import-Module $qualityGateModulePath -Force
 
 if (-not $LogPath) {
   $LogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.log'
@@ -41,6 +59,18 @@ if (-not $ProposalLogPath) {
   $ProposalLogPath = Join-Path $copilotRoot 'Methods\Logs\GC-Proposals.json'
 }
 
+if (-not $ProposalValidationPath) {
+  $ProposalValidationPath = Join-Path $copilotRoot 'Methods\Logs\GC-Proposals.validation.json'
+}
+
+if (-not $StabilizationPath) {
+  $StabilizationPath = Join-Path $copilotRoot 'Methods\Logs\GC-Stabilization.json'
+}
+
+if (-not $RealRepoTestPlanPath) {
+  $RealRepoTestPlanPath = Join-Path $copilotRoot 'Methods\Logs\GC-RealRepoTestPlan.json'
+}
+
 $requiredPaths = @(
   (Join-Path $workspaceRoot '.continuerules'),
   (Join-Path $workspaceRoot '.continue\rules\Workspace_GC.md'),
@@ -48,6 +78,8 @@ $requiredPaths = @(
   (Join-Path $workspaceRoot '.copilot\Rules\RuleAuthority.md'),
   (Join-Path $workspaceRoot '.copilot\Rules\InvariantRules.md'),
   $ProposalLogPath,
+  $StabilizationPath,
+  $RealRepoTestPlanPath,
   $LogPath,
   $StepLogPath,
   $PermanentLogPath
@@ -60,23 +92,154 @@ foreach ($requiredPath in $requiredPaths) {
 }
 
 $status = git -C $workspaceRoot status --short
-$proposalState = Get-Content -Raw -Path $ProposalLogPath | ConvertFrom-Json
-if (-not $proposalState.PSObject.Properties['proposals'] -or @($proposalState.proposals).Count -eq 0) {
-  throw "Proposal registry is empty: $ProposalLogPath"
+$allowedDispositions = @('pending-review', 'accepted', 'rejected', 'modified')
+
+function ConvertTo-RepoRelativePath {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$Path,
+
+    [Parameter(Mandatory=$true)]
+    [string]$WorkspaceRoot
+  )
+
+  $fullPath = [System.IO.Path]::GetFullPath($Path)
+  $rootPath = [System.IO.Path]::GetFullPath($WorkspaceRoot).TrimEnd('\')
+  if ($fullPath.StartsWith($rootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+    return $fullPath.Substring($rootPath.Length).TrimStart('\').Replace('\', '/')
+  }
+
+  return $Path.Replace('\', '/')
 }
 
+function Split-GitStatusByArtifact {
+  [CmdletBinding()]
+  param(
+    [string[]]$StatusLines,
+
+    [string[]]$GeneratedArtifactPaths
+  )
+
+  $generatedChanges = @()
+  $reviewableChanges = @()
+
+  foreach ($statusLine in @($StatusLines)) {
+    $currentStatusLine = $statusLine
+    if (-not $currentStatusLine) {
+      continue
+    }
+
+    $relativePath = $currentStatusLine.Substring(3).Trim().Trim('"').Replace('\', '/')
+    if ($GeneratedArtifactPaths -contains $relativePath) {
+      $generatedChanges += $currentStatusLine
+    } else {
+      $reviewableChanges += $currentStatusLine
+    }
+  }
+
+  return [pscustomobject]@{
+    Generated = $generatedChanges
+    Reviewable = $reviewableChanges
+  }
+}
+
+function Test-ProposalRegistry {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$Path,
+
+    [Parameter(Mandatory=$true)]
+    [string[]]$AllowedDispositions
+  )
+
+  $proposalState = Get-Content -Raw -Path $Path | ConvertFrom-Json
+  if (-not $proposalState.PSObject.Properties['proposals'] -or @($proposalState.proposals).Count -eq 0) {
+    throw "Proposal registry is empty: $Path"
+  }
+
+  foreach ($proposal in @($proposalState.proposals)) {
+    $currentProposal = $proposal
+    if (-not $currentProposal.PSObject.Properties['disposition']) {
+      throw "Proposal is missing disposition: $($currentProposal.id)"
+    }
+
+    if ($AllowedDispositions -notcontains $currentProposal.disposition) {
+      throw "Proposal has invalid disposition '$($currentProposal.disposition)': $($currentProposal.id)"
+    }
+
+    if (($currentProposal.disposition -eq 'rejected' -or $currentProposal.disposition -eq 'modified') -and -not $currentProposal.PSObject.Properties['disposition_reason']) {
+      throw "Proposal requires disposition_reason for disposition '$($currentProposal.disposition)': $($currentProposal.id)"
+    }
+  }
+
+  return [pscustomobject]@{
+    Count = @($proposalState.proposals).Count
+    Proposals = @($proposalState.proposals)
+  }
+}
+
+$proposalValidation = Test-ProposalRegistry -Path $ProposalLogPath -AllowedDispositions $allowedDispositions
+$proposalCount = $proposalValidation.Count
+if (Test-Path -LiteralPath $ProposalValidationPath) {
+  $validationProposalValidation = Test-ProposalRegistry -Path $ProposalValidationPath -AllowedDispositions $allowedDispositions
+  $validationProposalCount = $validationProposalValidation.Count
+}
+
+$stabilizationState = Get-Content -Raw -Path $StabilizationPath | ConvertFrom-Json
+$ignoreValidation = Assert-WorkspaceGCIgnoredRepositories -WorkspaceRoot $workspaceRoot
+$policyValidation = Assert-WorkspaceGCStabilizationPolicy -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
+$realRepoPlanValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
+$realRepoPlan = Get-Content -Raw -Path $RealRepoTestPlanPath | ConvertFrom-Json
+
 Write-Host 'Workspace_GC native governance check: OK'
+Write-Host "Stabilization phase: $($stabilizationState.phase)"
+Write-Host "Real repository testing enabled: $($stabilizationState.real_repository_testing_enabled)"
+Write-Host "Real repository selected: $([bool]$realRepoPlan.selected_repository)"
+Write-Host "Real repository dry-run status: $($realRepoPlanValidation.DryRunStatus)"
+Write-Host "Real repository dry-run confirmation required: $($realRepoPlanValidation.ConfirmationRequired)"
+Write-Host "Real repository adapter surface candidates: $($realRepoPlanValidation.AdapterSurfaceCandidateCount)"
+Write-Host "Stabilization policy status: $($policyValidation.Status)"
+Write-Host "Sibling repositories ignored: $($ignoreValidation.IgnoredRepositoryCount)"
 Write-Host "Governance log: $LogPath"
 Write-Host "Step governance log: $StepLogPath"
 Write-Host "Permanent accepted log: $PermanentLogPath"
 Write-Host "Proposal registry: $ProposalLogPath"
+Write-Host "Proposal registry entries: $proposalCount"
+if ($validationProposalCount) {
+  Write-Host "Proposal validation entries: $validationProposalCount"
+}
 
-if ($status) {
+Write-Host 'Proposal disposition summary:'
+foreach ($allowedDisposition in $allowedDispositions) {
+  $dispositionCount = @($proposalValidation.Proposals | Where-Object { $_.disposition -eq $allowedDisposition }).Count
+  Write-Host "${allowedDisposition}: $dispositionCount"
+}
+
+$generatedArtifactPaths = @(
+  (ConvertTo-RepoRelativePath -Path $LogPath -WorkspaceRoot $workspaceRoot),
+  (ConvertTo-RepoRelativePath -Path $StepLogPath -WorkspaceRoot $workspaceRoot),
+  (ConvertTo-RepoRelativePath -Path $PermanentLogPath -WorkspaceRoot $workspaceRoot)
+)
+$statusGroups = Split-GitStatusByArtifact -StatusLines @($status) -GeneratedArtifactPaths $generatedArtifactPaths
+
+if ($statusGroups.Reviewable) {
   Write-Host 'Pending review changes:'
-  $status | ForEach-Object {
+  $statusGroups.Reviewable | ForEach-Object {
     $statusLine = $_
     Write-Host $statusLine
   }
 } else {
-  Write-Host 'Git status: clean'
+  Write-Host 'Pending review changes: none'
+}
+
+if ($statusGroups.Generated) {
+  Write-Host 'Generated artifact changes:'
+  $statusGroups.Generated | ForEach-Object {
+    $statusLine = $_
+    Write-Host $statusLine
+  }
+} else {
+  Write-Host 'Generated artifact changes: none'
 }

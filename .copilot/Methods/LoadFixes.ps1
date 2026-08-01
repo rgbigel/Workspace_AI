@@ -3,12 +3,13 @@ param()
 
 <#
 Module: LoadFixes.ps1
-Purpose: Load fix-module descriptors for Workspace_AC fix-module execution.
+Purpose: Load fix-module descriptors for Workspace_GC fix-module execution.
 Path: .copilot/Methods/LoadFixes.ps1
-Authors: Workspace_AC Engine
-Version: 1.0.0
+Authors: Workspace_GC Engine
+Version: 1.0.1
 Caller Contract: Called from APPLY/fix-module validation; returns a hashtable keyed by fix id and module name.
 Changelog:
+- 2026-08-01: Updated active loader identity from Workspace_AC to Workspace_GC.
 - 2026-07-31: Added deterministic fix-module loader for Fix_S1E03 deep consistency.
 #>
 

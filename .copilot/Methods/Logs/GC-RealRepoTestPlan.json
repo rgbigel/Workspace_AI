@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "module": "GC-RealRepoTestPlan.json",
+    "path": ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+    "version": "1.3.0",
+    "config_type": "workspace-gc-real-repository-test-plan",
+    "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
+    "authors": [
+      "Workspace_GC Engine"
+    ],
+    "changelog": [
+      "1.3.0 - Added read-only target profile and adapter surface inventory expectations",
+      "1.2.0 - Added guarded transition policy and dry-run observation report fields",
+      "1.1.0 - Added dry-run contract, candidate policy, and explicit confirmation token fields",
+      "1.0.0 - Added disabled real-repository test plan placeholder"
+    ]
+  },
+  "enabled": false,
+  "selected_repository": null,
+  "mode": "not-selected",
+  "write_allowed": false,
+  "requires_user_confirmation": true,
+  "confirmation_token": null,
+  "transition_policy": {
+    "selection_requires_existing_git_repository": true,
+    "dry_run_requires_candidate": true,
+    "dry_run_requires_read_only_confirmation": true,
+    "clear_selection_resets_dry_run": true,
+    "write_enablement_supported": false
+  },
+  "dry_run": {
+    "enabled": false,
+    "mode": "plan-only",
+    "status": "blocked-until-repository-selected",
+    "write_allowed": false,
+    "allowed_observations": [
+      "repository path identity",
+      "git working-tree status summary",
+      "presence of Workspace_GC adapter surfaces",
+      "read-only target profile"
+    ],
+    "adapter_surface_candidates": [
+      ".continuerules",
+      ".continue/rules/Workspace_GC.md",
+      ".copilot/Rules/RuleAuthority.md",
+      ".copilot/Methods/APPLY.ps1"
+    ],
+    "forbidden_actions": [
+      "file writes outside Workspace_GC",
+      "git add, commit, checkout, reset, clean, merge, rebase, or stash in target repository",
+      "editing target repository settings before explicit enablement"
+    ],
+    "last_report": {
+      "status": "not-run",
+      "git_status_summary": "not-run",
+      "git_status_line_count": 0,
+      "adapter_surface_present_count": 0,
+      "adapter_surface_missing_count": 0
+    }
+  },
+  "target_profile": {
+    "status": "not-run",
+    "repository_name": null,
+    "repository_path": null,
+    "git_status_summary": "not-run",
+    "adapter_surface_present_count": 0,
+    "adapter_surface_missing_count": 0,
+    "write_probe_performed": false
+  },
+  "candidate_policy": {
+    "must_be_explicitly_selected": true,
+    "must_not_be_off_limits": true,
+    "must_not_equal_workspace_gc": true,
+    "selection_does_not_enable_writes": true
+  },
+  "preconditions": [
+    "Workspace_GC readiness self-test passes",
+    "No off-limits path is targeted",
+    "User selects a repository explicitly",
+    "User enables real-repository testing explicitly"
+  ]
+}

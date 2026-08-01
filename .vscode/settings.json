@@ -10,9 +10,28 @@
     ],
     "changelog": [
       "1.0.0 - Added Workspace_GC Continue rule discovery settings",
-      "1.0.1 - Added RuleAuthority and Continue bridge discovery"
+      "1.0.1 - Added RuleAuthority and Continue bridge discovery",
+      "1.0.2 - Added temporary ignored sibling repositories during Workspace_GC stabilization"
     ]
   },
+  "git.ignoredRepositories": [
+    "D:\\Git_Repositories\\BackgroundModifier",
+    "D:\\Git_Repositories\\BackgroundModifier_AC",
+    "D:\\Git_Repositories\\BootEntryManager",
+    "D:\\Git_Repositories\\DiskAssignmentStatus",
+    "D:\\Git_Repositories\\GetRecoveryVolume",
+    "D:\\Git_Repositories\\InstallFonts",
+    "D:\\Git_Repositories\\MacriumTemplateUpdater",
+    "D:\\Git_Repositories\\MSG file conversion",
+    "D:\\Git_Repositories\\NextBootTray",
+    "D:\\Git_Repositories\\OutlookVBAConversion",
+    "D:\\Git_Repositories\\PowerBGInfo",
+    "D:\\Git_Repositories\\ReEnableRadeonRx580",
+    "D:\\Git_Repositories\\SharedModules",
+    "D:\\Git_Repositories\\TimeStamper",
+    "D:\\Git_Repositories\\VolumeInventory",
+    "D:\\Git_Repositories\\Workspace_AC"
+  ],
   "continue.rules.path": "D:\\Git_Repositories\\Workspace_GC\\.continuerules",
   "continue.workspaceRules": [
     "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\RuleAuthority.md",

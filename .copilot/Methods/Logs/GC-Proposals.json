@@ -2,13 +2,25 @@
   "meta": {
     "module": "GC-Proposals.json",
     "path": ".copilot/Methods/Logs/GC-Proposals.json",
-    "version": "1.0.0",
+    "version": "2.5.0",
     "config_type": "workspace-gc-step-proposal-registry",
     "description": "Step-oriented proposal, reason, affected-file, and disposition registry for Workspace_GC governance checkpoints.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "2.5.0 - Added read-only real-repository target profiling and adapter surface inventory",
+      "2.4.0 - Added guarded real-repository transition hardening and read-only plan inspection",
+      "2.3.0 - Added guarded real-repository dry-run contract and preparation commands",
+      "2.2.0 - Consolidated helper verification scripts into a quality-gate module and documented single-command readiness workflow",
+      "2.1.0 - Added real-repository test plan placeholder, policy validation, stale-reference scan, and readiness integration",
+      "2.0.0 - Added Workspace_GC stabilization state, sibling repository discovery, ignore validation, and readiness self-test steps",
+      "1.6.0 - Added temporary VS Code Git ignore list for sibling repositories during Workspace_GC stabilization",
+      "1.5.0 - Added proposal disposition summary reporting",
+      "1.4.0 - Added reviewable-change versus generated-artifact status grouping",
+      "1.3.0 - Classified generated logs as implicit artifacts instead of reviewable proposal files",
+      "1.2.0 - Added native proposal management and disposition validation coverage",
+      "1.1.0 - Added normalized disposition values and disposition detail fields",
       "1.0.0 - Added structured checkpoint proposal registry for native governance logs"
     ]
   },
@@ -22,7 +34,9 @@
         ".copilot/Methods/Generate-Log.ps1",
         ".copilot/Methods/Advance-Governance.ps1"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-002",
@@ -32,7 +46,9 @@
         ".continuerules",
         ".vscode/settings.json"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-003",
@@ -41,7 +57,9 @@
       "files": [
         ".vscode/settings.json"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-004",
@@ -50,7 +68,9 @@
       "files": [
         ".copilot/Methods/APPLY.ps1"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-005",
@@ -58,11 +78,11 @@
       "reason": "Step-oriented logs may be overwritten at checkpoints; permanent logs should reflect accepted committed changes only.",
       "files": [
         ".copilot/Methods/Generate-Log.ps1",
-        ".copilot/Methods/Advance-Governance.ps1",
-        ".copilot/Logs/Workspace_GC.step.log",
-        ".copilot/Logs/Workspace_GC.accepted.log"
+        ".copilot/Methods/Advance-Governance.ps1"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-006",
@@ -75,7 +95,9 @@
         ".vscode/settings.json",
         ".copilot/Methods/Generate-Log.ps1"
       ],
-      "disposition": "accepted for intermediate checkpoint; not yet committed"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted as an intermediate checkpoint before the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
     },
     {
       "id": "GC-STEP-007",
@@ -86,7 +108,666 @@
         ".copilot/Methods/Generate-Log.ps1",
         ".copilot/Methods/Advance-Governance.ps1"
       ],
-      "disposition": "accepted for intermediate checkpoint; ready for commit"
+      "disposition": "accepted",
+      "disposition_reason": "Accepted for the first Workspace_GC governance commit.",
+      "final_result": "Committed in 338cfb4."
+    },
+    {
+      "id": "GC-STEP-008",
+      "proposal": "Classify generated governance logs as implicit artifacts instead of reviewable proposal files.",
+      "reason": "Generated logs do their thing and are implicitly accepted; proposal disposition applies to the rule or method change, not to generated log output.",
+      "files": [
+        ".copilot/Methods/Logs/GC-Proposals.json",
+        ".copilot/Methods/Generate-Log.ps1"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after clarifying that generated logs are implicit artifacts, not reviewable proposal targets.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-009",
+      "proposal": "Formalize proposal dispositions as pending-review, accepted, rejected, or modified.",
+      "reason": "Step-oriented logs must record rejected and modified proposals consistently, while permanent logs only represent accepted committed results.",
+      "files": [
+        ".copilot/Methods/Logs/GC-Proposals.json",
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after manual review of normalized disposition semantics.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-010",
+      "proposal": "Add native proposal registry management command.",
+      "reason": "Proposal dispositions should be updated through a deterministic PowerShell interface instead of manual JSON editing.",
+      "files": [
+        ".copilot/Methods/Update-Proposal.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test validated stabilization state creation.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-011",
+      "proposal": "Add proposal disposition validation fixture with accepted, rejected, and modified coverage.",
+      "reason": "Governance validation should prove that rejected and modified dispositions are accepted when required details are present.",
+      "files": [
+        ".copilot/Methods/Logs/GC-Proposals.validation.json",
+        ".copilot/Methods/Advance-Governance.ps1"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test validated read-only sibling repository discovery.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-012",
+      "proposal": "Add explicit generated-artifact section to the step governance log.",
+      "reason": "The step log should show which logs were regenerated without treating those log files as accepted, rejected, or modified proposals.",
+      "files": [
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after clarifying that generated logs are implicit artifacts, not proposal decisions.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-013",
+      "proposal": "Group generated log changes separately from reviewable pending changes.",
+      "reason": "Generated log files are implicit artifacts and should not appear as if they require accepted, rejected, or modified dispositions.",
+      "files": [
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after validating reviewable and generated artifact status grouping.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-014",
+      "proposal": "Add proposal disposition summary reporting.",
+      "reason": "Governance output should show pending-review, accepted, rejected, and modified proposal counts without manually scanning the full step log.",
+      "files": [
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test validated sibling repository ignore coverage.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-015",
+      "proposal": "Ignore sibling Git repositories in Workspace_GC VS Code settings during stabilization.",
+      "reason": "Until Workspace_GC is ready to be tested against real repositories, VS Code Git discovery should focus on Workspace_GC and ignore other D:\\Git_Repositories repositories.",
+      "files": [
+        ".vscode/settings.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after validating temporary VS Code Git ignore list for sibling repositories.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-016",
+      "proposal": "Add Workspace_GC stabilization state file.",
+      "reason": "The migration needs an explicit machine-readable state that says Workspace_GC is still self-stabilizing and not yet testing against real repositories.",
+      "files": [
+        ".copilot/Methods/Logs/GC-Stabilization.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after Workspace_GC readiness self-test completed successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-017",
+      "proposal": "Add read-only sibling repository discovery command.",
+      "reason": "Workspace_GC should be able to discover sibling repositories without modifying or inspecting their contents before real-repo testing is enabled.",
+      "files": [
+        ".copilot/Methods/Get-WorkspaceRepositories.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test validated read-only sibling repository discovery.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-018",
+      "proposal": "Add validation that VS Code ignores sibling repositories during Workspace_GC stabilization.",
+      "reason": "The temporary git.ignoredRepositories setting should be validated against the current sibling repository list until Workspace_GC is ready for real-repo testing.",
+      "files": [
+        ".copilot/Methods/Test-IgnoredRepositories.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test validated sibling repository ignore coverage.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-019",
+      "proposal": "Add native Workspace_GC readiness self-test wrapper.",
+      "reason": "Before testing against a real repository, Workspace_GC needs a single self-test command that runs JSON, PowerShell, APPLY, log generation, governance, and ignore-list validation checks.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after Workspace_GC readiness self-test completed successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-020",
+      "proposal": "Report Workspace_GC stabilization state from native governance validation.",
+      "reason": "Advance-Governance should print the current stabilization phase and whether real-repository testing is enabled.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Stabilization.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after governance output reported stabilization state and real-repository testing status.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-021",
+      "proposal": "Add real-repository test plan placeholder.",
+      "reason": "Workspace_GC needs an explicit not-yet-enabled test plan before selecting or touching a real repository.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness self-test confirmed no real repository is selected or enabled.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-022",
+      "proposal": "Add off-limits and real-repository policy validation.",
+      "reason": "Governance should validate that Workspace_AC and backup base paths remain protected while real-repository writes are disabled.",
+      "files": [
+        ".copilot/Methods/Test-StabilizationPolicy.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after stabilization policy validation passed during readiness self-test.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-023",
+      "proposal": "Add active-surface stale Workspace_AC reference scan.",
+      "reason": "Before real-repository testing, active Workspace_GC methods and adapter settings should not retain accidental Workspace_AC authority references except explicit no-touch policy references.",
+      "files": [
+        ".copilot/Methods/Test-StaleWorkspaceReferences.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after stale authority reference scan reported zero unexpected references.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-024",
+      "proposal": "Integrate stabilization policy and stale-reference checks into readiness self-test.",
+      "reason": "The single readiness command should include off-limits policy validation and stale-reference scanning before any real repository is selected.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after the integrated readiness self-test completed successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-025",
+      "proposal": "Report real-repository test plan and policy checks from native governance validation.",
+      "reason": "Advance-Governance should show that no real repository is selected, real-repository testing is disabled, and policy checks pass.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after native governance reported real-repository selection and stabilization policy status.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-026",
+      "proposal": "Consolidate helper verification scripts into a quality-gate module.",
+      "reason": "Workspace_GC should expose fewer standalone verification scripts while preserving reusable readiness checks.",
+      "files": [
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Test-IgnoredRepositories.ps1",
+        ".copilot/Methods/Test-StabilizationPolicy.ps1",
+        ".copilot/Methods/Test-StaleWorkspaceReferences.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation confirmed the quality-gate module replaced helper test scripts.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-027",
+      "proposal": "Keep Test-WorkspaceGCReadiness.ps1 as the single public verification command.",
+      "reason": "Operators should have one readiness command; narrower gates should be implementation details unless a focused failure needs diagnosis.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/QualityGates/README.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation confirmed the single public verification command.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-028",
+      "proposal": "Update readiness parsing to validate the quality-gate module instead of removed helper scripts.",
+      "reason": "The readiness command should continue validating active governance code after helper checks move into a module.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation parsed the quality-gate module successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-029",
+      "proposal": "Update native governance validation to consume the quality-gate module.",
+      "reason": "Advance-Governance should use the same consolidated quality-gate implementation as the readiness command.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized native governance validation consumed the quality-gate module successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-030",
+      "proposal": "Document the lighter verification cadence for Workspace_GC stabilization.",
+      "reason": "The normal workflow should run the single readiness command and only use narrower checks when that command reports a targeted failure.",
+      "files": [
+        ".copilot/Methods/QualityGates/README.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation confirmed the lighter verification cadence.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-031",
+      "proposal": "Expand the real-repository test plan into a dry-run contract.",
+      "reason": "Workspace_GC needs explicit machine-readable rules for blocked, selected, and read-only dry-run states before any real repository is touched.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness validation confirmed blocked dry-run contract state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-032",
+      "proposal": "Add a quality gate for real-repository test plan policy.",
+      "reason": "The consolidated quality-gate module should reject write-enabled plans, self-targeting, and off-limits candidate repositories.",
+      "files": [
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after real-repository test plan policy validation passed.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-033",
+      "proposal": "Add a guarded real-repository test plan update command.",
+      "reason": "Future candidate selection should be deterministic and should not imply write enablement.",
+      "files": [
+        ".copilot/Methods/Set-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after guarded test plan update command parsed and readiness validation passed.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-034",
+      "proposal": "Add a read-only real-repository dry-run reporter.",
+      "reason": "Workspace_GC should be able to report blocked or ready dry-run status without mutating a target repository.",
+      "files": [
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after dry-run reporter returned blocked state without external repository access.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-035",
+      "proposal": "Integrate real-repository test plan validation into the readiness command.",
+      "reason": "The one public readiness command should verify dry-run policy without adding extra operator-facing verification steps.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness command validated real-repository test plan policy.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-036",
+      "proposal": "Integrate dry-run status reporting into the readiness command.",
+      "reason": "Readiness output should show that dry-run is currently blocked because no repository is selected.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness output reported blocked dry-run state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-037",
+      "proposal": "Report real-repository dry-run status from native governance validation.",
+      "reason": "Advance-Governance should surface the dry-run block or ready state together with stabilization status.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after native governance reported dry-run status with stabilization state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-038",
+      "proposal": "Document real-repository dry-run guardrails in the quality-gate workflow.",
+      "reason": "Operators need a short statement that selecting a candidate and dry-run preparation remain read-only.",
+      "files": [
+        ".copilot/Methods/QualityGates/README.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after quality-gate workflow documented the dry-run guardrails for current operators.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-039",
+      "proposal": "Preserve the reduced verification cadence while adding dry-run checks.",
+      "reason": "Additional safety checks should not reintroduce multiple manual verification commands.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/QualityGates/README.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness validation preserved the single-command verification cadence.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-040",
+      "proposal": "Keep real-repository dry-run blocked until explicit candidate selection.",
+      "reason": "Workspace_GC must remain self-stabilizing and must not inspect or mutate external repositories before explicit user selection.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness validation confirmed dry-run remains blocked until explicit candidate selection.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-041",
+      "proposal": "Add transition policy fields to the real-repository test plan.",
+      "reason": "Dry-run state changes need explicit machine-readable rules for candidate selection, read-only confirmation, and reset behavior.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness validation confirmed transition policy fields and blocked state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-042",
+      "proposal": "Add dry-run observation report fields to the real-repository test plan.",
+      "reason": "The plan should record that current dry-run reporting is not-run until an explicit candidate and dry-run mode exist.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness validation reported dry-run observation fields without external access.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-043",
+      "proposal": "Validate real-repository transition policy from the quality-gate module.",
+      "reason": "Readiness checks should reject write-capable transition policy, inconsistent modes, and dry-run without a selected repository.",
+      "files": [
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after quality-gate validation enforced transition policy consistency.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-044",
+      "proposal": "Require selected dry-run candidates to be existing Git repositories.",
+      "reason": "Candidate selection should fail early if the path is not a real Git repository, while still refusing off-limits paths.",
+      "files": [
+        ".copilot/Methods/Set-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after guarded candidate validation parsed and readiness passed.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-045",
+      "proposal": "Require explicit read-only confirmation before enabling dry-run mode.",
+      "reason": "Dry-run activation should be a deliberate operator action and must not imply write access.",
+      "files": [
+        ".copilot/Methods/Set-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after dry-run activation required explicit read-only confirmation.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-046",
+      "proposal": "Add read-only real-repository test plan inspection command.",
+      "reason": "Operators and governance checks need a simple way to inspect plan state without changing it or touching external repositories.",
+      "files": [
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after read-only test plan inspection reported current blocked state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-047",
+      "proposal": "Report planned observation and forbidden-action counts from dry-run reporter.",
+      "reason": "Dry-run output should summarize its allowed read-only scope without requiring full documentation yet.",
+      "files": [
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after dry-run reporter summarized planned observations and forbidden actions.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-048",
+      "proposal": "Integrate plan inspection into the single readiness command.",
+      "reason": "The readiness command should display the current real-repository plan state without adding a second verification command.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after readiness command integrated plan inspection successfully.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-049",
+      "proposal": "Report read-only confirmation requirement from native governance validation.",
+      "reason": "Governance output should make clear that dry-run activation still requires explicit read-only confirmation.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after governance output reported read-only confirmation requirement.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-050",
+      "proposal": "Keep real-repository flow documentation deferred while exposing machine-readable behavior.",
+      "reason": "The repository is not ready for full real-repo use-case documentation, but the later documentation should be grounded in validated commands and policy fields.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after behavior remained machine-readable while broader flow documentation stayed deferred.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-051",
+      "proposal": "Add adapter surface candidates to the real-repository dry-run plan.",
+      "reason": "Dry-run reporting should know which Workspace_GC adapter surfaces to inventory in a selected target repository without writing them.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation reported four adapter surface candidates.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-052",
+      "proposal": "Add target profile state to the real-repository test plan.",
+      "reason": "The plan needs a durable read-only profile shape before a real target repository is selected.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation reported blocked target profile state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-053",
+      "proposal": "Validate target profile and adapter surface inventory fields from the quality-gate module.",
+      "reason": "Readiness should reject missing adapter inventory and any target-profile write probe state.",
+      "files": [
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation checked adapter inventory and no-write profile state.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-054",
+      "proposal": "Add read-only real-repository target profile command.",
+      "reason": "The dry-run flow needs a command that profiles a selected target by reading path identity, git status, and adapter surface presence only.",
+      "files": [
+        ".copilot/Methods/Get-RealRepoTargetProfile.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation parsed and executed blocked target profile reporting.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-055",
+      "proposal": "Keep target profile blocked until real-repository dry-run is explicitly enabled.",
+      "reason": "Workspace_GC should not inspect target repository details before candidate selection and read-only dry-run confirmation.",
+      "files": [
+        ".copilot/Methods/Get-RealRepoTargetProfile.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation confirmed target profile remains blocked until dry-run enablement.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-056",
+      "proposal": "Add target profile summary to the real-repository dry-run reporter.",
+      "reason": "Dry-run output should include whether target profiling is blocked or complete plus adapter surface counts.",
+      "files": [
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Get-RealRepoTargetProfile.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation reported target profile status and adapter counts from dry-run output.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-057",
+      "proposal": "Expose target profile summary in the read-only test plan inspection command.",
+      "reason": "Operators should be able to see profile readiness and adapter candidate count without invoking a write-capable flow.",
+      "files": [
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation exposed target profile summary through plan inspection.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-058",
+      "proposal": "Integrate target profile reporting into the single readiness command.",
+      "reason": "The one-command readiness cadence should show that target profiling remains blocked until a repository is explicitly selected.",
+      "files": [
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Get-RealRepoTargetProfile.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation integrated target profile reporting in the single command.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-059",
+      "proposal": "Report adapter surface candidate count from native governance validation.",
+      "reason": "Governance output should summarize how many target adapter surfaces the dry-run profile will inventory later.",
+      "files": [
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized governance output reported adapter surface candidate count.",
+      "final_result": "Pending commit."
+    },
+    {
+      "id": "GC-STEP-060",
+      "proposal": "Keep real-repository dry-run profiling read-only and non-probing.",
+      "reason": "Target profiling should explicitly report that no write probe is performed, preserving the dry-run safety model.",
+      "files": [
+        ".copilot/Methods/Get-RealRepoTargetProfile.ps1",
+        ".copilot/Methods/Invoke-RealRepoDryRun.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted after synchronized readiness validation confirmed WriteProbePerformed remains false.",
+      "final_result": "Pending commit."
     }
   ]
 }

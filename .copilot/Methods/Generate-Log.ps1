@@ -14,9 +14,13 @@ Module: Generate-Log.ps1
 Purpose: Generate native Workspace_GC step and permanent governance logs.
 Path: .copilot/Methods/Generate-Log.ps1
 Authors: Workspace_GC Engine
-Version: 1.1.0
+Version: 1.5.0
 Caller Contract: Called from VS Code tasks or terminal; writes deterministic checkpoint and accepted-change governance logs.
 Changelog:
+- 2026-08-01: Added proposal disposition summary section.
+- 2026-08-01: Grouped generated artifact changes separately from reviewable pending changes.
+- 2026-08-01: Added generated-artifact section so logs are not treated as reviewable proposal files.
+- 2026-08-01: Added normalized disposition detail output for step proposal records.
 - 2026-08-01: Loaded step proposal records from GC-Proposals.json instead of hardcoding entries.
 - 2026-08-01: Added separate step-oriented and permanent accepted-change log outputs.
 - 2026-08-01: Added native governance log generator for Gemini/Continue migration.
@@ -61,6 +65,77 @@ $status = git -C $workspaceRoot status --short
 $generatedAt = Get-Date -Format 'yyyyMMdd_HHmmss'
 $proposalState = Get-Content -Raw -Path $ProposalLogPath | ConvertFrom-Json
 $stepEntries = @($proposalState.proposals)
+$dispositionValues = @('pending-review', 'accepted', 'rejected', 'modified')
+$dispositionSummary = @{}
+foreach ($dispositionValue in $dispositionValues) {
+  $dispositionSummary[$dispositionValue] = 0
+}
+
+foreach ($stepEntry in $stepEntries) {
+  $currentDisposition = [string]$stepEntry.disposition
+  if (-not $dispositionSummary.ContainsKey($currentDisposition)) {
+    $dispositionSummary[$currentDisposition] = 0
+  }
+
+  $dispositionSummary[$currentDisposition] += 1
+}
+
+function ConvertTo-RepoRelativePath {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$Path,
+
+    [Parameter(Mandatory=$true)]
+    [string]$WorkspaceRoot
+  )
+
+  $fullPath = [System.IO.Path]::GetFullPath($Path)
+  $rootPath = [System.IO.Path]::GetFullPath($WorkspaceRoot).TrimEnd('\')
+  if ($fullPath.StartsWith($rootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+    return $fullPath.Substring($rootPath.Length).TrimStart('\').Replace('\', '/')
+  }
+
+  return $Path.Replace('\', '/')
+}
+
+function Split-GitStatusByArtifact {
+  [CmdletBinding()]
+  param(
+    [string[]]$StatusLines,
+
+    [string[]]$GeneratedArtifactPaths
+  )
+
+  $generatedChanges = @()
+  $reviewableChanges = @()
+
+  foreach ($statusLine in @($StatusLines)) {
+    $currentStatusLine = $statusLine
+    if (-not $currentStatusLine) {
+      continue
+    }
+
+    $relativePath = $currentStatusLine.Substring(3).Trim().Trim('"').Replace('\', '/')
+    if ($GeneratedArtifactPaths -contains $relativePath) {
+      $generatedChanges += $currentStatusLine
+    } else {
+      $reviewableChanges += $currentStatusLine
+    }
+  }
+
+  return [pscustomobject]@{
+    Generated = $generatedChanges
+    Reviewable = $reviewableChanges
+  }
+}
+
+$generatedArtifactPaths = @(
+  (ConvertTo-RepoRelativePath -Path $OutputPath -WorkspaceRoot $workspaceRoot),
+  (ConvertTo-RepoRelativePath -Path $StepLogPath -WorkspaceRoot $workspaceRoot),
+  (ConvertTo-RepoRelativePath -Path $PermanentLogPath -WorkspaceRoot $workspaceRoot)
+)
+$statusGroups = Split-GitStatusByArtifact -StatusLines @($status) -GeneratedArtifactPaths $generatedArtifactPaths
 
 $content = @(
   'Workspace_GC Governance Log',
@@ -86,19 +161,41 @@ $content = @(
   'Permanent accepted log: .copilot/Logs/Workspace_GC.accepted.log',
   'Proposal registry: .copilot/Methods/Logs/GC-Proposals.json',
   '',
-  '4. Git Status',
-  '-------------'
+  '4. Proposal Disposition Summary',
+  '-------------------------------'
 )
 
-if ($status) {
-  $content += $status
-} else {
-  $content += 'Clean'
+foreach ($dispositionValue in $dispositionValues) {
+  $content += "${dispositionValue}: $($dispositionSummary[$dispositionValue])"
 }
 
 $content += @(
   '',
-  '5. Footer',
+  '5. Reviewable Git Status',
+  '------------------------'
+)
+
+if ($statusGroups.Reviewable) {
+  $content += $statusGroups.Reviewable
+} else {
+  $content += 'No reviewable changes.'
+}
+
+$content += @(
+  '',
+  '6. Generated Artifact Status',
+  '----------------------------'
+)
+
+if ($statusGroups.Generated) {
+  $content += $statusGroups.Generated
+} else {
+  $content += 'No generated artifact changes.'
+}
+
+$content += @(
+  '',
+  '7. Footer',
   '---------',
   'Workspace_GC native governance log generation complete.'
 )
@@ -133,25 +230,63 @@ foreach ($stepEntry in $stepEntries) {
     "Proposal: $($currentStepEntry.proposal)",
     "Reason: $($currentStepEntry.reason)",
     "Files: $fileList",
-    "Disposition: $($currentStepEntry.disposition)",
-    ''
+    "Disposition: $($currentStepEntry.disposition)"
   )
+
+  if ($currentStepEntry.PSObject.Properties['disposition_reason']) {
+    $stepContent += "Disposition reason: $($currentStepEntry.disposition_reason)"
+  }
+
+  if ($currentStepEntry.PSObject.Properties['final_result']) {
+    $stepContent += "Final result: $($currentStepEntry.final_result)"
+  }
+
+  $stepContent += ''
 }
 
 $stepContent += @(
-  '3. Current Git Status',
-  '---------------------'
+  '3. Proposal Disposition Summary',
+  '-------------------------------'
 )
 
-if ($status) {
-  $stepContent += $status
-} else {
-  $stepContent += 'Clean'
+foreach ($dispositionValue in $dispositionValues) {
+  $stepContent += "${dispositionValue}: $($dispositionSummary[$dispositionValue])"
 }
 
 $stepContent += @(
   '',
-  '4. Footer',
+  '4. Generated Artifacts',
+  '----------------------',
+  'Generated artifacts are implicit outputs. They are regenerated, committed with accepted checkpoints when needed, and do not receive accepted/rejected/modified dispositions.',
+  "- $OutputPath",
+  "- $StepLogPath",
+  "- $PermanentLogPath",
+  '',
+  '5. Current Reviewable Git Status',
+  '--------------------------------'
+)
+
+if ($statusGroups.Reviewable) {
+  $stepContent += $statusGroups.Reviewable
+} else {
+  $stepContent += 'No reviewable changes.'
+}
+
+$stepContent += @(
+  '',
+  '6. Current Generated Artifact Status',
+  '------------------------------------'
+)
+
+if ($statusGroups.Generated) {
+  $stepContent += $statusGroups.Generated
+} else {
+  $stepContent += 'No generated artifact changes.'
+}
+
+$stepContent += @(
+  '',
+  '7. Footer',
   '---------',
   'Workspace_GC step-oriented governance log generation complete.'
 )
