@@ -16,3 +16,5 @@ Real-repository dry-run preparation is intentionally guarded:
 - dry-run mode remains read-only;
 - `_AC` and backup base paths remain off-limits;
 - `Invoke-RealRepoDryRun.ps1` reports blocked state until a candidate and dry-run mode are explicitly configured.
+
+The inspectable dry-run case documentation is maintained in [docs/real-repo-dry-run.md](docs/real-repo-dry-run.md).

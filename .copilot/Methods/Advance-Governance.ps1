@@ -20,9 +20,13 @@ Module: Advance-Governance.ps1
 Purpose: Validate native Workspace_GC governance readiness and log separation without staging or committing changes.
 Path: .copilot/Methods/Advance-Governance.ps1
 Authors: Workspace_GC Engine
-Version: 2.5.0
+Version: 2.9.0
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
+- 2026-08-01: Added bottom-up change-request flow reporting.
+- 2026-08-01: Added phased documentation-first dry-run sequence reporting.
+- 2026-08-01: Added real-repository intended-action preview status reporting.
+- 2026-08-01: Added real-repository read-only Git command allow-list reporting.
 - 2026-08-01: Added real-repository adapter surface candidate count reporting.
 - 2026-08-01: Added real-repository dry-run confirmation requirement reporting.
 - 2026-08-01: Added real-repository dry-run status reporting.
@@ -200,6 +204,12 @@ Write-Host "Real repository selected: $([bool]$realRepoPlan.selected_repository)
 Write-Host "Real repository dry-run status: $($realRepoPlanValidation.DryRunStatus)"
 Write-Host "Real repository dry-run confirmation required: $($realRepoPlanValidation.ConfirmationRequired)"
 Write-Host "Real repository adapter surface candidates: $($realRepoPlanValidation.AdapterSurfaceCandidateCount)"
+Write-Host "Real repository allowed Git commands: $($realRepoPlanValidation.AllowedGitCommandCount)"
+Write-Host "Real repository action preview status: $($realRepoPlanValidation.ActionPreviewStatus)"
+Write-Host "Real repository dry-run phases: $($realRepoPlanValidation.ActionPreviewPhaseCount)"
+Write-Host "Real repository documentation-first phase: $($realRepoPlanValidation.DocumentationFirstPhase)"
+Write-Host "Real repository change-request orientation: $($realRepoPlanValidation.ChangeRequestOrientation)"
+Write-Host "Real repository change-request phases: $($realRepoPlanValidation.ChangeRequestPhaseCount)"
 Write-Host "Stabilization policy status: $($policyValidation.Status)"
 Write-Host "Sibling repositories ignored: $($ignoreValidation.IgnoredRepositoryCount)"
 Write-Host "Governance log: $LogPath"

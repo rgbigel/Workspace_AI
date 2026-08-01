@@ -19,6 +19,7 @@ von Windows-Systemen in Multi-Boot-Umgebungen.
 - Logging
 - Multi-Boot-Pfadlogik
 - Runtime-Skripte unter D:\cmd
+- Workspace_GC real-repository dry-run cases: [real-repo-dry-run.md](real-repo-dry-run.md)
 
 ## Phasen
 

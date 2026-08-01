@@ -19,9 +19,10 @@ Module: Set-RealRepoTestPlan.ps1
 Purpose: Update the Workspace_GC real-repository test plan without enabling writes.
 Path: .copilot/Methods/Set-RealRepoTestPlan.ps1
 Authors: Workspace_GC Engine
-Version: 1.1.0
+Version: 1.2.0
 Caller Contract: Called only for Workspace_GC governance preparation; refuses write enablement and validates policy after updating the local plan file.
 Changelog:
+- 2026-08-01: Synchronized target-profile and action-preview status fields during candidate transitions.
 - 2026-08-01: Added candidate Git repository validation and explicit read-only dry-run confirmation.
 - 2026-08-01: Added guarded real-repository test plan update command.
 #>
@@ -57,6 +58,19 @@ if ($ClearSelection) {
   $plan.confirmation_token = $null
   $plan.dry_run.enabled = $false
   $plan.dry_run.status = 'blocked-until-repository-selected'
+  $plan.target_profile.status = 'not-run'
+  $plan.target_profile.repository_name = $null
+  $plan.target_profile.repository_path = $null
+  $plan.target_profile.repository_root_verified = $false
+  $plan.target_profile.branch_name = $null
+  $plan.target_profile.head_commit = $null
+  $plan.target_profile.git_status_summary = 'not-run'
+  $plan.target_profile.adapter_surface_present_count = 0
+  $plan.target_profile.adapter_surface_missing_count = 0
+  $plan.target_profile.write_probe_performed = $false
+  $plan.action_preview.status = 'blocked-until-repository-selected'
+  $plan.action_preview.action_count = 0
+  $plan.action_preview.current_phase = 'blocked'
 }
 
 if ($RepositoryPath) {
@@ -85,6 +99,19 @@ if ($RepositoryPath) {
   $plan.confirmation_token = $null
   $plan.dry_run.enabled = $false
   $plan.dry_run.status = 'blocked-until-dry-run-enabled'
+  $plan.target_profile.status = 'not-run'
+  $plan.target_profile.repository_name = Split-Path $fullRepositoryPath -Leaf
+  $plan.target_profile.repository_path = $fullRepositoryPath
+  $plan.target_profile.repository_root_verified = $false
+  $plan.target_profile.branch_name = $null
+  $plan.target_profile.head_commit = $null
+  $plan.target_profile.git_status_summary = 'not-run'
+  $plan.target_profile.adapter_surface_present_count = 0
+  $plan.target_profile.adapter_surface_missing_count = @($plan.dry_run.adapter_surface_candidates).Count
+  $plan.target_profile.write_probe_performed = $false
+  $plan.action_preview.status = 'blocked-until-dry-run-enabled'
+  $plan.action_preview.action_count = 0
+  $plan.action_preview.current_phase = 'blocked'
 }
 
 if ($Mode) {
@@ -105,6 +132,8 @@ if ($EnableDryRun) {
   $plan.write_allowed = $false
   $plan.dry_run.enabled = $true
   $plan.dry_run.status = 'ready-read-only'
+  $plan.action_preview.status = 'ready-read-only'
+  $plan.action_preview.current_phase = 'phase-01-structure'
 }
 
 if ($plan.write_allowed -ne $false -or $plan.dry_run.write_allowed -ne $false) {

@@ -8,9 +8,11 @@ Module: Get-RealRepoTargetProfile.ps1
 Purpose: Build a read-only profile of the selected real-repository dry-run target.
 Path: .copilot/Methods/Get-RealRepoTargetProfile.ps1
 Authors: Workspace_GC Engine
-Version: 1.0.0
+Version: 1.2.0
 Caller Contract: Called only after Workspace_GC dry-run policy validation; reads target path, git status, and adapter surface presence without writing to the target.
 Changelog:
+- 2026-08-01: Handled selected repositories without a resolvable HEAD without noisy Git stderr.
+- 2026-08-01: Added read-only Git root, branch, and HEAD metadata reporting.
 - 2026-08-01: Added read-only real-repository target profile command.
 #>
 
@@ -22,6 +24,23 @@ $qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualit
 
 Import-Module $qualityGateModulePath -Force
 
+function Invoke-ReadOnlyGit {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$RepositoryPath,
+
+    [Parameter(Mandatory=$true)]
+    [string[]]$Arguments
+  )
+
+  $output = @(& git -C $RepositoryPath @Arguments 2>$null)
+  return [pscustomobject]@{
+    ExitCode = $LASTEXITCODE
+    Output = $output
+  }
+}
+
 $planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 
@@ -31,6 +50,9 @@ if ($planValidation.DryRunEnabled -ne $true -or -not $planValidation.SelectedRep
     Reason = $planValidation.DryRunStatus
     RepositoryName = $null
     RepositoryPath = $planValidation.SelectedRepository
+    RepositoryRootVerified = $false
+    BranchName = $null
+    HeadCommit = $null
     GitStatusSummary = 'not-run'
     GitStatusLineCount = 0
     AdapterSurfacePresentCount = 0
@@ -43,7 +65,21 @@ if ($planValidation.DryRunEnabled -ne $true -or -not $planValidation.SelectedRep
     throw "Selected dry-run target is not a Git repository: $selectedRepository"
   }
 
-  $gitStatusShort = @(git -C $selectedRepository status --short)
+  $gitStatusResult = Invoke-ReadOnlyGit -RepositoryPath $selectedRepository -Arguments @('status', '--short')
+  $gitRootResult = Invoke-ReadOnlyGit -RepositoryPath $selectedRepository -Arguments @('rev-parse', '--show-toplevel')
+  $gitBranchResult = Invoke-ReadOnlyGit -RepositoryPath $selectedRepository -Arguments @('rev-parse', '--abbrev-ref', 'HEAD')
+  $gitHeadResult = Invoke-ReadOnlyGit -RepositoryPath $selectedRepository -Arguments @('rev-parse', 'HEAD')
+
+  if ($gitRootResult.ExitCode -ne 0) {
+    throw "Could not read Git repository root for selected dry-run target: $selectedRepository"
+  }
+
+  $gitStatusShort = @($gitStatusResult.Output)
+  $gitRepositoryRoot = [string]($gitRootResult.Output | Select-Object -First 1)
+  $gitBranchName = if ($gitBranchResult.ExitCode -eq 0) { [string]($gitBranchResult.Output | Select-Object -First 1) } else { $null }
+  $gitHeadCommit = if ($gitHeadResult.ExitCode -eq 0) { [string]($gitHeadResult.Output | Select-Object -First 1) } else { $null }
+  $normalizedSelectedRepository = [System.IO.Path]::GetFullPath($selectedRepository).TrimEnd('\')
+  $normalizedGitRepositoryRoot = [System.IO.Path]::GetFullPath($gitRepositoryRoot).TrimEnd('\')
   $adapterSurfaceCandidates = @($plan.dry_run.adapter_surface_candidates)
   $presentSurfaces = @()
   $missingSurfaces = @()
@@ -63,6 +99,11 @@ if ($planValidation.DryRunEnabled -ne $true -or -not $planValidation.SelectedRep
     Reason = 'read-only-profile-complete'
     RepositoryName = Split-Path $selectedRepository -Leaf
     RepositoryPath = $selectedRepository
+    RepositoryRoot = $gitRepositoryRoot
+    RepositoryRootVerified = $normalizedGitRepositoryRoot.Equals($normalizedSelectedRepository, [System.StringComparison]::OrdinalIgnoreCase)
+    BranchName = $gitBranchName
+    HeadCommit = $gitHeadCommit
+    HeadStatus = if ($gitHeadCommit) { 'resolved' } else { 'unresolved' }
     GitStatusSummary = if ($gitStatusShort.Count -eq 0) { 'clean' } else { 'has-changes' }
     GitStatusLineCount = $gitStatusShort.Count
     AdapterSurfacePresentCount = $presentSurfaces.Count

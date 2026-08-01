@@ -2,13 +2,18 @@
   "meta": {
     "module": "GC-RealRepoTestPlan.json",
     "path": ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
-    "version": "1.3.0",
+    "version": "1.8.0",
     "config_type": "workspace-gc-real-repository-test-plan",
     "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "1.8.0 - Added bottom-up concrete change-request workflow phases",
+      "1.7.0 - Added phased realistic governance dry-run sequence",
+      "1.6.0 - Added read-only adapter content comparison preview model",
+      "1.5.0 - Added read-only intended action preview model for real-repository dry-run",
+      "1.4.0 - Added read-only Git metadata observation policy",
       "1.3.0 - Added read-only target profile and adapter surface inventory expectations",
       "1.2.0 - Added guarded transition policy and dry-run observation report fields",
       "1.1.0 - Added dry-run contract, candidate policy, and explicit confirmation token fields",
@@ -35,9 +40,19 @@
     "write_allowed": false,
     "allowed_observations": [
       "repository path identity",
+      "git repository root identity",
+      "git current branch name",
+      "git current HEAD commit id",
       "git working-tree status summary",
       "presence of Workspace_GC adapter surfaces",
+      "read-only adapter surface content hash comparison",
       "read-only target profile"
+    ],
+    "allowed_git_commands": [
+      "git rev-parse --show-toplevel",
+      "git rev-parse --abbrev-ref HEAD",
+      "git rev-parse HEAD",
+      "git status --short"
     ],
     "adapter_surface_candidates": [
       ".continuerules",
@@ -52,6 +67,9 @@
     ],
     "last_report": {
       "status": "not-run",
+      "repository_root_verified": false,
+      "branch_name": null,
+      "head_commit": null,
       "git_status_summary": "not-run",
       "git_status_line_count": 0,
       "adapter_surface_present_count": 0,
@@ -62,10 +80,145 @@
     "status": "not-run",
     "repository_name": null,
     "repository_path": null,
+    "repository_root_verified": false,
+    "branch_name": null,
+    "head_commit": null,
     "git_status_summary": "not-run",
     "adapter_surface_present_count": 0,
     "adapter_surface_missing_count": 0,
     "write_probe_performed": false
+  },
+  "action_preview": {
+    "status": "blocked-until-repository-selected",
+    "write_allowed": false,
+    "action_count": 0,
+    "current_phase": "blocked",
+    "phase_count": 0,
+    "allowed_action_types": [
+      "would-assess-repository-structure",
+      "would-check-repository-specifications",
+      "would-check-documentation-level",
+      "would-report-documentation-discrepancies",
+      "would-queue-documentation-change-request",
+      "would-create-adapter-surface",
+      "would-update-adapter-surface",
+      "would-review-existing-adapter-surface",
+      "would-leave-target-unchanged"
+    ],
+    "comparison_states": [
+      "target-missing",
+      "target-identical",
+      "target-different",
+      "source-missing"
+    ],
+    "phases": [
+      {
+        "id": "phase-01-structure",
+        "name": "Repository structure alignment",
+        "scope": "workspace-rules",
+        "status": "planned-read-only",
+        "description": "Check repository layout against Workspace_GC workspace rules before any repository-specific interpretation.",
+        "write_allowed": false
+      },
+      {
+        "id": "phase-02-repo-specifications",
+        "name": "Repository specification alignment",
+        "scope": "repo-specifications",
+        "status": "planned-read-only",
+        "description": "Read repository-local specifications and compare them with Workspace_GC rule expectations.",
+        "write_allowed": false
+      },
+      {
+        "id": "phase-03-level-map",
+        "name": "Level map review",
+        "scope": "docs-source-modules-implementation",
+        "status": "planned-read-only",
+        "description": "Map documentation, source, modules, implementation, discrepancies, and installation surfaces before proposing changes.",
+        "write_allowed": false
+      },
+      {
+        "id": "phase-04-documentation-discrepancies",
+        "name": "Documentation-level discrepancy report",
+        "scope": "documentation-only",
+        "status": "first-actionable-phase",
+        "description": "Determine and report content discrepancies on the documentation level only.",
+        "write_allowed": false
+      },
+      {
+        "id": "phase-05-documentation-change-requests",
+        "name": "Documentation-level change request intake",
+        "scope": "documentation-only",
+        "status": "planned-after-discrepancy-review",
+        "description": "Pick up explicitly approved documentation-level change requests after discrepancy review.",
+        "write_allowed": false
+      },
+      {
+        "id": "phase-06-later-implementation",
+        "name": "Later source/module/implementation/install planning",
+        "scope": "deferred-non-documentation",
+        "status": "deferred",
+        "description": "Defer source, modules, implementation, and installation changes until documentation-level findings are reviewed.",
+        "write_allowed": false
+      }
+    ],
+    "change_request_flow": {
+      "status": "preview-only",
+      "orientation": "bottom-up",
+      "documentation_changes_expected": true,
+      "code_changes_deferred_until_doc_proposal_review": true,
+      "write_allowed_without_approval": false,
+      "phases": [
+        {
+          "id": "cr-01-analyze-request",
+          "name": "Analyze concrete change request",
+          "scope": "requirement-or-implementation-detail",
+          "description": "Classify the request as functional requirement change, implementation detail change, rule change, JSON structure change, runtime logging change, or similar.",
+          "write_allowed": false
+        },
+        {
+          "id": "cr-02-determine-impact",
+          "name": "Determine impact",
+          "scope": "docs-source-modules-implementation-installation",
+          "description": "Identify affected documentation, source, modules, implementation, generated artifacts, install behavior, tests, and governance rules.",
+          "write_allowed": false
+        },
+        {
+          "id": "cr-03-propose-doc-changes",
+          "name": "Propose documentation changes",
+          "scope": "documentation-first",
+          "description": "Propose the documentation updates required to make the changed requirement or implementation detail explicit.",
+          "write_allowed": false
+        },
+        {
+          "id": "cr-04-propose-code-changes",
+          "name": "Propose code changes",
+          "scope": "implementation-after-docs",
+          "description": "Propose code, module, script, schema, or installer changes only after documentation impact is understood.",
+          "write_allowed": false
+        },
+        {
+          "id": "cr-05-apply-approved-doc-changes",
+          "name": "Apply approved documentation changes",
+          "scope": "documentation-approved",
+          "description": "Documentation may be changed after explicit approval because the flow is bottom-up and documentation must follow the changed requirement.",
+          "write_allowed": "requires-approval"
+        },
+        {
+          "id": "cr-06-apply-approved-code-changes",
+          "name": "Apply approved code changes",
+          "scope": "implementation-approved",
+          "description": "Code changes may be applied only after documentation proposal review and explicit approval.",
+          "write_allowed": "requires-approval"
+        }
+      ]
+    },
+    "forbidden_action_types": [
+      "write-file",
+      "delete-file",
+      "stage-file",
+      "commit-file",
+      "run-target-installer"
+    ]
   },
   "candidate_policy": {
     "must_be_explicitly_selected": true,

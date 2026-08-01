@@ -8,9 +8,14 @@ Module: Invoke-RealRepoDryRun.ps1
 Purpose: Report Workspace_GC real-repository dry-run readiness without writing to any target repository.
 Path: .copilot/Methods/Invoke-RealRepoDryRun.ps1
 Authors: Workspace_GC Engine
-Version: 1.2.0
+Version: 1.7.0
 Caller Contract: Called during readiness and operator preparation; reports blocked/ready state and performs read-only git status only after dry-run is enabled.
 Changelog:
+- 2026-08-01: Added bottom-up change-request flow summary.
+- 2026-08-01: Added phased dry-run sequence summary.
+- 2026-08-01: Added intended-action content-state count summary.
+- 2026-08-01: Added intended-action preview summary to dry-run report.
+- 2026-08-01: Added read-only Git metadata summary from target profile.
 - 2026-08-01: Added read-only target profile summary to dry-run report.
 - 2026-08-01: Added observation and forbidden-action counts to dry-run report.
 - 2026-08-01: Added read-only real-repository dry-run reporter.
@@ -28,6 +33,11 @@ $planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRo
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $targetProfilePath = Join-Path $PSScriptRoot 'Get-RealRepoTargetProfile.ps1'
 $targetProfile = & $targetProfilePath
+$actionPlanPath = Join-Path $PSScriptRoot 'Get-RealRepoActionPlan.ps1'
+$actionPlan = & $actionPlanPath
+$targetMissingCount = @($actionPlan.IntendedActions | Where-Object { $_.ComparisonState -eq 'target-missing' }).Count
+$targetDifferentCount = @($actionPlan.IntendedActions | Where-Object { $_.ComparisonState -eq 'target-different' }).Count
+$targetIdenticalCount = @($actionPlan.IntendedActions | Where-Object { $_.ComparisonState -eq 'target-identical' }).Count
 $statusSummary = 'not-run'
 $gitStatusShort = @()
 
@@ -52,8 +62,20 @@ $result = [pscustomobject]@{
   PlannedObservationCount = @($plan.dry_run.allowed_observations).Count
   ForbiddenActionCount = @($plan.dry_run.forbidden_actions).Count
   TargetProfileStatus = $targetProfile.Status
+  RepositoryRootVerified = $targetProfile.RepositoryRootVerified
+  BranchName = $targetProfile.BranchName
+  HeadCommit = $targetProfile.HeadCommit
+  CurrentPhase = $actionPlan.CurrentPhase
+  PhaseCount = $actionPlan.PhaseCount
+  ChangeRequestOrientation = $actionPlan.ChangeRequestOrientation
+  ChangeRequestPhaseCount = $actionPlan.ChangeRequestPhaseCount
   AdapterSurfacePresentCount = $targetProfile.AdapterSurfacePresentCount
   AdapterSurfaceMissingCount = $targetProfile.AdapterSurfaceMissingCount
+  ActionPlanStatus = $actionPlan.Status
+  IntendedActionCount = $actionPlan.IntendedActionCount
+  TargetMissingActionCount = $targetMissingCount
+  TargetDifferentActionCount = $targetDifferentCount
+  TargetIdenticalActionCount = $targetIdenticalCount
   WriteProbePerformed = $targetProfile.WriteProbePerformed
 }
 

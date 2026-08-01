@@ -6,9 +6,10 @@ Module: Test-WorkspaceGCReadiness.ps1
 Purpose: Run native Workspace_GC self-readiness checks before real-repository testing.
 Path: .copilot/Methods/Test-WorkspaceGCReadiness.ps1
 Authors: Workspace_GC Engine
-Version: 1.5.0
+Version: 1.6.0
 Caller Contract: Called manually before enabling real-repository tests; validates current native governance pipeline.
 Changelog:
+- 2026-08-01: Added intended-action preview command parsing and readiness output.
 - 2026-08-01: Added target-profile command parsing and readiness output.
 - 2026-08-01: Added guarded real-repository transition command parsing and plan inspection.
 - 2026-08-01: Added real-repository dry-run contract checks.
@@ -35,6 +36,7 @@ $scriptFiles = @(
   '.\.copilot\Methods\Get-WorkspaceRepositories.ps1',
   '.\.copilot\Methods\Get-RealRepoTestPlan.ps1',
   '.\.copilot\Methods\Get-RealRepoTargetProfile.ps1',
+  '.\.copilot\Methods\Get-RealRepoActionPlan.ps1',
   '.\.copilot\Methods\Set-RealRepoTestPlan.ps1',
   '.\.copilot\Methods\Invoke-RealRepoDryRun.ps1',
   '.\.copilot\Methods\QualityGates\WorkspaceGCQualityGates.psm1',
@@ -57,6 +59,7 @@ Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot | Out-Host
 Assert-WorkspaceGCStaleAuthorityReferences -WorkspaceRoot $workspaceRoot | Out-Host
 .\.copilot\Methods\Get-RealRepoTestPlan.ps1 | Out-Host
 .\.copilot\Methods\Get-RealRepoTargetProfile.ps1 | Out-Host
+.\.copilot\Methods\Get-RealRepoActionPlan.ps1 | Out-Host
 .\.copilot\Methods\Invoke-RealRepoDryRun.ps1 | Out-Host
 .\.copilot\Methods\Generate-Log.ps1
 .\.copilot\Methods\Advance-Governance.ps1
