@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "config_version": "2026-08-01",
+    "config_path": "D:\\Git_Repositories\\.copilot\\tasks.json"
+  },
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Flush VSCode Buffers",
+      "command": "echo",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "default"
+      }
+    },
+    {
+      "label": "Governance Cycle",
+      "type": "shell",
+      "command": "git add . && git commit -m \"Workspace_AC: Governance advance\" && copilot:generate-log && copilot:advance-governance",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

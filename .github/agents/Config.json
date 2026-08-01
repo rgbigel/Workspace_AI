@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "version": "3.0.0",
+    "config_path": "D:\\Git_Repositories\\.copilot\\config.json",
+    "config_type": "copilot-profile"
+  },
+
+  "profile": {
+    "workspace_root": "D:\\Git_Repositories",
+    "copilot_directory": "D:\\Git_Repositories\\.copilot",
+    "durable_memory_files": [
+      "instructions.md",
+      "config.json",
+      "agent.json",
+      "copilot365-agent.json",
+      "macro-definitions.md",
+      "InvariantRules.md",
+      "Standards.md",
+      "MEMORY.md",
+      "MyTools.md",
+      "version-consistency-check.md",
+      "version-bump-procedure.md"
+    ],
+    "variable_memory_files": [
+      "problems.md",
+      "projects.md",
+      "servicing-notes.md"
+    ],
+    "test_suite": {
+      "directory": "D:\\Git_Repositories\\.copilot\\tests",
+      "file": "profile-tests.md"
+    }
+  }
+}

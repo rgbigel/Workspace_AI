@@ -1,0 +1,11 @@
+{
+  "version": "3.0.0",
+  "name": "DefaultProfile",
+  "description": "Deterministic command-language profile for Copilot VS Code Chat",
+  "instructions": "./instructions.md",
+  "enabled": true,
+  "capabilities": {
+    "chat": true,
+    "analysis": true
+  }
+}

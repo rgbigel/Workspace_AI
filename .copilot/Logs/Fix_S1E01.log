@@ -1,0 +1,23 @@
+timestamp: 2026-07-31T18:34:25+02:00
+action id: NormalizePowerShell
+target file: *.ps1
+rule applied: PowerShellRules.md
+result: no root-level targets
+
+timestamp: 2026-07-31T18:34:25+02:00
+action id: NormalizeJSON
+target file: *.json
+rule applied: JSONRules.md
+result: no root-level targets
+
+timestamp: 2026-07-31T18:34:25+02:00
+action id: NormalizeCMD
+target file: *.cmd
+rule applied: CMDRules.md
+result: no root-level targets
+
+timestamp: 2026-07-31T18:34:25+02:00
+action id: ApplyInvariants
+target file: **/*
+rule applied: InvariantRules.md
+result: normalized UTF-8 without BOM, CRLF line endings, and ASCII-only non-exempt files

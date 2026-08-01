@@ -1,0 +1,23 @@
+timestamp: 2026-07-31T20:04:23+02:00
+action id: PurityJSON
+target file: *.json
+rule applied: JSONRules.md
+result: quality-check passed; descriptor starts at JSON object and JSON purity holds
+
+timestamp: 2026-07-31T20:04:23+02:00
+action id: PurityPS1
+target file: *.ps1
+rule applied: PowerShellRules.md
+result: quality-check passed; PowerShell method scripts tokenize and required methods resolve
+
+timestamp: 2026-07-31T20:04:23+02:00
+action id: PurityCMD
+target file: *.cmd
+rule applied: CMDRules.md
+result: quality-check passed; no root-level targets
+
+timestamp: 2026-07-31T20:04:23+02:00
+action id: PurityInvariant
+target file: **/*
+rule applied: InvariantRules.md
+result: quality-check passed; S1 continuity through S1E14, references, loaders, action pairings, and invariants are pure

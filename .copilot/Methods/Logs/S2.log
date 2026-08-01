@@ -1,0 +1,62 @@
+[S2G01]
+timestamp: 20260731-2157
+target: .copilot/Fixes/Fix_S1E02.json
+type: governance
+result: active
+notes: Began S2 governance from Step 2 structural enforcement baseline; Workspace-Rules v1.2.0 and WorkspaceLog governance are active.
+
+[S2G02]
+timestamp: 20260731-2201
+target: .copilot/Logs/Fix_S2E02.log
+type: governance
+result: verified
+notes: Advanced S2 governance by verifying Step 2 structural enforcement records; JSON, PowerShell, CMD, and invariant action checks are present.
+
+[S2G03]
+timestamp: 20260731-2210
+target: .copilot/Logs/Workspace_AC.history.log
+type: governance
+result: anchored
+notes: Advanced S2 governance by anchoring the committed WorkspaceLogHistory baseline at cde3f62; S2G02 history coverage is preserved.
+
+[S2G04]
+timestamp: 20260731-2212
+target: .copilot/Methods/Logs/S2.log
+type: governance
+result: committed
+notes: Advanced S2 governance by verifying the committed S2G03 baseline at 2c91f4a; canonical WorkspaceLog coverage remains aligned.
+
+[S2G05]
+timestamp: 20260731-2214
+target: .github/agents/WorkspaceLogHistory.agent.md
+type: governance
+result: resolved
+notes: Resolved S2 governance marker wording by normalizing WorkspaceLogHistory extraction scope to action-marker creation and resolution events; no open S2 markers remain.
+
+[S2G06]
+timestamp: 20260731-2217
+target: .github/agents/DOX.agent.md
+type: governance
+result: resolved
+notes: Resolved residual control-agent marker wording by normalizing DOX unification status to open action markers; S2 governance marker scans are clean.
+
+[S2G07]
+timestamp: 20260731-2219
+target: .copilot/Logs/Workspace_AC.log
+type: governance
+result: validated
+notes: Advanced S2 governance by validating S2G05 and S2G06 marker-resolution coverage in the canonical WorkspaceLog; governance control surfaces remain marker-clean.
+
+[S2G08]
+timestamp: 20260731-2229
+target: .copilot/Logs/Workspace_AC.log
+type: governance
+result: anchored
+notes: Advanced S2 governance by anchoring the regenerated WorkspaceLog metadata for committed baseline 73d2ec4; S2G07 coverage remains canonical.
+
+[S2G09]
+timestamp: 20260801-1331
+target: .copilot/Logs/Workspace_AC.log
+type: governance
+result: anchored
+notes: Advanced S2 governance by anchoring the current regenerated WorkspaceLog metadata for committed baseline dc5db52; S2G08 coverage remains canonical.

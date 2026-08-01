@@ -1,0 +1,4 @@
+# CMD Atom
+- Use explicit exit codes.
+- Avoid implicit environment mutations.
+- No reliance on localized output.

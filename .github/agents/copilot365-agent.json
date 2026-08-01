@@ -1,0 +1,13 @@
+{
+  "version": "3.0.0",
+  "agent": {
+    "name": "DefaultProfile365",
+    "description": "Deterministic command-language profile for Copilot365",
+    "instructions": "./instructions.md",
+    "modes": {
+      "technical": "@technical",
+      "user": "@user"
+    },
+    "enabled": true
+  }
+}

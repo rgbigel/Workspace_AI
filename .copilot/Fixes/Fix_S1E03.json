@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "module": "Fix_S1E03.json",
+    "path": ".copilot/Fixes/Fix_S1E03.json",
+    "version": "1.0.0",
+    "config_type": "copilot-fix-module",
+    "description": "Step 3 Engine Deep Consistency Enforcement",
+    "authors": ["Workspace_AC Engine"],
+    "changelog": [
+      "1.0.0 - Initial deep consistency enforcement module"
+    ]
+  },
+
+  "id": "Fix_S3E03",
+  "type": "fix-module",
+  "scope": [
+    "repository",
+    "workspace"
+  ],
+
+  "requires": {
+    "atoms": [
+      "JSON.atom",
+      "PowerShell.atom",
+      "CMD.atom",
+      "invariant.atom"
+    ],
+    "methods": [
+      "LoadRules.ps1",
+      "LoadAtoms.ps1",
+      "LoadFixes.ps1",
+      "LoadMethods.ps1"
+    ],
+    "rules": [
+      "JSONRules.md",
+      "PowerShellRules.md",
+      "CMDRules.md",
+      "InvariantRules.md"
+    ]
+  },
+
+  "actions": [
+    {
+      "id": "DeepJSONConsistency",
+      "type": "quality-check",
+      "target": "*.json",
+      "rules": "JSONRules.md",
+      "atoms": "JSON.atom"
+    },
+    {
+      "id": "DeepPS1Consistency",
+      "type": "quality-check",
+      "target": "*.ps1",
+      "rules": "PowerShellRules.md",
+      "atoms": "PowerShell.atom"
+    },
+    {
+      "id": "DeepCMDConsistency",
+      "type": "quality-check",
+      "target": "*.cmd",
+      "rules": "CMDRules.md",
+      "atoms": "CMD.atom"
+    },
+    {
+      "id": "DeepInvariantConsistency",
+      "type": "quality-check",
+      "target": "**/*",
+      "rules": "InvariantRules.md",
+      "atoms": "invariant.atom"
+    }
+  ],
+
+  "logging": {
+    "enabled": true,
+    "path": ".copilot/Logs/Fix_S3E03.log"
+  }
+}

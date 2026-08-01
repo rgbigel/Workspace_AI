@@ -1,0 +1,4 @@
+# JSON Atom
+- Must be valid JSON.
+- No comments.
+- UTF-8 without BOM.

@@ -1,0 +1,4 @@
+# PowerShell Atom
+- Scripts must be PS7-compatible.
+- Use strict mode and explicit ErrorAction.
+- No undocumented behavior.

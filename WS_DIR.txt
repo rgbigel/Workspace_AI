@@ -1,0 +1,89 @@
+
+    Directory: D:\Git_Repositories\Workspace_AC
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----            20260724    18:44                .copilot
+d----            20260727    18:20                .github
+d----            20260711    18:54                .vscode
+d----            20260612    16:40                docs
+d----            20260711    18:55                scripts
+-a---            20260727    18:43              0 WS_DIR.txt
+
+    Directory: D:\Git_Repositories\Workspace_AC\.copilot
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----            20260711    19:58                tests
+-a---            20260711    17:53            270 agent.json
+-a---            20260711    19:22            857 Config.json
+-a---            20260711    17:54            303 copilot365-agent.json
+-a---            20260724    18:44           2944 CopilotRules.md
+-a---            20260724    18:40            689 CopilotTools.md
+-a---            20260719    16:42           4380 instructions.md
+-a---            20260724    18:00           4074 InvariantRules.md
+-a---            20260719    16:42            866 macro-definitions.md
+-a---            20260719    16:42            477 MEMORY.md
+-a---            20260719    16:42            159 problems.md
+-a---            20260711    17:55           1032 profile-tests.json
+-a---            20260719    16:42            159 projects.md
+-a---            20260719    16:42            187 servicing-notes.md
+-a---            20260719    16:42            769 Standards.md
+-a---            20260719    16:42            764 version-bump-procedure.md
+-a---            20260719    16:42            764 version-consistency-check.md
+-a---            20260719    16:42            995 Workspace Conventions.md
+-a---            20260719    16:42           1079 Workspace-Location.md
+
+    Directory: D:\Git_Repositories\Workspace_AC\.copilot\tests
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            20260719    16:42            647 profile-tests.md
+
+    Directory: D:\Git_Repositories\Workspace_AC\.github
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----            20260724    20:42                agents
+d----            20260727    18:20                workflows
+
+    Directory: D:\Git_Repositories\Workspace_AC\.github\agents
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            20260724    20:32           4294 .AGENTS.Template.md
+-a---            20260719    16:42           3605 ATOM-Building.md
+-a---            20260724    20:42           6213 DirectoryRules.md
+-a---            20260719    16:42           2611 DOX.agent.md
+-a---            20260719    16:42           4312 MIGRATION-Rules.md
+-a---            20260724    19:56           4518 RepoAgentIndex_Template.md
+-a---            20260719    16:42           2697 SharedModulesRule.md
+-a---            20260724    19:09           5276 WORKFLOW.md
+-a---            20260724    17:54           5466 Workspace-Rules.md
+-a---            20260724    18:07           6271 WorkspaceAgentIndex.md
+
+    Directory: D:\Git_Repositories\Workspace_AC\.vscode
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            20260711    19:33            296 tasks.json
+
+    Directory: D:\Git_Repositories\Workspace_AC\docs
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            20260719    16:42            333 00_Uebersicht.md
+-a---            20260719    16:42            188 10_Sicherung.md
+-a---            20260719    16:42            676 README.md
+
+    Directory: D:\Git_Repositories\Workspace_AC\scripts
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            20260719    16:42           1838 00_Common.ps1
+-a---            20260719    16:42           2069 01_Export_Paketquellen.ps1
+-a---            20260719    16:42           2080 02_Backup_Settings.ps1
+-a---            20260719    16:42           2126 03_Restore_Settings.ps1
+-a---            20260719    16:42           2233 04_Rebuild_System.ps1
+-a---            20260719    16:42           1551 90_Setup_Runtime.ps1
+-a---            20260719    16:42           3189 Validate-CopilotProfile.ps1
