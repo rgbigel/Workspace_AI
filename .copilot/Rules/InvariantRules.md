@@ -6,6 +6,7 @@ Path: .copilot/Rules/InvariantRules.md
 Authors: Rolf
 Version: 2.0.0
 Changelog:
+- 2026-08-01: Corrected TimeStampHeaderRule command to @THR and documented required timestamp format.
 - 2026-07-27: Split unified rule file; corrected ASCII exceptions; stabilized invariants.
 
 INVARIANT-RULES
@@ -33,10 +34,11 @@ INVARIANT-RULES
 - refinements-modify-active-query
 - english-default-language
 - english-comments: all generated comments must be English
+- timestamp-header-rule: TimeStampHeaderRule uses yyyyMMdd_HHmmss unless a technical exception is explicitly discussed
 
 INVARIANT-COMMANDS
 - @IRA activates InvariantRules
-- @TRH activates TimestampHeaderRule
+- @THR activates TimeStampHeaderRule
 - @ml shows ordered visible messages in current chat
 
 INVARIANT-METADATA

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "module": "GC-Proposals.json",
+    "path": ".copilot/Methods/Logs/GC-Proposals.json",
+    "version": "1.0.0",
+    "config_type": "workspace-gc-step-proposal-registry",
+    "description": "Step-oriented proposal, reason, affected-file, and disposition registry for Workspace_GC governance checkpoints.",
+    "authors": [
+      "Workspace_GC Engine"
+    ],
+    "changelog": [
+      "1.0.0 - Added structured checkpoint proposal registry for native governance logs"
+    ]
+  },
+  "proposals": [
+    {
+      "id": "GC-STEP-001",
+      "proposal": "Replace Copilot task hook with native PowerShell governance entrypoints.",
+      "reason": "Gemini/Continue migration requires native scripts instead of copilot:* task commands.",
+      "files": [
+        ".vscode/tasks.json",
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-002",
+      "proposal": "Add Continue/Gemini rule discovery for Workspace_GC.",
+      "reason": "Continue/Gemini must discover Workspace_GC rule authority without modifying Workspace_AC.",
+      "files": [
+        ".continuerules",
+        ".vscode/settings.json"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-003",
+      "proposal": "Align workspace settings JSON with repository meta-header convention.",
+      "reason": "Repo JSON files use a top-level meta block instead of comments as durable header metadata.",
+      "files": [
+        ".vscode/settings.json"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-004",
+      "proposal": "Replace APPLY.ps1 stub with native fix descriptor validation.",
+      "reason": "Fix executions must run natively through PowerShell 7 for Gemini/Continue migration.",
+      "files": [
+        ".copilot/Methods/APPLY.ps1"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-005",
+      "proposal": "Separate checkpoint and permanent governance log semantics.",
+      "reason": "Step-oriented logs may be overwritten at checkpoints; permanent logs should reflect accepted committed changes only.",
+      "files": [
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Logs/Workspace_GC.step.log",
+        ".copilot/Logs/Workspace_GC.accepted.log"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-006",
+      "proposal": "Add explicit rule-authority and Continue bridge policy.",
+      "reason": "Continue/Gemini must inherit the same rules as .copilot without creating an independent rule fork.",
+      "files": [
+        ".copilot/Rules/RuleAuthority.md",
+        ".continue/rules/Workspace_GC.md",
+        ".continuerules",
+        ".vscode/settings.json",
+        ".copilot/Methods/Generate-Log.ps1"
+      ],
+      "disposition": "accepted for intermediate checkpoint; not yet committed"
+    },
+    {
+      "id": "GC-STEP-007",
+      "proposal": "Move step proposal records out of Generate-Log.ps1 into a structured JSON registry.",
+      "reason": "Step-oriented logs must record proposals, reasons, affected files, and final disposition without hardcoding the governance history in script logic.",
+      "files": [
+        ".copilot/Methods/Logs/GC-Proposals.json",
+        ".copilot/Methods/Generate-Log.ps1",
+        ".copilot/Methods/Advance-Governance.ps1"
+      ],
+      "disposition": "accepted for intermediate checkpoint; ready for commit"
+    }
+  ]
+}

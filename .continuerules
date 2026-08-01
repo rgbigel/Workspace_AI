@@ -1,0 +1,21 @@
+# Workspace_GC Continue Rules
+
+Primary rule authority:
+- D:\Git_Repositories\Workspace_GC\.copilot\Rules\RuleAuthority.md
+- D:\Git_Repositories\Workspace_GC\.github\agents\Workspace-Rules.md
+- D:\Git_Repositories\Workspace_GC\.github\agents\WorkspaceAgentIndex.md
+- D:\Git_Repositories\Workspace_GC\.copilot\Rules\InvariantRules.md
+- D:\Git_Repositories\Workspace_GC\.continue\rules\Workspace_GC.md
+
+Operational scope:
+- Treat D:\Git_Repositories\Workspace_GC as the active workspace control root.
+- Do not modify D:\Git_Repositories\Workspace_AC.
+- Use native PowerShell scripts under .copilot\Methods for governance operations.
+- Keep changes deterministic, reviewable, and scoped to the active task.
+- Treat .continue and .continuerules as adapter surfaces, not independent rule authority.
+- Do not read or modify B:\Backups\Base_WS_AC.
+
+Documentation policy:
+- Documentation remains authoritative.
+- Do not rewrite documentation unless the active task is explicit documentation or DOX work.
+- When behavior is unclear, report the gap instead of inventing behavior.

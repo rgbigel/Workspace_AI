@@ -1,7 +1,7 @@
 {
   "meta": {
     "config_version": "2026-08-01",
-    "config_path": "D:\\Git_Repositories\\.copilot\\tasks.json"
+    "config_path": "D:\\Git_Repositories\\Workspace_GC\\.vscode\\tasks.json"
   },
   "version": "2.0.0",
   "tasks": [
@@ -20,7 +20,7 @@
     {
       "label": "Governance Cycle",
       "type": "shell",
-      "command": "git add . && git commit -m \"Workspace_AC: Governance advance\" && copilot:generate-log && copilot:advance-governance",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File .\\.copilot\\Methods\\Generate-Log.ps1; pwsh -NoProfile -ExecutionPolicy Bypass -File .\\.copilot\\Methods\\Advance-Governance.ps1",
       "group": {
         "kind": "build",
         "isDefault": true

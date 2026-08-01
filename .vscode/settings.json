@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "module": "settings.json",
+    "path": ".vscode/settings.json",
+    "version": "1.0.0",
+    "config_type": "vscode-workspace-settings",
+    "description": "Workspace_GC local VS Code and Continue discovery settings.",
+    "authors": [
+      "Workspace_GC Engine"
+    ],
+    "changelog": [
+      "1.0.0 - Added Workspace_GC Continue rule discovery settings",
+      "1.0.1 - Added RuleAuthority and Continue bridge discovery"
+    ]
+  },
+  "continue.rules.path": "D:\\Git_Repositories\\Workspace_GC\\.continuerules",
+  "continue.workspaceRules": [
+    "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\RuleAuthority.md",
+    "D:\\Git_Repositories\\Workspace_GC\\.github\\agents\\Workspace-Rules.md",
+    "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\InvariantRules.md",
+    "D:\\Git_Repositories\\Workspace_GC\\.continue\\rules\\Workspace_GC.md"
+  ]
+}

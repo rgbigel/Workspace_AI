@@ -1,0 +1,73 @@
+Workspace_GC Step-Oriented Governance Log
+=========================================
+
+1. Header
+---------
+Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
+Lifecycle: May be overwritten at checkpoint regeneration.
+Generated at: 20260801_202940
+Latest commit at generation: ebbf844 Workspace_GC: baseline from Workspace_AC before Gemini adaptation
+
+2. Change Proposals
+-------------------
+Id: GC-STEP-001
+Proposal: Replace Copilot task hook with native PowerShell governance entrypoints.
+Reason: Gemini/Continue migration requires native scripts instead of copilot:* task commands.
+Files: .vscode/tasks.json; .copilot/Methods/Generate-Log.ps1; .copilot/Methods/Advance-Governance.ps1
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-002
+Proposal: Add Continue/Gemini rule discovery for Workspace_GC.
+Reason: Continue/Gemini must discover Workspace_GC rule authority without modifying Workspace_AC.
+Files: .continuerules; .vscode/settings.json
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-003
+Proposal: Align workspace settings JSON with repository meta-header convention.
+Reason: Repo JSON files use a top-level meta block instead of comments as durable header metadata.
+Files: .vscode/settings.json
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-004
+Proposal: Replace APPLY.ps1 stub with native fix descriptor validation.
+Reason: Fix executions must run natively through PowerShell 7 for Gemini/Continue migration.
+Files: .copilot/Methods/APPLY.ps1
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-005
+Proposal: Separate checkpoint and permanent governance log semantics.
+Reason: Step-oriented logs may be overwritten at checkpoints; permanent logs should reflect accepted committed changes only.
+Files: .copilot/Methods/Generate-Log.ps1; .copilot/Methods/Advance-Governance.ps1; .copilot/Logs/Workspace_GC.step.log; .copilot/Logs/Workspace_GC.accepted.log
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-006
+Proposal: Add explicit rule-authority and Continue bridge policy.
+Reason: Continue/Gemini must inherit the same rules as .copilot without creating an independent rule fork.
+Files: .copilot/Rules/RuleAuthority.md; .continue/rules/Workspace_GC.md; .continuerules; .vscode/settings.json; .copilot/Methods/Generate-Log.ps1
+Disposition: accepted for intermediate checkpoint; not yet committed
+
+Id: GC-STEP-007
+Proposal: Move step proposal records out of Generate-Log.ps1 into a structured JSON registry.
+Reason: Step-oriented logs must record proposals, reasons, affected files, and final disposition without hardcoding the governance history in script logic.
+Files: .copilot/Methods/Logs/GC-Proposals.json; .copilot/Methods/Generate-Log.ps1; .copilot/Methods/Advance-Governance.ps1
+Disposition: accepted for intermediate checkpoint; ready for commit
+
+3. Current Git Status
+---------------------
+ M .copilot/Methods/APPLY.ps1
+ M .copilot/Rules/InvariantRules.md
+ M .vscode/tasks.json
+?? .continue/
+?? .continuerules
+?? .copilot/Logs/Workspace_GC.accepted.log
+?? .copilot/Logs/Workspace_GC.log
+?? .copilot/Logs/Workspace_GC.step.log
+?? .copilot/Methods/Advance-Governance.ps1
+?? .copilot/Methods/Generate-Log.ps1
+?? .copilot/Methods/Logs/GC-Proposals.json
+?? .copilot/Rules/RuleAuthority.md
+?? .vscode/settings.json
+
+4. Footer
+---------
+Workspace_GC step-oriented governance log generation complete.
