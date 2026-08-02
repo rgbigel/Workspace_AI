@@ -4,8 +4,10 @@ Module: real-repo-dry-run.md
 Purpose: Describes inspectable Workspace_GC real-repository dry-run cases, flows, gates, and non-goals.
 Path: D:/Git_Repositories/Workspace_GC/docs/real-repo-dry-run.md
 Authors: Workspace_GC Engine
-Version: 1.0.0
+Version: 1.2.0
 Changelog:
+- 2026-08-02: Added read-only target-local proposal cleanup scanner.
+- 2026-08-02: Added target-local method instance bootstrap command and policy.
 - 2026-08-02: Added cleanup methodology for accepted and implemented target-local proposal files.
 - 2026-08-02: Clarified target-local method instance ownership for repo dry-runs, logs, results, and proposals.
 - 2026-08-02: Added target-local Markdown proposal authority for external intake and repo changes.
@@ -89,6 +91,14 @@ The target-local method instance is a structural override of the method baseline
 
 Workspace_GC may hold generic rules, templates, validation logic, and the candidate identity. It must not store target-repo dry-run results, work logs, repo-specific proposals, or repo-specific verification results.
 
+The bootstrap command for creating the target-local method instance is:
+
+```powershell
+.\.copilot\Methods\Initialize-RealRepoMethodInstance.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
+```
+
+The bootstrap is allowed only after explicit operator approval. It may create the target-local method directories, a manifest, and local README files inside the target repository. It must not stage, commit, or write unrelated target files, and it must not move target-repo outputs back into Workspace_GC.
+
 The old idea of enabling a real-repo dry-run by writing more state into Workspace_GC is transitional only. Future target work should first establish the target-local `Docs/Methods` method instance, then store dry-run state and results there.
 
 ## Repository Lifecycle Boundary Cases
@@ -132,6 +142,14 @@ Workspace_GC does not store change proposals for ordinary target repos. The exce
 `Docs/Methods/Proposals` is a working review queue, not a permanent archive. A proposal remains there while it is pending review, rejected but intentionally retained for context, modified into a new review shape, or accepted but not yet implemented. Once an accepted proposal has led to the corresponding documentation or code changes and that implementation step is accepted, the proposal file is void and should be removed from the proposal directory.
 
 Proposal cleanup is target-local housekeeping. Removing a void proposal file must not remove durable evidence such as method logs, dry-run results, verification results, commit history, or accepted governance records. The durable record moves to the implementation artifacts; the original proposal stops being authority once the accepted work exists.
+
+The read-only cleanup scanner is:
+
+```powershell
+.\.copilot\Methods\Test-RealRepoProposalCleanup.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
+```
+
+The scanner reports Markdown proposals that explicitly carry both `disposition: accepted` and an implemented marker such as `implementation_status: implemented`. It does not delete files. Deletion remains a target-local cleanup action that requires explicit acceptance.
 
 Cleanup is also proposal-only until accepted. A cleanup assessment may propose keep, block, archive, move, or delete. Destructive actions require an explicit path, explicit action, and explicit `Accept` for the current step.
 

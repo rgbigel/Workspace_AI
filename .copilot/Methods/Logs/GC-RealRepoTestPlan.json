@@ -2,13 +2,15 @@
   "meta": {
     "module": "GC-RealRepoTestPlan.json",
     "path": ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
-    "version": "1.13.0",
+    "version": "1.15.0",
     "config_type": "workspace-gc-real-repository-test-plan",
     "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "1.15.0 - Added read-only target-local proposal cleanup scanner policy",
+      "1.14.0 - Added target-local method instance bootstrap policy",
       "1.13.0 - Added cleanup methodology for accepted and implemented target-local proposal files",
       "1.12.0 - Clarified target-local method instance ownership for repo dry-runs, logs, results, and proposals",
       "1.11.0 - Added target-local Markdown proposal authority for external intake and repo changes",
@@ -149,7 +151,10 @@
       "proposal_cleanup_scope": "accepted-and-implemented Markdown proposal files under Docs/Methods/Proposals",
       "proposal_cleanup_removes_void_review_artifacts": true,
       "proposal_cleanup_must_not_delete_logs_results_or_permanent_records": true,
-      "proposal_cleanup_may_be_batched_with_implementation_acceptance": true
+      "proposal_cleanup_may_be_batched_with_implementation_acceptance": true,
+      "proposal_cleanup_check_command": ".copilot/Methods/Test-RealRepoProposalCleanup.ps1",
+      "proposal_cleanup_check_is_read_only": true,
+      "proposal_cleanup_detection_requires_accepted_and_implemented_markers": true
     }
   },
   "target_method_instance_policy": {
@@ -161,6 +166,12 @@
     "target_repo_result_root": "Docs/Methods/Results",
     "target_repo_proposal_root": "Docs/Methods/Proposals",
     "target_repo_proposal_review_format": "md",
+    "bootstrap_command": ".copilot/Methods/Initialize-RealRepoMethodInstance.ps1",
+    "bootstrap_allowed_after_user_go": true,
+    "bootstrap_writes_only_target_method_instance": true,
+    "bootstrap_must_not_stage_or_commit_target_repo": true,
+    "bootstrap_manifest": "Docs/Methods/MethodInstance.json",
+    "bootstrap_readme_files_required": true,
     "target_local_method_instance_is_structural_override": true,
     "target_local_method_instance_auto_accepted_for_candidate_repos": true,
     "workspace_gc_may_record_candidate_identity": true,

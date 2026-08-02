@@ -8,9 +8,11 @@ Module: Get-RealRepoTestPlan.ps1
 Purpose: Read Workspace_GC real-repository test plan state without changing it.
 Path: .copilot/Methods/Get-RealRepoTestPlan.ps1
 Authors: Workspace_GC Engine
-Version: 1.9.0
+Version: 1.11.0
 Caller Contract: Called by operators or governance scripts when inspecting real-repository dry-run state; performs no external repository access.
 Changelog:
+- 2026-08-02: Added proposal cleanup check summary field.
+- 2026-08-02: Added target-local method instance bootstrap summary field.
 - 2026-08-02: Added proposal-directory cleanup summary fields.
 - 2026-08-02: Added target-local method instance ownership summary fields.
 - 2026-08-02: Added proposal location and Markdown authority summary fields.
@@ -58,8 +60,10 @@ $result = [pscustomobject]@{
   JsonSidecarsReviewable = $plan.repository_lifecycle_policy.proposal_location_policy.json_sidecars_reviewable
   ProposalCleanupRequired = $plan.repository_lifecycle_policy.cleanup_policy.implemented_accepted_proposal_cleanup_required
   VoidProposalRemovalRequired = $plan.repository_lifecycle_policy.proposal_location_policy.void_proposals_must_be_removed_from_proposal_dir
+  ProposalCleanupCheckCommand = $plan.repository_lifecycle_policy.cleanup_policy.proposal_cleanup_check_command
   TargetMethodRoot = $plan.target_method_instance_policy.target_repo_method_root
   TargetDryRunRoot = $plan.target_method_instance_policy.target_repo_dry_run_root
+  TargetBootstrapCommand = $plan.target_method_instance_policy.bootstrap_command
   WorkspaceGCStoresTargetDryRunResults = -not $plan.target_method_instance_policy.workspace_gc_must_not_store_target_dry_run_results
 }
 

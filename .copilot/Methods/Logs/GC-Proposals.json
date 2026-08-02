@@ -2,13 +2,15 @@
   "meta": {
     "module": "GC-Proposals.json",
     "path": ".copilot/Methods/Logs/GC-Proposals.json",
-    "version": "2.16.0",
+    "version": "2.18.0",
     "config_type": "workspace-gc-step-proposal-registry",
     "description": "Step-oriented proposal, reason, affected-file, and disposition registry for Workspace_GC governance checkpoints.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "2.18.0 - Added read-only target-local proposal cleanup scanner",
+      "2.17.0 - Added target-local method instance bootstrap command and policy",
       "2.16.0 - Added cleanup methodology for accepted and implemented target-local proposal files",
       "2.15.0 - Added target-local method instance ownership for repo dry-runs, logs, results, and proposals",
       "2.14.0 - Added target-local Markdown proposal authority and JSON sidecar policy",
@@ -1260,6 +1262,42 @@
       "disposition": "accepted",
       "disposition_reason": "Accepted by user after review of proposal-directory cleanup methodology.",
       "final_result": "Implemented, validated by Workspace_GC readiness, and included in the next governance commit."
+    },
+    {
+      "id": "GC-STEP-097",
+      "proposal": "Add a target-local method instance bootstrap command for real repositories.",
+      "reason": "The selected real repository must own its Docs/Methods method instance before any dry-run state, logs, results, or proposals are produced; the bootstrap may create only target-local method scaffolding and must not stage or commit target changes.",
+      "files": [
+        ".copilot/Methods/Initialize-RealRepoMethodInstance.ps1",
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user GO after target-local method instance bootstrap was implemented and run against VolumeInventory.",
+      "final_result": "Implemented, validated by Workspace_GC readiness, and used to bootstrap VolumeInventory without staging or committing target changes."
+    },
+    {
+      "id": "GC-STEP-098",
+      "proposal": "Add a read-only target-local proposal cleanup scanner.",
+      "reason": "Accepted and implemented Markdown proposals in Docs/Methods/Proposals are void review artifacts; the method needs a read-only report before any explicit cleanup deletion step.",
+      "files": [
+        ".copilot/Methods/Test-RealRepoProposalCleanup.ps1",
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Test-WorkspaceGCReadiness.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user GO after target-local proposal cleanup scanner was implemented and run against VolumeInventory.",
+      "final_result": "Implemented, validated by Workspace_GC readiness, and confirmed zero cleanup candidates in VolumeInventory."
     }
   ]
 }

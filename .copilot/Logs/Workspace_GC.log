@@ -4,8 +4,8 @@ Workspace_GC Governance Log
 1. Header
 ---------
 Workspace name: Workspace_GC
-Generated at: 20260802_180913
-Latest commit at generation: f63fdf9 Workspace_GC: refine real-repo methodology boundaries
+Generated at: 20260802_181409
+Latest commit at generation: 74b4287 Workspace_GC: accept target-local proposal governance
 
 2. Rule Authority
 -----------------
@@ -24,7 +24,7 @@ Proposal registry: .copilot/Methods/Logs/GC-Proposals.json
 4. Proposal Disposition Summary
 -------------------------------
 pending-review: 0
-accepted: 96
+accepted: 98
 rejected: 0
 modified: 0
 
@@ -35,8 +35,10 @@ modified: 0
  M .copilot/Methods/Logs/GC-Proposals.json
  M .copilot/Methods/Logs/GC-RealRepoTestPlan.json
  M .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
- M .copilot/Methods/Set-RealRepoTestPlan.ps1
+ M .copilot/Methods/Test-WorkspaceGCReadiness.ps1
  M docs/real-repo-dry-run.md
+?? .copilot/Methods/Initialize-RealRepoMethodInstance.ps1
+?? .copilot/Methods/Test-RealRepoProposalCleanup.ps1
 
 6. Generated Artifact Status
 ----------------------------

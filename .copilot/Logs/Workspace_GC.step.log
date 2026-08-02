@@ -5,8 +5,8 @@ Workspace_GC Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260802_180913
-Latest commit at generation: f63fdf9 Workspace_GC: refine real-repo methodology boundaries
+Generated at: 20260802_181409
+Latest commit at generation: 74b4287 Workspace_GC: accept target-local proposal governance
 
 2. Change Proposals
 -------------------
@@ -778,10 +778,26 @@ Disposition: accepted
 Disposition reason: Accepted by user after review of proposal-directory cleanup methodology.
 Final result: Implemented, validated by Workspace_GC readiness, and included in the next governance commit.
 
+Id: GC-STEP-097
+Proposal: Add a target-local method instance bootstrap command for real repositories.
+Reason: The selected real repository must own its Docs/Methods method instance before any dry-run state, logs, results, or proposals are produced; the bootstrap may create only target-local method scaffolding and must not stage or commit target changes.
+Files: .copilot/Methods/Initialize-RealRepoMethodInstance.ps1; .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1; .copilot/Methods/Get-RealRepoTestPlan.ps1; .copilot/Methods/Advance-Governance.ps1; .copilot/Methods/Test-WorkspaceGCReadiness.ps1; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted by user GO after target-local method instance bootstrap was implemented and run against VolumeInventory.
+Final result: Implemented, validated by Workspace_GC readiness, and used to bootstrap VolumeInventory without staging or committing target changes.
+
+Id: GC-STEP-098
+Proposal: Add a read-only target-local proposal cleanup scanner.
+Reason: Accepted and implemented Markdown proposals in Docs/Methods/Proposals are void review artifacts; the method needs a read-only report before any explicit cleanup deletion step.
+Files: .copilot/Methods/Test-RealRepoProposalCleanup.ps1; .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1; .copilot/Methods/Get-RealRepoTestPlan.ps1; .copilot/Methods/Advance-Governance.ps1; .copilot/Methods/Test-WorkspaceGCReadiness.ps1; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted by user GO after target-local proposal cleanup scanner was implemented and run against VolumeInventory.
+Final result: Implemented, validated by Workspace_GC readiness, and confirmed zero cleanup candidates in VolumeInventory.
+
 3. Proposal Disposition Summary
 -------------------------------
 pending-review: 0
-accepted: 96
+accepted: 98
 rejected: 0
 modified: 0
 
@@ -799,8 +815,10 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
  M .copilot/Methods/Logs/GC-Proposals.json
  M .copilot/Methods/Logs/GC-RealRepoTestPlan.json
  M .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
- M .copilot/Methods/Set-RealRepoTestPlan.ps1
+ M .copilot/Methods/Test-WorkspaceGCReadiness.ps1
  M docs/real-repo-dry-run.md
+?? .copilot/Methods/Initialize-RealRepoMethodInstance.ps1
+?? .copilot/Methods/Test-RealRepoProposalCleanup.ps1
 
 6. Current Generated Artifact Status
 ------------------------------------

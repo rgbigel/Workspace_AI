@@ -6,9 +6,11 @@ Module: Test-WorkspaceGCReadiness.ps1
 Purpose: Run native Workspace_GC self-readiness checks before real-repository testing.
 Path: .copilot/Methods/Test-WorkspaceGCReadiness.ps1
 Authors: Workspace_GC Engine
-Version: 1.6.0
+Version: 1.8.0
 Caller Contract: Called manually before enabling real-repository tests; validates current native governance pipeline.
 Changelog:
+- 2026-08-02: Added target-local proposal cleanup scanner parsing.
+- 2026-08-02: Added target-local method instance bootstrap command parsing.
 - 2026-08-01: Added intended-action preview command parsing and readiness output.
 - 2026-08-01: Added target-profile command parsing and readiness output.
 - 2026-08-01: Added guarded real-repository transition command parsing and plan inspection.
@@ -38,6 +40,8 @@ $scriptFiles = @(
   '.\.copilot\Methods\Get-RealRepoTargetProfile.ps1',
   '.\.copilot\Methods\Get-RealRepoActionPlan.ps1',
   '.\.copilot\Methods\Set-RealRepoTestPlan.ps1',
+  '.\.copilot\Methods\Initialize-RealRepoMethodInstance.ps1',
+  '.\.copilot\Methods\Test-RealRepoProposalCleanup.ps1',
   '.\.copilot\Methods\Invoke-RealRepoDryRun.ps1',
   '.\.copilot\Methods\QualityGates\WorkspaceGCQualityGates.psm1',
   '.\.copilot\Methods\Update-Proposal.ps1'

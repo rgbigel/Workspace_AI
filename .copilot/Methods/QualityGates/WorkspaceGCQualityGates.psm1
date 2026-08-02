@@ -3,9 +3,11 @@ Module: WorkspaceGCQualityGates.psm1
 Purpose: Provide reusable Workspace_GC readiness and stabilization quality gates.
 Path: .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
 Authors: Workspace_GC Engine
-Version: 1.13.0
+Version: 1.15.0
 Caller Contract: Imported by native governance scripts; validates Workspace_GC state without writing to external repositories.
 Changelog:
+- 2026-08-02: Added target-local proposal cleanup scanner validation.
+- 2026-08-02: Added target-local method instance bootstrap policy validation.
 - 2026-08-02: Added proposal-directory cleanup methodology validation.
 - 2026-08-02: Added target-local method instance ownership validation.
 - 2026-08-02: Added target-local Markdown proposal authority validation.
@@ -263,6 +265,15 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw 'Cleanup policy must require cleanup of accepted and implemented proposal files without deleting durable logs, results, or records.'
   }
 
+  if ($lifecyclePolicy.cleanup_policy.proposal_cleanup_check_command -ne '.copilot/Methods/Test-RealRepoProposalCleanup.ps1' -or $lifecyclePolicy.cleanup_policy.proposal_cleanup_check_is_read_only -ne $true) {
+    throw 'Cleanup policy must provide a read-only target-local proposal cleanup check command.'
+  }
+
+  $proposalCleanupCheckPath = Join-Path $WorkspaceRoot $lifecyclePolicy.cleanup_policy.proposal_cleanup_check_command
+  if (-not (Test-Path -LiteralPath $proposalCleanupCheckPath)) {
+    throw "Proposal cleanup check command is missing: $proposalCleanupCheckPath"
+  }
+
   $integrityPreflightPolicy = $realRepoPlan.integrity_preflight_policy
   if ($integrityPreflightPolicy.mode -ne 'explicit-event-triggered-cost-tiered') {
     throw 'Integrity preflight must be explicit, event-triggered, and cost-tiered.'
@@ -326,6 +337,15 @@ function Assert-WorkspaceGCRealRepoTestPlan {
 
   if ($targetMethodInstancePolicy.target_repo_method_root -ne 'Docs/Methods') {
     throw 'Target-local method instance root must be Docs/Methods.'
+  }
+
+  if ($targetMethodInstancePolicy.bootstrap_command -ne '.copilot/Methods/Initialize-RealRepoMethodInstance.ps1' -or $targetMethodInstancePolicy.bootstrap_writes_only_target_method_instance -ne $true -or $targetMethodInstancePolicy.bootstrap_must_not_stage_or_commit_target_repo -ne $true) {
+    throw 'Target-local method instance bootstrap policy must be explicit, target-scoped, and must not stage or commit target changes.'
+  }
+
+  $bootstrapCommandPath = Join-Path $WorkspaceRoot $targetMethodInstancePolicy.bootstrap_command
+  if (-not (Test-Path -LiteralPath $bootstrapCommandPath)) {
+    throw "Target-local method instance bootstrap command is missing: $bootstrapCommandPath"
   }
 
   if ($targetMethodInstancePolicy.workspace_gc_must_not_store_target_dry_run_results -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_work_logs -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_repo_proposals -ne $true) {
@@ -463,8 +483,10 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     ProposalReviewFormat = $proposalLocationPolicy.ordinary_repo_required_review_format
     ProposalCleanupRequired = $lifecyclePolicy.cleanup_policy.implemented_accepted_proposal_cleanup_required
     VoidProposalRemovalRequired = $proposalLocationPolicy.void_proposals_must_be_removed_from_proposal_dir
+    ProposalCleanupCheckCommand = $lifecyclePolicy.cleanup_policy.proposal_cleanup_check_command
     TargetMethodRoot = $targetMethodInstancePolicy.target_repo_method_root
     TargetDryRunRoot = $targetMethodInstancePolicy.target_repo_dry_run_root
+    TargetBootstrapCommand = $targetMethodInstancePolicy.bootstrap_command
   }
 }
 
