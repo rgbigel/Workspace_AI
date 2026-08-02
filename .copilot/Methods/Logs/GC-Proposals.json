@@ -2,13 +2,15 @@
   "meta": {
     "module": "GC-Proposals.json",
     "path": ".copilot/Methods/Logs/GC-Proposals.json",
-    "version": "2.14.0",
+    "version": "2.16.0",
     "config_type": "workspace-gc-step-proposal-registry",
     "description": "Step-oriented proposal, reason, affected-file, and disposition registry for Workspace_GC governance checkpoints.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "2.16.0 - Added cleanup methodology for accepted and implemented target-local proposal files",
+      "2.15.0 - Added target-local method instance ownership for repo dry-runs, logs, results, and proposals",
       "2.14.0 - Added target-local Markdown proposal authority and JSON sidecar policy",
       "2.13.0 - Added repository lifecycle boundary cases and event-triggered integrity preflight policy",
       "2.12.0 - Clarified Workspace_GC-only candidate methodology and selected first repo candidate",
@@ -1225,6 +1227,39 @@
       "disposition": "accepted",
       "disposition_reason": "Accepted by user after clarifying proposal placement and JSON sidecar authority.",
       "final_result": "Implemented; awaiting verification and later commit decision."
+    },
+    {
+      "id": "GC-STEP-095",
+      "proposal": "Move real-repo dry-run ownership from Workspace_GC state to target-local Docs/Methods method instances.",
+      "reason": "Repo-specific dry-run results, work logs, proposals, and verification output belong at the target repo work level; Workspace_GC should define the baseline method and may record only candidate identity until the target-local method instance exists.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/Set-RealRepoTestPlan.ps1",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user after review of target-local method instance ownership.",
+      "final_result": "Implemented, validated by Workspace_GC readiness, and included in the next governance commit."
+    },
+    {
+      "id": "GC-STEP-096",
+      "proposal": "Add cleanup methodology for accepted and implemented target-local proposal files.",
+      "reason": "Docs/Methods/Proposals is a working review queue; once an accepted proposal has produced accepted documentation or code changes, the proposal is void and should be removed while durable logs, results, and records remain intact.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user after review of proposal-directory cleanup methodology.",
+      "final_result": "Implemented, validated by Workspace_GC readiness, and included in the next governance commit."
     }
   ]
 }

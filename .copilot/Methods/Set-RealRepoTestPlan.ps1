@@ -19,9 +19,10 @@ Module: Set-RealRepoTestPlan.ps1
 Purpose: Update the Workspace_GC real-repository test plan without enabling writes.
 Path: .copilot/Methods/Set-RealRepoTestPlan.ps1
 Authors: Workspace_GC Engine
-Version: 1.2.0
+Version: 1.3.0
 Caller Contract: Called only for Workspace_GC governance preparation; refuses write enablement and validates policy after updating the local plan file.
 Changelog:
+- 2026-08-02: Blocked Workspace_GC-local dry-run enablement; target repos must own dry-run state through Docs/Methods.
 - 2026-08-01: Synchronized target-profile and action-preview status fields during candidate transitions.
 - 2026-08-01: Added candidate Git repository validation and explicit read-only dry-run confirmation.
 - 2026-08-01: Added guarded real-repository test plan update command.
@@ -47,7 +48,7 @@ $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $stabilizationState = Get-Content -Raw -Path $stabilizationPath | ConvertFrom-Json
 
 if ($Mode -eq 'dry-run' -and -not $EnableDryRun) {
-  throw 'Use -EnableDryRun with -ConfirmReadOnlyDryRun to enter dry-run mode.'
+  throw 'Workspace_GC-local dry-run mode is no longer supported; create a target-local Docs/Methods method instance instead.'
 }
 
 if ($ClearSelection) {
@@ -98,7 +99,7 @@ if ($RepositoryPath) {
   $plan.write_allowed = $false
   $plan.confirmation_token = $null
   $plan.dry_run.enabled = $false
-  $plan.dry_run.status = 'blocked-until-dry-run-enabled'
+  $plan.dry_run.status = 'blocked-until-target-local-method-instance'
   $plan.target_profile.status = 'not-run'
   $plan.target_profile.repository_name = Split-Path $fullRepositoryPath -Leaf
   $plan.target_profile.repository_path = $fullRepositoryPath
@@ -109,7 +110,7 @@ if ($RepositoryPath) {
   $plan.target_profile.adapter_surface_present_count = 0
   $plan.target_profile.adapter_surface_missing_count = @($plan.dry_run.adapter_surface_candidates).Count
   $plan.target_profile.write_probe_performed = $false
-  $plan.action_preview.status = 'blocked-until-dry-run-enabled'
+  $plan.action_preview.status = 'blocked-until-target-local-method-instance'
   $plan.action_preview.action_count = 0
   $plan.action_preview.current_phase = 'blocked'
 }
@@ -119,21 +120,7 @@ if ($Mode) {
 }
 
 if ($EnableDryRun) {
-  if (-not $plan.selected_repository) {
-    throw 'Cannot enable dry-run mode before selecting a repository candidate.'
-  }
-
-  if (-not $ConfirmReadOnlyDryRun) {
-    throw 'Use -ConfirmReadOnlyDryRun to confirm dry-run remains read-only.'
-  }
-
-  $plan.mode = 'dry-run'
-  $plan.enabled = $true
-  $plan.write_allowed = $false
-  $plan.dry_run.enabled = $true
-  $plan.dry_run.status = 'ready-read-only'
-  $plan.action_preview.status = 'ready-read-only'
-  $plan.action_preview.current_phase = 'phase-01-structure'
+  throw 'Workspace_GC must not enable or store target-repo dry-run state. Establish the target-local Docs/Methods method instance first.'
 }
 
 if ($plan.write_allowed -ne $false -or $plan.dry_run.write_allowed -ne $false) {

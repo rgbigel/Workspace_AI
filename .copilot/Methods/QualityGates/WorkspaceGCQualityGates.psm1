@@ -3,9 +3,11 @@ Module: WorkspaceGCQualityGates.psm1
 Purpose: Provide reusable Workspace_GC readiness and stabilization quality gates.
 Path: .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
 Authors: Workspace_GC Engine
-Version: 1.11.0
+Version: 1.13.0
 Caller Contract: Imported by native governance scripts; validates Workspace_GC state without writing to external repositories.
 Changelog:
+- 2026-08-02: Added proposal-directory cleanup methodology validation.
+- 2026-08-02: Added target-local method instance ownership validation.
 - 2026-08-02: Added target-local Markdown proposal authority validation.
 - 2026-08-02: Added repository lifecycle and explicit event-triggered integrity preflight validation.
 - 2026-08-01: Allowed confirmed read-only real-repository dry-run while keeping external writes blocked.
@@ -249,8 +251,16 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw 'JSON proposal sidecars must be non-reviewable derived artifacts without independent authority.'
   }
 
+  if ($proposalLocationPolicy.proposal_directory_is_working_review_queue -ne $true -or $proposalLocationPolicy.accepted_implemented_proposals_are_void -ne $true -or $proposalLocationPolicy.void_proposals_must_be_removed_from_proposal_dir -ne $true) {
+    throw 'Proposal directory policy must treat accepted and implemented proposals as void review artifacts that are removed from Docs/Methods/Proposals.'
+  }
+
   if ($lifecyclePolicy.cleanup_policy.starts_as_proposal_only -ne $true) {
     throw 'Cleanup policy must start as proposal-only.'
+  }
+
+  if ($lifecyclePolicy.cleanup_policy.implemented_accepted_proposal_cleanup_required -ne $true -or $lifecyclePolicy.cleanup_policy.proposal_cleanup_must_not_delete_logs_results_or_permanent_records -ne $true) {
+    throw 'Cleanup policy must require cleanup of accepted and implemented proposal files without deleting durable logs, results, or records.'
   }
 
   $integrityPreflightPolicy = $realRepoPlan.integrity_preflight_policy
@@ -301,6 +311,31 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw 'Workspace_GC transition policy must not support write enablement during self-stabilization.'
   }
 
+  if ($realRepoPlan.transition_policy.workspace_gc_dry_run_enablement_supported -ne $false) {
+    throw 'Workspace_GC must not support local enablement of target-repo dry-run state.'
+  }
+
+  if (-not $realRepoPlan.PSObject.Properties['target_method_instance_policy']) {
+    throw 'Real-repository test plan is missing target_method_instance_policy block.'
+  }
+
+  $targetMethodInstancePolicy = $realRepoPlan.target_method_instance_policy
+  if ($targetMethodInstancePolicy.target_repo_owns_method_instance -ne $true -or $targetMethodInstancePolicy.workspace_gc_role -ne 'method-baseline-only') {
+    throw 'Target repository must own the method instance while Workspace_GC remains baseline-only.'
+  }
+
+  if ($targetMethodInstancePolicy.target_repo_method_root -ne 'Docs/Methods') {
+    throw 'Target-local method instance root must be Docs/Methods.'
+  }
+
+  if ($targetMethodInstancePolicy.workspace_gc_must_not_store_target_dry_run_results -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_work_logs -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_repo_proposals -ne $true) {
+    throw 'Workspace_GC must not store target dry-run results, work logs, or repo proposals.'
+  }
+
+  if ($targetMethodInstancePolicy.target_local_method_instance_auto_accepted_for_candidate_repos -ne $true) {
+    throw 'Target-local method instance must be treated as an automatically accepted structural override for candidate repos.'
+  }
+
   if ($realRepoPlan.mode -eq 'not-selected' -and $realRepoPlan.selected_repository) {
     throw 'Real-repository test plan cannot have mode not-selected while selected_repository is set.'
   }
@@ -309,8 +344,12 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw 'Real-repository dry-run must be disabled when no repository is selected.'
   }
 
-  if ($realRepoPlan.mode -eq 'dry-run' -and (-not $realRepoPlan.selected_repository -or $realRepoPlan.dry_run.enabled -ne $true)) {
-    throw 'Real-repository dry-run mode requires a selected repository and dry_run.enabled true.'
+  if ($realRepoPlan.mode -eq 'candidate-selected' -and $realRepoPlan.action_preview.status -ne 'blocked-until-target-local-method-instance') {
+    throw 'Candidate-selected action preview must remain blocked until the target-local method instance exists.'
+  }
+
+  if ($realRepoPlan.mode -eq 'dry-run' -or $realRepoPlan.dry_run.enabled -eq $true) {
+    throw 'Workspace_GC-local dry-run mode is no longer valid; target dry-run state must be target-local.'
   }
 
   if ($realRepoPlan.target_profile.write_probe_performed -ne $false) {
@@ -422,6 +461,10 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     IntegrityPreflightMode = $integrityPreflightPolicy.mode
     OrdinaryRepoProposalRoot = $proposalLocationPolicy.ordinary_repo_proposal_root
     ProposalReviewFormat = $proposalLocationPolicy.ordinary_repo_required_review_format
+    ProposalCleanupRequired = $lifecyclePolicy.cleanup_policy.implemented_accepted_proposal_cleanup_required
+    VoidProposalRemovalRequired = $proposalLocationPolicy.void_proposals_must_be_removed_from_proposal_dir
+    TargetMethodRoot = $targetMethodInstancePolicy.target_repo_method_root
+    TargetDryRunRoot = $targetMethodInstancePolicy.target_repo_dry_run_root
   }
 }
 

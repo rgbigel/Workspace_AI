@@ -2,13 +2,15 @@
   "meta": {
     "module": "GC-RealRepoTestPlan.json",
     "path": ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
-    "version": "1.11.0",
+    "version": "1.13.0",
     "config_type": "workspace-gc-real-repository-test-plan",
     "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "1.13.0 - Added cleanup methodology for accepted and implemented target-local proposal files",
+      "1.12.0 - Clarified target-local method instance ownership for repo dry-runs, logs, results, and proposals",
       "1.11.0 - Added target-local Markdown proposal authority for external intake and repo changes",
       "1.10.0 - Added repository lifecycle boundary cases and event-triggered integrity preflight policy",
       "1.9.0 - Clarified Workspace_GC-only methodology incubation and selected first real-repo candidate",
@@ -34,6 +36,7 @@
     "dry_run_requires_candidate": true,
     "dry_run_requires_read_only_confirmation": true,
     "clear_selection_resets_dry_run": true,
+    "workspace_gc_dry_run_enablement_supported": false,
     "write_enablement_supported": false
   },
   "methodology_scope_policy": {
@@ -132,13 +135,39 @@
       "json_sidecars_have_independent_authority": false,
       "json_sidecars_valid_only_while_matching_markdown_review_state": true,
       "proposal_may_not_be_accepted_from_json_sidecar_only": true,
-      "sidecars_stale_when_markdown_modified_rejected_split_merged_or_superseded": true
+      "sidecars_stale_when_markdown_modified_rejected_split_merged_or_superseded": true,
+      "proposal_directory_is_working_review_queue": true,
+      "accepted_implemented_proposals_are_void": true,
+      "void_proposals_must_be_removed_from_proposal_dir": true,
+      "implemented_proposals_must_not_remain_authoritative": true
     },
     "cleanup_policy": {
       "starts_as_proposal_only": true,
       "delete_requires_explicit_path_and_action_accept": true,
-      "do_not_delete_state_supported": true
+      "do_not_delete_state_supported": true,
+      "implemented_accepted_proposal_cleanup_required": true,
+      "proposal_cleanup_scope": "accepted-and-implemented Markdown proposal files under Docs/Methods/Proposals",
+      "proposal_cleanup_removes_void_review_artifacts": true,
+      "proposal_cleanup_must_not_delete_logs_results_or_permanent_records": true,
+      "proposal_cleanup_may_be_batched_with_implementation_acceptance": true
     }
+  },
+  "target_method_instance_policy": {
+    "workspace_gc_role": "method-baseline-only",
+    "target_repo_owns_method_instance": true,
+    "target_repo_method_root": "Docs/Methods",
+    "target_repo_dry_run_root": "Docs/Methods/DryRun",
+    "target_repo_log_root": "Docs/Methods/Logs",
+    "target_repo_result_root": "Docs/Methods/Results",
+    "target_repo_proposal_root": "Docs/Methods/Proposals",
+    "target_repo_proposal_review_format": "md",
+    "target_local_method_instance_is_structural_override": true,
+    "target_local_method_instance_auto_accepted_for_candidate_repos": true,
+    "workspace_gc_may_record_candidate_identity": true,
+    "workspace_gc_must_not_store_target_dry_run_results": true,
+    "workspace_gc_must_not_store_target_work_logs": true,
+    "workspace_gc_must_not_store_target_repo_proposals": true,
+    "workspace_gc_target_state_is_transitional_until_target_method_instance_exists": true
   },
   "integrity_preflight_policy": {
     "mode": "explicit-event-triggered-cost-tiered",
@@ -181,7 +210,7 @@
   "dry_run": {
     "enabled": false,
     "mode": "plan-only",
-    "status": "blocked-until-dry-run-enabled",
+    "status": "blocked-until-target-local-method-instance",
     "write_allowed": false,
     "allowed_observations": [
       "repository path identity",
@@ -234,7 +263,7 @@
     "write_probe_performed": false
   },
   "action_preview": {
-    "status": "blocked-until-dry-run-enabled",
+    "status": "blocked-until-target-local-method-instance",
     "write_allowed": false,
     "action_count": 0,
     "current_phase": "blocked",

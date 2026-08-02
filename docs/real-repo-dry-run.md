@@ -4,8 +4,10 @@ Module: real-repo-dry-run.md
 Purpose: Describes inspectable Workspace_GC real-repository dry-run cases, flows, gates, and non-goals.
 Path: D:/Git_Repositories/Workspace_GC/docs/real-repo-dry-run.md
 Authors: Workspace_GC Engine
-Version: 0.8.0
+Version: 1.0.0
 Changelog:
+- 2026-08-02: Added cleanup methodology for accepted and implemented target-local proposal files.
+- 2026-08-02: Clarified target-local method instance ownership for repo dry-runs, logs, results, and proposals.
 - 2026-08-02: Added target-local Markdown proposal authority for external intake and repo changes.
 - 2026-08-02: Added repository lifecycle boundary cases and explicit cost-tiered integrity preflight policy.
 - 2026-08-02: Clarified Workspace_GC-only incubation, candidate selection, override, rollback, and Accept-gate policy.
@@ -41,11 +43,14 @@ Current candidate policy:
 
 ```text
 selected_repository: D:\Git_Repositories\VolumeInventory
-dry_run.enabled: false until explicit read-only confirmation
+dry_run.enabled: false in Workspace_GC
+dry_run.status: blocked-until-target-local-method-instance
 write_allowed: false
 ```
 
 Nothing is copied to `D:\Git_Repositories` as a parent-level rule location. The real workspace is the repository set under `D:\Git_Repositories`; Workspace_GC remains the place where methodology changes are designed, validated, and accepted before any real repository is changed.
+
+Workspace_GC may record the candidate identity, but it must not own the target repository's dry-run results, work logs, proposals, or repo-specific decisions. Those belong inside the target repository once its target-local method instance exists.
 
 ## Safety Rules
 
@@ -54,7 +59,7 @@ Nothing is copied to `D:\Git_Repositories` as a parent-level rule location. The 
 - Workspace_GC cannot select itself as a target.
 - Selecting a repository does not enable writes.
 - Selecting a repository records only the candidate in Workspace_GC.
-- Dry-run mode requires explicit read-only confirmation.
+- Dry-run mode for a real repository belongs to that repository's target-local method instance.
 - Write enablement is not supported by the current transition policy.
 - Target profiling performs no write probe.
 
@@ -65,6 +70,26 @@ Repo-local rules can override Workspace_GC only when they are confirmed as repos
 The methodology does not require an internal rollback feature. Recovery is external to this workflow, normally by restoring the repository or system state; Macrium Reflect restores are expected to be possible and may create Git inconsistencies that must be handled afterward.
 
 The promotion or advancement gate is a per-step user `Accept` decision for the current verification step. Bundled multi-step promotion is not the normal operating model.
+
+## Target-Local Method Instance
+
+Workspace_GC defines the method baseline. The target repository owns the application of that method.
+
+For ordinary repositories, the target-local method instance uses:
+
+```text
+Docs/Methods/
+Docs/Methods/DryRun/
+Docs/Methods/Logs/
+Docs/Methods/Results/
+Docs/Methods/Proposals/
+```
+
+The target-local method instance is a structural override of the method baseline location. It is automatically accepted for candidate repositories because otherwise every target operation would store its work products at the wrong level.
+
+Workspace_GC may hold generic rules, templates, validation logic, and the candidate identity. It must not store target-repo dry-run results, work logs, repo-specific proposals, or repo-specific verification results.
+
+The old idea of enabling a real-repo dry-run by writing more state into Workspace_GC is transitional only. Future target work should first establish the target-local `Docs/Methods` method instance, then store dry-run state and results there.
 
 ## Repository Lifecycle Boundary Cases
 
@@ -103,6 +128,10 @@ Normal repository proposal files are Markdown-first because they are human revie
 Optional JSON sidecars are allowed only as derived automation artifacts. They are not reviewed, have no independent authority, and are valid only while they match the current reviewed state of the paired `.md` proposal. If the Markdown proposal is modified, rejected, split, merged, or superseded, the sidecar is stale until regenerated. A proposal may not be accepted based only on a JSON sidecar.
 
 Workspace_GC does not store change proposals for ordinary target repos. The exception is when Workspace_GC itself is the method-baseline target; in that case the existing `.copilot/Methods/...` proposal mechanism is appropriate.
+
+`Docs/Methods/Proposals` is a working review queue, not a permanent archive. A proposal remains there while it is pending review, rejected but intentionally retained for context, modified into a new review shape, or accepted but not yet implemented. Once an accepted proposal has led to the corresponding documentation or code changes and that implementation step is accepted, the proposal file is void and should be removed from the proposal directory.
+
+Proposal cleanup is target-local housekeeping. Removing a void proposal file must not remove durable evidence such as method logs, dry-run results, verification results, commit history, or accepted governance records. The durable record moves to the implementation artifacts; the original proposal stops being authority once the accepted work exists.
 
 Cleanup is also proposal-only until accepted. A cleanup assessment may propose keep, block, archive, move, or delete. Destructive actions require an explicit path, explicit action, and explicit `Accept` for the current step.
 
@@ -191,22 +220,25 @@ Expected result after a valid selection:
 ```text
 mode: candidate-selected
 dry_run.enabled: false
-dry_run.status: blocked-until-dry-run-enabled
+dry_run.status: blocked-until-target-local-method-instance
 write_allowed: false
 ```
 
-## Case 3: Read-Only Dry-Run Enabled
+## Case 3: Target-Local Read-Only Dry-Run Prepared
 
-Purpose: allow read-only metadata collection from the selected target repository.
+Purpose: prepare the target repository to own its own read-only dry-run state, logs, results, and proposals.
 
-Command shape:
+Target-local method root:
 
-```powershell
-.\.copilot\Methods\Set-RealRepoTestPlan.ps1 -EnableDryRun -ConfirmReadOnlyDryRun
-.\.copilot\Methods\Invoke-RealRepoDryRun.ps1
+```text
+Docs/Methods/
+Docs/Methods/DryRun/
+Docs/Methods/Logs/
+Docs/Methods/Results/
+Docs/Methods/Proposals/
 ```
 
-Dry-run activation requires `-ConfirmReadOnlyDryRun`. The command still keeps `write_allowed` false.
+Dry-run activation still requires explicit read-only confirmation, but the dry-run's repo-specific state and results must be target-local. Workspace_GC must not become the storage location for those target work products.
 
 Allowed Git commands are limited to:
 
