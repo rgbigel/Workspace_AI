@@ -8,9 +8,11 @@ Module: Get-RealRepoTestPlan.ps1
 Purpose: Read Workspace_GC real-repository test plan state without changing it.
 Path: .copilot/Methods/Get-RealRepoTestPlan.ps1
 Authors: Workspace_GC Engine
-Version: 1.5.0
+Version: 1.7.0
 Caller Contract: Called by operators or governance scripts when inspecting real-repository dry-run state; performs no external repository access.
 Changelog:
+- 2026-08-02: Added proposal location and Markdown authority summary fields.
+- 2026-08-02: Added lifecycle and integrity preflight policy summary fields.
 - 2026-08-01: Added bottom-up change-request flow summary fields.
 - 2026-08-01: Added phased dry-run sequence summary fields.
 - 2026-08-01: Added intended-action preview status fields.
@@ -45,6 +47,13 @@ $result = [pscustomobject]@{
   DocumentationFirstPhase = 'phase-04-documentation-discrepancies'
   ChangeRequestOrientation = $plan.action_preview.change_request_flow.orientation
   ChangeRequestPhaseCount = @($plan.action_preview.change_request_flow.phases).Count
+  LifecycleStateCount = @($plan.repository_lifecycle_policy.states).Count
+  IntegrityPreflightMode = $plan.integrity_preflight_policy.mode
+  HiddenIntegrityChecksAllowed = $plan.integrity_preflight_policy.surreptitious_checks_allowed
+  RepoWideChecksumDefaultAllowed = $plan.integrity_preflight_policy.repo_wide_checksum_default_allowed
+  OrdinaryRepoProposalRoot = $plan.repository_lifecycle_policy.proposal_location_policy.ordinary_repo_proposal_root
+  ProposalReviewFormat = $plan.repository_lifecycle_policy.proposal_location_policy.ordinary_repo_required_review_format
+  JsonSidecarsReviewable = $plan.repository_lifecycle_policy.proposal_location_policy.json_sidecars_reviewable
 }
 
 if ($AsJson) {

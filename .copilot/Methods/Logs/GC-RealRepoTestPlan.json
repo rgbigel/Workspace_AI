@@ -2,13 +2,16 @@
   "meta": {
     "module": "GC-RealRepoTestPlan.json",
     "path": ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
-    "version": "1.8.0",
+    "version": "1.11.0",
     "config_type": "workspace-gc-real-repository-test-plan",
     "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "1.11.0 - Added target-local Markdown proposal authority for external intake and repo changes",
+      "1.10.0 - Added repository lifecycle boundary cases and event-triggered integrity preflight policy",
+      "1.9.0 - Clarified Workspace_GC-only methodology incubation and selected first real-repo candidate",
       "1.8.0 - Added bottom-up concrete change-request workflow phases",
       "1.7.0 - Added phased realistic governance dry-run sequence",
       "1.6.0 - Added read-only adapter content comparison preview model",
@@ -21,8 +24,8 @@
     ]
   },
   "enabled": false,
-  "selected_repository": null,
-  "mode": "not-selected",
+  "selected_repository": "D:\\Git_Repositories\\VolumeInventory",
+  "mode": "candidate-selected",
   "write_allowed": false,
   "requires_user_confirmation": true,
   "confirmation_token": null,
@@ -33,10 +36,152 @@
     "clear_selection_resets_dry_run": true,
     "write_enablement_supported": false
   },
+  "methodology_scope_policy": {
+    "incubation_repository": "D:\\Git_Repositories\\Workspace_GC",
+    "workspace_parent": "D:\\Git_Repositories",
+    "active_real_workspace_rule_copy": false,
+    "parent_workspace_copy_target": null,
+    "candidate_repository": "D:\\Git_Repositories\\VolumeInventory",
+    "candidate_is_inside_workspace_parent": true,
+    "evolution_steps_remain_in_workspace_gc_until_further_notice": true,
+    "adapter_surface_term": "candidate files or entrypoints checked by the dry-run, not automatically active workspace rules",
+    "repo_local_requirement_override_policy": {
+      "allowed_after_confirmation": true,
+      "requires_documentation_in_target_repository": true,
+      "implementation_detail_only_does_not_override_workspace_gc": true
+    },
+    "rollback_policy": {
+      "internal_rollback_feature_required": false,
+      "restore_method": "external repository or system restore, typically Macrium Reflect when needed",
+      "git_inconsistency_risk_acknowledged": true
+    },
+    "acceptance_gate_policy": {
+      "gate_type": "per-step user Accept decision",
+      "multi_step_promotion_not_required": true,
+      "accepted_step_may_advance_current_verification": true
+    }
+  },
+  "repository_lifecycle_policy": {
+    "registry_location": "Workspace_GC",
+    "inside_workspace_parent_is_not_sufficient_for_operation": true,
+    "states": [
+      {
+        "id": "discovered-only",
+        "operation_allowed": false,
+        "description": "Repository exists under the workspace parent but has no governance eligibility decision."
+      },
+      {
+        "id": "blocked-do-not-operate",
+        "operation_allowed": false,
+        "description": "Repository is intentionally not operated on, for example a copied GitHub repo or other excluded working copy."
+      },
+      {
+        "id": "candidate",
+        "operation_allowed": false,
+        "description": "Repository is selected for possible read-only dry-run, but dry-run is not enabled."
+      },
+      {
+        "id": "read-only-dry-run",
+        "operation_allowed": "read-only-observation-only",
+        "description": "Repository may be inspected only through explicitly enabled read-only dry-run commands."
+      },
+      {
+        "id": "external-intake",
+        "operation_allowed": "structure-place-analyze-propose-only",
+        "description": "External code is used to create or populate a repository skeleton according to Workspace rules, place incoming code into the correct locations, analyze the code, identify atoms and functional problems, create target-local Markdown proposals, and stop for review before remediation."
+      },
+      {
+        "id": "cleanup-candidate",
+        "operation_allowed": "proposal-only",
+        "description": "Repository may be assessed for keep, block, archive, move, or delete proposals; destructive action requires explicit acceptance."
+      },
+      {
+        "id": "active-governed",
+        "operation_allowed": "after-explicit-accept",
+        "description": "Repository may receive approved documentation or code changes through the current accepted step only."
+      },
+      {
+        "id": "retired",
+        "operation_allowed": false,
+        "description": "Repository is intentionally no longer operated on by Workspace_GC."
+      }
+    ],
+    "external_code_policy": {
+      "outside_code_is_evidence_not_authority": true,
+      "new_repo_import_requires_intake": true,
+      "intake_may_create_repo_skeleton": true,
+      "intake_places_code_before_analysis": true,
+      "intake_identifies_atoms": true,
+      "intake_identifies_functional_problems": true,
+      "intake_stops_for_review_before_remediation": true,
+      "new_outside_version_requires_comparison_before_adoption": true,
+      "adoption_requires_tests_or_documented_test_absence": true,
+      "adoption_requires_user_accept": true
+    },
+    "proposal_location_policy": {
+      "proposals_are_target_local": true,
+      "ordinary_repo_proposal_root": "Docs/Methods/Proposals",
+      "ordinary_repo_required_review_format": "md",
+      "proposal_grouping_allowed": true,
+      "method_baseline_repo": "D:\\Git_Repositories\\Workspace_GC",
+      "method_baseline_proposal_location": ".copilot/Methods/Logs/GC-Proposals.json",
+      "workspace_gc_does_not_store_target_repo_proposals": true,
+      "markdown_review_source_of_truth": true,
+      "json_sidecars_allowed": true,
+      "json_sidecars_reviewable": false,
+      "json_sidecars_have_independent_authority": false,
+      "json_sidecars_valid_only_while_matching_markdown_review_state": true,
+      "proposal_may_not_be_accepted_from_json_sidecar_only": true,
+      "sidecars_stale_when_markdown_modified_rejected_split_merged_or_superseded": true
+    },
+    "cleanup_policy": {
+      "starts_as_proposal_only": true,
+      "delete_requires_explicit_path_and_action_accept": true,
+      "do_not_delete_state_supported": true
+    }
+  },
+  "integrity_preflight_policy": {
+    "mode": "explicit-event-triggered-cost-tiered",
+    "default_session_assumption": "stable while working in VS Code",
+    "surreptitious_checks_allowed": false,
+    "periodic_background_checks_allowed": false,
+    "repo_wide_checksum_default_allowed": false,
+    "external_restore_events_are_out_of_band": true,
+    "triggers": [
+      "user requests integrity check",
+      "user reports restore copy import or manual filesystem change",
+      "candidate selection changes",
+      "cheap marker mismatch from last known state",
+      "Git command failure during a requested operation",
+      "repository root HEAD or status inconsistency during a requested dry-run"
+    ],
+    "cheap_first_checks": [
+      "repository path exists",
+      ".git exists",
+      "git rev-parse --show-toplevel",
+      "git rev-parse --abbrev-ref HEAD",
+      "git rev-parse HEAD",
+      "git status --short"
+    ],
+    "escalated_checks": [
+      "selected path timestamp comparison",
+      "limited checksum of known governance files",
+      "repo inventory snapshot",
+      "git fsck --no-dangling",
+      "full file checksum scan"
+    ],
+    "escalation_policy": {
+      "use_cheapest_discriminating_check_first": true,
+      "escalate_only_after_trigger_or_ambiguous_result": true,
+      "report_before_expensive_checks": true,
+      "auto_repair_allowed": false,
+      "normal_operations_blocked_on_detected_inconsistency": true
+    }
+  },
   "dry_run": {
     "enabled": false,
     "mode": "plan-only",
-    "status": "blocked-until-repository-selected",
+    "status": "blocked-until-dry-run-enabled",
     "write_allowed": false,
     "allowed_observations": [
       "repository path identity",
@@ -78,18 +223,18 @@
   },
   "target_profile": {
     "status": "not-run",
-    "repository_name": null,
-    "repository_path": null,
+    "repository_name": "VolumeInventory",
+    "repository_path": "D:\\Git_Repositories\\VolumeInventory",
     "repository_root_verified": false,
     "branch_name": null,
     "head_commit": null,
     "git_status_summary": "not-run",
     "adapter_surface_present_count": 0,
-    "adapter_surface_missing_count": 0,
+    "adapter_surface_missing_count": 4,
     "write_probe_performed": false
   },
   "action_preview": {
-    "status": "blocked-until-repository-selected",
+    "status": "blocked-until-dry-run-enabled",
     "write_allowed": false,
     "action_count": 0,
     "current_phase": "blocked",

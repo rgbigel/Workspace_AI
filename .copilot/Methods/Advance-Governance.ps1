@@ -20,9 +20,11 @@ Module: Advance-Governance.ps1
 Purpose: Validate native Workspace_GC governance readiness and log separation without staging or committing changes.
 Path: .copilot/Methods/Advance-Governance.ps1
 Authors: Workspace_GC Engine
-Version: 2.9.0
+Version: 2.11.0
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
+- 2026-08-02: Added proposal location and Markdown authority reporting.
+- 2026-08-02: Added lifecycle and integrity preflight policy reporting.
 - 2026-08-01: Added bottom-up change-request flow reporting.
 - 2026-08-01: Added phased documentation-first dry-run sequence reporting.
 - 2026-08-01: Added real-repository intended-action preview status reporting.
@@ -210,6 +212,10 @@ Write-Host "Real repository dry-run phases: $($realRepoPlanValidation.ActionPrev
 Write-Host "Real repository documentation-first phase: $($realRepoPlanValidation.DocumentationFirstPhase)"
 Write-Host "Real repository change-request orientation: $($realRepoPlanValidation.ChangeRequestOrientation)"
 Write-Host "Real repository change-request phases: $($realRepoPlanValidation.ChangeRequestPhaseCount)"
+Write-Host "Repository lifecycle states: $($realRepoPlanValidation.LifecycleStateCount)"
+Write-Host "Integrity preflight mode: $($realRepoPlanValidation.IntegrityPreflightMode)"
+Write-Host "Ordinary repo proposal root: $($realRepoPlanValidation.OrdinaryRepoProposalRoot)"
+Write-Host "Proposal review format: $($realRepoPlanValidation.ProposalReviewFormat)"
 Write-Host "Stabilization policy status: $($policyValidation.Status)"
 Write-Host "Sibling repositories ignored: $($ignoreValidation.IgnoredRepositoryCount)"
 Write-Host "Governance log: $LogPath"

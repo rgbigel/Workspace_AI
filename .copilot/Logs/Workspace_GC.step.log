@@ -5,8 +5,8 @@ Workspace_GC Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260801_221114
-Latest commit at generation: ec139ad Workspace_GC: stabilize read-only dry-run governance
+Generated at: 20260802_174328
+Latest commit at generation: 6a4b06f Workspace_GC: commit stable methodology checkpoint
 
 2. Change Proposals
 -------------------
@@ -730,10 +730,42 @@ Disposition: accepted
 Disposition reason: Accepted for the day-end Workspace_GC methodology checkpoint.
 Final result: Accepted for commit in the day-end Workspace_GC methodology checkpoint.
 
+Id: GC-STEP-091
+Proposal: Clarify that methodology evolution remains inside Workspace_GC while real repositories live under D:\Git_Repositories.
+Reason: The real workspace is the repository set under D:\Git_Repositories; no parent-level rule copy is planned, and Workspace_GC remains the controlled incubation repository until further notice.
+Files: .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted before implementing the consolidated boundary-case methodology step.
+Final result: Accepted for the current methodology implementation step.
+
+Id: GC-STEP-092
+Proposal: Record first real-repository candidate selection and per-step acceptance policy.
+Reason: VolumeInventory is the already identified candidate; repository-local requirement overrides require confirmation and documentation, rollback remains external restore, and advancement is gated by per-step user Accept decisions.
+Files: .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted before implementing the consolidated boundary-case methodology step.
+Final result: Accepted for the current methodology implementation step.
+
+Id: GC-STEP-093
+Proposal: Add repository lifecycle boundary cases and explicit event-triggered integrity preflight policy.
+Reason: Repositories inside My Workspace may be blocked, external code may require intake, repositories may require cleanup, and integrity checks must be cheap, explicit, event-triggered, and never hidden background scans.
+Files: .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1; .copilot/Methods/Get-RealRepoTestPlan.ps1; .copilot/Methods/Advance-Governance.ps1; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted by user as the end of the discussion phase and implemented as one methodology step.
+Final result: Implemented; awaiting verification and later commit decision.
+
+Id: GC-STEP-094
+Proposal: Add target-local Markdown proposal authority for external intake and normal repo changes.
+Reason: External intake and ordinary repo changes must store proposals in the target repo under Docs/Methods/Proposals as human-readable Markdown; JSON sidecars are non-reviewable derived artifacts that lose validity when the Markdown review state changes.
+Files: .copilot/Methods/Logs/GC-RealRepoTestPlan.json; docs/real-repo-dry-run.md; .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1; .copilot/Methods/Get-RealRepoTestPlan.ps1; .copilot/Methods/Advance-Governance.ps1; .copilot/Methods/Logs/GC-Proposals.json
+Disposition: accepted
+Disposition reason: Accepted by user after clarifying proposal placement and JSON sidecar authority.
+Final result: Implemented; awaiting verification and later commit decision.
+
 3. Proposal Disposition Summary
 -------------------------------
 pending-review: 0
-accepted: 90
+accepted: 94
 rejected: 0
 modified: 0
 
@@ -747,18 +779,11 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 5. Current Reviewable Git Status
 --------------------------------
  M .copilot/Methods/Advance-Governance.ps1
- M .copilot/Methods/Get-RealRepoTargetProfile.ps1
  M .copilot/Methods/Get-RealRepoTestPlan.ps1
- M .copilot/Methods/Invoke-RealRepoDryRun.ps1
  M .copilot/Methods/Logs/GC-Proposals.json
  M .copilot/Methods/Logs/GC-RealRepoTestPlan.json
- M .copilot/Methods/QualityGates/README.md
  M .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
- M .copilot/Methods/Set-RealRepoTestPlan.ps1
- M .copilot/Methods/Test-WorkspaceGCReadiness.ps1
- M docs/README.md
-?? .copilot/Methods/Get-RealRepoActionPlan.ps1
-?? docs/real-repo-dry-run.md
+ M docs/real-repo-dry-run.md
 
 6. Current Generated Artifact Status
 ------------------------------------

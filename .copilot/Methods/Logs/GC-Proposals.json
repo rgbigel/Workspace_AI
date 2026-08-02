@@ -2,13 +2,16 @@
   "meta": {
     "module": "GC-Proposals.json",
     "path": ".copilot/Methods/Logs/GC-Proposals.json",
-    "version": "2.11.0",
+    "version": "2.14.0",
     "config_type": "workspace-gc-step-proposal-registry",
     "description": "Step-oriented proposal, reason, affected-file, and disposition registry for Workspace_GC governance checkpoints.",
     "authors": [
       "Workspace_GC Engine"
     ],
     "changelog": [
+      "2.14.0 - Added target-local Markdown proposal authority and JSON sidecar policy",
+      "2.13.0 - Added repository lifecycle boundary cases and event-triggered integrity preflight policy",
+      "2.12.0 - Clarified Workspace_GC-only candidate methodology and selected first repo candidate",
       "2.11.0 - Added bottom-up concrete change-request dry-run flow",
       "2.10.0 - Added realistic phased documentation-first dry-run sequence",
       "2.9.0 - Added read-only adapter content-state comparison to intended-action preview",
@@ -1164,6 +1167,64 @@
       "disposition": "accepted",
       "disposition_reason": "Accepted for the day-end Workspace_GC methodology checkpoint.",
       "final_result": "Accepted for commit in the day-end Workspace_GC methodology checkpoint."
+    },
+    {
+      "id": "GC-STEP-091",
+      "proposal": "Clarify that methodology evolution remains inside Workspace_GC while real repositories live under D:\\Git_Repositories.",
+      "reason": "The real workspace is the repository set under D:\\Git_Repositories; no parent-level rule copy is planned, and Workspace_GC remains the controlled incubation repository until further notice.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted before implementing the consolidated boundary-case methodology step.",
+      "final_result": "Accepted for the current methodology implementation step."
+    },
+    {
+      "id": "GC-STEP-092",
+      "proposal": "Record first real-repository candidate selection and per-step acceptance policy.",
+      "reason": "VolumeInventory is the already identified candidate; repository-local requirement overrides require confirmation and documentation, rollback remains external restore, and advancement is gated by per-step user Accept decisions.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted before implementing the consolidated boundary-case methodology step.",
+      "final_result": "Accepted for the current methodology implementation step."
+    },
+    {
+      "id": "GC-STEP-093",
+      "proposal": "Add repository lifecycle boundary cases and explicit event-triggered integrity preflight policy.",
+      "reason": "Repositories inside My Workspace may be blocked, external code may require intake, repositories may require cleanup, and integrity checks must be cheap, explicit, event-triggered, and never hidden background scans.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user as the end of the discussion phase and implemented as one methodology step.",
+      "final_result": "Implemented; awaiting verification and later commit decision."
+    },
+    {
+      "id": "GC-STEP-094",
+      "proposal": "Add target-local Markdown proposal authority for external intake and normal repo changes.",
+      "reason": "External intake and ordinary repo changes must store proposals in the target repo under Docs/Methods/Proposals as human-readable Markdown; JSON sidecars are non-reviewable derived artifacts that lose validity when the Markdown review state changes.",
+      "files": [
+        ".copilot/Methods/Logs/GC-RealRepoTestPlan.json",
+        "docs/real-repo-dry-run.md",
+        ".copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1",
+        ".copilot/Methods/Get-RealRepoTestPlan.ps1",
+        ".copilot/Methods/Advance-Governance.ps1",
+        ".copilot/Methods/Logs/GC-Proposals.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Accepted by user after clarifying proposal placement and JSON sidecar authority.",
+      "final_result": "Implemented; awaiting verification and later commit decision."
     }
   ]
 }

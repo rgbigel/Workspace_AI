@@ -4,8 +4,8 @@ Workspace_GC Governance Log
 1. Header
 ---------
 Workspace name: Workspace_GC
-Generated at: 20260801_221114
-Latest commit at generation: ec139ad Workspace_GC: stabilize read-only dry-run governance
+Generated at: 20260802_174328
+Latest commit at generation: 6a4b06f Workspace_GC: commit stable methodology checkpoint
 
 2. Rule Authority
 -----------------
@@ -24,25 +24,18 @@ Proposal registry: .copilot/Methods/Logs/GC-Proposals.json
 4. Proposal Disposition Summary
 -------------------------------
 pending-review: 0
-accepted: 90
+accepted: 94
 rejected: 0
 modified: 0
 
 5. Reviewable Git Status
 ------------------------
  M .copilot/Methods/Advance-Governance.ps1
- M .copilot/Methods/Get-RealRepoTargetProfile.ps1
  M .copilot/Methods/Get-RealRepoTestPlan.ps1
- M .copilot/Methods/Invoke-RealRepoDryRun.ps1
  M .copilot/Methods/Logs/GC-Proposals.json
  M .copilot/Methods/Logs/GC-RealRepoTestPlan.json
- M .copilot/Methods/QualityGates/README.md
  M .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
- M .copilot/Methods/Set-RealRepoTestPlan.ps1
- M .copilot/Methods/Test-WorkspaceGCReadiness.ps1
- M docs/README.md
-?? .copilot/Methods/Get-RealRepoActionPlan.ps1
-?? docs/real-repo-dry-run.md
+ M docs/real-repo-dry-run.md
 
 6. Generated Artifact Status
 ----------------------------

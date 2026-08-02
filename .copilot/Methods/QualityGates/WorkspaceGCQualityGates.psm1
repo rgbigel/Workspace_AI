@@ -3,9 +3,11 @@ Module: WorkspaceGCQualityGates.psm1
 Purpose: Provide reusable Workspace_GC readiness and stabilization quality gates.
 Path: .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
 Authors: Workspace_GC Engine
-Version: 1.9.0
+Version: 1.11.0
 Caller Contract: Imported by native governance scripts; validates Workspace_GC state without writing to external repositories.
 Changelog:
+- 2026-08-02: Added target-local Markdown proposal authority validation.
+- 2026-08-02: Added repository lifecycle and explicit event-triggered integrity preflight validation.
 - 2026-08-01: Allowed confirmed read-only real-repository dry-run while keeping external writes blocked.
 - 2026-08-01: Added bottom-up concrete change-request flow validation.
 - 2026-08-01: Added phased dry-run sequence validation for documentation-first real-repository testing.
@@ -198,6 +200,76 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw 'Real-repository test plan is missing action_preview block.'
   }
 
+  if (-not $realRepoPlan.PSObject.Properties['repository_lifecycle_policy']) {
+    throw 'Real-repository test plan is missing repository_lifecycle_policy block.'
+  }
+
+  if (-not $realRepoPlan.PSObject.Properties['integrity_preflight_policy']) {
+    throw 'Real-repository test plan is missing integrity_preflight_policy block.'
+  }
+
+  $lifecyclePolicy = $realRepoPlan.repository_lifecycle_policy
+  if ($lifecyclePolicy.inside_workspace_parent_is_not_sufficient_for_operation -ne $true) {
+    throw 'Repository lifecycle policy must state that location under the workspace parent is not enough for operation.'
+  }
+
+  $lifecycleStates = @($lifecyclePolicy.states)
+  foreach ($requiredLifecycleState in @('discovered-only', 'blocked-do-not-operate', 'candidate', 'read-only-dry-run', 'external-intake', 'cleanup-candidate', 'active-governed', 'retired')) {
+    if (-not ($lifecycleStates | Where-Object { $_.id -eq $requiredLifecycleState })) {
+      throw "Repository lifecycle policy is missing state: $requiredLifecycleState"
+    }
+  }
+
+  if ($lifecyclePolicy.external_code_policy.outside_code_is_evidence_not_authority -ne $true) {
+    throw 'External code intake policy must treat outside code as evidence, not authority.'
+  }
+
+  if ($lifecyclePolicy.external_code_policy.intake_may_create_repo_skeleton -ne $true -or $lifecyclePolicy.external_code_policy.intake_stops_for_review_before_remediation -ne $true) {
+    throw 'External code intake policy must create or populate structure and stop for review before remediation.'
+  }
+
+  if (-not $lifecyclePolicy.PSObject.Properties['proposal_location_policy']) {
+    throw 'Repository lifecycle policy is missing proposal_location_policy block.'
+  }
+
+  $proposalLocationPolicy = $lifecyclePolicy.proposal_location_policy
+  if ($proposalLocationPolicy.proposals_are_target_local -ne $true -or $proposalLocationPolicy.workspace_gc_does_not_store_target_repo_proposals -ne $true) {
+    throw 'Proposal location policy must keep ordinary repo proposals target-local.'
+  }
+
+  if ($proposalLocationPolicy.ordinary_repo_proposal_root -ne 'Docs/Methods/Proposals' -or $proposalLocationPolicy.ordinary_repo_required_review_format -ne 'md') {
+    throw 'Ordinary repo proposals must be Markdown files under Docs/Methods/Proposals.'
+  }
+
+  if ($proposalLocationPolicy.markdown_review_source_of_truth -ne $true -or $proposalLocationPolicy.proposal_may_not_be_accepted_from_json_sidecar_only -ne $true) {
+    throw 'Markdown proposal files must be the review source of truth.'
+  }
+
+  if ($proposalLocationPolicy.json_sidecars_allowed -ne $true -or $proposalLocationPolicy.json_sidecars_reviewable -ne $false -or $proposalLocationPolicy.json_sidecars_have_independent_authority -ne $false) {
+    throw 'JSON proposal sidecars must be non-reviewable derived artifacts without independent authority.'
+  }
+
+  if ($lifecyclePolicy.cleanup_policy.starts_as_proposal_only -ne $true) {
+    throw 'Cleanup policy must start as proposal-only.'
+  }
+
+  $integrityPreflightPolicy = $realRepoPlan.integrity_preflight_policy
+  if ($integrityPreflightPolicy.mode -ne 'explicit-event-triggered-cost-tiered') {
+    throw 'Integrity preflight must be explicit, event-triggered, and cost-tiered.'
+  }
+
+  if ($integrityPreflightPolicy.surreptitious_checks_allowed -ne $false -or $integrityPreflightPolicy.periodic_background_checks_allowed -ne $false) {
+    throw 'Integrity preflight must not allow hidden or periodic background checks.'
+  }
+
+  if ($integrityPreflightPolicy.repo_wide_checksum_default_allowed -ne $false) {
+    throw 'Integrity preflight must not allow repo-wide checksums by default.'
+  }
+
+  if ($integrityPreflightPolicy.escalation_policy.use_cheapest_discriminating_check_first -ne $true -or $integrityPreflightPolicy.escalation_policy.report_before_expensive_checks -ne $true) {
+    throw 'Integrity preflight must use cheap checks first and report before expensive checks.'
+  }
+
   if (@($realRepoPlan.dry_run.adapter_surface_candidates).Count -eq 0) {
     throw 'Real-repository dry-run requires at least one adapter surface candidate.'
   }
@@ -346,6 +418,10 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     DocumentationFirstPhase = $documentationPhase.id
     ChangeRequestPhaseCount = $changeRequestPhases.Count
     ChangeRequestOrientation = $changeRequestFlow.orientation
+    LifecycleStateCount = $lifecycleStates.Count
+    IntegrityPreflightMode = $integrityPreflightPolicy.mode
+    OrdinaryRepoProposalRoot = $proposalLocationPolicy.ordinary_repo_proposal_root
+    ProposalReviewFormat = $proposalLocationPolicy.ordinary_repo_required_review_format
   }
 }
 

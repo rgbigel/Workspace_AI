@@ -4,8 +4,11 @@ Module: real-repo-dry-run.md
 Purpose: Describes inspectable Workspace_GC real-repository dry-run cases, flows, gates, and non-goals.
 Path: D:/Git_Repositories/Workspace_GC/docs/real-repo-dry-run.md
 Authors: Workspace_GC Engine
-Version: 0.5.0
+Version: 0.8.0
 Changelog:
+- 2026-08-02: Added target-local Markdown proposal authority for external intake and repo changes.
+- 2026-08-02: Added repository lifecycle boundary cases and explicit cost-tiered integrity preflight policy.
+- 2026-08-02: Clarified Workspace_GC-only incubation, candidate selection, override, rollback, and Accept-gate policy.
 - 2026-08-01: Added bottom-up concrete change-request flow.
 - 2026-08-01: Added realistic phased dry-run sequence with documentation-first discrepancy handling.
 - 2026-08-01: Added adapter content-state comparison preview details.
@@ -16,7 +19,7 @@ This document describes the current read-only dry-run model for applying Workspa
 
 ## Current State
 
-Workspace_GC is still in self-stabilization. Real-repository testing is disabled, no repository is selected, and write access is unsupported.
+Workspace_GC is still the methodology incubation repository. Real-repository testing starts by selecting a repository that already exists under `D:\Git_Repositories`, but methodology evolution itself remains in Workspace_GC until further notice.
 
 The normal readiness command is:
 
@@ -24,7 +27,7 @@ The normal readiness command is:
 .\.copilot\Methods\Test-WorkspaceGCReadiness.ps1
 ```
 
-Current expected state:
+Default expected state before a candidate is selected:
 
 ```text
 mode: not-selected
@@ -34,15 +37,114 @@ dry_run.status: blocked-until-repository-selected
 write_allowed: false
 ```
 
+Current candidate policy:
+
+```text
+selected_repository: D:\Git_Repositories\VolumeInventory
+dry_run.enabled: false until explicit read-only confirmation
+write_allowed: false
+```
+
+Nothing is copied to `D:\Git_Repositories` as a parent-level rule location. The real workspace is the repository set under `D:\Git_Repositories`; Workspace_GC remains the place where methodology changes are designed, validated, and accepted before any real repository is changed.
+
 ## Safety Rules
 
 - Workspace_AC is off-limits.
 - `B:\Backups\Base_WS_AC` is off-limits.
 - Workspace_GC cannot select itself as a target.
 - Selecting a repository does not enable writes.
+- Selecting a repository records only the candidate in Workspace_GC.
 - Dry-run mode requires explicit read-only confirmation.
 - Write enablement is not supported by the current transition policy.
 - Target profiling performs no write probe.
+
+The term `adapter surface` means a candidate file or entrypoint that a dry-run can compare, such as `.continuerules` or `.copilot/Methods/APPLY.ps1`. It does not mean those files are already active workspace rules and it does not authorize copying them anywhere.
+
+Repo-local rules can override Workspace_GC only when they are confirmed as repository requirements, not merely incidental implementation details. That decision must be documented in the target repository before it is treated as an override.
+
+The methodology does not require an internal rollback feature. Recovery is external to this workflow, normally by restoring the repository or system state; Macrium Reflect restores are expected to be possible and may create Git inconsistencies that must be handled afterward.
+
+The promotion or advancement gate is a per-step user `Accept` decision for the current verification step. Bundled multi-step promotion is not the normal operating model.
+
+## Repository Lifecycle Boundary Cases
+
+Being located under `D:\Git_Repositories` is not enough to make a repository eligible for Workspace_GC operations. A repository can be discovered but blocked, selected as a candidate, placed in read-only dry-run, treated as external intake, considered for cleanup, governed after explicit acceptance, or retired.
+
+Important lifecycle states:
+
+```text
+discovered-only          -> exists, no operation decision yet
+blocked-do-not-operate   -> intentionally excluded from operation
+candidate                -> selected, dry-run not enabled
+read-only-dry-run        -> explicitly confirmed observation only
+external-intake          -> create or populate structured repo, analyze, propose, then stop for review
+cleanup-candidate        -> proposal-only cleanup assessment
+active-governed          -> accepted per-step changes only
+retired                  -> no longer operated on
+```
+
+Copied GitHub repositories or other working copies that must not be touched should be classified as `blocked-do-not-operate`. Discovery may list them, but governance, APPLY, adapter comparison, documentation discrepancy proposals, and cleanup must not operate on them until the state is changed by explicit decision.
+
+External code import is its own flow. Outside code is evidence, not authority. Intake may create a new repository skeleton, add incoming `.ps1`, `.psm1`, or other code into the correct locations defined by Workspace rules, then analyze the code in that repository context.
+
+External intake step 1 creates a proposal baseline, not a finished remediation. It should identify atoms, document them, identify functional problems such as code that will not work properly, create documentation proposals at the appropriate levels, create code or design change proposals, and then stop for review.
+
+After review and `Accept`, later steps implement accepted documentation and code proposals, add or update tests, run verification, and iterate until final acceptance of tested and approved code.
+
+Proposal placement is target-local:
+
+```text
+ordinary repo proposals: Docs/Methods/Proposals/**/*.md
+method baseline proposals: .copilot/Methods/Logs/GC-Proposals.json
+```
+
+Normal repository proposal files are Markdown-first because they are human review artifacts. Proposal files may be grouped under `Docs/Methods/Proposals/` in review-cycle folders or other meaningful groupings.
+
+Optional JSON sidecars are allowed only as derived automation artifacts. They are not reviewed, have no independent authority, and are valid only while they match the current reviewed state of the paired `.md` proposal. If the Markdown proposal is modified, rejected, split, merged, or superseded, the sidecar is stale until regenerated. A proposal may not be accepted based only on a JSON sidecar.
+
+Workspace_GC does not store change proposals for ordinary target repos. The exception is when Workspace_GC itself is the method-baseline target; in that case the existing `.copilot/Methods/...` proposal mechanism is appropriate.
+
+Cleanup is also proposal-only until accepted. A cleanup assessment may propose keep, block, archive, move, or delete. Destructive actions require an explicit path, explicit action, and explicit `Accept` for the current step.
+
+## Integrity Preflight Policy
+
+Repository integrity preflight is explicit, event-triggered, and cost-tiered. During a continuous VS Code session, repository state is treated as stable unless a user statement, candidate change, cheap marker mismatch, or command failure indicates otherwise.
+
+Workspace_GC must not perform hidden integrity scans, periodic background checks, or repo-wide checksums by default.
+
+Preflight triggers:
+
+```text
+user requests integrity check
+user reports restore, copy, import, or manual filesystem change
+candidate selection changes
+cheap marker mismatch from last known state
+Git command failure during a requested operation
+repository root, HEAD, or status inconsistency during requested dry-run
+```
+
+Cheap first-pass checks:
+
+```text
+repository path exists
+.git exists
+git rev-parse --show-toplevel
+git rev-parse --abbrev-ref HEAD
+git rev-parse HEAD
+git status --short
+```
+
+Escalated checks are allowed only after a trigger or ambiguous cheap result, and Workspace_GC must report before using them:
+
+```text
+selected path timestamp comparison
+limited checksum of known governance files
+repo inventory snapshot
+git fsck --no-dangling
+full file checksum scan
+```
+
+Macrium or system restore events are out-of-band. Workspace_GC does not plan them. If their aftermath is detected, normal operations stop and the method reports a diagnostic or repair path; it does not auto-repair.
 
 ## Case 1: No Repository Selected
 
@@ -74,6 +176,12 @@ Command shape:
 
 ```powershell
 .\.copilot\Methods\Set-RealRepoTestPlan.ps1 -RepositoryPath "D:\Git_Repositories\SomeRepo"
+```
+
+The first selected candidate is:
+
+```text
+D:\Git_Repositories\VolumeInventory
 ```
 
 Selection is rejected if the path is Workspace_GC, Workspace_AC, the backup base, or not an existing Git repository.
@@ -266,6 +374,8 @@ Without approval, this flow is still preview-only. With approval, documentation 
 - No write-capable real-repository adaptation flow.
 - No execution of intended actions from the action preview.
 - No unapproved documentation or code changes from concrete change-request previews.
+- No hidden integrity scans or periodic repository monitoring.
+- No repo-wide checksums unless explicitly triggered and reported first.
 
 Those require a later explicit design and user approval.
 
