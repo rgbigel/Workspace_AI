@@ -554,12 +554,16 @@ function Assert-WorkspaceGCStaleAuthorityReferences {
 
   $scanRoots = @(
     (Join-Path $WorkspaceRoot '.vscode'),
+    (Join-Path $WorkspaceRoot '.copilot'),
+    (Join-Path $WorkspaceRoot '.github'),
+    (Join-Path $WorkspaceRoot 'docs'),
     (Join-Path $WorkspaceRoot 'tools')
   )
 
   $allowedFiles = @(
     '.continuerules',
     '.vscode/settings.json',
+    'docs/real-repo-dry-run.md',
     '.copilot/History/Logs/GC-Stabilization.json',
     '.copilot/History/Logs/GC-Proposals.json',
     'tools/QualityGates/WorkspaceGCQualityGates.psm1'
@@ -583,6 +587,10 @@ function Assert-WorkspaceGCStaleAuthorityReferences {
     foreach ($file in $files) {
       $currentFile = $file
       $relativePath = $currentFile.FullName.Substring($WorkspaceRoot.Length).TrimStart('\').Replace('\', '/')
+      if ($relativePath -like '.copilot/Logs/*' -or $relativePath -like '.copilot/History/Logs/*') {
+        continue
+      }
+
       if ($allowedFiles -contains $relativePath) {
         continue
       }

@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "config_type": "copilot-fix-module",
     "description": "Step 1 Engine Final Integrity Pass (Substep 9)",
-    "authors": ["Workspace_AC Engine"],
+    "authors": ["Workspace_GC Engine"],
     "changelog": [
       "1.0.0 - Added integrity pass for Step 1 Engine"
     ]

@@ -2,7 +2,7 @@
 
 Module: 00_Uebersicht.md
 Purpose: Defines workspace documentation and operational rules for 00_Uebersicht.
-Path: D:/Git_Repositories/Workspace_AC/docs/00_Uebersicht.md
+Path: D:/Git_Repositories/Workspace_GC/docs/00_Uebersicht.md
 Authors: Rolf
 Version: 1.0.0
 Changelog:

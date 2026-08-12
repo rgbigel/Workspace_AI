@@ -2,7 +2,7 @@
 
 Module: SharedModulesRule.md
 Purpose: Defines workspace documentation and operational rules for SharedModulesRule.
-Path: D:/Git_Repositories/Workspace_AC/.github/agents/SharedModulesRule.md
+Path: D:/Git_Repositories/Workspace_GC/.github/agents/SharedModulesRule.md
 Authors: Rolf
 Version: 1.0.0
 Changelog:

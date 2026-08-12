@@ -1,10 +1,10 @@
-# version: 3.0.0
+# version: 4.0.0
 
 Module: version-bump-procedure.md
 Purpose: Defines workspace documentation and operational rules for version-bump-procedure.
-Path: D:/Git_Repositories/Workspace_AC/docs/version-bump-procedure.md
+Path: D:/Git_Repositories/Workspace_GC/docs/version-bump-procedure.md
 Authors: Rolf
-Version: 3.0.0
+Version: 4.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 

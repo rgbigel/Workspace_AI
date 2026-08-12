@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "config_type": "copilot-fix-module",
     "description": "Step 3 Engine Deep Consistency Enforcement",
-    "authors": ["Workspace_AC Engine"],
+    "authors": ["Workspace_GC Engine"],
     "changelog": [
       "1.0.0 - Initial deep consistency enforcement module"
     ]

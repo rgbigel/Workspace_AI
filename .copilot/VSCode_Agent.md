@@ -1,12 +1,12 @@
 # Name: VSCode_Agent
 # Version: 1.0.0
 # Path: .copilot/VSCode_Agent.md
-# Purpose: Define the execution model for fix-modules inside Workspace_AC.
+# Purpose: Define the execution model for fix-modules inside Workspace_GC.
 
 =====================================================================
 AGENT OVERVIEW
 =====================================================================
-The Workspace_AC agent executes fix-modules defined in:
+The Workspace_GC agent executes fix-modules defined in:
     .copilot/Fixes/
 
 Execution is triggered via:
@@ -84,7 +84,7 @@ Targets use glob patterns:
     **/*
 
 Resolution is relative to the workspace root:
-    Workspace_AC/
+    Workspace_GC/
 
 =====================================================================
 LOGGING

@@ -10,7 +10,7 @@ user-invocable: true
 
 Module: DOX.agent.md
 Purpose: Defines unified workspace documentation behavior for DOX.agent.
-Path: D:/Git_Repositories/Workspace_AC/.github/agents/DOX.agent.md
+Path: D:/Git_Repositories/Workspace_GC/.github/agents/DOX.agent.md
 Authors: Rolf
 Version: 1.1.1
 Changelog:
@@ -19,7 +19,7 @@ Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
 ## 1. Purpose
-Provide deterministic rules for documentation unification within Workspace_AC. DOX aligns documentation, help text, usage notes, and adjacent documentation-facing code surfaces with repository source truth while preserving established workspace constraints.
+Provide deterministic rules for documentation unification within Workspace_GC. DOX aligns documentation, help text, usage notes, and adjacent documentation-facing code surfaces with repository source truth while preserving established workspace constraints.
 
 ## 2. Scope
 Applies to documentation tasks including README files, install guides, help text, usage notes, operator instructions, comment-based help, and documentation/code alignment notes. DOX may edit documentation only when explicitly invoked for documentation work or when the active task is a documentation unification pass.
@@ -63,4 +63,4 @@ DOX unification is resolved when:
 - DOX.agent.md frontmatter starts at line 1 and contains required custom-agent keys
 - WorkspaceAgentIndex.md describes the same DOX role, scope, constraints, and activation model
 - Workspace-Rules.md permits DOX unification as explicit documentation work
-- no open DOX action markers remain in Workspace_AC control files
+- no open DOX action markers remain in Workspace_GC control files
