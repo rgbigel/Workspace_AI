@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "module": "GC-Proposals.validation.json",
+    "path": ".copilot/History/Logs/GC-Proposals.validation.json",
+    "version": "1.0.0",
+    "config_type": "workspace-gc-proposal-validation-fixture",
+    "description": "Validation fixture for accepted, rejected, and modified proposal dispositions.",
+    "authors": [
+      "Workspace_GC Engine"
+    ],
+    "changelog": [
+      "1.0.0 - Added disposition validation coverage fixture"
+    ]
+  },
+  "proposals": [
+    {
+      "id": "VALIDATION-ACCEPTED",
+      "proposal": "Accepted disposition validation fixture.",
+      "reason": "Prove accepted dispositions validate.",
+      "files": [
+        ".copilot/History/Logs/GC-Proposals.validation.json"
+      ],
+      "disposition": "accepted",
+      "disposition_reason": "Validation fixture.",
+      "final_result": "Not committed."
+    },
+    {
+      "id": "VALIDATION-REJECTED",
+      "proposal": "Rejected disposition validation fixture.",
+      "reason": "Prove rejected dispositions validate when a reason is present.",
+      "files": [
+        ".copilot/History/Logs/GC-Proposals.validation.json"
+      ],
+      "disposition": "rejected",
+      "disposition_reason": "Validation fixture rejection reason.",
+      "final_result": "Rejected; not committed."
+    },
+    {
+      "id": "VALIDATION-MODIFIED",
+      "proposal": "Modified disposition validation fixture.",
+      "reason": "Prove modified dispositions validate when a reason is present.",
+      "files": [
+        ".copilot/History/Logs/GC-Proposals.validation.json"
+      ],
+      "disposition": "modified",
+      "disposition_reason": "Validation fixture modification reason.",
+      "final_result": "Accepted after modification; not committed."
+    }
+  ]
+}

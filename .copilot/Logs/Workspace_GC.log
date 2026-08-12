@@ -4,8 +4,8 @@ Workspace_GC Governance Log
 1. Header
 ---------
 Workspace name: Workspace_GC
-Generated at: 20260802_181409
-Latest commit at generation: 74b4287 Workspace_GC: accept target-local proposal governance
+Generated at: 20260812_131000
+Latest commit at generation: efb419b Workspace_GC: bootstrap target-local method instances
 
 2. Rule Authority
 -----------------
@@ -19,7 +19,7 @@ Native Generate-Log.ps1: available
 Native Advance-Governance.ps1: available when this log is generated through the governance task
 Step-oriented log: .copilot/Logs/Workspace_GC.step.log
 Permanent accepted log: .copilot/Logs/Workspace_GC.accepted.log
-Proposal registry: .copilot/Methods/Logs/GC-Proposals.json
+Proposal registry: .copilot/History/Logs/GC-Proposals.json
 
 4. Proposal Disposition Summary
 -------------------------------
@@ -30,15 +30,60 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- M .copilot/Methods/Advance-Governance.ps1
- M .copilot/Methods/Get-RealRepoTestPlan.ps1
- M .copilot/Methods/Logs/GC-Proposals.json
- M .copilot/Methods/Logs/GC-RealRepoTestPlan.json
- M .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1
- M .copilot/Methods/Test-WorkspaceGCReadiness.ps1
+ M .continue/rules/Workspace_GC.md
+ M .continuerules
+ M .copilot/CopilotRules.md
+RM .copilot/Methods/Logs/GC-Proposals.json -> .copilot/History/Logs/GC-Proposals.json
+RM .copilot/Methods/Logs/GC-Proposals.validation.json -> .copilot/History/Logs/GC-Proposals.validation.json
+RM .copilot/Methods/Logs/GC-RealRepoTestPlan.json -> .copilot/History/Logs/GC-RealRepoTestPlan.json
+RM .copilot/Methods/Logs/GC-Stabilization.json -> .copilot/History/Logs/GC-Stabilization.json
+R  .copilot/Methods/Logs/S1.log -> .copilot/History/Logs/S1.log
+RM .copilot/Methods/Logs/S2.log -> .copilot/History/Logs/S2.log
+ M .copilot/Logs/Workspace_AC.log
+ M .copilot/Rules/RuleAuthority.md
+RM scripts/macro-definitions.md -> .copilot/Rules/macro-definitions.md
+ M .copilot/Step1Engine.json
+ M .copilot/VSCode_Agent.md
+ M .copilot/instructions.md
+ M .github/agents/DirectoryRules.md
+ M .github/agents/WorkspaceLog.agent.md
+ M .github/agents/WorkspaceLogHistory.agent.md
+ M .vscode/settings.json
  M docs/real-repo-dry-run.md
-?? .copilot/Methods/Initialize-RealRepoMethodInstance.ps1
-?? .copilot/Methods/Test-RealRepoProposalCleanup.ps1
+RM scripts/00_Common.ps1 -> tools/00_Common.ps1
+RM scripts/01_Export_Paketquellen.ps1 -> tools/01_Export_Paketquellen.ps1
+RM scripts/02_Backup_Settings.ps1 -> tools/02_Backup_Settings.ps1
+RM scripts/03_Restore_Settings.ps1 -> tools/03_Restore_Settings.ps1
+RM scripts/04_Rebuild_System.ps1 -> tools/04_Rebuild_System.ps1
+RM scripts/90_Setup_Runtime.ps1 -> tools/90_Setup_Runtime.ps1
+RM .copilot/Methods/APPLY.ps1 -> tools/APPLY.ps1
+RM .copilot/Methods/Advance-Governance.ps1 -> tools/Advance-Governance.ps1
+RM .copilot/Methods/Generate-Log.ps1 -> tools/Generate-Log.ps1
+RM .copilot/Methods/Get-RealRepoActionPlan.ps1 -> tools/Get-RealRepoActionPlan.ps1
+RM .copilot/Methods/Get-RealRepoTargetProfile.ps1 -> tools/Get-RealRepoTargetProfile.ps1
+RM .copilot/Methods/Get-RealRepoTestPlan.ps1 -> tools/Get-RealRepoTestPlan.ps1
+RM .copilot/Methods/Get-WorkspaceRepositories.ps1 -> tools/Get-WorkspaceRepositories.ps1
+RM .copilot/Methods/Initialize-RealRepoMethodInstance.ps1 -> tools/Initialize-RealRepoMethodInstance.ps1
+RM .copilot/Methods/Invoke-RealRepoDryRun.ps1 -> tools/Invoke-RealRepoDryRun.ps1
+RM .copilot/Methods/LoadAtoms.ps1 -> tools/LoadAtoms.ps1
+RM .copilot/Methods/LoadFixes.ps1 -> tools/LoadFixes.ps1
+RM .copilot/Methods/LoadMethods.ps1 -> tools/LoadMethods.ps1
+RM .copilot/Methods/LoadRules.ps1 -> tools/LoadRules.ps1
+RM .copilot/Methods/QualityGates/README.md -> tools/QualityGates/README.md
+RM .copilot/Methods/QualityGates/WorkspaceGCQualityGates.psm1 -> tools/QualityGates/WorkspaceGCQualityGates.psm1
+RM .copilot/Methods/Set-RealRepoTestPlan.ps1 -> tools/Set-RealRepoTestPlan.ps1
+RM .copilot/Methods/Test-RealRepoProposalCleanup.ps1 -> tools/Test-RealRepoProposalCleanup.ps1
+RM .copilot/Methods/Test-WorkspaceGCReadiness.ps1 -> tools/Test-WorkspaceGCReadiness.ps1
+RM .copilot/Methods/Update-Proposal.ps1 -> tools/Update-Proposal.ps1
+RM scripts/Validate-CopilotProfile.ps1 -> tools/Validate-CopilotProfile.ps1
+RM .copilot/Methods/ValidateRules.ps1 -> tools/ValidateRules.ps1
+?? .continue/rules/CMDRules.md
+?? .continue/rules/CopilotRules.md
+?? .continue/rules/CopilotTools.md
+?? .continue/rules/InvariantRules.md
+?? .continue/rules/JsonRules.md
+?? .continue/rules/PowerShellRules.md
+?? .continue/rules/RuleAuthority.md
 
 6. Generated Artifact Status
 ----------------------------

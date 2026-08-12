@@ -168,7 +168,7 @@ Fix_Atomic
 - S2G01: 2026-07-31 21:57:00, active, .copilot/Fixes/Fix_S1E02.json, Began S2 governance from Step 2 structural enforcement baseline; Workspace-Rules v1.2.0 and WorkspaceLog governance are active.
 - S2G02: 2026-07-31 22:01:00, verified, .copilot/Logs/Fix_S2E02.log, Advanced S2 governance by verifying Step 2 structural enforcement records; JSON, PowerShell, CMD, and invariant action checks are present.
 - S2G03: 2026-07-31 22:10:00, anchored, .copilot/Logs/Workspace_AC.history.log, Advanced S2 governance by anchoring the committed WorkspaceLogHistory baseline at cde3f62; S2G02 history coverage is preserved.
-- S2G04: 2026-07-31 22:12:00, committed, .copilot/Methods/Logs/S2.log, Advanced S2 governance by verifying the committed S2G03 baseline at 2c91f4a; canonical WorkspaceLog coverage remains aligned.
+- S2G04: 2026-07-31 22:12:00, committed, .copilot/History/Logs/S2.log, Advanced S2 governance by verifying the committed S2G03 baseline at 2c91f4a; canonical WorkspaceLog coverage remains aligned.
 - S2G05: 2026-07-31 22:14:00, resolved, .github/agents/WorkspaceLogHistory.agent.md, Resolved S2 governance marker wording by normalizing WorkspaceLogHistory extraction scope to action-marker creation and resolution events; no open S2 markers remain.
 - S2G06: 2026-07-31 22:17:00, resolved, .github/agents/DOX.agent.md, Resolved residual control-agent marker wording by normalizing DOX unification status to open action markers; S2 governance marker scans are clean.
 - S2G07: 2026-07-31 22:19:00, validated, .copilot/Logs/Workspace_AC.log, Advanced S2 governance by validating S2G05 and S2G06 marker-resolution coverage in the canonical WorkspaceLog; governance control surfaces remain marker-clean.
@@ -179,7 +179,7 @@ Fix_Atomic
 ------------------------
 - LoadAtoms.ps1: created during S1E03 deep consistency to load .copilot/Atoms/*.atom deterministically into a hashtable keyed by atom base name.
 - LoadFixes.ps1: created during S1E03 deep consistency to load .copilot/Fixes/*.json deterministically into a hashtable keyed by module name and id.
-- LoadMethods.ps1: created during S1E03 deep consistency to load method script metadata from .copilot/Methods.
+- LoadMethods.ps1: created during S1E03 deep consistency to load method script metadata from tools.
 - LoadRules.ps1: existing loader used by Fix_Atomic and S1 checks; returned non-empty rule sets.
 - ValidateRules.ps1: existing validator used by Fix_Atomic; returned OK.
 

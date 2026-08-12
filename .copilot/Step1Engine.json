@@ -1,5 +1,6 @@
 {
   "engine": "Step1",
+  "version": "1.0.0",
   "events": [
     "Fix_S1E0",
     "Fix_S1E1",
@@ -15,7 +16,7 @@
     "json": "JsonRules.md"
   },
   "fixes": ".copilot/Fixes/",
-  "methods": ".copilot/Methods/",
+  "methods": "tools/",
   "atoms": ".copilot/Atoms/",
   "logs": ".copilot/Logs/"
 }

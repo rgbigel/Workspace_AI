@@ -176,7 +176,7 @@ Documentation must reside in:
 
 Rules:
 - must not place documentation in src\
-- must not place documentation in scripts\
+- must not place documentation in tools/
 - must not place documentation in workspace root
 - must not modify documentation automatically
 

@@ -60,7 +60,7 @@ EXECUTION PIPELINE
 
 Atoms, Methods, Rules are resolved from:
     .copilot/Atoms/
-    .copilot/Methods/
+    tools/
     .copilot/Rules/
 
 =====================================================================

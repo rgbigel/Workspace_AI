@@ -11,11 +11,11 @@ Changelog:
 RULE-AUTHORITY
 - canonical-root: .copilot remains the active canonical governance core during Workspace_GC migration
 - canonical-rules: .copilot/Rules contains authoritative machine-readable rule files
-- canonical-methods: .copilot/Methods contains native PowerShell governance methods
+- canonical-methods: tools contains native PowerShell governance methods
 - canonical-logs: .copilot/Logs contains governance logs
-- continue-role: .continue and .continuerules are discovery and adapter surfaces only
-- no-rule-forking: Continue/Gemini rules must point to canonical rules or generated mirrors with source references
-- no-independent-truth: .continue must not define conflicting rule authority
+- continue-role: .continuerules and VS Code workspace settings are discovery and adapter surfaces only
+- no-rule-forking: Continue/Gemini rules must point to canonical .copilot rules or generated mirrors with source references
+- no-independent-truth: adapter surfaces must not define conflicting rule authority
 - mirror-policy: any generated mirror must identify its canonical source file and regeneration method
 - migration-policy: any later move from .copilot to a neutral governance root must use an alias or mirror phase before rename
 

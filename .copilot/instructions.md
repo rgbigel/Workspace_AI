@@ -161,7 +161,7 @@ SECTION: macro-definitions
 # FORMAT: ascii-only, technical, deterministic
 
 MACRO-DEFINITIONS-FILE
-- path: .copilot/macro-definitions.md
+- path: .copilot/Rules/macro-definitions.md
 - scope: durable-memory
 - purpose: define macro semantics and substitution rules
 - integration: referenced by behavioral-operators

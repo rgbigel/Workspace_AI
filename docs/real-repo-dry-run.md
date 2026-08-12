@@ -28,7 +28,7 @@ Workspace_GC is still the methodology incubation repository. Real-repository tes
 The normal readiness command is:
 
 ```powershell
-.\.copilot\Methods\Test-WorkspaceGCReadiness.ps1
+.\tools/Test-WorkspaceGCReadiness.ps1
 ```
 
 Default expected state before a candidate is selected:
@@ -46,7 +46,8 @@ Current candidate policy:
 ```text
 selected_repository: D:\Git_Repositories\VolumeInventory
 dry_run.enabled: false in Workspace_GC
-dry_run.status: blocked-until-target-local-method-instance
+dry_run.status: ready-for-read-only-dry-run when the target-local method instance exists
+action_preview.status: ready-read-only-action-preview when the target-local method instance exists
 write_allowed: false
 ```
 
@@ -65,7 +66,7 @@ Workspace_GC may record the candidate identity, but it must not own the target r
 - Write enablement is not supported by the current transition policy.
 - Target profiling performs no write probe.
 
-The term `adapter surface` means a candidate file or entrypoint that a dry-run can compare, such as `.continuerules` or `.copilot/Methods/APPLY.ps1`. It does not mean those files are already active workspace rules and it does not authorize copying them anywhere.
+The term `adapter surface` means a candidate file or entrypoint that a dry-run can compare, such as `.continuerules` or `tools/APPLY.ps1`. It does not mean those files are already active workspace rules and it does not authorize copying them anywhere.
 
 Repo-local rules can override Workspace_GC only when they are confirmed as repository requirements, not merely incidental implementation details. That decision must be documented in the target repository before it is treated as an override.
 
@@ -94,7 +95,7 @@ Workspace_GC may hold generic rules, templates, validation logic, and the candid
 The bootstrap command for creating the target-local method instance is:
 
 ```powershell
-.\.copilot\Methods\Initialize-RealRepoMethodInstance.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
+.\tools/Initialize-RealRepoMethodInstance.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
 ```
 
 The bootstrap is allowed only after explicit operator approval. It may create the target-local method directories, a manifest, and local README files inside the target repository. It must not stage, commit, or write unrelated target files, and it must not move target-repo outputs back into Workspace_GC.
@@ -130,14 +131,14 @@ Proposal placement is target-local:
 
 ```text
 ordinary repo proposals: Docs/Methods/Proposals/**/*.md
-method baseline proposals: .copilot/Methods/Logs/GC-Proposals.json
+method baseline proposals: .copilot/History/Logs/GC-Proposals.json
 ```
 
 Normal repository proposal files are Markdown-first because they are human review artifacts. Proposal files may be grouped under `Docs/Methods/Proposals/` in review-cycle folders or other meaningful groupings.
 
 Optional JSON sidecars are allowed only as derived automation artifacts. They are not reviewed, have no independent authority, and are valid only while they match the current reviewed state of the paired `.md` proposal. If the Markdown proposal is modified, rejected, split, merged, or superseded, the sidecar is stale until regenerated. A proposal may not be accepted based only on a JSON sidecar.
 
-Workspace_GC does not store change proposals for ordinary target repos. The exception is when Workspace_GC itself is the method-baseline target; in that case the existing `.copilot/Methods/...` proposal mechanism is appropriate.
+Workspace_GC does not store change proposals for ordinary target repos. The exception is when Workspace_GC itself is the method-baseline target; in that case the existing `tools/...` proposal mechanism is appropriate.
 
 `Docs/Methods/Proposals` is a working review queue, not a permanent archive. A proposal remains there while it is pending review, rejected but intentionally retained for context, modified into a new review shape, or accepted but not yet implemented. Once an accepted proposal has led to the corresponding documentation or code changes and that implementation step is accepted, the proposal file is void and should be removed from the proposal directory.
 
@@ -146,7 +147,7 @@ Proposal cleanup is target-local housekeeping. Removing a void proposal file mus
 The read-only cleanup scanner is:
 
 ```powershell
-.\.copilot\Methods\Test-RealRepoProposalCleanup.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
+.\tools/Test-RealRepoProposalCleanup.ps1 -RepositoryPath "D:\Git_Repositories\VolumeInventory"
 ```
 
 The scanner reports Markdown proposals that explicitly carry both `disposition: accepted` and an implemented marker such as `implementation_status: implemented`. It does not delete files. Deletion remains a target-local cleanup action that requires explicit acceptance.
@@ -200,8 +201,8 @@ Purpose: prove that Workspace_GC can validate its dry-run machinery without insp
 Commands:
 
 ```powershell
-.\.copilot\Methods\Get-RealRepoTestPlan.ps1
-.\.copilot\Methods\Invoke-RealRepoDryRun.ps1
+.\tools/Get-RealRepoTestPlan.ps1
+.\tools/Invoke-RealRepoDryRun.ps1
 ```
 
 Expected result:
@@ -222,7 +223,7 @@ Purpose: record a candidate repository path while keeping dry-run disabled and w
 Command shape:
 
 ```powershell
-.\.copilot\Methods\Set-RealRepoTestPlan.ps1 -RepositoryPath "D:\Git_Repositories\SomeRepo"
+.\tools/Set-RealRepoTestPlan.ps1 -RepositoryPath "D:\Git_Repositories\SomeRepo"
 ```
 
 The first selected candidate is:
@@ -238,7 +239,8 @@ Expected result after a valid selection:
 ```text
 mode: candidate-selected
 dry_run.enabled: false
-dry_run.status: blocked-until-target-local-method-instance
+dry_run.status: ready-for-read-only-dry-run when the target-local method instance exists
+action_preview.status: ready-read-only-action-preview when the target-local method instance exists
 write_allowed: false
 ```
 
@@ -274,7 +276,7 @@ Purpose: inspect only the target repository state needed to plan a later adapter
 Command:
 
 ```powershell
-.\.copilot\Methods\Get-RealRepoTargetProfile.ps1
+.\tools/Get-RealRepoTargetProfile.ps1
 ```
 
 Read-only observations:
@@ -292,7 +294,7 @@ Adapter surface candidates currently checked:
 .continuerules
 .continue/rules/Workspace_GC.md
 .copilot/Rules/RuleAuthority.md
-.copilot/Methods/APPLY.ps1
+tools/APPLY.ps1
 ```
 
 ## Case 5: Clear Selection
@@ -302,7 +304,7 @@ Purpose: return the plan to the blocked self-stabilization state.
 Command:
 
 ```powershell
-.\.copilot\Methods\Set-RealRepoTestPlan.ps1 -ClearSelection
+.\tools/Set-RealRepoTestPlan.ps1 -ClearSelection
 ```
 
 Expected result:
@@ -322,7 +324,7 @@ Purpose: show what Workspace_GC would intend to do in a later write-capable adap
 Command:
 
 ```powershell
-.\.copilot\Methods\Get-RealRepoActionPlan.ps1
+.\tools/Get-RealRepoActionPlan.ps1
 ```
 
 When no repository is selected, the action plan is blocked:
@@ -366,7 +368,7 @@ The current adapter surfaces are:
 .continuerules
 .continue/rules/Workspace_GC.md
 .copilot/Rules/RuleAuthority.md
-.copilot/Methods/APPLY.ps1
+tools/APPLY.ps1
 ```
 
 Each intended action reports `WriteAllowedNow: False` and `RequiresFutureApproval: True`.
@@ -434,7 +436,9 @@ Those require a later explicit design and user approval.
 - Run the single readiness command and confirm it passes.
 - Confirm `Real repository selected: False` until a target is explicitly chosen.
 - Confirm `Real repository dry-run status: blocked-until-repository-selected` in self-stabilization.
+- Confirm `Real repository dry-run status: ready-for-read-only-dry-run` after the selected target has a target-local method instance.
 - Confirm `Real repository allowed Git commands: 4`.
 - Confirm `Real repository action preview status: blocked-until-repository-selected` before target selection.
+- Confirm `Real repository action preview status: ready-read-only-action-preview` after the selected target has a target-local method instance.
 - Confirm `Real repository change-request orientation: bottom-up`.
 - Confirm `WriteProbePerformed: False` in target profile output.

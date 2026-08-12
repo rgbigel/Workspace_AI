@@ -17,8 +17,8 @@ The log is ASCII-only, CRLF-normalized, and stable across runs.
 ## Scope
 The agent reads:
 - `.copilot/Logs/Fix_*.log`
-- `.copilot/Methods/Logs/S1.log`
-- `.copilot/Methods/Logs/S2.log`
+- `.copilot/History/Logs/S1.log`
+- `.copilot/History/Logs/S2.log`
 - `.copilot/VSCode_Agent.md`
 - `.copilot/Fixes/*.json`
 - `.copilot/Rules/*.md`

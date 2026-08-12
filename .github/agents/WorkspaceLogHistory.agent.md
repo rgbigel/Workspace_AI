@@ -13,8 +13,8 @@ Unlike WorkspaceLog, which overwrites with a canonical baseline, WorkspaceLogHis
 ## Scope
 The agent reads:
 - `.copilot/Logs/Fix_*.log`
-- `.copilot/Methods/Logs/S1.log`
-- `.copilot/Methods/Logs/S2.log`
+- `.copilot/History/Logs/S1.log`
+- `.copilot/History/Logs/S2.log`
 - `.copilot/Fixes/*.json`
 - `.copilot/Rules/*.md`
 - `.github/agents/WorkspaceAgentIndex.md`
