@@ -7,7 +7,7 @@
   "tasks": [
     {
       "label": "Flush VSCode Buffers",
-      "command": "echo",
+      "command": "Write-Output 'Flush VSCode Buffers complete'",
       "type": "shell",
       "presentation": {
         "reveal": "silent"
@@ -20,7 +20,7 @@
     {
       "label": "Governance Cycle",
       "type": "shell",
-      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File .\\.copilot\\Methods\\Generate-Log.ps1; pwsh -NoProfile -ExecutionPolicy Bypass -File .\\.copilot\\Methods\\Advance-Governance.ps1",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File .\\tools\\Generate-Log.ps1; pwsh -NoProfile -ExecutionPolicy Bypass -File .\\tools\\Advance-Governance.ps1",
       "group": {
         "kind": "build",
         "isDefault": true

@@ -4,8 +4,8 @@ Workspace_GC Governance Log
 1. Header
 ---------
 Workspace name: Workspace_GC
-Generated at: 20260812_154802
-Latest commit at generation: e685964 pre-consistency checks, aiming for version 4
+Generated at: 20260813_200246
+Latest commit at generation: fc9d6f4 Workspace_GC version 4.0.0 consistency baseline
 
 2. Rule Authority
 -----------------
@@ -30,54 +30,7 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- D .continue/rules/Workspace_GC.md
- M .copilot/CopilotTools.md
- M .copilot/Fixes/Fix_S1E01.json
- M .copilot/Fixes/Fix_S1E02.json
- M .copilot/Fixes/Fix_S1E03.json
- M .copilot/Fixes/Fix_S1E04.json
- M .copilot/Fixes/Fix_S1E05.json
- M .copilot/Fixes/Fix_S1E06.json
- M .copilot/Fixes/Fix_S1E07.json
- M .copilot/Fixes/Fix_S1E08.json
- M .copilot/Fixes/Fix_S1E09.json
- M .copilot/Fixes/Fix_S1E10.json
- M .copilot/Fixes/Fix_S1E11.json
- M .copilot/Fixes/Fix_S1E12.json
- M .copilot/Fixes/Fix_S1E13.json
- M .copilot/Fixes/Fix_S1E14.json
- M .copilot/Fixes/Fix_S1E15.json
- M .copilot/Fixes/Fix_S1E16.json
- M .copilot/MEMORY.md
- M .copilot/Rules/macro-definitions.md
- M .copilot/VSCode_Agent.md
- M .copilot/instructions.md
- M .copilot/problems.md
- M .github/agents/.AGENTS.Template.md
- M ".github/agents/ATOM\342\200\221Building.md"
- M .github/agents/DOX.agent.md
- M .github/agents/DirectoryRules.md
- M ".github/agents/MIGRATION\342\200\221Rules.md"
- M .github/agents/RepoAgentIndex_Template.md
- M .github/agents/SharedModulesRule.md
- M .github/agents/WORKFLOW.md
- M .github/agents/Workspace-Rules.md
- M .github/agents/WorkspaceAgentIndex.md
- M .github/agents/WorkspaceLog.agent.md
- M .github/agents/WorkspaceLogHistory.agent.md
- M docs/00_Uebersicht.md
- M docs/10_Sicherung.md
- M docs/README.md
- M docs/Standards.md
- M "docs/Workspace Conventions.md"
- M docs/Workspace-Location.md
- M docs/projects.md
- M docs/real-repo-dry-run.md
- M docs/servicing-notes.md
- M docs/version-bump-procedure.md
- M docs/version-consistency-check.md
- M tools/QualityGates/WorkspaceGCQualityGates.psm1
-?? .copilot/Logs/Workspace_GC.Batch10.20260812_152947.log
+ M .vscode/tasks.json
 
 6. Generated Artifact Status
 ----------------------------

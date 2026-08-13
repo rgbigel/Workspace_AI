@@ -5,9 +5,9 @@ Workspace_GC Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260812_154802
+Generated at: 20260813_200246
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: e685964 pre-consistency checks, aiming for version 4
+Latest commit at generation: fc9d6f4 Workspace_GC version 4.0.0 consistency baseline
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -18,6 +18,7 @@ f63fdf9 20260802_174345 Workspace_GC: refine real-repo methodology boundaries
 74b4287 20260802_180924 Workspace_GC: accept target-local proposal governance
 efb419b 20260802_181421 Workspace_GC: bootstrap target-local method instances
 e685964 20260812_132527 pre-consistency checks, aiming for version 4
+fc9d6f4 20260812_154812 Workspace_GC version 4.0.0 consistency baseline
 
 3. Footer
 ---------
