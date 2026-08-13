@@ -2,7 +2,7 @@
 param(
   [string]$WorkspaceParent = 'D:\Git_Repositories',
 
-  [string]$ActiveRepository = 'D:\Git_Repositories\Workspace_GC',
+  [string]$ActiveRepository = 'D:\Git_Repositories\Workspace_AI',
 
   [switch]$IncludeActiveRepository,
 

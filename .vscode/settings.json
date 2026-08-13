@@ -15,28 +15,33 @@
     ]
   },
   "git.ignoredRepositories": [
+    "D:\\Git_Repositories\\AuthorizeMasterUser",
     "D:\\Git_Repositories\\BackgroundModifier",
     "D:\\Git_Repositories\\BackgroundModifier_AC",
     "D:\\Git_Repositories\\BootEntryManager",
+    "D:\\Git_Repositories\\BootOpsHub",
+    "D:\\Git_Repositories\\CommandHub",
+    "D:\\Git_Repositories\\DeviceInventory",
     "D:\\Git_Repositories\\DiskAssignmentStatus",
+    "D:\\Git_Repositories\\DiskAssignmentStatus_AC",
+    "D:\\Git_Repositories\\DiskAssignmentStatus_S1",
+    "D:\\Git_Repositories\\EnvironmentTools",
+    "D:\\Git_Repositories\\FileUtilities",
     "D:\\Git_Repositories\\GetRecoveryVolume",
+    "D:\\Git_Repositories\\GitTools",
     "D:\\Git_Repositories\\InstallFonts",
-    "D:\\Git_Repositories\\MacriumTemplateUpdater",
     "D:\\Git_Repositories\\MSG file conversion",
+    "D:\\Git_Repositories\\MacriumTemplateUpdater",
     "D:\\Git_Repositories\\NextBootTray",
     "D:\\Git_Repositories\\OutlookVBAConversion",
     "D:\\Git_Repositories\\PowerBGInfo",
     "D:\\Git_Repositories\\ReEnableRadeonRx580",
     "D:\\Git_Repositories\\SharedModules",
+    "D:\\Git_Repositories\\SystemConfiguration",
     "D:\\Git_Repositories\\TimeStamper",
     "D:\\Git_Repositories\\VolumeInventory",
-    "D:\\Git_Repositories\\Workspace_AC"
-  ],
-  "continue.rules.path": "D:\\Git_Repositories\\Workspace_GC\\.continuerules",
-  "continue.workspaceRules": [
-    "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\RuleAuthority.md",
-    "D:\\Git_Repositories\\Workspace_GC\\.github\\agents\\Workspace-Rules.md",
-    "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\InvariantRules.md",
-    "D:\\Git_Repositories\\Workspace_GC\\.copilot\\Rules\\macro-definitions.md"
+    "D:\\Git_Repositories\\VolumeInventory_GC",
+    "D:\\Git_Repositories\\Workspace_AC",
+    "D:\\Git_Repositories\\Workspace_GC"
   ]
 }

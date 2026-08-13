@@ -73,13 +73,17 @@ function Assert-WorkspaceGCIgnoredRepositories {
 
     [string]$WorkspaceParent = 'D:\Git_Repositories',
 
-    [string]$ActiveRepository = 'D:\Git_Repositories\Workspace_GC',
+    [string]$ActiveRepository,
 
     [string]$WorkspaceRoot
   )
 
   if (-not $WorkspaceRoot) {
     $WorkspaceRoot = Get-WorkspaceGCRoot
+  }
+
+  if (-not $ActiveRepository) {
+    $ActiveRepository = $WorkspaceRoot
   }
 
   if (-not $SettingsPath) {
