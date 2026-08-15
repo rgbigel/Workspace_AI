@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260815_230509
-Latest commit at generation: caab019 cleanup done
+Generated at: 20260815_234511
+Latest commit at generation: 9f22dc5 CM Interim state!
 
 2. Change Proposals
 -------------------
@@ -810,32 +810,15 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M .github/agents/Workspace-Rules.md
- D Deletions/.copilot/Logs/Workspace_AC.history.log
- D Deletions/.copilot/Logs/Workspace_AC.log
- D Deletions/.copilot/Logs/Workspace_GC.Batch10.20260812_152947.log
- D WS_DIR.txt
- M docs/LCM-Proposal/Implementation-and-Tooling.md
- M docs/LCM-Proposal/Requirements.md
- M docs/Standards.md
- M "docs/Workspace Conventions.md"
- M docs/Workspace-Location.md
- M docs/version-bump-procedure.md
- M docs/version-consistency-check.md
- M tools/QualityGates/WorkspaceQualityGates.psm1
- M tools/Validate-CopilotProfile.ps1
-?? Deletions/.copilot/History/Logs/Workspace_AC.history.log
-?? Deletions/.copilot/History/Logs/Workspace_AC.log
-?? Deletions/.copilot/History/Logs/Workspace_GC.Batch10.20260812_152947.log
-?? Working/WS_DIR.txt
-?? Working/implementation_plan.md
-?? docs/LCM-Onboarding-Architecture.md
-?? docs/LCM-Repository-Inventory.md
-?? docs/Logs/
-?? docs/Methods/
-?? templates/
-?? tools/Invoke-LCMOnboardRepo.ps1
-?? tools/Onboarding/
+ D docs/LCM-Proposal/Implementation-and-Tooling.md
+ D docs/LCM-Proposal/README.md
+ D docs/LCM-Proposal/Requirements.md
+ M docs/README.md
+?? README.md
+?? docs/Architecture.md
+?? docs/Implementation.md
+?? docs/LCM-Configuration-Management.md
+?? docs/Requirements.md
 
 6. Current Generated Artifact Status
 ------------------------------------
