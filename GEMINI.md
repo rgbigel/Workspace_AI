@@ -12,9 +12,11 @@ The following rules govern all code generation, refactoring, and agent behaviors
 - [**CMDRules.md**](.agents/rules/CMDRules.md)
 - [**InvariantRules.md**](.agents/rules/InvariantRules.md)
 - [**JsonRules.md**](.agents/rules/JsonRules.md)
+- [**LanguagePolicy.md**](.agents/rules/LanguagePolicy.md)
 - [**macro-definitions.md**](.agents/rules/macro-definitions.md)
 - [**PowerShellRules.md**](.agents/rules/PowerShellRules.md)
 - [**RuleAuthority.md**](.agents/rules/RuleAuthority.md)
+
 
 ---
 
@@ -27,7 +29,7 @@ The following rules govern all code generation, refactoring, and agent behaviors
    - Advanced functions must include `[CmdletBinding()]` and explicit parameter blocks.
 
 2. **Quality Gates & Self-Readiness**:
-   - Run `./tools/Test-WorkspaceGCReadiness.ps1` to validate workspace health before and after significant updates.
+   - Run `./tools/Test-WorkspaceReadiness.ps1` to validate workspace health before and after significant updates.
    - Target repositories under `D:\Git_Repositories\` must be inspected via dry-run before modifications.
 
 3. **Customizations Structure**:

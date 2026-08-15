@@ -2,11 +2,11 @@
 
 Module: Workspace-Rules.md
 Purpose: Defines workspace documentation and operational rules for Workspace-Rules.
-Path: D:/Git_Repositories/Workspace_GC/.github/agents/Workspace-Rules.md
+Path: D:/Git_Repositories/Workspace_AI/.github/agents/Workspace-Rules.md
 Authors: Rolf
 Version: 1.2.0
 Changelog:
-- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_GC paths, agent registry requirements, and WorkspaceLog governance logging.
+- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_AI paths, agent registry requirements, and WorkspaceLog governance logging.
 - 2026-07-31: Resolved DOX unification follow-ups; confirmed explicit documentation-work and custom-agent discovery rules are complete.
 - 2026-07-31: Aligned documentation editing rules with explicit DOX invocation and custom-agent frontmatter preservation.
 - 2026-07-27: Normalized Markdown metadata header.
@@ -16,20 +16,20 @@ Changelog:
 =====================================================================
 Define workspace-level rules governing documentation immutability,
 regeneration boundaries, agent behavior, deterministic output, and
-global constraints for Workspace_GC.
+global constraints for Workspace_AI.
 
 =====================================================================
 2. Scope
 =====================================================================
-Workspace rules apply to Workspace_GC and to workspace-level control
-operations performed from Workspace_GC.
+Workspace rules apply to Workspace_AI and to workspace-level control
+operations performed from Workspace_AI.
 
 Canonical workspace root:
-- D:\Git_Repositories\Workspace_GC
+- D:\Git_Repositories\Workspace_AI
 
 Canonical workspace control directories:
-- D:\Git_Repositories\Workspace_GC\.github\agents
-- D:\Git_Repositories\Workspace_GC\.copilot
+- D:\Git_Repositories\Workspace_AI\.github\agents
+- D:\Git_Repositories\Workspace_AI\.copilot
 
 Authority order:
 1. Workspace-Rules.md
@@ -145,7 +145,7 @@ Workspace agents must not:
 Workspace-level files:
 - must use absolute Windows paths
 - example:
-  D:\Git_Repositories\Workspace_GC\.github\agents\Workspace-Rules.md
+  D:\Git_Repositories\Workspace_AI\.github\agents\Workspace-Rules.md
 
 Repository-level files:
 - must use repo-relative paths
@@ -163,7 +163,7 @@ VS Code must display real folder names, not localized names.
 - all workspace-level files must follow @technical format
 - WorkspaceAgentIndex.md is the agent registry and must list all active workspace agents
 - .agent.md frontmatter must start at line 1 and remain valid for VS Code discovery
-- WorkspaceLog.agent.md writes the canonical governance log to .copilot\Logs\Workspace_GC.log
+- WorkspaceLog.agent.md writes the canonical governance log to .copilot\Logs\Workspace.log
 
 Override detection:
 - any repository-local rule that explicitly overrides a workspace rule

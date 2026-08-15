@@ -10,7 +10,7 @@ This skill provides direct operational access to the deterministic verification 
 ## Key Commands and Scripts
 
 1. **Readiness Self-Test**:
-   - Run: `pwsh ./tools/Test-WorkspaceGCReadiness.ps1`
+   - Run: `pwsh ./tools/Test-WorkspaceReadiness.ps1`
    - Purpose: Verifies AST parsing, JSON schemas, and quality gate conformance across all workspace tools.
 
 2. **Sibling Repository Discovery**:
@@ -22,5 +22,5 @@ This skill provides direct operational access to the deterministic verification 
    - Contract: Read-only candidate inspection against selected target repositories (e.g. `VolumeInventory`).
 
 4. **Quality Gates Module**:
-   - Location: `tools/QualityGates/WorkspaceGCQualityGates.psm1`
+   - Location: `tools/QualityGates/WorkspaceQualityGates.psm1`
    - Purpose: Enforces UTF-8 without BOM, CRLF line endings, explicit parameter blocks, and variable assignment rules.

@@ -16,13 +16,13 @@ param(
 
 <#
 Module: Set-RealRepoTestPlan.ps1
-Purpose: Update the Workspace_GC real-repository test plan without enabling writes.
+Purpose: Update the Workspace_AI real-repository test plan without enabling writes.
 Path: tools/Set-RealRepoTestPlan.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.3.0
-Caller Contract: Called only for Workspace_GC governance preparation; refuses write enablement and validates policy after updating the local plan file.
+Caller Contract: Called only for Workspace_AI governance preparation; refuses write enablement and validates policy after updating the local plan file.
 Changelog:
-- 2026-08-02: Blocked Workspace_GC-local dry-run enablement; target repos must own dry-run state through Docs/Methods.
+- 2026-08-02: Blocked Workspace_AI-local dry-run enablement; target repos must own dry-run state through Docs/Methods.
 - 2026-08-01: Synchronized target-profile and action-preview status fields during candidate transitions.
 - 2026-08-01: Added candidate Git repository validation and explicit read-only dry-run confirmation.
 - 2026-08-01: Added guarded real-repository test plan update command.
@@ -30,9 +30,9 @@ Changelog:
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 
 Import-Module $qualityGateModulePath -Force
 
@@ -48,7 +48,7 @@ $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $stabilizationState = Get-Content -Raw -Path $stabilizationPath | ConvertFrom-Json
 
 if ($Mode -eq 'dry-run' -and -not $EnableDryRun) {
-  throw 'Workspace_GC-local dry-run mode is no longer supported; create a target-local Docs/Methods method instance instead.'
+  throw 'Workspace_AI-local dry-run mode is no longer supported; create a target-local Docs/Methods method instance instead.'
 }
 
 if ($ClearSelection) {
@@ -79,7 +79,7 @@ if ($RepositoryPath) {
   $workspaceRootPath = [System.IO.Path]::GetFullPath($workspaceRoot).TrimEnd('\')
 
   if ($fullRepositoryPath.Equals($workspaceRootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Workspace_GC cannot be selected as its own real-repository test target.'
+    throw 'Workspace_AI cannot be selected as its own real-repository test target.'
   }
 
   foreach ($offLimitsPath in @($stabilizationState.off_limits_paths)) {
@@ -110,7 +110,7 @@ if ($RepositoryPath) {
   $plan.target_profile.adapter_surface_present_count = 0
   $plan.target_profile.adapter_surface_missing_count = @($plan.dry_run.adapter_surface_candidates).Count
   $plan.target_profile.write_probe_performed = $false
-  $targetMethodInstance = Resolve-WorkspaceGCTargetMethodInstance -RepositoryPath $fullRepositoryPath
+  $targetMethodInstance = Resolve-TargetMethodInstance -RepositoryPath $fullRepositoryPath
   if ($targetMethodInstance.Exists) {
     $plan.dry_run.status = 'ready-for-read-only-dry-run'
     $plan.action_preview.status = 'ready-read-only-action-preview'
@@ -128,7 +128,7 @@ if ($Mode) {
 }
 
 if ($EnableDryRun) {
-  throw 'Workspace_GC must not enable or store target-repo dry-run state. Establish the target-local Docs/Methods method instance first.'
+  throw 'Workspace_AI must not enable or store target-repo dry-run state. Establish the target-local Docs/Methods method instance first.'
 }
 
 if ($plan.write_allowed -ne $false -or $plan.dry_run.write_allowed -ne $false) {
@@ -136,11 +136,11 @@ if ($plan.write_allowed -ne $false -or $plan.dry_run.write_allowed -ne $false) {
 }
 
 $json = $plan | ConvertTo-Json -Depth 10
-if ($PSCmdlet.ShouldProcess($planPath, 'Update Workspace_GC real-repository test plan')) {
+if ($PSCmdlet.ShouldProcess($planPath, 'Update Workspace_AI real-repository test plan')) {
   Set-Content -Path $planPath -Value $json -Encoding utf8
 }
 
-$result = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$result = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 
 if ($AsJson) {
   $result | ConvertTo-Json -Depth 6

@@ -1,34 +1,34 @@
 # ============================================
 # File: 03_Restore_Settings.ps1
-# Module: SystemRekonstruktion
-# Purpose: Stellt Settings aus Backup wieder her
+# Module: SystemReconstruction
+# Purpose: Restores settings from backup
 # Path: tools/03_Restore_Settings.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Stellt Settings wieder her. Version 1.0.0
+Restores settings. Version 1.0.0
 
 .DESCRIPTION
-Stellt AppData, ProgramData und Registry-Dateien aus einem BackupRoot wieder her.
-Systemname wird automatisch aus dem Backup-Pfad extrahiert.
+Restores AppData, ProgramData, and registry files from a BackupRoot directory.
+The system name is automatically extracted from the backup path.
 
 .PARAMETER BackupRoot
-Pfad zu einem Backup-Verzeichnis.
+Path to a backup directory.
 
 .PARAMETER HelpMode
-Zeigt die Hilfe an.
+Displays help information.
 Alias: h, ?
 
 .EXAMPLE
 .\03_Restore_Settings.ps1 -BackupRoot "D:\SystemRekonstruktion_Backup\D5P0 20260612_1530"
 
 .NOTES
-Registry-Import bleibt manuell.
+Registry import remains manual.
 #>
 
 [CmdletBinding()]
@@ -44,7 +44,7 @@ if ($HelpMode) {
 }
 
 if (!(Test-Path $BackupRoot)) {
-    Write-Host "BackupRoot nicht gefunden"
+    Write-Host "BackupRoot not found"
     exit 1
 }
 
@@ -70,9 +70,10 @@ robocopy (Join-Path $settingsDir "AppData_Local") $localDest /MIR /R:2 /W:5 | Ou
 Write-Log "Restore ProgramData"
 robocopy (Join-Path $settingsDir "ProgramData") $programDataDest /MIR /R:2 /W:5 | Out-Null
 
-Write-Log "Registry-Dateien zur manuellen Pruefung:"
+Write-Log "Registry files for manual verification:"
 Get-ChildItem $registryDir -Filter "*.reg" | ForEach-Object {
-    Write-Log $_.FullName
+    $fileItem = $_
+    Write-Log $fileItem.FullName
 }
 
-Write-Log "Settings-Restore abgeschlossen"
+Write-Log "Settings restore completed"

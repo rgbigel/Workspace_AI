@@ -5,9 +5,9 @@ param(
 
 <#
 Module: Invoke-RealRepoDryRun.ps1
-Purpose: Report Workspace_GC real-repository dry-run readiness without writing to any target repository.
+Purpose: Report Workspace_AI real-repository dry-run readiness without writing to any target repository.
 Path: tools/Invoke-RealRepoDryRun.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.7.0
 Caller Contract: Called during readiness and operator preparation; reports blocked/ready state and performs read-only git status only after dry-run is enabled.
 Changelog:
@@ -23,13 +23,13 @@ Changelog:
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 
 Import-Module $qualityGateModulePath -Force
 
-$planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$planValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $targetProfilePath = Join-Path $PSScriptRoot 'Get-RealRepoTargetProfile.ps1'
 $targetProfile = & $targetProfilePath

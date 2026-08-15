@@ -11,9 +11,9 @@ param(
 
 <#
 Module: Generate-Log.ps1
-Purpose: Generate native Workspace_GC step and permanent governance logs.
+Purpose: Generate native Workspace_AI step and permanent governance logs.
 Path: tools/Generate-Log.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.5.0
 Caller Contract: Called from VS Code tasks or terminal; writes deterministic checkpoint and accepted-change governance logs.
 Changelog:
@@ -21,7 +21,7 @@ Changelog:
 - 2026-08-01: Grouped generated artifact changes separately from reviewable pending changes.
 - 2026-08-01: Added generated-artifact section so logs are not treated as reviewable proposal files.
 - 2026-08-01: Added normalized disposition detail output for step proposal records.
-- 2026-08-01: Loaded step proposal records from GC-Proposals.json instead of hardcoding entries.
+- 2026-08-01: Loaded step proposal records from Proposals.json instead of hardcoding entries.
 - 2026-08-01: Added separate step-oriented and permanent accepted-change log outputs.
 - 2026-08-01: Added native governance log generator for Gemini/Continue migration.
 #>
@@ -30,28 +30,26 @@ $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
 
 if (-not $OutputPath) {
-  $OutputPath = Join-Path $copilotRoot 'Logs\Workspace_GC.log'
+  $OutputPath = Join-Path $copilotRoot 'Logs\Workspace.log'
 }
 
 if (-not $StepLogPath) {
-  $StepLogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.step.log'
+  $StepLogPath = Join-Path $copilotRoot 'Logs\Workspace.step.log'
 }
 
 if (-not $PermanentLogPath) {
-  $PermanentLogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.accepted.log'
+  $PermanentLogPath = Join-Path $copilotRoot 'Logs\Workspace.accepted.log'
 }
 
 if (-not $ProposalLogPath) {
-  $ProposalLogPath = Join-Path $copilotRoot 'History\Logs\GC-Proposals.json'
+  $ProposalLogPath = Join-Path $copilotRoot 'History\Logs\Proposals.json'
 }
 
 $rulesPath = Join-Path $workspaceRoot '.github\agents\Workspace-Rules.md'
 $agentIndexPath = Join-Path $workspaceRoot '.github\agents\WorkspaceAgentIndex.md'
 $ruleAuthorityPath = Join-Path $copilotRoot 'Rules\RuleAuthority.md'
-$s1LogPath = Join-Path $copilotRoot 'History\Logs\S1.log'
-$s2LogPath = Join-Path $copilotRoot 'History\Logs\S2.log'
 
-$requiredPaths = @($rulesPath, $agentIndexPath, $ruleAuthorityPath, $s1LogPath, $s2LogPath, $ProposalLogPath)
+$requiredPaths = @($rulesPath, $agentIndexPath, $ruleAuthorityPath, $ProposalLogPath)
 foreach ($requiredPath in $requiredPaths) {
   if (-not (Test-Path -LiteralPath $requiredPath)) {
     throw "Required governance input missing: $requiredPath"
@@ -138,12 +136,12 @@ $generatedArtifactPaths = @(
 $statusGroups = Split-GitStatusByArtifact -StatusLines @($status) -GeneratedArtifactPaths $generatedArtifactPaths
 
 $content = @(
-  'Workspace_GC Governance Log',
+  'Workspace_AI Governance Log',
   '===========================',
   '',
   '1. Header',
   '---------',
-  'Workspace name: Workspace_GC',
+  'Workspace name: Workspace_AI',
   "Generated at: $generatedAt",
   "Latest commit at generation: $latestCommit",
   '',
@@ -157,9 +155,9 @@ $content = @(
   '----------------------------',
   'Native Generate-Log.ps1: available',
   'Native Advance-Governance.ps1: available when this log is generated through the governance task',
-  'Step-oriented log: .copilot/Logs/Workspace_GC.step.log',
-  'Permanent accepted log: .copilot/Logs/Workspace_GC.accepted.log',
-  'Proposal registry: .copilot/History/Logs/GC-Proposals.json',
+  'Step-oriented log: .copilot/Logs/Workspace.step.log',
+  'Permanent accepted log: .copilot/Logs/Workspace.accepted.log',
+  'Proposal registry: .copilot/History/Logs/Proposals.json',
   '',
   '4. Proposal Disposition Summary',
   '-------------------------------'
@@ -197,7 +195,7 @@ $content += @(
   '',
   '7. Footer',
   '---------',
-  'Workspace_GC native governance log generation complete.'
+  'Workspace_AI native governance log generation complete.'
 )
 
 $outputDirectory = Split-Path $OutputPath -Parent
@@ -208,7 +206,7 @@ if (-not (Test-Path -LiteralPath $outputDirectory)) {
 Set-Content -Path $OutputPath -Value $content -Encoding utf8
 
 $stepContent = @(
-  'Workspace_GC Step-Oriented Governance Log',
+  'Workspace_AI Step-Oriented Governance Log',
   '=========================================',
   '',
   '1. Header',
@@ -288,13 +286,13 @@ $stepContent += @(
   '',
   '7. Footer',
   '---------',
-  'Workspace_GC step-oriented governance log generation complete.'
+  'Workspace_AI step-oriented governance log generation complete.'
 )
 
 Set-Content -Path $StepLogPath -Value $stepContent -Encoding utf8
 
 $permanentContent = @(
-  'Workspace_GC Permanent Accepted Change Log',
+  'Workspace_AI Permanent Accepted Change Log',
   '==========================================',
   '',
   '1. Header',
@@ -319,7 +317,7 @@ $permanentContent += @(
   '',
   '3. Footer',
   '---------',
-  'Workspace_GC permanent accepted change log generation complete.'
+  'Workspace_AI permanent accepted change log generation complete.'
 )
 
 Set-Content -Path $PermanentLogPath -Value $permanentContent -Encoding utf8

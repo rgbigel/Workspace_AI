@@ -3,13 +3,13 @@ param()
 
 <#
 Module: LoadMethods.ps1
-Purpose: Load method script metadata for Workspace_GC fix-module execution.
+Purpose: Load method script metadata for Workspace_AI fix-module execution.
 Path: tools/LoadMethods.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.1
 Caller Contract: Called from APPLY/fix-module validation; returns a hashtable keyed by method file name.
 Changelog:
-- 2026-08-01: Updated active loader identity from Workspace_AC to Workspace_GC.
+- 2026-08-01: Updated active loader identity from Workspace_AC to Workspace_AI.
 - 2026-07-31: Added deterministic method loader for Fix_S1E03 deep consistency.
 #>
 

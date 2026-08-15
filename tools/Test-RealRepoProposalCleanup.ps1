@@ -12,7 +12,7 @@ param(
 Module: Test-RealRepoProposalCleanup.ps1
 Purpose: Report target-local proposal files that are void because they are accepted and implemented.
 Path: tools/Test-RealRepoProposalCleanup.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
 Caller Contract: Performs a read-only scan of the selected target repository's method proposal queue; does not delete, stage, or commit files.
 Changelog:
@@ -25,9 +25,9 @@ Write-Host "$scriptName version $scriptVersion"
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 
 Import-Module $qualityGateModulePath -Force
 
@@ -72,7 +72,7 @@ function Test-ProposalIsAcceptedAndImplemented {
   return ($hasAcceptedDisposition -and $hasImplementedStatus)
 }
 
-$planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$planValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 
 if (-not $RepositoryPath) {
   $RepositoryPath = [string]$planValidation.SelectedRepository

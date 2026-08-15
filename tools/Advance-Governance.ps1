@@ -17,9 +17,9 @@ param(
 
 <#
 Module: Advance-Governance.ps1
-Purpose: Validate native Workspace_GC governance readiness and log separation without staging or committing changes.
+Purpose: Validate native Workspace_AI governance readiness and log separation without staging or committing changes.
 Path: tools/Advance-Governance.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 2.15.0
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
@@ -36,9 +36,9 @@ Changelog:
 - 2026-08-01: Added real-repository adapter surface candidate count reporting.
 - 2026-08-01: Added real-repository dry-run confirmation requirement reporting.
 - 2026-08-01: Added real-repository dry-run status reporting.
-- 2026-08-01: Consolidated helper quality gates behind WorkspaceGCQualityGates module.
+- 2026-08-01: Consolidated helper quality gates behind WorkspaceQualityGates module.
 - 2026-08-01: Added real-repository test plan and stabilization policy validation reporting.
-- 2026-08-01: Added Workspace_GC stabilization state and sibling repository ignore validation output.
+- 2026-08-01: Added Workspace_AI stabilization state and sibling repository ignore validation output.
 - 2026-08-01: Added proposal disposition summary output.
 - 2026-08-01: Grouped generated artifact changes separately from reviewable pending changes.
 - 2026-08-01: Added optional accepted/rejected/modified proposal validation fixture check.
@@ -50,35 +50,35 @@ Changelog:
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 Import-Module $qualityGateModulePath -Force
 
 if (-not $LogPath) {
-  $LogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.log'
+  $LogPath = Join-Path $copilotRoot 'Logs\Workspace.log'
 }
 
 if (-not $StepLogPath) {
-  $StepLogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.step.log'
+  $StepLogPath = Join-Path $copilotRoot 'Logs\Workspace.step.log'
 }
 
 if (-not $PermanentLogPath) {
-  $PermanentLogPath = Join-Path $copilotRoot 'Logs\Workspace_GC.accepted.log'
+  $PermanentLogPath = Join-Path $copilotRoot 'Logs\Workspace.accepted.log'
 }
 
 if (-not $ProposalLogPath) {
-  $ProposalLogPath = Join-Path $copilotRoot 'History\Logs\GC-Proposals.json'
+  $ProposalLogPath = Join-Path $copilotRoot 'History\Logs\Proposals.json'
 }
 
 if (-not $ProposalValidationPath) {
-  $ProposalValidationPath = Join-Path $copilotRoot 'History\Logs\GC-Proposals.validation.json'
+  $ProposalValidationPath = Join-Path $copilotRoot 'History\Logs\Proposals.validation.json'
 }
 
 if (-not $StabilizationPath) {
-  $StabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
+  $StabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
 }
 
 if (-not $RealRepoTestPlanPath) {
-  $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
+  $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
 }
 
 $requiredPaths = @(
@@ -197,12 +197,12 @@ if (Test-Path -LiteralPath $ProposalValidationPath) {
 }
 
 $stabilizationState = Get-Content -Raw -Path $StabilizationPath | ConvertFrom-Json
-$ignoreValidation = Assert-WorkspaceGCIgnoredRepositories -WorkspaceRoot $workspaceRoot
-$policyValidation = Assert-WorkspaceGCStabilizationPolicy -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
-$realRepoPlanValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
+$ignoreValidation = Assert-IgnoredRepositories -WorkspaceRoot $workspaceRoot
+$policyValidation = Assert-StabilizationPolicy -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
+$realRepoPlanValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
 $realRepoPlan = Get-Content -Raw -Path $RealRepoTestPlanPath | ConvertFrom-Json
 
-Write-Host 'Workspace_GC native governance check: OK'
+Write-Host 'Workspace_AI native governance check: OK'
 Write-Host "Stabilization phase: $($stabilizationState.phase)"
 Write-Host "Real repository testing enabled: $($stabilizationState.real_repository_testing_enabled)"
 Write-Host "Real repository selected: $([bool]$realRepoPlan.selected_repository)"

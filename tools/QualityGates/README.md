@@ -1,11 +1,11 @@
-# Workspace_GC Quality Gates
+# Workspace_AI Quality Gates
 
-This folder contains reusable checks for Workspace_GC readiness and stabilization.
+This folder contains reusable checks for Workspace_AI readiness and stabilization.
 
 Operators should run the single public readiness command from the repository root:
 
 ```powershell
-.\tools/Test-WorkspaceGCReadiness.ps1
+.\tools/Test-WorkspaceReadiness.ps1
 ```
 
 The module is imported by native governance scripts. Do not run individual quality-gate functions as the normal verification workflow unless the readiness command reports a focused failure.

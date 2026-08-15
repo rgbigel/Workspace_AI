@@ -15,18 +15,18 @@ param(
 
 <#
 Module: Update-Proposal.ps1
-Purpose: Update Workspace_GC proposal disposition records deterministically.
+Purpose: Update Workspace_AI proposal disposition records deterministically.
 Path: tools/Update-Proposal.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
-Caller Contract: Called with a proposal id and optional disposition fields; updates GC-Proposals.json without committing changes.
+Caller Contract: Called with a proposal id and optional disposition fields; updates Proposals.json without committing changes.
 Changelog:
 - 2026-08-01: Added native proposal registry update command.
 #>
 
 if (-not $ProposalLogPath) {
   $copilotRoot = Split-Path $PSScriptRoot -Parent
-  $ProposalLogPath = Join-Path $PSScriptRoot 'Logs\GC-Proposals.json'
+  $ProposalLogPath = Join-Path $PSScriptRoot 'Logs\Proposals.json'
 }
 
 if (-not (Test-Path -LiteralPath $ProposalLogPath)) {

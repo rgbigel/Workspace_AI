@@ -1,34 +1,34 @@
 # ============================================
 # File: 04_Rebuild_System.ps1
-# Module: SystemRekonstruktion
-# Purpose: Installiert Software aus Paketlisten neu
+# Module: SystemReconstruction
+# Purpose: Reinstalls software from package lists
 # Path: tools/04_Rebuild_System.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Rebuild der Softwareinstallation. Version 1.0.0
+Rebuild of software installation. Version 1.0.0
 
 .DESCRIPTION
-Installiert WinGet-, Chocolatey- und pip-Pakete aus einem BackupRoot neu.
-Systemname wird automatisch aus dem Backup-Pfad extrahiert.
+Reinstalls WinGet, Chocolatey, and pip packages from a BackupRoot directory.
+The system name is automatically extracted from the backup path.
 
 .PARAMETER BackupRoot
-Pfad zum Backup-Verzeichnis.
+Path to the backup directory.
 
 .PARAMETER HelpMode
-Zeigt die Hilfe an.
+Displays help information.
 Alias: h, ?
 
 .EXAMPLE
 .\04_Rebuild_System.ps1 -BackupRoot "D:\SystemRekonstruktion_Backup\D5P0 20260612_1530"
 
 .NOTES
-Chocolatey und pip optional.
+Chocolatey and pip optional.
 #>
 
 [CmdletBinding()]
@@ -44,7 +44,7 @@ if ($HelpMode) {
 }
 
 if (!(Test-Path $BackupRoot)) {
-    Write-Host "BackupRoot nicht gefunden"
+    Write-Host "BackupRoot not found"
     exit 1
 }
 
@@ -60,13 +60,16 @@ $chocoPath = Join-Path $packagesDir "packages_choco.txt"
 $pipPath = Join-Path $packagesDir "packages_pip.txt"
 
 if (Test-Path $wingetPath) {
-    Write-Log "Installiere WinGet-Pakete"
+    Write-Log "Installing WinGet packages"
     winget import --import-file $wingetPath --accept-source-agreements --accept-package-agreements
 }
 
 if (Test-Path $chocoPath -and (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Write-Log "Installiere Chocolatey-Pakete"
-    $pkgs = Get-Content $chocoPath | Where-Object { $_ -and ($_ -notmatch "packages found") }
+    Write-Log "Installing Chocolatey packages"
+    $pkgs = Get-Content $chocoPath | Where-Object { 
+        $pkgLine = $_
+        $pkgLine -and ($pkgLine -notmatch "packages found") 
+    }
     foreach ($p in $pkgs) {
         $name = $p.Split()[0]
         Write-Log "choco install $name"
@@ -75,8 +78,8 @@ if (Test-Path $chocoPath -and (Get-Command choco -ErrorAction SilentlyContinue))
 }
 
 if (Test-Path $pipPath -and (Get-Command pip -ErrorAction SilentlyContinue)) {
-    Write-Log "Installiere pip-Pakete"
+    Write-Log "Installing pip packages"
     pip install -r $pipPath | Out-Null
 }
 
-Write-Log "Rebuild abgeschlossen"
+Write-Log "Rebuild completed"

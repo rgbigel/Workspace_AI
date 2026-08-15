@@ -2,7 +2,7 @@
 
 Module: CopilotRules.md
 Purpose: Defines workspace documentation and operational rules for CopilotRules.
-Path: D:/Git_Repositories/Workspace_GC/.copilot/CopilotRules.md
+Path: D:/Git_Repositories/Workspace_AI/.copilot/CopilotRules.md
 Authors: Rolf
 Version: 1.0.0
 Changelog:

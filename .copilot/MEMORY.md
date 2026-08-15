@@ -2,7 +2,7 @@
 
 Module: MEMORY.md
 Purpose: Defines workspace documentation and operational rules for MEMORY.
-Path: D:/Git_Repositories/Workspace_GC/.copilot/MEMORY.md
+Path: D:/Git_Repositories/Workspace_AI/.copilot/MEMORY.md
 Authors: Rolf
 Version: 4.0.0
 Changelog:

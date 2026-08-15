@@ -1,31 +1,31 @@
 # ============================================
-# File: 01_Export_Paketquellen.ps1
-# Module: SystemRekonstruktion
-# Purpose: Exportiert Paketlisten fuer WinGet, Chocolatey und pip
-# Path: tools/01_Export_Paketquellen.ps1
+# File: 01_Export_PackageSources.ps1
+# Module: SystemReconstruction
+# Purpose: Exports package lists for WinGet, Chocolatey, and pip
+# Path: tools/01_Export_PackageSources.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Exportiert Paketlisten fuer Rebuild. Version 1.0.0
+Exports package lists for system rebuild. Version 1.0.0
 
 .DESCRIPTION
-Erzeugt ein System- und Zeitstempel-spezifisches Paketbackup unter:
-D:\SystemRekonstruktion_Backup\<Systemname> <Timestamp>\packages\
+Generates a system- and timestamp-specific package backup under:
+D:\SystemRekonstruktion_Backup\<SystemName> <Timestamp>\packages\
 
 .PARAMETER HelpMode
-Zeigt die Hilfe an.
+Displays help information.
 Alias: h, ?
 
 .EXAMPLE
-.\01_Export_Paketquellen.ps1
+.\01_Export_PackageSources.ps1
 
 .NOTES
-Erfordert WinGet 1.4+, optional Chocolatey/pip.
+Requires WinGet 1.4+, optional Chocolatey/pip.
 #>
 
 [CmdletBinding()]
@@ -44,32 +44,32 @@ if ($HelpMode) {
 $packagesDir = Join-Path $Global:SR_SystemRoot "packages"
 if (!(Test-Path $packagesDir)) {
     New-Item -Path $packagesDir -ItemType Directory -Force | Out-Null
-    Write-Log "Paketverzeichnis erstellt: $packagesDir"
+    Write-Log "Package directory created: $packagesDir"
 }
 
 $WinGetFile = Join-Path $packagesDir "packages_winget.json"
 $ChocoFile = Join-Path $packagesDir "packages_choco.txt"
 $PipFile = Join-Path $packagesDir "packages_pip.txt"
 
-Write-Log "Exportiere WinGet-Pakete"
+Write-Log "Exporting WinGet packages"
 try {
     winget export --output $WinGetFile --include-versions --accept-source-agreements --accept-package-agreements
 } catch {
-    Write-Log "Fehler bei WinGet-Export: $_" "ERROR"
+    Write-Log "Error during WinGet export: $_" "ERROR"
 }
 
 if (Get-Command choco -ErrorAction SilentlyContinue) {
-    Write-Log "Exportiere Chocolatey-Pakete"
+    Write-Log "Exporting Chocolatey packages"
     choco list --local-only | Out-File -FilePath $ChocoFile -Encoding ASCII
 } else {
-    Write-Log "Chocolatey nicht gefunden" "WARN"
+    Write-Log "Chocolatey not found" "WARN"
 }
 
 if (Get-Command pip -ErrorAction SilentlyContinue) {
-    Write-Log "Exportiere pip-Pakete"
+    Write-Log "Exporting pip packages"
     pip list --format=freeze | Out-File -FilePath $PipFile -Encoding ASCII
 } else {
-    Write-Log "pip nicht gefunden" "WARN"
+    Write-Log "pip not found" "WARN"
 }
 
-Write-Log "Paketexport abgeschlossen"
+Write-Log "Package export completed"

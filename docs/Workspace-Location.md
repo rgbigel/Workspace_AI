@@ -2,7 +2,7 @@
 
 Module: Workspace-Location.md
 Purpose: Defines workspace documentation and operational rules for Workspace-Location.
-Path: D:/Git_Repositories/Workspace_GC/docs/Workspace-Location.md
+Path: D:/Git_Repositories/Workspace_AI/docs/Workspace-Location.md
 Authors: Rolf
 Version: 4.0.0
 Changelog:
@@ -10,14 +10,14 @@ Changelog:
 
 All Workspace paths MUST be absolute and MUST reference the canonical root:
 
-`D:/Git_Repositories/Workspace_GC`
+`D:/Git_Repositories/Workspace_AI`
 
 The Workspace MUST NOT contain localized folder names. All directory names MUST be ASCII-only.
 - D:\Git_Repositories
 
 The `.copilot` directory is the authoritative control directory for Workspace rules, invariants, tools, and agent definitions.
 COPILOT-DIRECTORY
-- path: D:\Git_Repositories\Workspace_GC\.copilot\
+- path: D:\Git_Repositories\Workspace_AI\.copilot\
 - purpose: authoritative control files
 - rule: all profile behavior scoped to workspace-root
 

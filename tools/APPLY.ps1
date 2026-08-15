@@ -8,9 +8,9 @@ param(
 
 <#
 Module: APPLY.ps1
-Purpose: Run native Workspace_GC fix descriptor validation from PowerShell 7.
+Purpose: Run native Workspace_AI fix descriptor validation from PowerShell 7.
 Path: tools/APPLY.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
 Caller Contract: Called with a fix module name or id; validates declared rules, atoms, methods, and quality-check actions without modifying target content.
 Changelog:

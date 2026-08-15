@@ -2,11 +2,11 @@
 
 Module: WorkspaceAgentIndex.md
 Purpose: Defines workspace documentation and operational rules for WorkspaceAgentIndex.
-Path: D:/Git_Repositories/Workspace_GC/.github/agents/WorkspaceAgentIndex.md
+Path: D:/Git_Repositories/Workspace_AI/.github/agents/WorkspaceAgentIndex.md
 Authors: Rolf
 Version: 1.2.0
 Changelog:
-- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_GC paths, and WorkspaceLog agent registration.
+- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_AI paths, and WorkspaceLog agent registration.
 - 2026-07-31: Resolved DOX unification follow-ups; marked DOX role, constraints, and discovery requirements complete.
 - 2026-07-31: Aligned DOX Agent definition with unified documentation behavior.
 - 2026-07-27: Normalized Markdown metadata header.
@@ -79,7 +79,7 @@ Responsibilities:
 - improve technical writing, usage guidance, install instructions,
   and operator-facing explanations
 - unify documentation terms, source-of-truth references, and usage
-  descriptions across Workspace_GC documentation surfaces
+  descriptions across Workspace_AI documentation surfaces
 - modify code only when documentation tasks require updates to help
   comments or usage strings
 - output complete updated files when proposing changes
@@ -146,17 +146,17 @@ Activation:
 10. WorkspaceLog Agent
 =====================================================================
 Purpose:
-- generate the Workspace_GC governance log
+- generate the Workspace_AI governance log
 
 Responsibilities:
 - summarize FIX, DOX, APPLY, RULE, and AGENT operations
-- write .copilot\Logs\Workspace_GC.log as the unified governance log
+- write .copilot\Logs\Workspace.log as the unified governance log
 - keep governance log output ASCII-only, CRLF-normalized, and deterministic
 
 Constraints:
 - must not include VS Code internal workspaceStorage logs
 - must not include partial diffs or code snippets
-- must not alter files outside .copilot\Logs\Workspace_GC.log when invoked
+- must not alter files outside .copilot\Logs\Workspace.log when invoked
 
 Activation:
 - explicit user invocation
@@ -193,7 +193,7 @@ Audit logs must not modify documentation.
 13. Agent Metadata
 =====================================================================
 - all workspace agents reside in:
-  D:\Git_Repositories\Workspace_GC\.github\agents\
+  D:\Git_Repositories\Workspace_AI\.github\agents\
 - all workspace agents follow @technical format
 - all workspace agents must comply with:
   - Workspace-Rules.md

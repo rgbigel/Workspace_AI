@@ -7,9 +7,9 @@ param(
 Module: Get-RealRepoTargetProfile.ps1
 Purpose: Build a read-only profile of the selected real-repository dry-run target.
 Path: tools/Get-RealRepoTargetProfile.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.2.0
-Caller Contract: Called only after Workspace_GC dry-run policy validation; reads target path, git status, and adapter surface presence without writing to the target.
+Caller Contract: Called only after Workspace_AI dry-run policy validation; reads target path, git status, and adapter surface presence without writing to the target.
 Changelog:
 - 2026-08-01: Handled selected repositories without a resolvable HEAD without noisy Git stderr.
 - 2026-08-01: Added read-only Git root, branch, and HEAD metadata reporting.
@@ -18,9 +18,9 @@ Changelog:
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 
 Import-Module $qualityGateModulePath -Force
 
@@ -41,7 +41,7 @@ function Invoke-ReadOnlyGit {
   }
 }
 
-$planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$planValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $canObserveTarget = $planValidation.SelectedRepository -and ($planValidation.DryRunEnabled -eq $true -or $planValidation.DryRunStatus -eq 'ready-for-read-only-dry-run')
 

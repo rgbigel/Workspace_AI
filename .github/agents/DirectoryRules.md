@@ -2,7 +2,7 @@
 
 Module: DirectoryRules.md
 Purpose: Defines workspace documentation and operational rules for DirectoryRules.
-Path: D:/Git_Repositories/Workspace_GC/.github/agents/DirectoryRules.md
+Path: D:/Git_Repositories/Workspace_AI/.github/agents/DirectoryRules.md
 Authors: Rolf
 Version: 1.0.0
 Changelog:
@@ -30,7 +30,7 @@ Three directory classes exist:
 
 1. RepositoryDirectories
 2. AuxiliaryContainers (AC)
-3. Workspace_GC (governance repository exception)
+3. Workspace_AI (governance repository exception)
 
 =====================================================================
 4. RepositoryDirectories
@@ -77,10 +77,10 @@ ForbiddenActionBehavior:
 - no automatic cleanup
 
 =====================================================================
-6. Workspace_GC (Governance Repository Exception)
+6. Workspace_AI (Governance Repository Exception)
 =====================================================================
 Directory name:
-Workspace_GC
+Workspace_AI
 
 Characteristics:
 - must contain .git/
@@ -142,7 +142,7 @@ D:\Git_Repositories\
 Allowed items:
 - RepositoryDirectories
 - AuxiliaryContainers (AC)
-- Workspace_GC
+- Workspace_AI
 - .github\
 - .github\agents\
 - .copilot\

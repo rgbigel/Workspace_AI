@@ -1,33 +1,33 @@
 # ============================================
 # File: 00_Common.ps1
-# Module: SystemRekonstruktion
-# Purpose: Gemeinsame Pfad- und Logging-Funktionen
+# Module: SystemReconstruction
+# Purpose: Common path and logging functions
 # Path: tools/00_Common.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Basisfunktionen fuer Logging und Pfadlogik. Version 1.0.0
+Base functions for logging and path logic. Version 1.0.0
 
 .DESCRIPTION
-Dieses Modul stellt zentrale Funktionen fuer alle Skripte bereit:
-- Zeitstempel
-- SystemName-Autodetektion
-- BackupRoot-Erzeugung
+This module provides centralized functions for all scripts:
+- Timestamp generation
+- SystemName auto-detection
+- BackupRoot directory creation
 - Logging
 
 .PARAMETER SystemName
-Optionaler Systemname. Default: COMPUTERNAME.
+Optional system name. Default: COMPUTERNAME.
 
 .EXAMPLE
 . .\00_Common.ps1
 
 .NOTES
-Erfordert PowerShell 5+.
+Requires PowerShell 5+.
 #>
 
 [CmdletBinding()]
@@ -65,4 +65,4 @@ function Write-Log {
     Add-Content -Path $Global:SR_LogFile -Value $line
 }
 
-Write-Log "Common initialisiert. SystemRoot: $Global:SR_SystemRoot"
+Write-Log "Common initialized. SystemRoot: $Global:SR_SystemRoot"

@@ -3,13 +3,13 @@ param()
 
 <#
 Module: LoadRules.ps1
-Purpose: Load Workspace_GC rule files for native governance validation.
+Purpose: Load Workspace_AI rule files for native governance validation.
 Path: tools/LoadRules.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
 Caller Contract: Called by validation scripts; returns a hashtable keyed by rule family.
 Changelog:
-- 2026-08-12: Added standard Workspace_GC script header.
+- 2026-08-12: Added standard Workspace_AI script header.
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent

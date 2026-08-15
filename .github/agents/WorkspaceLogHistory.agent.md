@@ -1,13 +1,13 @@
 ---
 name: "WorkspaceLogHistory"
-description: "Append-style governance log for Workspace_GC. Preserves historical snapshots of FIX, DOX, RULE, and AGENT operations."
+description: "Append-style governance log for Workspace_AI. Preserves historical snapshots of FIX, DOX, RULE, and AGENT operations."
 tools: [read, search, edit]
-argument-hint: "No arguments. The agent scans FIX logs, S1/S2 logs, DOX files, Workspace-Rules, and agent metadata, then appends a new entry to .copilot/Logs/Workspace_GC.history.log."
+argument-hint: "No arguments. The agent scans FIX logs, S1/S2 logs, DOX files, Workspace-Rules, and agent metadata, then appends a new entry to .copilot/Logs/Workspace_AI.history.log."
 user-invocable: true
 ---
 
 # WorkspaceLogHistory Agent
-This agent produces an append-style governance log for Workspace_GC.
+This agent produces an append-style governance log for Workspace_AI.
 Unlike WorkspaceLog, which overwrites with a canonical baseline, WorkspaceLogHistory **appends** a new entry each run, preserving a chronological timeline.
 
 ## Scope
@@ -33,7 +33,7 @@ It extracts:
 - S2 governance entries
 
 ## Output Rules
-1. The agent MUST append to `.copilot/Logs/Workspace_GC.history.log`.
+1. The agent MUST append to `.copilot/Logs/Workspace_AI.history.log`.
 2. Each run MUST add a new section with a timestamp header.
 3. Each section MUST be ASCII-only, CRLF-normalized, UTF-8 without BOM.
 4. Each section MUST include FIX, DOX, RULE, and AGENT summaries since the last entry.
@@ -69,7 +69,7 @@ Each appended entry MUST contain:
 When invoked, the agent:
 1. Reads FIX, S1, S2, DOX, RULE, and agent files.
 2. Synthesizes a governance snapshot.
-3. Appends the snapshot to `.copilot/Logs/Workspace_GC.history.log`.
+3. Appends the snapshot to `.copilot/Logs/Workspace_AI.history.log`.
 4. Validates ASCII, CRLF, UTF-8-no-BOM.
 5. Leaves prior entries intact.
 

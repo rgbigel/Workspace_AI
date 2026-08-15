@@ -1,12 +1,12 @@
 {
   "meta": {
-    "module": "GC-RealRepoTestPlan.json",
-    "path": ".copilot/History/Logs/GC-RealRepoTestPlan.json",
+    "module": "RealRepoTestPlan.json",
+    "path": ".copilot/History/Logs/RealRepoTestPlan.json",
     "version": "1.15.0",
-    "config_type": "workspace-gc-real-repository-test-plan",
-    "description": "Placeholder plan for future Workspace_GC testing against a real repository.",
+    "config_type": "real-repository-test-plan",
+    "description": "Placeholder plan for future Workspace_AI testing against a real repository.",
     "authors": [
-      "Workspace_GC Engine"
+      "Workspace_AI Engine"
     ],
     "changelog": [
       "1.15.0 - Added read-only target-local proposal cleanup scanner policy",
@@ -15,7 +15,7 @@
       "1.12.0 - Clarified target-local method instance ownership for repo dry-runs, logs, results, and proposals",
       "1.11.0 - Added target-local Markdown proposal authority for external intake and repo changes",
       "1.10.0 - Added repository lifecycle boundary cases and event-triggered integrity preflight policy",
-      "1.9.0 - Clarified Workspace_GC-only methodology incubation and selected first real-repo candidate",
+      "1.9.0 - Clarified Workspace_AI-only methodology incubation and selected first real-repo candidate",
       "1.8.0 - Added bottom-up concrete change-request workflow phases",
       "1.7.0 - Added phased realistic governance dry-run sequence",
       "1.6.0 - Added read-only adapter content comparison preview model",
@@ -38,17 +38,17 @@
     "dry_run_requires_candidate": true,
     "dry_run_requires_read_only_confirmation": true,
     "clear_selection_resets_dry_run": true,
-    "workspace_gc_dry_run_enablement_supported": false,
+    "workspace_ai_dry_run_enablement_supported": false,
     "write_enablement_supported": false
   },
   "methodology_scope_policy": {
-    "incubation_repository": "D:\\Git_Repositories\\Workspace_GC",
+    "incubation_repository": "D:\\Git_Repositories\\Workspace_AI",
     "workspace_parent": "D:\\Git_Repositories",
     "active_real_workspace_rule_copy": false,
     "parent_workspace_copy_target": null,
     "candidate_repository": "D:\\Git_Repositories\\VolumeInventory",
     "candidate_is_inside_workspace_parent": true,
-    "evolution_steps_remain_in_workspace_gc_until_further_notice": true,
+    "evolution_steps_remain_in_workspace_ai_until_further_notice": true,
     "adapter_surface_term": "candidate files or entrypoints checked by the dry-run, not automatically active workspace rules",
     "repo_local_requirement_override_policy": {
       "allowed_after_confirmation": true,
@@ -67,7 +67,7 @@
     }
   },
   "repository_lifecycle_policy": {
-    "registry_location": "Workspace_GC",
+    "registry_location": "Workspace_AI",
     "inside_workspace_parent_is_not_sufficient_for_operation": true,
     "states": [
       {
@@ -108,7 +108,7 @@
       {
         "id": "retired",
         "operation_allowed": false,
-        "description": "Repository is intentionally no longer operated on by Workspace_GC."
+        "description": "Repository is intentionally no longer operated on by Workspace_AI."
       }
     ],
     "external_code_policy": {
@@ -128,9 +128,9 @@
       "ordinary_repo_proposal_root": "Docs/Methods/Proposals",
       "ordinary_repo_required_review_format": "md",
       "proposal_grouping_allowed": true,
-      "method_baseline_repo": "D:\\Git_Repositories\\Workspace_GC",
-      "method_baseline_proposal_location": ".copilot/History/Logs/GC-Proposals.json",
-      "workspace_gc_does_not_store_target_repo_proposals": true,
+      "method_baseline_repo": "D:\\Git_Repositories\\Workspace_AI",
+      "method_baseline_proposal_location": ".copilot/History/Logs/Proposals.json",
+      "workspace_ai_does_not_store_target_repo_proposals": true,
       "markdown_review_source_of_truth": true,
       "json_sidecars_allowed": true,
       "json_sidecars_reviewable": false,
@@ -158,7 +158,7 @@
     }
   },
   "target_method_instance_policy": {
-    "workspace_gc_role": "method-baseline-only",
+    "workspace_ai_role": "method-baseline-only",
     "target_repo_owns_method_instance": true,
     "target_repo_method_root": "Docs/Methods",
     "target_repo_dry_run_root": "Docs/Methods/DryRun",
@@ -174,11 +174,11 @@
     "bootstrap_readme_files_required": true,
     "target_local_method_instance_is_structural_override": true,
     "target_local_method_instance_auto_accepted_for_candidate_repos": true,
-    "workspace_gc_may_record_candidate_identity": true,
-    "workspace_gc_must_not_store_target_dry_run_results": true,
-    "workspace_gc_must_not_store_target_work_logs": true,
-    "workspace_gc_must_not_store_target_repo_proposals": true,
-    "workspace_gc_target_state_is_transitional_until_target_method_instance_exists": true
+    "workspace_ai_may_record_candidate_identity": true,
+    "workspace_ai_must_not_store_target_dry_run_results": true,
+    "workspace_ai_must_not_store_target_work_logs": true,
+    "workspace_ai_must_not_store_target_repo_proposals": true,
+    "workspace_ai_target_state_is_transitional_until_target_method_instance_exists": true
   },
   "integrity_preflight_policy": {
     "mode": "explicit-event-triggered-cost-tiered",
@@ -229,7 +229,7 @@
       "git current branch name",
       "git current HEAD commit id",
       "git working-tree status summary",
-      "presence of Workspace_GC adapter surfaces",
+      "presence of Workspace_AI adapter surfaces",
       "read-only adapter surface content hash comparison",
       "read-only target profile"
     ],
@@ -246,7 +246,7 @@
       "tools/APPLY.ps1"
     ],
     "forbidden_actions": [
-      "file writes outside Workspace_GC",
+      "file writes outside Workspace_AI",
       "git add, commit, checkout, reset, clean, merge, rebase, or stash in target repository",
       "editing target repository settings before explicit enablement"
     ],
@@ -302,7 +302,7 @@
         "name": "Repository structure alignment",
         "scope": "workspace-rules",
         "status": "planned-read-only",
-        "description": "Check repository layout against Workspace_GC workspace rules before any repository-specific interpretation.",
+        "description": "Check repository layout against Workspace_AI workspace rules before any repository-specific interpretation.",
         "write_allowed": false
       },
       {
@@ -310,7 +310,7 @@
         "name": "Repository specification alignment",
         "scope": "repo-specifications",
         "status": "planned-read-only",
-        "description": "Read repository-local specifications and compare them with Workspace_GC rule expectations.",
+        "description": "Read repository-local specifications and compare them with Workspace_AI rule expectations.",
         "write_allowed": false
       },
       {
@@ -408,11 +408,11 @@
   "candidate_policy": {
     "must_be_explicitly_selected": true,
     "must_not_be_off_limits": true,
-    "must_not_equal_workspace_gc": true,
+    "must_not_equal_workspace_ai": true,
     "selection_does_not_enable_writes": true
   },
   "preconditions": [
-    "Workspace_GC readiness self-test passes",
+    "Workspace_AI readiness self-test passes",
     "No off-limits path is targeted",
     "User selects a repository explicitly",
     "User enables real-repository testing explicitly"

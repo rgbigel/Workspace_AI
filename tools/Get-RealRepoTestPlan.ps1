@@ -5,9 +5,9 @@ param(
 
 <#
 Module: Get-RealRepoTestPlan.ps1
-Purpose: Read Workspace_GC real-repository test plan state without changing it.
+Purpose: Read Workspace_AI real-repository test plan state without changing it.
 Path: tools/Get-RealRepoTestPlan.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.11.0
 Caller Contract: Called by operators or governance scripts when inspecting real-repository dry-run state; performs no external repository access.
 Changelog:
@@ -26,7 +26,7 @@ Changelog:
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
-$planPath = Join-Path $workspaceRoot '.copilot\History\Logs\GC-RealRepoTestPlan.json'
+$planPath = Join-Path $workspaceRoot '.copilot\History\Logs\RealRepoTestPlan.json'
 
 if (-not (Test-Path -LiteralPath $planPath)) {
   throw "Real-repository test plan not found: $planPath"
@@ -64,7 +64,7 @@ $result = [pscustomobject]@{
   TargetMethodRoot = $plan.target_method_instance_policy.target_repo_method_root
   TargetDryRunRoot = $plan.target_method_instance_policy.target_repo_dry_run_root
   TargetBootstrapCommand = $plan.target_method_instance_policy.bootstrap_command
-  WorkspaceGCStoresTargetDryRunResults = -not $plan.target_method_instance_policy.workspace_gc_must_not_store_target_dry_run_results
+  WorkspaceStoresTargetDryRunResults = -not $plan.target_method_instance_policy.workspace_ai_must_not_store_target_dry_run_results
 }
 
 if ($AsJson) {

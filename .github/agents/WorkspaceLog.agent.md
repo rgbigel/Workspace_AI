@@ -1,16 +1,16 @@
 ---
 name: "WorkspaceLog"
-description: "Generate a governed, human-readable log of Workspace_GC agent activity. Summarizes FIX, DOX, APPLY, RULE, AGENT, and S2 governance operations into .copilot/Logs/Workspace_GC.log."
+description: "Generate a governed, human-readable log of Workspace_AI agent activity. Summarizes FIX, DOX, APPLY, RULE, AGENT, and S2 governance operations into .copilot/Logs/Workspace.log."
 tools: [read, search, edit]
 argument-hint: "No arguments. The agent scans FIX logs, S1 logs, DOX files, Workspace-Rules, and agent metadata, then writes a unified governance log."
 user-invocable: true
 ---
 
 # WorkspaceLog Agent
-This agent produces a deterministic, human-readable governance log for Workspace_GC.
+This agent produces a deterministic, human-readable governance log for Workspace_AI.
 It consolidates FIX chain results, DOX unification steps, S2 governance entries, action-marker resolutions, version bumps, and agent operations into a single file:
 
-- `.copilot/Logs/Workspace_GC.log`
+- `.copilot/Logs/Workspace.log`
 
 The log is ASCII-only, CRLF-normalized, and stable across runs.
 
@@ -38,7 +38,7 @@ It extracts:
 - Structural quality-check results
 
 ## Output Rules
-1. The agent MUST write the complete `.copilot/Logs/Workspace_GC.log` file on each invocation.
+1. The agent MUST write the complete `.copilot/Logs/Workspace.log` file on each invocation.
 2. The log MUST be ASCII-only.
 3. The log MUST use CRLF line endings.
 4. The log MUST include timestamps in `YYYY-MM-DD HH:MM:SS` format.
@@ -111,6 +111,6 @@ When invoked, the agent:
 3. Reads DOX.agent.md, WorkspaceAgentIndex.md, Workspace-Rules.md.
 4. Extracts version numbers and changelog entries.
 5. Synthesizes a unified governance log.
-6. Writes `.copilot/Logs/Workspace_GC.log`.
+6. Writes `.copilot/Logs/Workspace.log`.
 
 END OF FILE

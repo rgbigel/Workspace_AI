@@ -2,7 +2,7 @@
 
 Module: RepoAgentIndex_Template.md
 Purpose: Defines workspace documentation and operational rules for RepoAgentIndex_Template.
-Path: D:/Git_Repositories/Workspace_GC/.github/agents/RepoAgentIndex_Template.md
+Path: D:/Git_Repositories/Workspace_AI/.github/agents/RepoAgentIndex_Template.md
 Authors: Rolf
 Version: 1.0.0
 Changelog:

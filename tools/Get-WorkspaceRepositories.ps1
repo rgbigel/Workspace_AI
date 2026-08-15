@@ -11,11 +11,11 @@ param(
 
 <#
 Module: Get-WorkspaceRepositories.ps1
-Purpose: Discover sibling Git repositories read-only for Workspace_GC stabilization checks.
+Purpose: Discover sibling Git repositories read-only for Workspace_AI stabilization checks.
 Path: tools/Get-WorkspaceRepositories.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
-Caller Contract: Called during Workspace_GC stabilization; returns direct child directories with .git folders without modifying them.
+Caller Contract: Called during Workspace_AI stabilization; returns direct child directories with .git folders without modifying them.
 Changelog:
 - 2026-08-01: Added read-only sibling repository discovery command.
 #>

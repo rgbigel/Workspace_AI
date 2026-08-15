@@ -1,31 +1,31 @@
 # ============================================
 # File: 02_Backup_Settings.ps1
-# Module: SystemRekonstruktion
-# Purpose: Sichert AppData, ProgramData und Registry-Hives
+# Module: SystemReconstruction
+# Purpose: Backs up AppData, ProgramData, and Registry hives
 # Path: tools/02_Backup_Settings.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Sichert Settings fuer Rebuild. Version 1.0.0
+Backs up settings for system rebuild. Version 1.0.0
 
 .DESCRIPTION
-Erzeugt ein vollstaendiges Settings-Backup unter:
-D:\SystemRekonstruktion_Backup\<Systemname> <Timestamp>\settings\
+Generates a complete settings backup under:
+D:\SystemRekonstruktion_Backup\<SystemName> <Timestamp>\settings\
 
 .PARAMETER HelpMode
-Zeigt die Hilfe an.
+Displays help information.
 Alias: h, ?
 
 .EXAMPLE
 .\02_Backup_Settings.ps1
 
 .NOTES
-Erfordert Administratorrechte.
+Requires Administrator privileges.
 #>
 
 [CmdletBinding()]
@@ -47,7 +47,7 @@ $registryDir = Join-Path $Global:SR_SystemRoot "registry"
 foreach ($dir in @($settingsDir, $registryDir)) {
     if (!(Test-Path $dir)) {
         New-Item -Path $dir -ItemType Directory -Force | Out-Null
-        Write-Log "Verzeichnis erstellt: $dir"
+        Write-Log "Directory created: $dir"
     }
 }
 
@@ -56,18 +56,18 @@ $roaming = Join-Path $profileRoot "AppData\Roaming"
 $local = Join-Path $profileRoot "AppData\Local"
 $programData = "C:\ProgramData"
 
-Write-Log "Sichere AppData Roaming"
+Write-Log "Backing up AppData Roaming"
 robocopy $roaming (Join-Path $settingsDir "AppData_Roaming") /MIR /R:2 /W:5 | Out-Null
 
-Write-Log "Sichere AppData Local"
+Write-Log "Backing up AppData Local"
 robocopy $local (Join-Path $settingsDir "AppData_Local") /MIR /R:2 /W:5 | Out-Null
 
-Write-Log "Sichere ProgramData"
+Write-Log "Backing up ProgramData"
 robocopy $programData (Join-Path $settingsDir "ProgramData") /MIR /R:2 /W:5 | Out-Null
 
-Write-Log "Exportiere Registry"
+Write-Log "Exporting Registry"
 reg export HKCU (Join-Path $registryDir "HKCU.reg") /y | Out-Null
 reg export "HKLM\SOFTWARE" (Join-Path $registryDir "HKLM_SOFTWARE.reg") /y | Out-Null
 reg export "HKLM\SYSTEM" (Join-Path $registryDir "HKLM_SYSTEM.reg") /y | Out-Null
 
-Write-Log "Settings-Backup abgeschlossen"
+Write-Log "Settings backup completed"

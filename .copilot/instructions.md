@@ -2,7 +2,7 @@
 
 Module: instructions.md
 Purpose: Defines workspace documentation and operational rules for instructions.
-Path: D:/Git_Repositories/Workspace_GC/.copilot/instructions.md
+Path: D:/Git_Repositories/Workspace_AI/.copilot/instructions.md
 Authors: Rolf Bercht
 Version: 4.0.0
 Changelog:
@@ -140,15 +140,15 @@ SECTION: workspace-location
 # FORMAT: ascii-only, copyable, no-prose
 
 WORKSPACE-ROOT
-- D:\Git_Repositories\Workspace_GC
+- D:\Git_Repositories\Workspace_AI
 
 WORKSPACE-RULES
 - all copilot control files stored under ".copilot"
-- authoritative path: D:\Git_Repositories\Workspace_GC\.copilot\
-- instructions.md: D:\Git_Repositories\Workspace_GC\.copilot\instructions.md
-- MEMORY.md: D:\Git_Repositories\Workspace_GC\.copilot\MEMORY.md
-- macro-definitions.md: D:\Git_Repositories\Workspace_GC\.copilot\Rules\macro-definitions.md
-- test-suite: D:\Git_Repositories\Workspace_GC\tools\Test-WorkspaceGCReadiness.ps1
+- authoritative path: D:\Git_Repositories\Workspace_AI\.copilot\
+- instructions.md: D:\Git_Repositories\Workspace_AI\.copilot\instructions.md
+- MEMORY.md: D:\Git_Repositories\Workspace_AI\.copilot\MEMORY.md
+- macro-definitions.md: D:\Git_Repositories\Workspace_AI\.copilot\Rules\macro-definitions.md
+- test-suite: D:\Git_Repositories\Workspace_AI\tools\Test-WorkspaceReadiness.ps1
 
 WORKSPACE-CONVENTIONS
 - workspace-root defines authoritative context

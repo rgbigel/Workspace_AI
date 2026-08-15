@@ -1,10 +1,10 @@
 <#
-Module: WorkspaceGCQualityGates.psm1
-Purpose: Provide reusable Workspace_GC readiness and stabilization quality gates.
-Path: tools/QualityGates/WorkspaceGCQualityGates.psm1
-Authors: Workspace_GC Engine
+Module: WorkspaceQualityGates.psm1
+Purpose: Provide reusable Workspace_AI readiness and stabilization quality gates.
+Path: tools/QualityGates/WorkspaceQualityGates.psm1
+Authors: Workspace_AI Engine
 Version: 1.15.0
-Caller Contract: Imported by native governance scripts; validates Workspace_GC state without writing to external repositories.
+Caller Contract: Imported by native governance scripts; validates Workspace_AI state without writing to external repositories.
 Changelog:
 - 2026-08-02: Added target-local proposal cleanup scanner validation.
 - 2026-08-02: Added target-local method instance bootstrap policy validation.
@@ -24,7 +24,7 @@ Changelog:
 - 2026-08-01: Consolidated helper Test-* scripts into one quality-gate module.
 #>
 
-function Get-WorkspaceGCRoot {
+function Get-WorkspaceRoot {
   [CmdletBinding()]
   param(
     [string]$ModuleRoot = $PSScriptRoot
@@ -33,7 +33,7 @@ function Get-WorkspaceGCRoot {
   return Split-Path (Split-Path (Split-Path $ModuleRoot -Parent) -Parent) -Parent
 }
 
-function Resolve-WorkspaceGCTargetMethodInstance {
+function Resolve-TargetMethodInstance {
   [CmdletBinding()]
   param(
     [Parameter(Mandatory=$true)]
@@ -66,24 +66,18 @@ function Resolve-WorkspaceGCTargetMethodInstance {
   }
 }
 
-function Assert-WorkspaceGCIgnoredRepositories {
+function Assert-IgnoredRepositories {
   [CmdletBinding()]
   param(
     [string]$SettingsPath,
 
     [string]$WorkspaceParent = 'D:\Git_Repositories',
 
-    [string]$ActiveRepository,
-
     [string]$WorkspaceRoot
   )
 
   if (-not $WorkspaceRoot) {
-    $WorkspaceRoot = Get-WorkspaceGCRoot
-  }
-
-  if (-not $ActiveRepository) {
-    $ActiveRepository = $WorkspaceRoot
+    $WorkspaceRoot = Get-WorkspaceRoot
   }
 
   if (-not $SettingsPath) {
@@ -94,36 +88,34 @@ function Assert-WorkspaceGCIgnoredRepositories {
     throw "Settings file not found: $SettingsPath"
   }
 
-  $methodsRoot = Join-Path $WorkspaceRoot 'tools'
-  $discoveryPath = Join-Path $methodsRoot 'Get-WorkspaceRepositories.ps1'
-  if (-not (Test-Path -LiteralPath $discoveryPath)) {
-    throw "Repository discovery command not found: $discoveryPath"
-  }
-
   $settings = Get-Content -Raw -Path $SettingsPath | ConvertFrom-Json
   $ignoredRepositories = @($settings.'git.ignoredRepositories')
-  $repositories = @(& $discoveryPath -WorkspaceParent $WorkspaceParent -ActiveRepository $ActiveRepository)
-  $missingRepositories = @()
 
-  foreach ($repository in $repositories) {
-    $currentRepository = $repository
-    if ($ignoredRepositories -notcontains $currentRepository.Path) {
-      $missingRepositories += $currentRepository.Path
+  $nonGitDirectories = Get-ChildItem -Path $WorkspaceParent -Directory | Where-Object {
+    $dir = $_
+    -not $dir.Name.StartsWith('.') -and -not (Test-Path -LiteralPath (Join-Path $dir.FullName '.git'))
+  }
+
+  $missingDirectories = @()
+  foreach ($dir in $nonGitDirectories) {
+    $currentDir = $dir
+    if ($ignoredRepositories -notcontains $currentDir.FullName) {
+      $missingDirectories += $currentDir.FullName
     }
   }
 
-  if ($missingRepositories.Count -gt 0) {
-    throw ('Missing ignored repositories: ' + ($missingRepositories -join '; '))
+  if ($missingDirectories.Count -gt 0) {
+    throw ('Missing ignored non-git directories: ' + ($missingDirectories -join '; '))
   }
 
   return [pscustomobject]@{
     Status = 'OK'
     IgnoredRepositoryCount = $ignoredRepositories.Count
-    DiscoveredSiblingRepositoryCount = $repositories.Count
+    NonGitDirectoryCount = $nonGitDirectories.Count
   }
 }
 
-function Assert-WorkspaceGCStabilizationPolicy {
+function Assert-StabilizationPolicy {
   [CmdletBinding()]
   param(
     [string]$StabilizationPath,
@@ -134,17 +126,17 @@ function Assert-WorkspaceGCStabilizationPolicy {
   )
 
   if (-not $WorkspaceRoot) {
-    $WorkspaceRoot = Get-WorkspaceGCRoot
+    $WorkspaceRoot = Get-WorkspaceRoot
   }
 
   $copilotRoot = Join-Path $WorkspaceRoot '.copilot'
 
   if (-not $StabilizationPath) {
-    $StabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
+    $StabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
   }
 
   if (-not $RealRepoTestPlanPath) {
-    $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
+    $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
   }
 
   foreach ($requiredPath in @($StabilizationPath, $RealRepoTestPlanPath)) {
@@ -188,7 +180,7 @@ function Assert-WorkspaceGCStabilizationPolicy {
   }
 }
 
-function Assert-WorkspaceGCRealRepoTestPlan {
+function Assert-RealRepoTestPlan {
   [CmdletBinding()]
   param(
     [string]$RealRepoTestPlanPath,
@@ -199,17 +191,17 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   )
 
   if (-not $WorkspaceRoot) {
-    $WorkspaceRoot = Get-WorkspaceGCRoot
+    $WorkspaceRoot = Get-WorkspaceRoot
   }
 
   $copilotRoot = Join-Path $WorkspaceRoot '.copilot'
 
   if (-not $RealRepoTestPlanPath) {
-    $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
+    $RealRepoTestPlanPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
   }
 
   if (-not $StabilizationPath) {
-    $StabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
+    $StabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
   }
 
   foreach ($requiredPath in @($RealRepoTestPlanPath, $StabilizationPath)) {
@@ -274,7 +266,7 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   }
 
   $proposalLocationPolicy = $lifecyclePolicy.proposal_location_policy
-  if ($proposalLocationPolicy.proposals_are_target_local -ne $true -or $proposalLocationPolicy.workspace_gc_does_not_store_target_repo_proposals -ne $true) {
+  if ($proposalLocationPolicy.proposals_are_target_local -ne $true -or $proposalLocationPolicy.workspace_ai_does_not_store_target_repo_proposals -ne $true) {
     throw 'Proposal location policy must keep ordinary repo proposals target-local.'
   }
 
@@ -356,11 +348,11 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   }
 
   if ($realRepoPlan.transition_policy.write_enablement_supported -ne $false) {
-    throw 'Workspace_GC transition policy must not support write enablement during self-stabilization.'
+    throw 'Workspace_AI transition policy must not support write enablement during self-stabilization.'
   }
 
-  if ($realRepoPlan.transition_policy.workspace_gc_dry_run_enablement_supported -ne $false) {
-    throw 'Workspace_GC must not support local enablement of target-repo dry-run state.'
+  if ($realRepoPlan.transition_policy.workspace_ai_dry_run_enablement_supported -ne $false) {
+    throw 'Workspace_AI must not support local enablement of target-repo dry-run state.'
   }
 
   if (-not $realRepoPlan.PSObject.Properties['target_method_instance_policy']) {
@@ -368,8 +360,8 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   }
 
   $targetMethodInstancePolicy = $realRepoPlan.target_method_instance_policy
-  if ($targetMethodInstancePolicy.target_repo_owns_method_instance -ne $true -or $targetMethodInstancePolicy.workspace_gc_role -ne 'method-baseline-only') {
-    throw 'Target repository must own the method instance while Workspace_GC remains baseline-only.'
+  if ($targetMethodInstancePolicy.target_repo_owns_method_instance -ne $true -or $targetMethodInstancePolicy.workspace_ai_role -ne 'method-baseline-only') {
+    throw 'Target repository must own the method instance while Workspace_AI remains baseline-only.'
   }
 
   if ($targetMethodInstancePolicy.target_repo_method_root -ne 'Docs/Methods') {
@@ -385,8 +377,8 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     throw "Target-local method instance bootstrap command is missing: $bootstrapCommandPath"
   }
 
-  if ($targetMethodInstancePolicy.workspace_gc_must_not_store_target_dry_run_results -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_work_logs -ne $true -or $targetMethodInstancePolicy.workspace_gc_must_not_store_target_repo_proposals -ne $true) {
-    throw 'Workspace_GC must not store target dry-run results, work logs, or repo proposals.'
+  if ($targetMethodInstancePolicy.workspace_ai_must_not_store_target_dry_run_results -ne $true -or $targetMethodInstancePolicy.workspace_ai_must_not_store_target_work_logs -ne $true -or $targetMethodInstancePolicy.workspace_ai_must_not_store_target_repo_proposals -ne $true) {
+    throw 'Workspace_AI must not store target dry-run results, work logs, or repo proposals.'
   }
 
   if ($targetMethodInstancePolicy.target_local_method_instance_auto_accepted_for_candidate_repos -ne $true) {
@@ -404,7 +396,7 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   $targetMethodInstance = $null
   if ($realRepoPlan.selected_repository) {
     $selectedRepository = [System.IO.Path]::GetFullPath([string]$realRepoPlan.selected_repository).TrimEnd('\')
-    $targetMethodInstance = Resolve-WorkspaceGCTargetMethodInstance -RepositoryPath $selectedRepository
+    $targetMethodInstance = Resolve-TargetMethodInstance -RepositoryPath $selectedRepository
   }
 
   if ($realRepoPlan.mode -eq 'candidate-selected') {
@@ -424,7 +416,7 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   }
 
   if ($realRepoPlan.mode -eq 'dry-run' -or $realRepoPlan.dry_run.enabled -eq $true) {
-    throw 'Workspace_GC-local dry-run mode is no longer valid; target dry-run state must be target-local.'
+    throw 'Workspace_AI-local dry-run mode is no longer valid; target dry-run state must be target-local.'
   }
 
   if ($realRepoPlan.target_profile.write_probe_performed -ne $false) {
@@ -506,7 +498,7 @@ function Assert-WorkspaceGCRealRepoTestPlan {
     $selectedRepository = [System.IO.Path]::GetFullPath([string]$realRepoPlan.selected_repository).TrimEnd('\')
     $workspaceRootPath = [System.IO.Path]::GetFullPath($WorkspaceRoot).TrimEnd('\')
     if ($selectedRepository.Equals($workspaceRootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-      throw 'Workspace_GC cannot be selected as its own real-repository test target.'
+      throw 'Workspace_AI cannot be selected as its own real-repository test target.'
     }
 
     foreach ($offLimitsPath in @($stabilizationState.off_limits_paths)) {
@@ -546,14 +538,14 @@ function Assert-WorkspaceGCRealRepoTestPlan {
   }
 }
 
-function Assert-WorkspaceGCStaleAuthorityReferences {
+function Assert-StaleAuthorityReferences {
   [CmdletBinding()]
   param(
     [string]$WorkspaceRoot
   )
 
   if (-not $WorkspaceRoot) {
-    $WorkspaceRoot = Get-WorkspaceGCRoot
+    $WorkspaceRoot = Get-WorkspaceRoot
   }
 
   $scanRoots = @(
@@ -568,17 +560,22 @@ function Assert-WorkspaceGCStaleAuthorityReferences {
     '.continuerules',
     '.vscode/settings.json',
     'docs/real-repo-dry-run.md',
-    '.copilot/History/Logs/GC-Stabilization.json',
-    '.copilot/History/Logs/GC-Proposals.json',
-    'tools/QualityGates/WorkspaceGCQualityGates.psm1'
+    '.copilot/History/Logs/Stabilization.json',
+    '.copilot/History/Logs/Proposals.json',
+    'tools/QualityGates/WorkspaceQualityGates.psm1'
   )
 
   $staleAuthorityPatterns = @(
     'Workspace_AC Engine',
+    'Workspace_GC Engine',
     'Workspace_AC fix-module execution',
+    'Workspace_GC fix-module execution',
     'Path: D:/Git_Repositories/Workspace_AC',
+    'Path: D:/Git_Repositories/Workspace_GC',
     'Canonical workspace root:\s*D:\\Git_Repositories\\Workspace_AC',
-    'authoritative path:\s*D:\\Git_Repositories\\.copilot'
+    'Canonical workspace root:\s*D:\\Git_Repositories\\Workspace_GC',
+    'authoritative path:\s*D:\\Git_Repositories\\Workspace_GC',
+    'authoritative path:\s*D:\\Git_Repositories\\Workspace_AC'
   )
 
   $matches = @()
@@ -623,4 +620,4 @@ function Assert-WorkspaceGCStaleAuthorityReferences {
   }
 }
 
-Export-ModuleMember -Function Get-WorkspaceGCRoot, Resolve-WorkspaceGCTargetMethodInstance, Assert-WorkspaceGCIgnoredRepositories, Assert-WorkspaceGCStabilizationPolicy, Assert-WorkspaceGCRealRepoTestPlan, Assert-WorkspaceGCStaleAuthorityReferences
+Export-ModuleMember -Function Get-WorkspaceRoot, Resolve-TargetMethodInstance, Assert-IgnoredRepositories, Assert-StabilizationPolicy, Assert-RealRepoTestPlan, Assert-StaleAuthorityReferences

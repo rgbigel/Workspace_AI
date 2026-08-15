@@ -1,31 +1,31 @@
 # ============================================
 # File: 90_Setup_Runtime.ps1
-# Module: SystemRekonstruktion
-# Purpose: Kopiert Runtime-Skripte nach D:\cmd
+# Module: SystemReconstruction
+# Purpose: Copies runtime scripts to D:\cmd
 # Path: tools/90_Setup_Runtime.ps1
 # Authors: Rolf, Copilot
 # Version: 1.0.0
 # Changelog:
-#   1.0.0 - Initial version
+#   1.0.0 - Initial version translated to English per workspace invariant
 # ============================================
 
 <#
 .SYNOPSIS
-Richtet Runtime-Skripte ein. Version 1.0.0
+Sets up runtime scripts. Version 1.0.0
 
 .DESCRIPTION
-Kopiert die wichtigsten Skripte nach D:\cmd, damit sie auch bei defektem C:
-verfuegbar bleiben.
+Copies the most essential scripts to D:\cmd so they remain available even if C:
+is damaged.
 
 .PARAMETER HelpMode
-Zeigt die Hilfe an.
+Displays help information.
 Alias: h, ?
 
 .EXAMPLE
 .\90_Setup_Runtime.ps1
 
 .NOTES
-D:\cmd wird automatisch erstellt.
+D:\cmd is created automatically.
 #>
 
 [CmdletBinding()]
@@ -44,12 +44,12 @@ if ($HelpMode) {
 
 if (!(Test-Path $CmdRoot)) {
     New-Item -Path $CmdRoot -ItemType Directory -Force | Out-Null
-    Write-Log "CmdRoot erstellt: $CmdRoot"
+    Write-Log "CmdRoot created: $CmdRoot"
 }
 
 $runtimeScripts = @(
     "00_Common.ps1",
-    "01_Export_Paketquellen.ps1",
+    "01_Export_PackageSources.ps1",
     "02_Backup_Settings.ps1",
     "03_Restore_Settings.ps1",
     "04_Rebuild_System.ps1"
@@ -60,10 +60,10 @@ foreach ($script in $runtimeScripts) {
     if (Test-Path $src) {
         $dest = Join-Path $CmdRoot $script
         Copy-Item $src $dest -Force
-        Write-Log "Kopiert: $src -> $dest"
+        Write-Log "Copied: $src -> $dest"
     } else {
-        Write-Log "Fehlt: $src" "WARN"
+        Write-Log "Missing: $src" "WARN"
     }
 }
 
-Write-Log "Setup-Runtime abgeschlossen"
+Write-Log "Setup runtime completed"

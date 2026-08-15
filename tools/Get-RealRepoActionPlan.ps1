@@ -7,7 +7,7 @@ param(
 Module: Get-RealRepoActionPlan.ps1
 Purpose: Build a read-only intended-action preview for a selected real-repository dry-run target.
 Path: tools/Get-RealRepoActionPlan.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.3.0
 Caller Contract: Called during real-repository dry-run preparation; reports intended adapter actions without writing to the target repository.
 Changelog:
@@ -19,14 +19,14 @@ Changelog:
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 $targetProfilePath = Join-Path $PSScriptRoot 'Get-RealRepoTargetProfile.ps1'
 
 Import-Module $qualityGateModulePath -Force
 
-$planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$planValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 $targetProfile = & $targetProfilePath
 $phasePreview = @($plan.action_preview.phases | ForEach-Object {
@@ -145,7 +145,7 @@ if (-not $canObserveTarget) {
       Type = $actionType
       TargetPath = $currentSurface
       SourcePath = $currentSurface
-      SourceAuthority = 'Workspace_GC'
+      SourceAuthority = 'Workspace_AI'
       SourceExists = $sourceExists
       TargetExists = $targetExists
       ComparisonState = $comparisonState

@@ -14,7 +14,7 @@ param(
 Module: Initialize-RealRepoMethodInstance.ps1
 Purpose: Create a target-local Docs/Methods method instance for a selected real repository.
 Path: tools/Initialize-RealRepoMethodInstance.ps1
-Authors: Workspace_GC Engine
+Authors: Workspace_AI Engine
 Version: 1.0.0
 Caller Contract: Called only after explicit operator approval; writes method scaffolding inside the target repository and never stages or commits target changes.
 Changelog:
@@ -27,9 +27,9 @@ Write-Host "$scriptName version $scriptVersion"
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
-$planPath = Join-Path $copilotRoot 'History\Logs\GC-RealRepoTestPlan.json'
-$stabilizationPath = Join-Path $copilotRoot 'History\Logs\GC-Stabilization.json'
-$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceGCQualityGates.psm1'
+$planPath = Join-Path $copilotRoot 'History\Logs\RealRepoTestPlan.json'
+$stabilizationPath = Join-Path $copilotRoot 'History\Logs\Stabilization.json'
+$qualityGateModulePath = Join-Path $PSScriptRoot 'QualityGates\WorkspaceQualityGates.psm1'
 
 Import-Module $qualityGateModulePath -Force
 
@@ -82,7 +82,7 @@ function Set-MethodFile {
   return 'written'
 }
 
-$planValidation = Assert-WorkspaceGCRealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
+$planValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -RealRepoTestPlanPath $planPath -StabilizationPath $stabilizationPath
 $plan = Get-Content -Raw -Path $planPath | ConvertFrom-Json
 
 if (-not $RepositoryPath) {
@@ -146,7 +146,7 @@ $manifest = [ordered]@{
   }
   repository = [ordered]@{
     path = $targetRepositoryPath
-    selected_by_workspace_gc = $true
+    selected_by_workspace_ai = $true
   }
   method_instance = [ordered]@{
     canonical_root = 'Docs/Methods'
@@ -163,11 +163,11 @@ $manifest = [ordered]@{
     target_repo_owns_dry_run_results = $true
     target_repo_owns_work_logs = $true
     target_repo_owns_repo_proposals = $true
-    workspace_gc_role = 'method-baseline-only'
+    workspace_ai_role = 'method-baseline-only'
   }
   constraints = [ordered]@{
     bootstrap_does_not_stage_or_commit = $true
-    bootstrap_does_not_modify_workspace_gc_state = $true
+    bootstrap_does_not_modify_workspace_ai_state = $true
     proposals_directory_is_working_review_queue = $true
     accepted_implemented_proposals_are_void = $true
   }
@@ -176,9 +176,9 @@ $manifest = [ordered]@{
 $methodReadme = @"
 # Target-Local Method Instance
 
-This directory is the target-local Workspace_GC method instance for this repository.
+This directory is the target-local Workspace_AI method instance for this repository.
 
-Workspace_GC defines the baseline method. This repository owns repo-specific dry-run state, logs, results, proposals, and method application artifacts here.
+Workspace_AI defines the baseline method. This repository owns repo-specific dry-run state, logs, results, proposals, and method application artifacts here.
 
 Canonical method root: Docs/Methods
 Physical method root: $relativeMethodRoot
@@ -195,7 +195,7 @@ Target-local dry-run state and read-only observation outputs belong here.
 $logReadme = @"
 # Logs
 
-Target-local method logs belong here. Workspace_GC must not store logs for this repository's work.
+Target-local method logs belong here. Workspace_AI must not store logs for this repository's work.
 "@
 
 $resultReadme = @"

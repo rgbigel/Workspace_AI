@@ -2,7 +2,7 @@
 
 Module: Standards.md
 Purpose: Defines workspace documentation and operational rules for Standards.
-Path: D:/Git_Repositories/Workspace_GC/docs/Standards.md
+Path: D:/Git_Repositories/Workspace_AI/docs/Standards.md
 Authors: Rolf
 Version: 4.0.0
 Changelog:
