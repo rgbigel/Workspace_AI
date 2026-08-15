@@ -1,0 +1,28 @@
+D:\Git_Repositories\Workspace_AI\
+├── docs/
+│   └── LCM-Onboarding-Architecture.md       <-- Comprehensive Architectural Specification
+├── templates/
+│   └── repo-scaffold/                       <-- Template Source Tree
+│       ├── .lcm/
+│       │   ├── config.json.template         <-- Local repository metadata & link definitions
+│       │   └── overrides.json.template      <-- Documented rule deviations & custom hooks
+│       ├── .vscode/
+│       │   ├── settings.json.template       <-- Local VS Code settings (CRLF, UTF-8)
+│       │   └── tasks.json.template          <-- Local tasks for readiness runner
+│       ├── .github/
+│       │   └── agents/
+│       │       └── RepoAgentIndex.md.template <-- Local repository agent role map
+│       ├── docs/
+│       │   ├── README.md.template           <-- Standardized component overview
+│       │   ├── Architecture.md.template     <-- Component architecture & design
+│       │   ├── Changelog.md.template        <-- Release and version changelog
+│       │   └── Standards.md.template        <-- Formatting & quality invariants
+│       └── tools/
+│           ├── Test-RepoReadiness.ps1.template <-- Local compliance & quality runner
+│           └── QualityGates/
+│               └── RepoQualityGates.psm1.template <-- Local quality assertions
+└── tools/
+    ├── Invoke-LCMOnboardRepo.ps1            <-- CLI Runner Entrypoint
+    └── Onboarding/                          <-- Modular Onboarding Engine
+        ├── LCMOnboarding.psd1               <-- Module Manifest
+        └── LCMOnboarding.psm1               <-- Phase 1-4 Engine Implementation

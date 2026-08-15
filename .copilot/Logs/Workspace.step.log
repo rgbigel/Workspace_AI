@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260815_173200
-Latest commit at generation: ed42997 feat(migration): initialize Workspace_AI with Antigravity customizations and updated governance
+Generated at: 20260815_230509
+Latest commit at generation: caab019 cleanup done
 
 2. Change Proposals
 -------------------
@@ -810,134 +810,38 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M .agents/rules/RuleAuthority.md
- M .agents/skills/workspace-governance/SKILL.md
- M .copilot/CopilotRules.md
- M .copilot/CopilotTools.md
- D .copilot/Fixes/Fix_Atomic.json
- D .copilot/Fixes/Fix_S1E01.json
- D .copilot/Fixes/Fix_S1E02.json
- M .copilot/Fixes/Fix_S1E03.json
- D .copilot/Fixes/Fix_S1E04.json
- D .copilot/Fixes/Fix_S1E05.json
- D .copilot/Fixes/Fix_S1E06.json
- D .copilot/Fixes/Fix_S1E07.json
- D .copilot/Fixes/Fix_S1E08.json
- D .copilot/Fixes/Fix_S1E09.json
- D .copilot/Fixes/Fix_S1E10.json
- D .copilot/Fixes/Fix_S1E11.json
- D .copilot/Fixes/Fix_S1E12.json
- D .copilot/Fixes/Fix_S1E13.json
- D .copilot/Fixes/Fix_S1E14.json
- D .copilot/Fixes/Fix_S1E15.json
- D .copilot/Fixes/Fix_S1E16.json
- D .copilot/History/Logs/GC-Proposals.json
- D .copilot/History/Logs/GC-Proposals.validation.json
- D .copilot/History/Logs/GC-RealRepoTestPlan.json
- D .copilot/History/Logs/GC-Stabilization.json
- D .copilot/History/Logs/S1.log
- D .copilot/History/Logs/S2.log
- D .copilot/Logs/Fix_Atomic.log
- D .copilot/Logs/Fix_S1E01.log
- D .copilot/Logs/Fix_S1E05.log
- D .copilot/Logs/Fix_S1E06.log
- D .copilot/Logs/Fix_S1E07.log
- D .copilot/Logs/Fix_S1E08.log
- D .copilot/Logs/Fix_S1E09.log
- D .copilot/Logs/Fix_S1E10.log
- D .copilot/Logs/Fix_S1E11.log
- D .copilot/Logs/Fix_S1E12.log
- D .copilot/Logs/Fix_S1E13.log
- D .copilot/Logs/Fix_S1E14.log
- D .copilot/Logs/Fix_S1E15.log
- D .copilot/Logs/Fix_S1E16.log
- D .copilot/Logs/Fix_S2E02.log
- D .copilot/Logs/Fix_S3E03.log
- D .copilot/Logs/Fix_S4E04.log
- D .copilot/Logs/Workspace_AC.history.log
- D .copilot/Logs/Workspace_AC.log
- D .copilot/Logs/Workspace_GC.Batch10.20260812_152947.log
- D .copilot/Logs/Workspace_GC.accepted.log
- D .copilot/Logs/Workspace_GC.log
- D .copilot/Logs/Workspace_GC.step.log
- M .copilot/MEMORY.md
- M .copilot/Rules/RuleAuthority.md
- D .copilot/Step1Engine.json
- M .copilot/VSCode_Agent.md
- M .copilot/instructions.md
- D .copilot/problems.md
- M .github/agents/.AGENTS.Template.md
- M ".github/agents/ATOM\342\200\221Building.md"
- M .github/agents/DOX.agent.md
- M .github/agents/DirectoryRules.md
- M ".github/agents/MIGRATION\342\200\221Rules.md"
- M .github/agents/RepoAgentIndex_Template.md
- M .github/agents/SharedModulesRule.md
- M .github/agents/WORKFLOW.md
  M .github/agents/Workspace-Rules.md
- M .github/agents/WorkspaceAgentIndex.md
- M .github/agents/WorkspaceLog.agent.md
- M .github/agents/WorkspaceLogHistory.agent.md
- M .vscode/settings.json
- M .vscode/tasks.json
- M AGENTS.md
- M GEMINI.md
- M "Working/20260929 Copilot, Github, Workspace,md"
- D docs/00_Uebersicht.md
- D docs/10_Sicherung.md
- M docs/README.md
+ D Deletions/.copilot/Logs/Workspace_AC.history.log
+ D Deletions/.copilot/Logs/Workspace_AC.log
+ D Deletions/.copilot/Logs/Workspace_GC.Batch10.20260812_152947.log
+ D WS_DIR.txt
+ M docs/LCM-Proposal/Implementation-and-Tooling.md
+ M docs/LCM-Proposal/Requirements.md
  M docs/Standards.md
  M "docs/Workspace Conventions.md"
  M docs/Workspace-Location.md
- D docs/projects.md
- M docs/real-repo-dry-run.md
- D docs/servicing-notes.md
  M docs/version-bump-procedure.md
  M docs/version-consistency-check.md
- D tools/00_Common.ps1
- D tools/01_Export_Paketquellen.ps1
- D tools/02_Backup_Settings.ps1
- D tools/03_Restore_Settings.ps1
- D tools/04_Rebuild_System.ps1
- D tools/90_Setup_Runtime.ps1
- M tools/APPLY.ps1
- M tools/Advance-Governance.ps1
- M tools/Generate-Log.ps1
- M tools/Get-RealRepoActionPlan.ps1
- M tools/Get-RealRepoTargetProfile.ps1
- M tools/Get-RealRepoTestPlan.ps1
- M tools/Get-WorkspaceRepositories.ps1
- M tools/Initialize-RealRepoMethodInstance.ps1
- M tools/Invoke-RealRepoDryRun.ps1
- M tools/LoadAtoms.ps1
- M tools/LoadFixes.ps1
- M tools/LoadMethods.ps1
- M tools/LoadRules.ps1
- M tools/QualityGates/README.md
- D tools/QualityGates/WorkspaceGCQualityGates.psm1
- M tools/Set-RealRepoTestPlan.ps1
- M tools/Test-RealRepoProposalCleanup.ps1
- D tools/Test-WorkspaceGCReadiness.ps1
- M tools/Update-Proposal.ps1
+ M tools/QualityGates/WorkspaceQualityGates.psm1
  M tools/Validate-CopilotProfile.ps1
- M tools/ValidateRules.ps1
-?? .agents/rules/LanguagePolicy.md
-?? .copilot/History/Logs/Proposals.json
-?? .copilot/History/Logs/Proposals.validation.json
-?? .copilot/History/Logs/RealRepoTestPlan.json
-?? .copilot/History/Logs/Stabilization.json
-?? Deletions/
-?? "Working/Completeness check for Antigravity Components.ps1"
-?? "Working/Setup Python for Antigravity.ps1"
-?? docs/LCM-Proposal/
-?? tools/QualityGates/WorkspaceQualityGates.psm1
-?? tools/Test-WorkspaceReadiness.ps1
+?? Deletions/.copilot/History/Logs/Workspace_AC.history.log
+?? Deletions/.copilot/History/Logs/Workspace_AC.log
+?? Deletions/.copilot/History/Logs/Workspace_GC.Batch10.20260812_152947.log
+?? Working/WS_DIR.txt
+?? Working/implementation_plan.md
+?? docs/LCM-Onboarding-Architecture.md
+?? docs/LCM-Repository-Inventory.md
+?? docs/Logs/
+?? docs/Methods/
+?? templates/
+?? tools/Invoke-LCMOnboardRepo.ps1
+?? tools/Onboarding/
 
 6. Current Generated Artifact Status
 ------------------------------------
-?? .copilot/Logs/Workspace.accepted.log
-?? .copilot/Logs/Workspace.log
-?? .copilot/Logs/Workspace.step.log
+ M .copilot/Logs/Workspace.accepted.log
+ M .copilot/Logs/Workspace.log
+ M .copilot/Logs/Workspace.step.log
 
 7. Footer
 ---------

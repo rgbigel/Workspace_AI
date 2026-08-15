@@ -28,14 +28,15 @@ Canonical workspace root:
 - D:\Git_Repositories\Workspace_AI
 
 Canonical workspace control directories:
+- D:\Git_Repositories\Workspace_AI\.agents\rules
+- D:\Git_Repositories\Workspace_AI\.copilot\Rules
 - D:\Git_Repositories\Workspace_AI\.github\agents
-- D:\Git_Repositories\Workspace_AI\.copilot
 
 Authority order:
-1. Workspace-Rules.md
-2. WorkspaceAgentIndex.md
+1. Canonical Governance Rules (.agents/rules/ and .copilot/Rules/)
+2. Workspace-Rules.md & WorkspaceAgentIndex.md
 3. Agent-specific .agent.md files
-4. .copilot control files
+4. Operational control files (.vscode, tools)
 5. docs/ files
 
 Workspace rules override repository-local rules unless explicitly

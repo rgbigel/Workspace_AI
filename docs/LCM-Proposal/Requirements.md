@@ -47,6 +47,18 @@ A repository-local rule MAY override the method baseline only when the override 
 
 Acceptance evidence: a target-local override record and workspace-level warning or approval record.
 
+### LCM-REQ-005 - Agent Skills Packaging Standard
+
+Domain-specific workflows, operational templates, and automated procedures (such as `workspace-governance`, `real-repo-dry-run`, and `lcm-onboarding`) MUST be packaged under `.agents/skills/<skill_name>/` containing a normative `SKILL.md` instruction document with YAML frontmatter. Skills MUST consume canonical rules from `.agents/rules/` and MUST NOT conflict with normative workspace invariants.
+
+Acceptance evidence: validated `SKILL.md` documents in `.agents/skills/` adhering to standard skill structure.
+
+### LCM-REQ-006 - Local Working Directory Scratchpad Policy
+
+The `Working/` directory is the designated local scratchpad for ad-hoc notes, exploratory analysis, and temporary scripts. Files inside `Working/` MUST NOT be treated as authoritative governance artifacts or quality gate prerequisites, but MUST respect standard UTF-8 CRLF encoding invariants.
+
+Acceptance evidence: absence of governance tool dependencies on `Working/` contents and validation of character encoding.
+
 ## 3. Lifecycle State Model
 
 ### LCM-REQ-010 - Explicit State

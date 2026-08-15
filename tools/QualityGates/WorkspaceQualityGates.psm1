@@ -557,7 +557,6 @@ function Assert-StaleAuthorityReferences {
   )
 
   $allowedFiles = @(
-    '.continuerules',
     '.vscode/settings.json',
     'docs/real-repo-dry-run.md',
     '.copilot/History/Logs/Stabilization.json',
@@ -588,7 +587,7 @@ function Assert-StaleAuthorityReferences {
     foreach ($file in $files) {
       $currentFile = $file
       $relativePath = $currentFile.FullName.Substring($WorkspaceRoot.Length).TrimStart('\').Replace('\', '/')
-      if ($relativePath -like '.copilot/Logs/*' -or $relativePath -like '.copilot/History/Logs/*') {
+      if ($relativePath -like '.copilot/Logs/*' -or $relativePath -like '.copilot/History/Logs/*' -or $relativePath -like 'docs/Logs/*') {
         continue
       }
 

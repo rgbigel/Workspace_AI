@@ -1,0 +1,23 @@
+# {{REPO_NAME}} Architecture
+
+Module: Architecture.md
+Purpose: Architectural design and dependency layout for {{REPO_NAME}}.
+Path: docs/Architecture.md
+Authors: {{AUTHOR}}
+Version: 1.0.0
+Changelog:
+- {{DATE}}: Initial architecture scaffolding.
+
+---
+title: {{REPO_NAME}} Architecture
+updated: {{DATE}}
+created: {{DATE}}
+---
+
+## 1. System Context & Responsibilities
+`{{REPO_NAME}}` provides focused capabilities within the solution workspace.
+
+## 2. Component Design
+- **Core Logic**: Maintained under `{{MODULE_ROOT}}`.
+- **Quality Gates**: Enforced via `tools/QualityGates/RepoQualityGates.psm1`.
+- **Governance**: Guided by core rules in `.agents/rules/core/`.

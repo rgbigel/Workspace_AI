@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "module": "config.json",
+    "path": ".lcm/config.json",
+    "version": "1.0.0",
+    "config_type": "lcm-target-repository-config",
+    "description": "Lifecycle Model (LCM) local configuration for {{REPO_NAME}}.",
+    "authors": [
+      "{{AUTHOR}}"
+    ],
+    "changelog": [
+      "1.0.0 - Initial LCM Onboarding instantiation"
+    ]
+  },
+  "repository": {
+    "name": "{{REPO_NAME}}",
+    "primary_language": "{{PRIMARY_LANG}}",
+    "module_root": "{{MODULE_ROOT}}",
+    "description": "{{DESCRIPTION}}",
+    "author": "{{AUTHOR}}",
+    "onboarded_at": "{{TIMESTAMP}}"
+  },
+  "governance": {
+    "lcm_version": "4.1.0",
+    "workspace_authority": "D:\\Git_Repositories\\Workspace_AI",
+    "immutable_links": {
+      "junctions": [
+        ".agents/rules/core",
+        ".copilot/Rules/core"
+      ],
+      "hardlinks": [
+        "AGENTS.md",
+        "GEMINI.md",
+        ".copilot/instructions.md"
+      ]
+    }
+  }
+}

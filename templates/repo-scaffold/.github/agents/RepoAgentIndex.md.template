@@ -1,0 +1,23 @@
+# {{REPO_NAME}} Agent Index
+
+Module: RepoAgentIndex.md
+Purpose: Local repository agent and subagent index for {{REPO_NAME}}.
+Path: .github/agents/RepoAgentIndex.md
+Authors: {{AUTHOR}}
+Version: 1.0.0
+Changelog:
+- {{DATE}}: Initial creation by LCM Onboarding Engine.
+
+---
+title: {{REPO_NAME}} Agent Index
+updated: {{DATE}}
+created: {{DATE}}
+---
+
+## 1. Overview
+This repository contains the `{{REPO_NAME}}` component, developed primarily in `{{PRIMARY_LANG}}`.
+
+## 2. Local Scope & Operational Directives
+- **Module Root**: `{{MODULE_ROOT}}`
+- **Governance**: Follows immutable rules linked from `Workspace_AI` under `.agents/rules/core/`.
+- **Local Overrides**: Documented in `.lcm/overrides.json`.

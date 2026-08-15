@@ -4,8 +4,9 @@ Module: Workspace-Location.md
 Purpose: Defines workspace documentation and operational rules for Workspace-Location.
 Path: D:/Git_Repositories/Workspace_AI/docs/Workspace-Location.md
 Authors: Rolf
-Version: 4.0.0
+Version: 4.1.0
 Changelog:
+- 2026-08-15: Bumped to LCM pre-release Version 4.1.0.
 - 2026-07-27: Normalized Markdown metadata header.
 
 All Workspace paths MUST be absolute and MUST reference the canonical root:

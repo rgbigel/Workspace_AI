@@ -1,11 +1,12 @@
-# version: 4.0.0
+# version: 4.1.0
 
 Module: Standards.md
 Purpose: Defines workspace documentation and operational rules for Standards.
 Path: D:/Git_Repositories/Workspace_AI/docs/Standards.md
 Authors: Rolf
-Version: 4.0.0
+Version: 4.1.0
 Changelog:
+- 2026-08-15: Added linking standards and designated Junction Link Magic tool.
 - 2026-07-27: Normalized Markdown metadata header.
 
 STANDARDS
@@ -15,6 +16,11 @@ STANDARDS
 - modules: versioned, deterministic headers
 - durable-memory: strict versioning required
 - variable-memory: patch-only versioning
+
+LINKING-AND-JUNCTION-STANDARDS
+- directory-junctions: used for immutable rule directories (.agents/rules/core, .copilot/Rules/core)
+- file-hardlinks: used for top-level entrypoints (AGENTS.md, GEMINI.md, .copilot/instructions.md)
+- visual-tool: Junction Link Magic is the designated interactive GUI utility for scanning, inspecting, and managing NTFS junctions and hardlinks across repositories
 
 VERSIONING-STANDARDS
 - MAJOR: breaking change, structural change

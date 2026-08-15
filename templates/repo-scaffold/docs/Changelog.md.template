@@ -1,0 +1,21 @@
+# {{REPO_NAME}} Changelog
+
+Module: Changelog.md
+Purpose: Record of version changes, fixes, and enhancements for {{REPO_NAME}}.
+Path: docs/Changelog.md
+Authors: {{AUTHOR}}
+Version: 1.0.0
+Changelog:
+- {{DATE}}: Initial changelog created.
+
+---
+title: {{REPO_NAME}} Changelog
+updated: {{DATE}}
+created: {{DATE}}
+---
+
+## [1.0.0] - {{DATE}}
+### Added
+- Initial onboarding into Lifecycle Model (LCM) governance ecosystem.
+- Configured immutable core rule junctions and local override manifests.
+- Instantiated readiness validation suite.

@@ -4,14 +4,15 @@ Module: Workspace Conventions.md
 Purpose: Defines workspace documentation and operational rules for Workspace Conventions.
 Path: D:/Git_Repositories/Workspace_AI/docs/Workspace Conventions.md
 Authors: Rolf
-Version: 1.1.0
+Version: 1.2.0
 Changelog:
+- 2026-08-15: Codified Working directory scratchpad convention and .agents/skills packaging.
 - 2026-08-15: Added git.ignoredRepositories conventions; removed prefix AI- and updated test suite command.
 - 2026-07-27: Normalized Markdown metadata header.
 
 ---
 title: Workspace Conventions
-updated: 2026-08-15T17:26:00
+updated: 2026-08-15T18:22:00
 created: 2026-07-11T14:47:33
 ---
 
@@ -30,6 +31,14 @@ WORKSPACE-CONVENTIONS
 - workspace root defines authoritative context
 - all profile behavior is scoped to workspace root
 - all durable memory files must reside under workspace root
+WORKING-DIRECTORY-CONVENTIONS
+- path: D:\Git_Repositories\Workspace_AI\Working\
+- purpose: designated workspace scratchpad for working notes, exploratory scripts, and temporary analysis files
+- rule: files inside Working/ are not bound to strict governance schema but must respect UTF-8 CRLF encoding
+AGENT-SKILLS-CONVENTIONS
+- path: D:\Git_Repositories\Workspace_AI\.agents\skills\
+- purpose: modular packaging for domain workflows, templates, and operational procedures (e.g. workspace-governance, real-repo-dry-run)
+- rule: each skill must reside in a dedicated directory with a normative SKILL.md containing YAML frontmatter
 GIT-IGNORED-REPOSITORIES
 - description: list of child directories under D:\Git_Repositories that do not have a .git directory
 - entries:
