@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260816_141555
+Generated at: 20260816_151506
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: ad2ead7 feat(rules): add ElevationPolicy.md (RULE-ELEV-001..004), Assert-RepoElevationConsistency gate, and normative requirements
+Latest commit at generation: 4704278 release(lcm): release LCM v4.2.0 with reconciled .github rules, System Prerequisites mandate, and Assert-RepoDocumentationFabric gate
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -27,6 +27,7 @@ caab019 20260815_173908 cleanup done
 cc0d5ef 20260816_134339 feat(templates): add execution_context to config.json.template, Invoke-ElevatedTest runner, and Test-RepoReadiness update
 0bd7303 20260816_134516 perf(templates): auto-skip elevation check in Invoke-ElevatedTest template when known in config or inventory
 ad2ead7 20260816_135228 feat(rules): add ElevationPolicy.md (RULE-ELEV-001..004), Assert-RepoElevationConsistency gate, and normative requirements
+4704278 20260816_141621 release(lcm): release LCM v4.2.0 with reconciled .github rules, System Prerequisites mandate, and Assert-RepoDocumentationFabric gate
 
 3. Footer
 ---------

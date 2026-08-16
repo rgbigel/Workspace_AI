@@ -121,3 +121,6 @@ The local readiness quality gate `MUST` execute `Assert-RepoDocumentationFabric`
 1. Top-level `README.md` exists and contains an explicit `## System Prerequisites` section.
 2. `docs/README.md` documentation directory index exists.
 3. `.github/agents/RepoAgentIndex.md` agent discovery index is instantiated and valid.
+
+### LCM-REQ-036 - Method Efficiency & Auto-Accepted Telemetry
+Mechanically generated audit records, inventory databases (`data/inventory.json`), CM dashboards (`INVENTORY_DASHBOARD.md`), baseline snapshots (`data/baselines/*.json`), test evidence (`out/test_results.json`), and governance logs `MUST` be automatically accepted without manual review gates and `MUST NEVER` trigger cascade testing or validation cycles (enforcing `RULE-EFF-001` through `RULE-EFF-003`).
