@@ -34,5 +34,10 @@
         ".copilot/instructions.md"
       ]
     }
+  },
+  "execution_context": {
+    "elevation_required": false,
+    "minimum_privilege": "User",
+    "reason": "Standard user execution"
   }
 }
