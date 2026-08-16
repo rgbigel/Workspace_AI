@@ -1,176 +1,78 @@
 # WORKFLOW
 
 Module: WORKFLOW.md
-Purpose: Defines workspace documentation and operational rules for WORKFLOW.
+Purpose: Defines workspace operational workflow and LCM v4.2.0 change governance.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/WORKFLOW.md
 Authors: Rolf
-Version: 1.0.0
+Version: 1.2.0
 Changelog:
+- 2026-08-16: Reconciled with LCM v4.2.0; codified 1-File-Per-CR architecture (CR-yyyyMMdd_HHmmss.md), proposal-first dry-run simulation, quality gates, and automated elevated testing.
 - 2026-07-27: Normalized Markdown metadata header.
 
 =====================================================================
 1. Purpose
 =====================================================================
-Define deterministic workspace-wide operational flow. Specify how
-agents perform regeneration, evaluation, patching, and consistency
-checks. Ensure alignment with Workspace-Rules.md and InvariantRules.md.
+Define deterministic workspace-wide operational flow and change
+governance under LCM v4.2.0. Specify how changes are proposed, reviewed,
+simulated, verified, and baseline-committed.
 
 =====================================================================
 2. Scope
 =====================================================================
 WORKFLOW.md applies to all repositories under D:\Git_Repositories.
-Defines regeneration behavior, patch rules, evaluation rules, and
-agent invocation order. Documentation remains authoritative.
+Defines Change Request governance, dry-run simulation, quality gates,
+and verification sequences.
 
 =====================================================================
-3. Deterministic Principles
+3. Core Governance Invariants
 =====================================================================
-- documentation is authoritative
-- no automatic documentation modification
-- no invention of missing behavior
-- no fallback to outdated repository truth
-- identical input → identical output
-- no randomness
-- no speculation
-- no assumptions
+- Documentation is authoritative (docs/ defines requirements & architecture)
+- 1-File-Per-CR Architecture: every proposal is a standalone file
+- Proposal-First: no direct code mutation without an approved proposal
+- Dry-Run Simulation: every change must be previewed before execution
+- Bi-directional Consistency: code and configuration must match
+- Strict Non-Interactive Gates: automated tests must never hang on GUI prompts
 
 =====================================================================
-4. Regeneration Workflow
+4. Governed 4-Phase Lifecycle Flow
 =====================================================================
-Regeneration is patch-based.
 
-Steps:
-1. evaluate documentation
-2. evaluate repository structure
-3. identify missing directories
-4. identify missing module stubs
-5. identify header misalignment
-6. identify parameter block misalignment
-7. identify logging/trace misalignment
-8. generate patch plan
-9. output patch plan
-10. apply patches only with explicit approval
+Phase 1: Discovery & Pre-Flight Audit
+- Inspects repository structure, git status, and parameters.
+- Validates pre-flight requirements and verifies clean baseline.
 
-Constraints:
-- must not modify documentation
-- must align implementation with documentation
-- must follow InvariantRules.md
+Phase 2: Proposal Generation & Dry-Run Simulation
+- Generates single-file Change Request in Docs/Methods/Proposals/CR-yyyyMMdd_HHmmss.md.
+- Simulates rule junctions, template instantiation, and script updates in dry-run mode.
+- Pauses for human operator review and explicit acceptance.
 
-=====================================================================
-5. Agent Invocation Order
-=====================================================================
-1. Workspace-Rules Agent
-2. InvariantRules Agent
-3. WorkspaceAgentIndex Agents
-4. ToolsList Agents
-5. Repository-local Agents
-6. CopilotRules (VS Code only)
+Phase 3: Governed Execution
+- Executes approved changes under operator consent (-Execute -Force).
+- Creates/updates configuration files and governance links.
+- Deploys test runners and quality gates.
 
-Agents must not:
-- override documentation
-- invent behavior
-- modify documentation automatically
+Phase 4: Verification & Baseline Commit
+- Runs Test-RepoReadiness.ps1 across all quality gates:
+  * Assert-RepoStructure
+  * Assert-RepoFormatting (UTF-8 without BOM)
+  * Assert-RepoGovernanceLinks (Junctions & Hardlinks)
+  * Assert-RepoElevationConsistency (RULE-ELEV-001..004)
+  * Assert-RepoDocumentationFabric (Prerequisites & DOX)
+- Executes elevated test runner (Invoke-ElevatedTest.ps1) emitting out/test_results.json.
+- Creates clean baseline commit with standard LCM tag.
 
 =====================================================================
-6. Patch Rules
+5. Change Request Bundles
 =====================================================================
-Allowed patches:
-- create missing directories
-- create missing module stubs
-- update script headers
-- align parameter blocks
-- align logging/trace behavior
-- align module structure
-
-Forbidden patches:
-- modify documentation
-- rewrite documentation
-- normalize documentation lists
-- remove documentation sections
+- Related micro-changes may be batched into named bundles (Workspace_Inventory/data/bundles/).
+- Bundles allow multi-step verification in a single coherent test pass.
 
 =====================================================================
-7. Evaluation Rules
+6. Review & Approval Integration
 =====================================================================
-Evaluation must include:
-- directory consistency
-- module header consistency
-- parameter block consistency
-- logging/trace consistency
-- rule compliance
-- regeneration feasibility
-
-Evaluation must not:
-- modify documentation
-- invent missing rules
-
-=====================================================================
-8. Audit Workflow
-=====================================================================
-Audit logs must contain:
-- timestamp
-- assumptions
-- regeneration plan
-- dryRun status
-- consistency evaluation
-
-Audit logs must not modify documentation.
-
-=====================================================================
-9. Workspace Directory Rules
-=====================================================================
-Workspace root:
-D:\Git_Repositories\
-
-Required directories:
-- .github\
-- .github\agents\
-- .copilot\
-- repository directories
-
-Forbidden directories:
-- undocumented directories
-- undocumented agent paths
-
-=====================================================================
-10. Script Header Rules
-=====================================================================
-Script headers must contain:
-- Module
-- Purpose
-- Path
-- Authors
-- Version
-- Changelog
-
-Placement:
-- if param() exists → header immediately after param()
-- if no param() → header at top of file
-
-Constraints:
-- must not use backticks
-- must assign $_ before use
-- must follow PowerShellRules
-
-=====================================================================
-11. Consistency Rules
-=====================================================================
-Consistency requires:
-- documentation alignment
-- module alignment
-- header alignment
-- parameter alignment
-- logging alignment
-- rule alignment
-
-No agent may override consistency rules.
-
-=====================================================================
-12. Versioning
-=====================================================================
-Version: 1.0.0
-- MAJOR: structural change to workflow definition
-- MINOR: non-breaking workflow addition
-- PATCH: revision cycle
+- All workspace-level governance updates require explicit operator acceptance.
+- Diffs reviewed in VS Code or Beyond Compare.
+- Configuration Management dashboard (INVENTORY_DASHBOARD.md) updated upon baseline commit.
 
 =====================================================================
 END OF FILE

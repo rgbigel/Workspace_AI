@@ -2,9 +2,9 @@
 
 Module: docs/README.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.1.0  
+Version: 4.2.0  
 Status: Authoritative Standard  
-Date: 2026-08-15  
+Date: 2026-08-16  
 
 ---
 

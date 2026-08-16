@@ -1,11 +1,12 @@
 # DirectoryRules
 
 Module: DirectoryRules.md
-Purpose: Defines workspace documentation and operational rules for DirectoryRules.
+Purpose: Defines workspace directory structure rules and LCM governance alignment.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/DirectoryRules.md
 Authors: Rolf
-Version: 1.0.0
+Version: 1.2.0
 Changelog:
+- 2026-08-16: Reconciled with LCM v4.2.0; authorized .github/agents/ for agent discovery, root AGENTS.md/GEMINI.md hardlinks, .lcm/ configuration, and governance rule junctions.
 - 2026-07-27: Normalized Markdown metadata header.
 
 =====================================================================
@@ -13,200 +14,70 @@ Changelog:
 =====================================================================
 Define deterministic directory structure rules for all repositories
 and auxiliary containers under D:\Git_Repositories. Ensure alignment
-with Workspace-Rules.md, InvariantRules.md, WORKFLOW.md, and all
-template Placement rules.
+with Workspace-Rules.md, InvariantRules.md, WORKFLOW.md, ElevationPolicy.md,
+and LCM v4.2.0 placement standards.
 
 =====================================================================
 2. Scope
 =====================================================================
 Applies to all directories in D:\Git_Repositories.
-Defines required directories, auxiliary containers, exceptions,
-template placement, instance placement, and alignment constraints.
+Defines required directories, governance links, template placement,
+and structural constraints.
 
 =====================================================================
-3. DirectoryClasses
+3. Directory Classes
 =====================================================================
-Three directory classes exist:
+Three primary directory classes exist:
 
-1. RepositoryDirectories
-2. AuxiliaryContainers (AC)
-3. Workspace_AI (governance repository exception)
+1. LCM-Governed Repositories
+2. Auxiliary Containers & Standard Git Repositories
+3. Workspace_AI (Governance Workshop & Rule Authority)
 
 =====================================================================
-4. RepositoryDirectories
+4. LCM-Governed Repositories
 =====================================================================
-Characteristics:
+Mandatory Repository Structure:
 - must contain .git/
-- must contain RepoAgentIndex.md
-- must contain agents\.AGENTS.md
-- must NOT contain .github\
+- must contain README.md with mandatory "## System Prerequisites" section
+- must contain docs/ with docs/README.md documentation index
+- must contain .lcm/ with config.json (including execution_context) and overrides.json
+- must contain .vscode/ with settings.json and tasks.json
+- must contain .github/agents/RepoAgentIndex.md (for Copilot custom agent discovery)
+- must contain AGENTS.md and GEMINI.md (hardlinks to Workspace_AI authority)
+- must contain .agents/rules/core (NTFS directory junction to Workspace_AI/.agents/rules)
+- must contain .copilot/Rules/core (NTFS directory junction to Workspace_AI/.copilot/Rules)
+- must contain tools/Test-RepoReadiness.ps1 and tools/QualityGates/RepoQualityGates.psm1
+- if elevation_required is true: must contain tools/Invoke-ElevatedTest.ps1
 
 Allowed contents:
-- all repository files and directories
-- agents\ directory
-- docs\ directory
-
-Forbidden contents:
-- .github\ (any depth)
-
-ForbiddenActionBehavior:
-- WARNING ONLY
-- no deletions
-- no automatic cleanup
+- all repository source code (src/, Source/, Modules/)
+- tests/ directory for Pester unit and integration tests
+- docs/ directory for DOX tripartite specifications and architectural records
+- tools/ directory for local quality gates and elevated runners
 
 =====================================================================
-5. AuxiliaryContainers (AC)
+5. Auxiliary Containers & Legacy Repositories
 =====================================================================
-Directory name pattern:
-repo_*
-
 Characteristics:
-- must NOT contain .git/
-- must contain full repository contents
-- used for verification and reconstruction
-
-Allowed contents:
-- all files and directories present in the original repository
-
-Forbidden contents:
-- .git/
-
-ForbiddenActionBehavior:
-- WARNING ONLY
-- no deletions
-- no automatic cleanup
+- May contain reference code or un-onboarded utilities
+- Governed by non-git or standard-git CM inventory tracking
+- Must not override Workspace_AI governance rules
 
 =====================================================================
-6. Workspace_AI (Governance Repository Exception)
+6. Workspace_AI (Governance Authority)
 =====================================================================
-Directory name:
-Workspace_AI
-
+Directory name: Workspace_AI
 Characteristics:
-- must contain .git/
-- behaves like AC but is versioned in GitHub
-- used for workspace-level reconstruction and verification
-
-Allowed contents:
-- all workspace reconstruction logic
-- all verification logic
-- cross-repo analysis artifacts
-
-Forbidden contents:
-- none (warnings only if undocumented)
-
-ForbiddenActionBehavior:
-- WARNING ONLY
-- no deletions
-- no automatic cleanup
+- Canonical root authority for LCM governance rules, tripartite templates, and quality gate definitions
+- Contains .agents/rules/ (projected across all repos via junction)
+- Contains .copilot/Rules/ (projected across all repos via junction)
+- Contains templates/repo-scaffold/ for all repository scaffolding
 
 =====================================================================
-7. Template Placement Rules
+7. Enforcement
 =====================================================================
-Workspace-level templates must define:
-
-Fields:
-- Name: <TEMPLATE-FILENAME>
-- Location: <WORKSPACE-PATH>
-- Placement: <REPO-ROOT>\agents\<INSTANCE-FILENAME>
-
-Rules:
-- Location specifies where the template lives.
-- Placement specifies where the instance must be generated.
-- Placement must NOT contain "_Template".
-- Placement must NOT contain ".github".
-- Placement must use "<REPO-ROOT>" placeholder.
-- Placement is mandatory for all templates.
-
-=====================================================================
-8. Instance Placement Rules
-=====================================================================
-Repo-local instances must follow template Placement:
-
-Required repo-local files:
-- <REPO-ROOT>\RepoAgentIndex.md
-- <REPO-ROOT>\agents\.AGENTS.md
-
-Rules:
-- instances must NOT contain "_Template"
-- instances must NOT live under ".github"
-- instances must use absolute paths
-- instances must match Placement exactly
-
-=====================================================================
-9. Workspace Root Rules
-=====================================================================
-Workspace root:
-D:\Git_Repositories\
-
-Allowed items:
-- RepositoryDirectories
-- AuxiliaryContainers (AC)
-- Workspace_AI
-- .github\
-- .github\agents\
-- .copilot\
-
-Forbidden items:
-- undocumented directories
-- undocumented files
-
-ForbiddenActionBehavior:
-- WARNING ONLY
-- no deletions
-- no automatic cleanup
-
-=====================================================================
-10. Required Workspace Directories
-=====================================================================
-Required:
-- .github\
-- .github\agents\
-- .copilot\
-
-Rules:
-- must exist
-- must not be renamed
-
-=====================================================================
-11. Documentation Directory Rules
-=====================================================================
-Documentation must reside in:
-<REPO-ROOT>\docs\
-
-Rules:
-- must not place documentation in src\
-- must not place documentation in tools/
-- must not place documentation in workspace root
-- must not modify documentation automatically
-
-ForbiddenActionBehavior:
-- WARNING ONLY
-- no deletions
-- no automatic cleanup
-
-=====================================================================
-12. Directory Consistency Rules
-=====================================================================
-Consistency requires:
-- required directories exist
-- forbidden directories produce warnings only
-- directory names match documentation
-- directory structure matches RepoAgentIndex.md
-- Placement rules are respected
-
-Rules:
-- no assumptions
-- no undocumented directories
-- no fallback to outdated repository truth
-
-=====================================================================
-13. Versioning
-=====================================================================
-Version: 1.0.0
-MAJOR: reserved until workspace stabilization
-MINOR: reserved until workspace stabilization
-PATCH: reserved until workspace stabilization
+- Enforced by Assert-RepoStructure and Assert-RepoGovernanceLinks in RepoQualityGates.psm1.
+- Bi-directional validation ensures no repository passes quality gates with structural drift.
 
 =====================================================================
 END OF FILE

@@ -4,8 +4,9 @@ Module: WorkspaceAgentIndex.md
 Purpose: Defines workspace documentation and operational rules for WorkspaceAgentIndex.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/WorkspaceAgentIndex.md
 Authors: Rolf
-Version: 1.2.0
+Version: 1.3.0
 Changelog:
+- 2026-08-16: Reconciled with LCM v4.2.0; registered ElevationPolicy.md (RULE-ELEV-001..004), codified 5 System Prerequisites, and registered Assert-RepoDocumentationFabric gate.
 - 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_AI paths, and WorkspaceLog agent registration.
 - 2026-07-31: Resolved DOX unification follow-ups; marked DOX role, constraints, and discovery requirements complete.
 - 2026-07-31: Aligned DOX Agent definition with unified documentation behavior.
@@ -17,8 +18,8 @@ Changelog:
 Define all workspace-level agents active across D:\Git_Repositories.
 Specify roles, responsibilities, constraints, and activation rules.
 Ensure deterministic, machine-readable agent definitions aligned with
-Workspace-Rules.md, InvariantRules.md, Tools.md, WORKFLOW.md, and
-RepoAgentIndex.Template.md.
+Workspace-Rules.md, InvariantRules.md, ElevationPolicy.md, Tools.md,
+and RepoAgentIndex.Template.md under LCM v4.2.0.
 
 =====================================================================
 2. Scope
@@ -26,19 +27,23 @@ RepoAgentIndex.Template.md.
 Workspace agents apply to all repositories under
 D:\Git_Repositories. Workspace agents override repository-local
 agents unless explicitly stated otherwise. Repository-local agents
-must conform to workspace rules and treat documentation as
-authoritative.
+must conform to workspace rules, mandate System Prerequisites,
+and treat tripartite DOX specifications as authoritative.
 
 =====================================================================
-3. Documentation Plane
+3. Documentation Plane & Mandatory System Prerequisites
 =====================================================================
 - documentation under any /docs directory is authoritative
 - documentation defines architecture, behavior, evaluation rules,
   reporting rules, and implementation constraints
-- documentation must not be regenerated
-- documentation must not be rewritten
-- documentation must not be patched
+- documentation must not be regenerated or rewritten
 - code must follow documentation
+- Every repository README.md MUST contain a "## System Prerequisites" section listing:
+  1. PowerShell 7 (pwsh.exe 7.0+)
+  2. Git for Windows
+  3. NTFS Filesystem (directory junctions & hardlinks)
+  4. Python Environment for Antigravity (.venv)
+  5. Component-specific Compiler / Runtime (.NET 8 SDK or C++ Toolchain)
 
 =====================================================================
 4. Global Constraints

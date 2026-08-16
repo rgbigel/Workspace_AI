@@ -2,15 +2,15 @@
 
 Module: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.1.0  
-Status: Authoritative Standard  
-Date: 2026-08-15  
+Version: 4.2.0  
+Status: Authoritative Implementation  
+Date: 2026-08-16  
 
 ---
 
-## 1. Tooling & Module Inventory
+## 1. Tooling & Script Inventory
 
-The Lifecycle Model implementation is divided across two primary repositories: [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v4.2.0, the governance and execution tooling is organized into functional categories:mary repositories: [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 

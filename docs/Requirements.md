@@ -2,15 +2,15 @@
 
 Module: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.1.0  
+Version: 4.2.0  
 Status: Authoritative Standard  
-Date: 2026-08-15  
+Date: 2026-08-16  
 
 ---
 
 ## 1. Scope, Purpose & Conformance
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 4.1.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 4.2.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
@@ -115,3 +115,9 @@ Every LCM-governed repository `MUST` declare an explicit `execution_context` blo
 
 ### LCM-REQ-034 - Bi-directional Elevation Consistency Gate
 The local readiness quality gate `MUST` execute `Assert-RepoElevationConsistency`. The gate `MUST` fail if privileged or self-elevating code is detected in `src/` without matching `elevation_required: true` in `.lcm/config.json`, or if `elevation_required: true` is configured but `tools/Invoke-ElevatedTest.ps1` is missing.
+
+### LCM-REQ-035 - Documentation Fabric & Prerequisites Quality Gate
+The local readiness quality gate `MUST` execute `Assert-RepoDocumentationFabric`. The gate `MUST` assert that:
+1. Top-level `README.md` exists and contains an explicit `## System Prerequisites` section.
+2. `docs/README.md` documentation directory index exists.
+3. `.github/agents/RepoAgentIndex.md` agent discovery index is instantiated and valid.
