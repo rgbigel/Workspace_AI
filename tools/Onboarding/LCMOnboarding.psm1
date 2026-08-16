@@ -160,120 +160,47 @@ function New-LCMGovernanceLinks {
   $createdLinks = @()
   $errors = @()
 
-  # 1. Directory Junctions
-  $junctionMap = @{
-    (Join-Path $targetFullPath '.agents\rules\core')  = (Join-Path $workspaceFullPath '.agents\rules')
-    (Join-Path $targetFullPath '.copilot\Rules\core') = (Join-Path $workspaceFullPath '.copilot\Rules')
+  # 1. Clean up legacy child .agents / .copilot directories if present
+  if (-not $DryRun) {
+    $legacyDirs = @(
+      (Join-Path $targetFullPath '.agents'),
+      (Join-Path $targetFullPath '.copilot')
+    )
+    foreach ($ld in $legacyDirs) {
+      if (Test-Path -LiteralPath $ld) {
+        Remove-Item -LiteralPath $ld -Recurse -Force -ErrorAction SilentlyContinue
+      }
+    }
   }
 
-  foreach ($jTarget in $junctionMap.Keys) {
-    $jSource = $junctionMap[$jTarget]
-    $parentDir = Split-Path $jTarget -Parent
-    if (-not (Test-Path -LiteralPath $parentDir)) {
-      if (-not $DryRun) { New-Item -Path $parentDir -ItemType Directory -Force | Out-Null }
-    }
+  # 2. Write 1-line governance pointers for AGENTS.md and GEMINI.md
+  $pointerFiles = @{
+    (Join-Path $targetFullPath 'AGENTS.md') = "<!-- Governed by root LCM standard: D:\Git_Repositories\AGENTS.md -->`r`n"
+    (Join-Path $targetFullPath 'GEMINI.md') = "<!-- Governed by root LCM standard: D:\Git_Repositories\GEMINI.md -->`r`n"
+  }
 
-    if (Test-Path -LiteralPath $jTarget) {
+  foreach ($pFile in $pointerFiles.Keys) {
+    $pContent = $pointerFiles[$pFile]
+    if ($DryRun) {
       $createdLinks += [pscustomobject]@{
-        Type   = 'Junction'
-        Target = $jTarget
-        Source = $jSource
-        Status = 'Existing'
+        Type   = 'Pointer'
+        Target = $pFile
+        Source = 'Root Standard'
+        Status = 'Would-Write'
       }
     }
     else {
-      if ($DryRun) {
+      try {
+        [System.IO.File]::WriteAllText($pFile, $pContent, (New-Object System.Text.UTF8Encoding($false)))
         $createdLinks += [pscustomobject]@{
-          Type   = 'Junction'
-          Target = $jTarget
-          Source = $jSource
-          Status = 'Would-Create'
+          Type   = 'Pointer'
+          Target = $pFile
+          Source = 'Root Standard'
+          Status = 'Written'
         }
       }
-      else {
-        try {
-          New-Item -ItemType Junction -Path $jTarget -Target $jSource -Force -ErrorAction Stop | Out-Null
-          $createdLinks += [pscustomobject]@{
-            Type   = 'Junction'
-            Target = $jTarget
-            Source = $jSource
-            Status = 'Created'
-          }
-        }
-        catch {
-          $errors += "Failed to create junction $jTarget -> $jSource : $_"
-        }
-      }
-    }
-  }
-
-  # 2. File Hardlinks
-  $hardlinkMap = @{
-    (Join-Path $targetFullPath 'AGENTS.md')                = (Join-Path $workspaceFullPath 'AGENTS.md')
-    (Join-Path $targetFullPath 'GEMINI.md')                = (Join-Path $workspaceFullPath 'GEMINI.md')
-    (Join-Path $targetFullPath '.copilot\instructions.md') = (Join-Path $workspaceFullPath '.copilot\instructions.md')
-  }
-
-  foreach ($hTarget in $hardlinkMap.Keys) {
-    $hSource = $hardlinkMap[$hTarget]
-    $parentDir = Split-Path $hTarget -Parent
-    if (-not (Test-Path -LiteralPath $parentDir)) {
-      if (-not $DryRun) { New-Item -Path $parentDir -ItemType Directory -Force | Out-Null }
-    }
-
-    if (Test-Path -LiteralPath $hTarget) {
-      $createdLinks += [pscustomobject]@{
-        Type   = 'Hardlink'
-        Target = $hTarget
-        Source = $hSource
-        Status = 'Existing'
-      }
-    }
-    else {
-      if ($DryRun) {
-        $createdLinks += [pscustomobject]@{
-          Type   = 'Hardlink'
-          Target = $hTarget
-          Source = $hSource
-          Status = 'Would-Create'
-        }
-      }
-      else {
-        try {
-          New-Item -ItemType HardLink -Path $hTarget -Target $hSource -Force -ErrorAction Stop | Out-Null
-          $createdLinks += [pscustomobject]@{
-            Type   = 'Hardlink'
-            Target = $hTarget
-            Source = $hSource
-            Status = 'Created'
-          }
-        }
-        catch {
-          # Fallback for cross-volume links: try SymbolicLink or Copy
-          try {
-            New-Item -ItemType SymbolicLink -Path $hTarget -Target $hSource -Force -ErrorAction Stop | Out-Null
-            $createdLinks += [pscustomobject]@{
-              Type   = 'SymbolicLink'
-              Target = $hTarget
-              Source = $hSource
-              Status = 'Created'
-            }
-          }
-          catch {
-            try {
-              Copy-Item -Path $hSource -Destination $hTarget -Force -ErrorAction Stop
-              $createdLinks += [pscustomobject]@{
-                Type   = 'Copy'
-                Target = $hTarget
-                Source = $hSource
-                Status = 'Created'
-              }
-            }
-            catch {
-              $errors += "Failed to link or copy $hTarget from $hSource : $_"
-            }
-          }
-        }
+      catch {
+        $errors += "Failed to write governance pointer $pFile : $_"
       }
     }
   }
@@ -406,11 +333,6 @@ function Test-LCMIntegrity {
     'GEMINI.md'
   )
 
-  $requiredJunctions = @(
-    '.agents\rules\core',
-    '.copilot\Rules\core'
-  )
-
   if ($DryRun) {
     # In DryRun mode, verify simulation plan coverage
     $plannedFilePaths = @($PlannedFiles | ForEach-Object { $_.Path.Replace('/', '\') })
@@ -425,18 +347,6 @@ function Test-LCMIntegrity {
       else {
         $errors += "Dry-run plan missing required file: $req"
         $checks += [pscustomobject]@{ Item = $req; Status = 'Missing-From-Plan'; Valid = $false }
-      }
-    }
-
-    foreach ($j in $requiredJunctions) {
-      $alreadyExists = Test-Path -LiteralPath (Join-Path $targetFullPath $j)
-      $isPlanned = ($plannedLinkPaths -contains $j)
-      if ($alreadyExists -or $isPlanned) {
-        $checks += [pscustomobject]@{ Item = "Junction:$j"; Status = $(if ($alreadyExists) { 'Present' } else { 'Simulated-Junction' }); Valid = $true }
-      }
-      else {
-        $errors += "Dry-run plan missing required junction: $j"
-        $checks += [pscustomobject]@{ Item = "Junction:$j"; Status = 'Missing-From-Plan'; Valid = $false }
       }
     }
 
@@ -457,17 +367,6 @@ function Test-LCMIntegrity {
     else {
       $errors += "Missing required file: $req"
       $checks += [pscustomobject]@{ Item = $req; Status = 'Missing'; Valid = $false }
-    }
-  }
-
-  foreach ($j in $requiredJunctions) {
-    $p = Join-Path $targetFullPath $j
-    if (Test-Path -LiteralPath $p) {
-      $checks += [pscustomobject]@{ Item = "Junction:$j"; Status = 'Valid'; Valid = $true }
-    }
-    else {
-      $errors += "Missing junction: $j"
-      $checks += [pscustomobject]@{ Item = "Junction:$j"; Status = 'Missing'; Valid = $false }
     }
   }
 
