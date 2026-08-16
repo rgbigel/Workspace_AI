@@ -124,3 +124,6 @@ The local readiness quality gate `MUST` execute `Assert-RepoDocumentationFabric`
 
 ### LCM-REQ-036 - Method Efficiency & Auto-Accepted Telemetry
 Mechanically generated audit records, inventory databases (`data/inventory.json`), CM dashboards (`INVENTORY_DASHBOARD.md`), baseline snapshots (`data/baselines/*.json`), test evidence (`out/test_results.json`), and governance logs `MUST` be automatically accepted without manual review gates and `MUST NEVER` trigger cascade testing or validation cycles (enforcing `RULE-EFF-001` through `RULE-EFF-003`).
+
+### LCM-REQ-037 - Visual Comparison & Review Result (RR) Subsystem
+The Configuration Management system `MUST` provide integrated visual differential tooling (`Invoke-BeyondCompareReview.ps1` / Beyond Compare 5) and a standardized Review Result recorder (`Submit-ReviewResult.ps1` / `RR.ps1`) supporting formal disposition recording (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) with automated quality gate execution and CM audit logging.
