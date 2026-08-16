@@ -109,3 +109,9 @@ Every LCM-governed component repository `MUST` provide a local `tools/Test-RepoR
 
 ### LCM-REQ-032 - Continuous Drift Evaluation
 The CM engine `MUST` continuously monitor for configuration drift, flagging dirty working copies, outdated LCM versions, unpushed commits, and broken junctions.
+
+### LCM-REQ-033 - Privilege & Elevation Governance
+Every LCM-governed repository `MUST` declare an explicit `execution_context` block inside `.lcm/config.json` defining `elevation_required`, `minimum_privilege`, and `reason` (enforcing `RULE-ELEV-001`). Repositories requiring Administrator elevation `MUST` provide `tools/Invoke-ElevatedTest.ps1` for automated elevated test handoff.
+
+### LCM-REQ-034 - Bi-directional Elevation Consistency Gate
+The local readiness quality gate `MUST` execute `Assert-RepoElevationConsistency`. The gate `MUST` fail if privileged or self-elevating code is detected in `src/` without matching `elevation_required: true` in `.lcm/config.json`, or if `elevation_required: true` is configured but `tools/Invoke-ElevatedTest.ps1` is missing.

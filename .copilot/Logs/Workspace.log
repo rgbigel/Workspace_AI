@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260815_234511
-Latest commit at generation: 9f22dc5 CM Interim state!
+Generated at: 20260816_135214
+Latest commit at generation: 0bd7303 perf(templates): auto-skip elevation check in Invoke-ElevatedTest template when known in config or inventory
 
 2. Rule Authority
 -----------------
@@ -30,21 +30,15 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- D docs/LCM-Proposal/Implementation-and-Tooling.md
- D docs/LCM-Proposal/README.md
- D docs/LCM-Proposal/Requirements.md
- M docs/README.md
-?? README.md
-?? docs/Architecture.md
-?? docs/Implementation.md
-?? docs/LCM-Configuration-Management.md
-?? docs/Requirements.md
+ M docs/Requirements.md
+ M templates/repo-scaffold/tools/QualityGates/RepoQualityGates.psm1.template
+ M templates/repo-scaffold/tools/Test-RepoReadiness.ps1.template
+?? .agents/rules/ElevationPolicy.md
+?? .copilot/Rules/ElevationPolicy.md
 
 6. Generated Artifact Status
 ----------------------------
- M .copilot/Logs/Workspace.accepted.log
- M .copilot/Logs/Workspace.log
- M .copilot/Logs/Workspace.step.log
+No generated artifact changes.
 
 7. Footer
 ---------
