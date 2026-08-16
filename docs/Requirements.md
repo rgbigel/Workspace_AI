@@ -130,3 +130,10 @@ Mechanically generated audit records, inventory databases (`data/inventory.json`
 
 ### LCM-REQ-037 - Visual Comparison & Review Result (RR) Subsystem
 The Configuration Management system `MUST` provide integrated visual differential tooling (`Invoke-BeyondCompareReview.ps1` / Beyond Compare 5) and a standardized Review Result recorder (`Submit-ReviewResult.ps1` / `RR.ps1`) supporting formal disposition recording (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) with automated quality gate execution and CM audit logging.
+
+### LCM-REQ-038 - Review-Gated Commit & Override Authority
+1. **Mandatory Review Gate**: Every Git commit action for source code, configuration, or structural assets in any LCM-governed repository `MUST` have a validated prior `ACCEPTED` or `ACCEPTED_WITH_EDITS` review disposition.
+2. **Accepted with Edits Invariant**: Review outcomes of `Accepted with Edits` `MUST` satisfy all repository quality gates (`Test-RepoReadiness.ps1`) before committing; upon passing, the state is committed as fully `ACCEPTED`.
+3. **Override Authority**: Committing or pushing changes in a `REJECTED` or `DEFERRED` state `IS STRICTLY FORBIDDEN` unless explicitly commanded by the user with a forced override instruction.
+4. **Precedence**: These review rules take strict precedence over any default "all commands are permitted" policies (enforcing `RULE-REV-001` through `RULE-REV-005`).
+5. **Universal Traceability**: All review dispositions `MUST` be logged in `logs/cm_activity.log` and structured in `data/reviews/REVIEW-*.json`.
