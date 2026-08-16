@@ -2,7 +2,7 @@
 
 Module: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.2.0  
+Version: 4.3.0  
 Status: Authoritative Implementation  
 Date: 2026-08-16  
 
@@ -10,7 +10,7 @@ Date: 2026-08-16
 
 ## 1. Tooling & Script Inventory
 
-Under LCM v4.2.0, the governance and execution tooling is organized into functional categories:mary repositories: [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v4.3.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 
@@ -18,6 +18,8 @@ Under LCM v4.2.0, the governance and execution tooling is organized into functio
 | :--- | :--- | :---: | :--- |
 | **`Workspace_AI`** | [`tools/Test-WorkspaceReadiness.ps1`](file:///D:/Git_Repositories/Workspace_AI/tools/Test-WorkspaceReadiness.ps1) | `1.0.0` | Comprehensive readiness runner and quality gate validator for `Workspace_AI`. |
 | **`Workspace_AI`** | [`tools/Invoke-LCMOnboardRepo.ps1`](file:///D:/Git_Repositories/Workspace_AI/tools/Invoke-LCMOnboardRepo.ps1) | `1.1.0` | 4-phase onboarding and update engine for onboarding target repositories into LCM. |
+| **`Workspace_Inventory`** | [`tools/Invoke-BeyondCompareReview.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1) | `1.0.0` | Isolated visual comparison launcher comparing baseline commit snapshot against live repo. |
+| **`Workspace_Inventory`** | [`tools/Submit-ReviewResult.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Submit-ReviewResult.ps1) | `1.0.0` | Interactive review outcome recorder (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`). |
 | **`Workspace_Inventory`** | [`tools/Invoke-WorkspaceAudit.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Invoke-WorkspaceAudit.ps1) | `1.0.0` | Multi-repository CM audit scanner; generates inventory JSON and dashboard markdown. |
 | **`Workspace_Inventory`** | [`tools/Invoke-LCMUpdate.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Invoke-LCMUpdate.ps1) | `1.0.0` | Governed LCM update tool; enforces proposal-first dry-run before live execution. |
 | **`Workspace_Inventory`** | [`tools/Find-ChangeRequest.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Find-ChangeRequest.ps1) | `1.0.0` | Query tool for searching Change Requests by text, repo, bundle, or status. |

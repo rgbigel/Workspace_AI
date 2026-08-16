@@ -2,7 +2,7 @@
 
 Module: docs/Architecture.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.2.0  
+Version: 4.3.0  
 Status: Authoritative Architecture  
 Date: 2026-08-16  
 
@@ -10,7 +10,7 @@ Date: 2026-08-16
 
 ## 1. System Context & Dual-Repository Topology
 
-The **Workspace_AI Lifecycle Model (LCM) Version 4.2.0** establishes a decoupled architecture separating the **Governance Authority (`Workspace_AI`)** from the **Configuration Management Engine (`Workspace_Inventory`)**.
+The **Workspace_AI Lifecycle Model (LCM) Version 4.3.0** establishes a decoupled architecture separating the **Governance Authority (`Workspace_AI`)** from the **Configuration Management Engine (`Workspace_Inventory`)**.
 
 The system decouples **Governance Authority & Baseline Release** from **Operational Configuration Management (CM)** through a dual-repository model:
 

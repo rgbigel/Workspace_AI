@@ -2,7 +2,7 @@
 
 Module: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.2.0  
+Version: 4.3.0  
 Status: Authoritative Standard  
 Date: 2026-08-16  
 
@@ -10,7 +10,7 @@ Date: 2026-08-16
 
 ## 1. Scope, Purpose & Conformance
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 4.2.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 4.3.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
@@ -33,6 +33,9 @@ The underlying host filesystem `MUST` be NTFS, supporting Directory Junctions (`
 
 ### LCM-REQ-SYS-004 - Python Environment for Google Antigravity
 The workspace container `MUST` provide a configured Python virtual environment (`.venv` Python 3.10+) equipped with Google Antigravity SDK (`google-antigravity`), CLI tools (`agy`), and dependencies to enable AI agent leasing, orchestration, and skill discovery.
+
+### LCM-REQ-SYS-005 - Visual Differential & Review Tooling
+The workstation `MUST` provide Beyond Compare 5 (`C:\Program Files\Beyond Compare 5\BCompare.exe`) accessible via `Invoke-BeyondCompareReview.ps1` and `Submit-ReviewResult.ps1` (`RR.ps1`) to enable side-by-side historical diff reviews and formal acceptance recording without editor dependency.
 
 ---
 
