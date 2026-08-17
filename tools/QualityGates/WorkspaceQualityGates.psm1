@@ -3,9 +3,10 @@ Module: WorkspaceQualityGates.psm1
 Purpose: Provide reusable Workspace_AI readiness and stabilization quality gates.
 Path: tools/QualityGates/WorkspaceQualityGates.psm1
 Authors: Workspace_AI Engine
-Version: 1.15.0
+Version: 1.15.1
 Caller Contract: Imported by native governance scripts; validates Workspace_AI state without writing to external repositories.
 Changelog:
+- 2026-08-17: Clarified SettingsPath root-container scope for Assert-IgnoredRepositories.
 - 2026-08-02: Added target-local proposal cleanup scanner validation.
 - 2026-08-02: Added target-local method instance bootstrap policy validation.
 - 2026-08-02: Added proposal-directory cleanup methodology validation.

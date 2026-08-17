@@ -2,8 +2,8 @@
 
 Module: docs/LCM-Configuration-Management.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.2.0  
-Date: 2026-08-16  
+Version: 4.3.1  
+Date: 2026-08-17  
 Status: Authoritative Methodology Specification  
 
 ---

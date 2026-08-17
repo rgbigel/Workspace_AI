@@ -2,30 +2,19 @@
   "meta": {
     "module": "settings.json",
     "path": ".vscode/settings.json",
-    "version": "1.0.0",
-    "config_type": "vscode-workspace-settings",
-    "description": "Local VS Code and Continue discovery settings.",
+    "version": "1.0.3",
+    "config_type": "vscode-repository-settings",
+    "description": "Local VS Code settings for Workspace_AI.",
     "authors": [
       "Workspace_AI Engine"
     ],
     "changelog": [
       "1.0.0 - Added Continue rule discovery settings",
       "1.0.1 - Added RuleAuthority and Continue bridge discovery",
-      "1.0.2 - Updated ignored repositories to list non-git directories"
+      "1.0.2 - Updated ignored repositories to list non-git directories",
+      "1.0.3 - Decoupled sibling git.ignoredRepositories to root container and Workspace_Inventory"
     ]
   },
-  "git.ignoredRepositories": [
-    "D:\\Git_Repositories\\AuthorizeMasterUser",
-    "D:\\Git_Repositories\\BootOpsHub",
-    "D:\\Git_Repositories\\CommandHub",
-    "D:\\Git_Repositories\\DeviceInventory",
-    "D:\\Git_Repositories\\DiskAssignmentStatus_AC",
-    "D:\\Git_Repositories\\DiskAssignmentStatus_S1",
-    "D:\\Git_Repositories\\EnvironmentTools",
-    "D:\\Git_Repositories\\FileUtilities",
-    "D:\\Git_Repositories\\GitTools",
-    "D:\\Git_Repositories\\HaSSD06",
-    "D:\\Git_Repositories\\SystemConfiguration",
-    "D:\\Git_Repositories\\docs"
-  ]
+  "files.eol": "\r\n",
+  "files.encoding": "utf8"
 }

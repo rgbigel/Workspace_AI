@@ -6,9 +6,10 @@ Module: Test-WorkspaceReadiness.ps1
 Purpose: Run native Workspace_AI self-readiness checks before real-repository testing.
 Path: tools/Test-WorkspaceReadiness.ps1
 Authors: Workspace_AI Engine
-Version: 1.8.0
+Version: 1.8.1
 Caller Contract: Called manually before enabling real-repository tests; validates current native governance pipeline.
 Changelog:
+- 2026-08-17: Decoupled ignored-repositories validation to root container settings.json.
 - 2026-08-02: Added target-local proposal cleanup scanner parsing.
 - 2026-08-02: Added target-local method instance bootstrap command parsing.
 - 2026-08-01: Added intended-action preview command parsing and readiness output.
@@ -57,7 +58,9 @@ foreach ($scriptFile in $scriptFiles) {
 }
 
 .\tools/APPLY.ps1 -FixName Fix_S3E03 -NoLog
-Assert-IgnoredRepositories -WorkspaceRoot $workspaceRoot | Out-Host
+$rootContainer = Split-Path $workspaceRoot -Parent
+$rootSettings = Join-Path $rootContainer '.vscode\settings.json'
+Assert-IgnoredRepositories -SettingsPath $rootSettings -WorkspaceParent $rootContainer | Out-Host
 Assert-StabilizationPolicy -WorkspaceRoot $workspaceRoot | Out-Host
 Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot | Out-Host
 Assert-StaleAuthorityReferences -WorkspaceRoot $workspaceRoot | Out-Host

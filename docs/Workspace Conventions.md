@@ -4,15 +4,16 @@ Module: Workspace Conventions.md
 Purpose: Defines workspace documentation and operational rules for Workspace Conventions.
 Path: D:/Git_Repositories/Workspace_AI/docs/Workspace Conventions.md
 Authors: Rolf
-Version: 1.2.0
+Version: 1.2.1
 Changelog:
+- 2026-08-17: Decoupled git.ignoredRepositories from Workspace_AI; scoped to root container and Workspace_Inventory.
 - 2026-08-15: Codified Working directory scratchpad convention and .agents/skills packaging.
 - 2026-08-15: Added git.ignoredRepositories conventions; removed prefix AI- and updated test suite command.
 - 2026-07-27: Normalized Markdown metadata header.
 
 ---
 title: Workspace Conventions
-updated: 2026-08-15T18:22:00
+updated: 2026-08-17T20:46:00
 created: 2026-07-11T14:47:33
 ---
 
@@ -40,7 +41,7 @@ AGENT-SKILLS-CONVENTIONS
 - purpose: modular packaging for domain workflows, templates, and operational procedures (e.g. workspace-governance, real-repo-dry-run)
 - rule: each skill must reside in a dedicated directory with a normative SKILL.md containing YAML frontmatter
 GIT-IGNORED-REPOSITORIES
-- description: list of child directories under D:\Git_Repositories that do not have a .git directory
+- description: maintained authoritatively by Workspace_Inventory and root container D:\Git_Repositories\.vscode\settings.json for non-git child directories
 - entries:
   - D:\Git_Repositories\AuthorizeMasterUser
   - D:\Git_Repositories\BootOpsHub

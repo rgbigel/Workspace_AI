@@ -20,9 +20,10 @@ Module: Advance-Governance.ps1
 Purpose: Validate native Workspace_AI governance readiness and log separation without staging or committing changes.
 Path: tools/Advance-Governance.ps1
 Authors: Workspace_AI Engine
-Version: 2.15.0
+Version: 2.15.1
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
+- 2026-08-17: Scoped ignored-repositories check to root container settings.json.
 - 2026-08-02: Added proposal cleanup check reporting.
 - 2026-08-02: Added target-local method instance bootstrap reporting.
 - 2026-08-02: Added proposal-directory cleanup reporting.
@@ -197,7 +198,9 @@ if (Test-Path -LiteralPath $ProposalValidationPath) {
 }
 
 $stabilizationState = Get-Content -Raw -Path $StabilizationPath | ConvertFrom-Json
-$ignoreValidation = Assert-IgnoredRepositories -WorkspaceRoot $workspaceRoot
+$rootContainer = Split-Path $workspaceRoot -Parent
+$rootSettings = Join-Path $rootContainer '.vscode\settings.json'
+$ignoreValidation = Assert-IgnoredRepositories -SettingsPath $rootSettings -WorkspaceParent $rootContainer
 $policyValidation = Assert-StabilizationPolicy -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
 $realRepoPlanValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
 $realRepoPlan = Get-Content -Raw -Path $RealRepoTestPlanPath | ConvertFrom-Json
