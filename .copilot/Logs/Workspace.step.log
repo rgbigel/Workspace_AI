@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260816_174649
-Latest commit at generation: 1f61285 release(lcm): v4.3.0 minor release with Beyond Compare 5 and RR review subsystem
+Generated at: 20260817_203810
+Latest commit at generation: 905b6ef feat(onboarding): update template quality gates and onboarding engine to enforce root governance inheritance
 
 2. Change Proposals
 -------------------
@@ -810,9 +810,8 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M docs/Requirements.md
-?? .agents/rules/ReviewCommitGovernancePolicy.md
-?? .copilot/Rules/ReviewCommitGovernancePolicy.md
+ M .vscode/settings.json
+ M docs/LCM-Configuration-Management.md
 
 6. Current Generated Artifact Status
 ------------------------------------

@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260816_174649
-Latest commit at generation: 1f61285 release(lcm): v4.3.0 minor release with Beyond Compare 5 and RR review subsystem
+Generated at: 20260817_203810
+Latest commit at generation: 905b6ef feat(onboarding): update template quality gates and onboarding engine to enforce root governance inheritance
 
 2. Rule Authority
 -----------------
@@ -30,9 +30,8 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- M docs/Requirements.md
-?? .agents/rules/ReviewCommitGovernancePolicy.md
-?? .copilot/Rules/ReviewCommitGovernancePolicy.md
+ M .vscode/settings.json
+ M docs/LCM-Configuration-Management.md
 
 6. Generated Artifact Status
 ----------------------------

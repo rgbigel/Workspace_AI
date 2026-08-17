@@ -37,8 +37,9 @@ graph TB
 
 | Role | Authoritative Repository | Scope & Duties |
 | :--- | :--- | :--- |
-| **Methodology & Governance Authority** | [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) | Defines LCM standards, quality gates, prompt instructions, core rules (`.agents/rules/core`), and reusable repository scaffold templates. |
+| **Methodology & Governance Authority** | [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) | Defines LCM standards, quality gates, prompt instructions, core rules (`.agents/rules/`), and reusable repository scaffold templates. |
 | **Configuration Management (CM) Engine** | [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) | Audits all workspace directories, tracks absorbed/current LCM versions, records commit/push status, manages NTFS junction mirrors for Change Requests, and executes drift evaluations. |
+| **Reusable PowerShell Functional Atoms** | [`SharedModules`](file:///D:/Git_Repositories/SharedModules) | Central, decoupled library of reusable functional PowerShell modules: `Logging.psm1`, `VolumeAtoms.psm1`, `BcdAtoms.psm1`, `PrivatePaths.psm1`, and `TranscriptTools.psm1`. |
 | **Component Repositories** | `VolumeInventory`, `BootEntryManager`, etc. | Implements specific product features, maintains local `Docs/Methods/Proposals/`, and inherits governance rules via junctions. |
 
 ---
@@ -99,3 +100,18 @@ Automated tools must never mutate target repositories without prior proposal and
 2. **Baseline Snapshots (`New-WorkspaceBaseline`)**:
    * Captures machine-readable JSON snapshots of the entire workspace state under `data/baselines/` (e.g., `BASELINE-v4.1.0-20260815.json`).
    * Records every repository's exact commit SHA, branch, and LCM version for release certification.
+
+---
+
+## 6. Operational Working Context & Repository Priming Protocol
+
+To eliminate cold-start discovery scans and maintain instant conversational continuity across IDE sessions:
+
+1. **Root Workspace Manifest ([.agents/ACTIVE_CONTEXT.md](file:///d:/Git_Repositories/.agents/ACTIVE_CONTEXT.md))**:
+   * Maintains persistent, single-source operational state (active Python venv, IDE execution policies, active migration/feature streams).
+2. **Authoritative Priming Policy ([.agents/rules/RepositoryContextPolicy.md](file:///d:/Git_Repositories/.agents/rules/RepositoryContextPolicy.md))**:
+   * `RULE-CTX-001` (Active Scope Detection): Ingests the target repository path from the active document in IDE metadata.
+   * `RULE-CTX-002` (Fast-Tier Ingestion): Automatically inspects `<TargetRepo>/.lcm/config.json`, `README.md`, and pending proposals in `docs/Methods/Proposals/` in a single targeted step.
+   * `RULE-CTX-003` (Zero Redundant Scan Invariant): Forbids multi-step recursive searches across sibling directories when focused on a single repository.
+   * `RULE-CTX-004` (Methodology Awareness): Enforces continuous awareness of the `Workspace_AI` / `Workspace_Inventory` / `SharedModules` triad.
+

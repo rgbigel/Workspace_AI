@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260816_174649
+Generated at: 20260817_203810
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 1f61285 release(lcm): v4.3.0 minor release with Beyond Compare 5 and RR review subsystem
+Latest commit at generation: 905b6ef feat(onboarding): update template quality gates and onboarding engine to enforce root governance inheritance
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -31,6 +31,8 @@ ad2ead7 20260816_135228 feat(rules): add ElevationPolicy.md (RULE-ELEV-001..004)
 14f0a7c 20260816_151510 feat(rules): add MethodEfficiencyPolicy.md (RULE-EFF-001..003) and LCM-REQ-036
 485c031 20260816_164912 feat(requirements): add LCM-REQ-037 (Visual Comparison & Review Result Subsystem)
 1f61285 20260816_173312 release(lcm): v4.3.0 minor release with Beyond Compare 5 and RR review subsystem
+d99cc19 20260816_174653 feat(governance): codify ReviewCommitGovernancePolicy (RULE-REV-001..005) and LCM-REQ-038
+905b6ef 20260816_180526 feat(onboarding): update template quality gates and onboarding engine to enforce root governance inheritance
 
 3. Footer
 ---------
