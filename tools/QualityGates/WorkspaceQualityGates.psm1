@@ -620,4 +620,43 @@ function Assert-StaleAuthorityReferences {
   }
 }
 
-Export-ModuleMember -Function Get-WorkspaceRoot, Resolve-TargetMethodInstance, Assert-IgnoredRepositories, Assert-StabilizationPolicy, Assert-RealRepoTestPlan, Assert-StaleAuthorityReferences
+function Assert-PesterV5Syntax {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$TargetRepositoryPath
+  )
+
+  if (-not (Test-Path -LiteralPath $TargetRepositoryPath)) {
+    throw "Target repository path not found: $TargetRepositoryPath"
+  }
+
+  $testFiles = @(Get-ChildItem -Path $TargetRepositoryPath -Recurse -File -Include *.Tests.ps1,*.tests.ps1 | Where-Object { $_.FullName -notmatch '\\\.git\\' })
+  $violations = @()
+
+  $v4Pattern = '(?<![\w-])Should\s+(?:Not\s+)?(Be|BeGreaterThan|BeLessThan|BeNullOrEmpty|Throw|Match|Contain|BeOfType|BeTrue|BeFalse|BeInSet|BeLike|Exist)\b'
+
+  foreach ($file in $testFiles) {
+    $found = Select-String -Path $file.FullName -Pattern $v4Pattern
+    foreach ($m in $found) {
+      $violations += [pscustomobject]@{
+        File       = $file.FullName
+        LineNumber = $m.LineNumber
+        Line       = $m.Line.Trim()
+      }
+    }
+  }
+
+  if ($violations.Count -gt 0) {
+    $summary = ($violations | ForEach-Object { "$($_.File):$($_.LineNumber) -> $($_.Line)" }) -join "`n"
+    throw "Pester v4 legacy syntax detected! Pester v5 requires hyphenated syntax (e.g. 'Should -Be', 'Should -Not -BeNullOrEmpty'):`n$summary"
+  }
+
+  return [pscustomobject]@{
+    Status           = 'OK'
+    TestFilesChecked = $testFiles.Count
+    Violations       = 0
+  }
+}
+
+Export-ModuleMember -Function Get-WorkspaceRoot, Resolve-TargetMethodInstance, Assert-IgnoredRepositories, Assert-StabilizationPolicy, Assert-RealRepoTestPlan, Assert-StaleAuthorityReferences, Assert-PesterV5Syntax

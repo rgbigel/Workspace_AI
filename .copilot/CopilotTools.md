@@ -12,21 +12,25 @@ TOOLS-CATEGORY: search-tools
 TOOLS-ENTRY
 - name: everything.exe
 - type: search-indexer
-- path: "D:\Tools\Everything 1.5b\everything.exe"
-- usage: fast file search; VS Code integration
-- version: 1.5b
+- path: "D:\\Tools\\Everything 1.5a\\Everything.exe"
+- alternate_path: "D:\\Tools\\Everything\\Everything.exe"
+- usage: fast file search; content indexing enabled for D:\Git_Repositories
+- version: 1.5.0.1418b (x64)+
+- notes: Target production path is D:\Tools\Everything\Everything.exe
 
 TOOLS-ENTRY
 - name: es.exe
 - type: cli-search
-- path: D:\Tools\Everything 1.5b\es.exe
-- usage: command-line search; VS Code tasks
-- version: 1.5b
+- path: "D:\\Tools\\Everything 1.5a\\es.exe"
+- alternate_path: "D:\\Tools\\Everything\\es.exe"
+- usage: command-line search; Everything IPC pipe (\\.\pipe\Everything IPC)
+- version: 1.5.0.1418b (x64)+
 
 TOOLS-CATEGORY: diff-tools
 TOOLS-ENTRY
 - name: BeyondCompare5
 - type: diff-merge
-- path: D:\Tools\BeyondCompare5\BCompare.exe
-- usage: file diff, folder diff, merge tool; VS Code integration
+- path: "D:\\Tools\\Beyond Compare 5\\BCompare.exe"
+- usage: file diff, folder diff, merge tool; LCM visual review
 - version: 5.0.0
+

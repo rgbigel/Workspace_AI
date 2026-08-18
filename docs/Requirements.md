@@ -35,7 +35,7 @@ The underlying host filesystem `MUST` be NTFS, supporting Directory Junctions (`
 The workspace container `MUST` provide a configured Python virtual environment (`.venv` Python 3.10+) equipped with Google Antigravity SDK (`google-antigravity`), CLI tools (`agy`), and dependencies to enable AI agent leasing, orchestration, and skill discovery.
 
 ### LCM-REQ-SYS-005 - Visual Differential & Review Tooling
-The workstation `MUST` provide Beyond Compare 5 (`C:\Program Files\Beyond Compare 5\BCompare.exe`) accessible via `Invoke-BeyondCompareReview.ps1` and `Submit-ReviewResult.ps1` (`RR.ps1`) to enable side-by-side historical diff reviews and formal acceptance recording without editor dependency.
+The workstation `MUST` provide Beyond Compare 5 (`D:\Tools\Beyond Compare 5\BCompare.exe`) accessible via `Invoke-BeyondCompareReview.ps1` and `Submit-ReviewResult.ps1` (`RR.ps1`) to enable side-by-side historical diff reviews and formal acceptance recording without editor dependency.
 
 ---
 

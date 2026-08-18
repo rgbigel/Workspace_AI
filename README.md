@@ -19,7 +19,7 @@ Before running any LCM tools, quality gates, or AI agent pair-programming workfl
 3. **NTFS Filesystem**: Required for Directory Junctions (`mklink /J`) and Hardlinks (`mklink /H`) to project rules without file duplication.
 4. **Python for Google Antigravity**: Python 3.10+ virtual environment (`D:\Git_Repositories\.venv`) with `google-antigravity` SDK and `agy` CLI installed.
 5. **Antigravity IDE / VS Code**: Multi-root parent workspace container (`D:\VSCode-Workspaces\Solution.code-workspace`).
-6. **Beyond Compare 5**: Visual differential inspection application (`C:\Program Files\Beyond Compare 5\BCompare.exe`) integrated via `Invoke-BeyondCompareReview.ps1` and `Submit-ReviewResult.ps1` (`RR.ps1`) for interactive visual review and formal acceptance recording.
+6. **Beyond Compare 5**: Visual differential inspection application (`D:\Tools\Beyond Compare 5\BCompare.exe`) integrated via `Invoke-BeyondCompareReview.ps1` and `Submit-ReviewResult.ps1` (`RR.ps1`) for interactive visual review and formal acceptance recording.
 
 ---
 
