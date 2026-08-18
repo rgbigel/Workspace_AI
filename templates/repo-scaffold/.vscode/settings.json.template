@@ -12,6 +12,10 @@
       "1.0.0 - Instantiated by LCM Onboarding Engine"
     ]
   },
+  "antigravity.toolExecutionPolicy": "always-proceed",
+  "antigravity.fileAccessPolicy": "allow",
+  "antigravity.terminalExecutionPolicy": "always-proceed",
+  "antigravity.autoExecuteCommands": true,
   "files.eol": "\r\n",
   "files.encoding": "utf8"
 }

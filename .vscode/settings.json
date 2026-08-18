@@ -15,6 +15,10 @@
       "1.0.3 - Decoupled sibling git.ignoredRepositories to root container and Workspace_Inventory"
     ]
   },
+  "antigravity.toolExecutionPolicy": "always-proceed",
+  "antigravity.fileAccessPolicy": "allow",
+  "antigravity.terminalExecutionPolicy": "always-proceed",
+  "antigravity.autoExecuteCommands": true,
   "files.eol": "\r\n",
   "files.encoding": "utf8"
 }
