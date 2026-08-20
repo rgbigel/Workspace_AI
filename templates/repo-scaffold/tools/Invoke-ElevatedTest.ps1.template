@@ -78,6 +78,17 @@ if ($isAdmin -or (-not $needsElevation) -or $ForceInProcess) {
     Write-Host " Test Path      : $TestPath" -ForegroundColor Cyan
     Write-Host "=================================================================" -ForegroundColor Cyan
 
+    # Ensure modern Pester (v5+) is loaded
+    $pesterModule = Get-Module Pester
+    if (-not $pesterModule -or $pesterModule.Version.Major -lt 5) {
+        $userPester = Join-Path $home "Documents\PowerShell\Modules\Pester\6.1.0\Pester.psd1"
+        if (Test-Path -LiteralPath $userPester) {
+            Import-Module $userPester -Force
+        } else {
+            Import-Module Pester -MinimumVersion 5.0.0 -Force -ErrorAction SilentlyContinue
+        }
+    }
+
     $pesterResults = Invoke-Pester -Path $TestPath -PassThru
 
     $passed = ($pesterResults.FailedCount -eq 0)
