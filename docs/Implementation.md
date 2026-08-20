@@ -2,7 +2,7 @@
 
 Module: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.0  
+Version: 5.0.1  
 Status: Authoritative Implementation  
 Date: 2026-08-20  
 
@@ -10,7 +10,7 @@ Date: 2026-08-20
 
 ## 1. Tooling & Script Inventory
 
-Under LCM v5.0.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v5.0.1, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 
@@ -25,10 +25,33 @@ Under LCM v5.0.0, the governance and execution tooling is organized into functio
 | **`Workspace_Inventory`** | [`tools/Find-ChangeRequest.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Find-ChangeRequest.ps1) | `1.0.0` | Query tool for searching Change Requests by text, repo, bundle, or status. |
 | **`Workspace_Inventory`** | [`tools/New-WorkspaceBaseline.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/New-WorkspaceBaseline.ps1) | `1.0.0` | Snapshot tool capturing full workspace state into versioned JSON baselines. |
 | **`Workspace_Inventory`** | [`tools/Test-WorkspaceDrift.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Test-WorkspaceDrift.ps1) | `1.0.0` | Drift detection tool evaluating dirty copies, unpushed commits, and outdated LCM versions. |
+| **`Workspace_Inventory`** | [`tools/Clear-BCReviewTemp.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Clear-BCReviewTemp.ps1) | `1.5.0` | User command to inspect, list, and purge Beyond Compare temp review directories (`%TEMP%\BC_Review`). |
+| **`Workspace_Inventory`** | [`tools/Sync-IgnoredRepositories.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Sync-IgnoredRepositories.ps1) | `1.0.0` | Reconciles `git.ignoredRepositories` in `.vscode/settings.json` against workspace non-git directories. |
 
 ---
 
-### B. PowerShell Modules
+### B. Beyond Compare Review Architecture & Session Metadata
+
+Each review session launched via `Invoke-BeyondCompareReview.ps1` produces an isolated, read-only baseline export in `%TEMP%\BC_Review\<RepoName>-<SHA>\` with a session metadata token (`.lcm_review.json`):
+
+```json
+{
+  "RepositoryName": "Workspace_AI",
+  "RepositoryPath": "D:\\Git_Repositories\\Workspace_AI",
+  "BaseCommit": "3ae7621",
+  "CommitMessage": "feat(docs): implement CR-2026-014 tripartite templates...",
+  "CommitDate": "2026-08-20T19:00:00+02:00",
+  "SessionStartedAt": "2026-08-20T22:12:00+02:00"
+}
+```
+
+* **Session Folder Deletion as User Consent**: Deletion of `%TEMP%\BC_Review\<RepoName>-<SHA>\` by the operator signals review completion and consent.
+* **Right-Side Edit Detection**: Compares working tree status against pre-review state; if modified, classifies disposition as `AcceptedWithEdits` and runs `Test-WorkspaceReadiness.ps1` before committing.
+* **Maintenance Purge**: `Clear-BCReviewTemp.ps1 -All` purges all temp session directories and is excluded from triggering review acceptance.
+
+---
+
+### C. PowerShell Modules
 
 | Repository | Module Path | Version | Exported Functions & Scope |
 | :--- | :--- | :---: | :--- |

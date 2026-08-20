@@ -4,7 +4,7 @@ Module: docs/Architecture.md
 Purpose: Authoritative architectural specification for the Lifecycle Model (LCM) multi-repository governance framework.  
 Path: D:/Git_Repositories/Workspace_AI/docs/Architecture.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.0  
+Version: 5.0.1  
 Status: Authoritative Architecture  
 Date: 2026-08-20  
 
@@ -12,13 +12,13 @@ Date: 2026-08-20
 
 ## 1. System Topology & Decoupled Governance Architecture
 
-The **Lifecycle Model (LCM) Version 5.0.0** operates across a decoupled multi-repository container architecture centered at `D:\Git_Repositories\`. It distinctly separates **Design & Baseline Authority (`Workspace_AI`)**, **Operational Configuration Management (`Workspace_Inventory`)**, **Reusable Atomic Modules (`SharedModules`)**, and the **Root Container Hub**:
+The **Lifecycle Model (LCM) Version 5.0.1** operates across a decoupled multi-repository container architecture centered at `D:\Git_Repositories\`. It distinctly separates **Design & Baseline Authority (`Workspace_AI`)**, **Operational Configuration Management (`Workspace_Inventory`)**, **Reusable Atomic Modules (`SharedModules`)**, and the **Root Container Hub**:
 
 ```mermaid
 graph TB
     subgraph RootContainer ["Root Solution Container (D:\Git_Repositories\)"]
         direction TB
-        CanonicalHub["<b>Canonical Rule Hub</b><br/><code>.agents/rules/</code> (13 Authoritative Policies)"]
+        CanonicalHub["<b>Canonical Rule Hub</b><br/><code>.agents/rules/</code> (14 Authoritative Policies)"]
         RootEntry["<b>Root Entrypoints & Tools</b><br/><code>AGENTS.md</code>, <code>GEMINI.md</code><br/><code>Invoke-BeyondCompareReview.ps1</code>, <code>RR.ps1</code>"]
         
         subgraph LCMTriad ["LCM Architectural Triad"]
@@ -36,7 +36,7 @@ graph TB
     end
 
     CanonicalHub ==>|".agents/rules [NTFS Junction]"| WAI & WI & SM & COMP1 & COMP2 & COMP3 & OTHER
-    WAI -->|"Releases LCM Baselines (v5.0.0)"| WI & GovernedRepos
+    WAI -->|"Releases LCM Baselines (v5.0.1)"| WI & GovernedRepos
     COMP1 ==>|"docs/Proposals [NTFS Junction]"| WI
     COMP2 ==>|"docs/Proposals [NTFS Junction]"| WI
     COMP3 ==>|"docs/Proposals [NTFS Junction]"| WI
@@ -81,23 +81,54 @@ sequenceDiagram
     participant Agent as Antigravity AI Agent
     participant PL as Workspace_Inventory (Proposals Ledger)
     participant BC as Beyond Compare 5 (Visual Review)
-    participant Repo as Target Repository Git
+    participant Temp as Temp Review Cache (%TEMP%\BC_Review)
+    participant Live as Live Working Tree (D:\Git_Repositories\<Repo>)
 
     User->>Agent: Conversational Questions & Ideas
     Agent->>PL: Takes note as "Proposal" (State: suggested, #n)
     Agent-->>User: Lists Open Proposals (`give open Proposals`)
     User->>Agent: "do #n Proposal(s)"
     Agent->>PL: Sets State -> processed (Creates CR-*.md)
-    Agent->>Repo: Applies Code & Documentation Changes
-    Agent->>BC: Launches Beyond Compare 5 Visual Diff (`Invoke-BeyondCompareReview.ps1`)
-    User->>BC: Inspects visual diff on desktop
-    User->>Agent: "Accepted" (or `.\RR.ps1 -Result Accepted`)
-    Agent->>PL: Records REVIEW-*.json Audit Receipt
-    Agent->>Repo: Executes Review-Gated Git Commit
+    Agent->>Live: Applies Code & Documentation Changes
+    Agent->>Temp: Exports Baseline Commit Snapshot & Writes .lcm_review.json
+    Agent->>BC: Launches Beyond Compare 5 (Left: Temp Baseline, Right: Live Repo)
+    
+    alt User makes edits in Beyond Compare
+        User->>Live: Edits & saves files directly on Right-Hand Side
+    end
+
+    alt Explicit Voice / Chat Acceptance
+        User->>Agent: "Accepted" (or `.\RR.ps1 -Result Accepted`)
+    else Session Folder Removal Consent
+        User->>Temp: Deletes session folder in Explorer (Signals Review Completed)
+    end
+
+    Agent->>Live: Checks for Right-Side Edits (Fingerprint Comparison)
+    alt Live Tree Unmodified
+        Agent->>PL: Records REVIEW-*.json Audit Receipt ("Accepted")
+    else Live Tree Modified in BC5
+        Agent->>Live: Executes Pre-Commit Quality Gate (Test-WorkspaceReadiness.ps1)
+        Agent->>PL: Records REVIEW-*.json Audit Receipt ("AcceptedWithEdits")
+    end
+    Agent->>Live: Executes Review-Gated Git Commit
     Agent->>PL: Syncs Dual-Commit in Workspace_Inventory
 ```
 
-### Review Granularity & Exemption Hierarchy:
+### 3.1 Visual Review Lifecycle & Acceptance Protocols
+
+1. **Workspace Isolation (`%TEMP%\BC_Review\`)**:
+   * Baseline commit snapshots are extracted to `%TEMP%\BC_Review\<RepoName>-<SHA>\`.
+   * Each session writes an immutable `.lcm_review.json` recording `SessionStartedAt`, `BaseCommit`, and `CommitDate`.
+   * The Left-Hand Side represents the read-only baseline commit; the Right-Hand Side represents the live working tree.
+2. **Acceptance by Session Folder Removal**:
+   * Deleting the specific repository review session folder in `%TEMP%\BC_Review\` by the user acts as an explicit signal of review completion and user consent.
+3. **Automated Right-Side Edit & Save Detection (`AcceptedWithEdits`)**:
+   * If the user modifies and saves files on the Right-Hand Side in Beyond Compare, the system automatically detects the difference against the pre-review fingerprint.
+   * The review result is classified as `AcceptedWithEdits`, which automatically triggers a full pre-commit quality gate re-run to ensure syntax and test validity before committing.
+4. **Maintenance Exemption**:
+   * Running `.\Clear-BCReviewTemp.ps1 -All` is strictly classified as a **maintenance purge** across all sessions and never triggers review acceptance or commits.
+
+### 3.2 Review Granularity & Exemption Hierarchy:
 * **Review Granularity**: Configurable via `Invoke-ProposalAction.ps1 -SetGranularity <coarse|tight>`.
   * `coarse` (Default): Single review stop prior to commit across the change set.
   * `tight`: Stepwise review stops between intermediate sub-tasks.
@@ -134,13 +165,17 @@ Every governed repository conforms to the standard LCM directory layout:
 ├── .agents/
 │   └── rules                 # [NTFS Directory Junction] -> D:\Git_Repositories\.agents\rules
 ├── .lcm/
-│   ├── config.json           # Target metadata, absorbed version (v4.3.0), execution context
+│   ├── config.json           # Target metadata, absorbed version (v5.0.1), execution context
 │   └── overrides.json        # Documented rule deviations & custom hooks
 ├── .vscode/                  # Workspace IDE settings (CRLF, UTF-8, strict Pester)
 ├── docs/
-│   ├── README.md             # Component purpose, architecture, and prerequisites
-│   ├── Architecture.md       # Internal component architecture
+│   ├── README.md             # Component summary & index linking tripartite docs
+│   ├── Architecture.md       # User-facing mental model, workflows, topology
+│   ├── Requirements.md       # Technical design constraints & normative invariants
+│   ├── Implementation.md     # Code realization, modules, exported cmdlets, schemas
 │   └── Proposals/            # 1-file-per-CR Markdown proposals (CR-*.md)
+├── install/
+│   └── Installation.md       # Procedural deployment, configuration & update runbook
 ├── modules/                  # Production PowerShell modules (*.psm1, *.psd1)
 ├── tools/                    # Operational and CLI runner scripts
 ├── tests/                    # Pester v5 test suites (*.Tests.ps1)

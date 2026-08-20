@@ -2,7 +2,7 @@
 
 Module: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.0  
+Version: 5.0.1  
 Status: Authoritative Standard  
 Date: 2026-08-20  
 
@@ -10,7 +10,7 @@ Date: 2026-08-20
 
 ## 1. Scope, Purpose & Conformance
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 5.0.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 5.0.1**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
@@ -129,7 +129,12 @@ The local readiness quality gate `MUST` execute `Assert-RepoDocumentationFabric`
 Mechanically generated audit records, inventory databases (`data/inventory.json`), CM dashboards (`INVENTORY_DASHBOARD.md`), baseline snapshots (`data/baselines/*.json`), test evidence (`out/test_results.json`), and governance logs `MUST` be automatically accepted without manual review gates and `MUST NEVER` trigger cascade testing or validation cycles (enforcing `RULE-EFF-001` through `RULE-EFF-003`).
 
 ### LCM-REQ-037 - Visual Comparison & Review Result (RR) Subsystem
-The Configuration Management system `MUST` provide integrated visual differential tooling (`Invoke-BeyondCompareReview.ps1` / Beyond Compare 5) and a standardized Review Result recorder (`Submit-ReviewResult.ps1` / `RR.ps1`) supporting formal disposition recording (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) with automated quality gate execution and CM audit logging.
+1. **Isolated Differential Environment**: The Configuration Management system `MUST` provide integrated visual differential tooling (`Invoke-BeyondCompareReview.ps1` / Beyond Compare 5) comparing read-only baseline snapshots in `%TEMP%\BC_Review\<RepoName>-<SHA>\` against the live repository.
+2. **Review Result Recorder**: The system `MUST` provide a standardized Review Result recorder (`Submit-ReviewResult.ps1` / `RR.ps1`) supporting formal disposition recording (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) with automated quality gate execution and CM audit logging.
+3. **Session Metadata Token**: Every review session `MUST` generate an immutable `.lcm_review.json` record containing `SessionStartedAt`, `BaseCommit`, `CommitDate`, and `RepositoryName`.
+4. **Session Folder Removal Consent**: Removal of a specific repository review session folder in `%TEMP%\BC_Review\` by the operator `MUST` be recognized as an explicit user consent and review completion signal.
+5. **Right-Side Modification Detection**: If the operator modifies and saves files directly on the Right-Hand Side (live repository) during a review session, the system `MUST` detect the difference, classify the disposition as `AcceptedWithEdits`, and automatically execute all local repository readiness quality gates (`Test-RepoReadiness.ps1`) prior to staging the commit.
+6. **Maintenance Exemption**: Blanket maintenance operations (`Clear-BCReviewTemp.ps1 -All`) `MUST NOT` be interpreted as review consent or trigger Git commits.
 
 ### LCM-REQ-038 - Review-Gated Commit & Override Authority
 1. **Mandatory Review Gate**: Every Git commit action for source code, configuration, or structural assets in any LCM-governed repository `MUST` have a validated prior `ACCEPTED` or `ACCEPTED_WITH_EDITS` review disposition.
@@ -137,3 +142,16 @@ The Configuration Management system `MUST` provide integrated visual differentia
 3. **Override Authority**: Committing or pushing changes in a `REJECTED` or `DEFERRED` state `IS STRICTLY FORBIDDEN` unless explicitly commanded by the user with a forced override instruction.
 4. **Precedence**: These review rules take strict precedence over any default "all commands are permitted" policies (enforcing `RULE-REV-001` through `RULE-REV-005`).
 5. **Universal Traceability**: All review dispositions `MUST` be logged in `logs/cm_activity.log` and structured in `data/reviews/REVIEW-*.json`.
+
+### LCM-REQ-039 - Tripartite Documentation Specification
+Every governed repository `MUST` provide distinct, decoupled specifications adhering to the tripartite documentation standard:
+1. `docs/Architecture.md`: User-facing mental model, conceptual workflows, and system topology (`RULE-DOC-001`).
+2. `docs/Requirements.md`: Normative technical constraints, requirements, and acceptance criteria (`RULE-DOC-002`).
+3. `docs/Implementation.md`: Concrete realization in code, exported cmdlets/modules, schemas, and traceability (`RULE-DOC-003`).
+4. `docs/README.md`: Component summary & index linking the tripartite specifications.
+
+### LCM-REQ-040 - Universal Installation Runbook Standard
+Every governed repository `MUST` provide an `install/` directory containing `Installation.md`:
+1. **Runbook Scope**: Procedural runbook detailing prerequisites, customization, installation steps, readiness verification tests, and version upgrade procedures.
+2. **Structural Invariant**: `Installation.md` is unified and `MUST NOT` be split into tripartite parts. Complex installations may be divided into supporting markdown documents residing strictly within the `install/` directory.
+3. **Cross-Repository References**: Dependencies on shared components (e.g. `SharedModules`) `MUST` be referenced with their specific prerequisite requirements and installation steps.

@@ -4,7 +4,7 @@ Module: docs/README.md
 Purpose: Master documentation catalog for the Lifecycle Model (LCM) framework.  
 Path: D:/Git_Repositories/Workspace_AI/docs/README.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.0  
+Version: 5.0.1  
 Status: Authoritative Standard  
 Date: 2026-08-20  
 
@@ -22,19 +22,20 @@ The LCM governance tooling requires:
 
 ---
 
-## 2. Core Tripartite Documentation Specifications
+## 2. Core Tripartite Documentation Specifications & Installation Runbook
 
-The authoritative Lifecycle Model (LCM) documentation is codified across three core documents:
+The authoritative Lifecycle Model (LCM) documentation is codified across three core tripartite specifications and a dedicated procedural installation runbook:
 
 - **[Requirements.md](Requirements.md)** — Normative requirements, system prerequisites, lifecycle states, and acceptance criteria.
-- **[Architecture.md](Architecture.md)** — System topology, decoupled triad (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`), Hub-and-Spoke rule discovery, two-tier proposal & review stream, and the 4-phase onboarding engine.
+- **[Architecture.md](Architecture.md)** — System topology, decoupled triad (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`), Hub-and-Spoke rule discovery, two-tier proposal & review stream, and the standardized repository layout.
 - **[Implementation.md](Implementation.md)** — Comprehensive inventory of PowerShell CLI tools, modules, data schemas, and requirement traceability matrix.
+- **[`install/Installation.md`](../install/Installation.md)** — Procedural installation, customization, environment prerequisites, and upgrade runbook.
 
 ---
 
 ## 3. Specialized Architecture & Governance References
 
-- **[LCM-Rules-Cross-Reference.md](LCM-Rules-Cross-Reference.md)** — Master matrix of all 13 governance policies, formal rule codes (`RULE-*`), and enforcing tools.
+- **[LCM-Rules-Cross-Reference.md](LCM-Rules-Cross-Reference.md)** — Master matrix of all 14 governance policies, formal rule codes (`RULE-*`), and enforcing tools.
 - **[LCM-Configuration-Management.md](LCM-Configuration-Management.md)** — Configuration Management (CM) operational engine, junction CR mirroring, and drift detection.
 - **[LCM-Onboarding-Architecture.md](LCM-Onboarding-Architecture.md)** — 4-Phase repository onboarding and update pipeline.
 - **[LCM-Repository-Inventory.md](LCM-Repository-Inventory.md)** — Multi-repository classification and state matrix.

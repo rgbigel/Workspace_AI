@@ -2,7 +2,7 @@
 
 **Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`  
 **Governance Authority**: `Workspace_AI` / `Workspace_Inventory`  
-**LCM Governance Baseline**: `v5.0.0`  
+**LCM Governance Baseline**: `v5.0.1`  
 **Author**: Rolf & Antigravity AI Assistant  
 **Date**: 2026-08-20  
 
