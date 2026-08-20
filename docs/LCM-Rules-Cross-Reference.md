@@ -1,0 +1,85 @@
+# Lifecycle Model (LCM) Rules Cross-Reference Matrix
+
+**Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`  
+**Governance Authority**: `Workspace_AI` / `Workspace_Inventory`  
+**LCM Governance Baseline**: `v5.0.0`  
+**Author**: Rolf & Antigravity AI Assistant  
+**Date**: 2026-08-20  
+
+---
+
+## 1. Rule Discovery & Junction Architecture
+
+All LCM governance rules originate from the **Canonical Hub** at the workspace root and are automatically propagated to child repositories via **NTFS Junctions**:
+
+```mermaid
+graph TD
+    Hub["<b>Canonical Rule Hub</b><br><code>D:\Git_Repositories\.agents\rules\</code><br>(13 Authoritative Rule Files)"]
+    
+    Hub -->|NTFS Junction| J1["<code>BootEntryManager\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J2["<code>VolumeInventory\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J3["<code>Workspace_Inventory\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J4["<code>SharedModules\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J5["<code>BackgroundModifier\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J6["<code>DiskAssignmentStatus\.agents\rules</code>"]
+    Hub -->|NTFS Junction| J7["<code>(All Other Governed Repos...)</code>"]
+```
+
+---
+
+## 2. Master LCM Rules Cross-Reference Table
+
+| # | Rule File | Rule Identifiers | Category / Domain | Scope | Key Mandate & Invariants | Enforcing Tools / Quality Gates |
+|:---:|:---|:---|:---|:---|:---|:---|
+| **1** | [ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md) | `RULE-LCM-001`<br>`RULE-LCM-002`<br>`RULE-LCM-003`<br>`RULE-LCM-004`<br>`RULE-LCM-005`<br>`RULE-LCM-006` | **Proposal & Review Flow** | Workspace-wide & Child Repos | • Proposal-first intent (`suggested` state).<br>• Batch operations (`do`, `delete`, `defer`).<br>• Review granularity (`coarse` vs `tight`).<br>• Beyond Compare 5 visual review gate.<br>• Dual-commit & push synchronization.<br>• Pause / resume mode controls. | • `ProposalManager.psm1`<br>• `Get-OpenProposals.ps1`<br>• `Get-ReposUnderReview.ps1`<br>• `Invoke-ProposalAction.ps1` |
+| **2** | [PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md) | `RULE-PS-001`<br>`RULE-PS-002`<br>`RULE-PS-003`<br>`RULE-PS-004`<br>`RULE-PS-005`<br>`RULE-PS-006` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | • Mandatory `@(...)` array wrapping under StrictMode.<br>• 100% Microsoft approved verb compliance (`Get-Verb`).<br>• Colon-safe variable interpolation (`$($var):`).<br>• Pester v5 hyphenated syntax (`Should -Be`).<br>• StrictMode Latest & ErrorAction Stop.<br>• Function stream hygiene (exempts user CLI scripts). | • `Assert-PesterV5Syntax`<br>• `.githooks/pre-push`<br>• `ProposalManager.Tests.ps1` |
+| **3** | [ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md) | `RULE-REV-001`<br>`RULE-REV-002`<br>`RULE-REV-003`<br>`RULE-REV-004`<br>`RULE-REV-005` | **Commit Gating & RR** | Governed Repos & Root | • Mandatory review-gated commits (`ACCEPTED`).<br>• Readiness quality gate pass requirement.<br>• Immediate halt on rejected/deferred states.<br>• Universal audit receipts in `Workspace_Inventory/data/reviews/`. | • `Invoke-BeyondCompareReview.ps1`<br>• `Submit-ReviewResult.ps1`<br>• `RR.ps1` |
+| **4** | [MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md) | `RULE-EFF-001`<br>`RULE-EFF-002`<br>`RULE-EFF-003`<br>`RULE-EFF-004` | **Method Efficiency** | CM Ledgers & Evidence | • Auto-acceptance of mechanical evidence (`inventory.json`, logs).<br>• Zero-test cascade invariant on telemetry.<br>• Machine-only mutation authority on CM data.<br>• Agent direct execution under `always-proceed`. | • `WorkspaceCM.psm1`<br>• `Invoke-WorkspaceAudit.ps1` |
+| **5** | [ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md) | `ELEVATION-POLICY` | **Security & Privileges** | Workspace-wide | • Least-privilege principle (User default).<br>• Elevated runner delegation for admin tasks.<br>• Auto-detection of privileged commands (`bcdedit`, `DiskPart`, `fltmc`). | • `Invoke-ElevatedTest.ps1`<br>• `Get-RepoCMState` |
+| **6** | [LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md) | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | • English language invariant for code, comments, documentation, and commit messages.<br>• ASCII-only file and directory naming. | • `WorkspaceQualityGates.psm1`<br>• Code reviewers |
+| **7** | [RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md) | `RULE-CTX-001`<br>`RULE-CTX-002`<br>`RULE-CTX-003`<br>`RULE-CTX-004` | **Context Scoping** | Child Repositories | • Active repository scope resolution.<br>• Fast-tier repository context priming (`.lcm/config.json`).<br>• Zero redundant recursive scans.<br>• Global LCM triad awareness (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`). | • `Get-WorkspaceRoot`<br>• `WorkspaceCM.psm1` |
+| **8** | [InvariantRules.md](file:///.agents/rules/InvariantRules.md) | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | • Determinism: identical input $\rightarrow$ identical output.<br>• Reproducibility and zero speculation.<br>• ASCII default (Unicode allowed in `.md` & PS comments).<br>• 2-space indentation, CRLF newlines, UTF-8 without BOM. | • Git hooks<br>• AST syntax checkers |
+| **9** | [RuleAuthority.md](file:///.agents/rules/RuleAuthority.md) | `RULE-AUTH-001`<br>`RULE-AUTH-002` | **Governance Hierarchy** | Core Governance | • **RULE-AUTH-001**: Single source of truth at `D:\Git_Repositories\.agents\rules\`.<br>• **RULE-AUTH-002**: **Mandatory Rule Matrix Synchronization** — whenever rules are added/modified, update both `AGENTS.md` and this cross-reference matrix. | • `Test-LCMRuleHealth.ps1`<br>• `Repair-LCMRules.ps1`<br>• Quality gates |
+| **10** | [PowerShellRules.md](file:///.agents/rules/PowerShellRules.md) | `POWERSHELL-RULES` | **Scripting Standards** | PowerShell code | • `Set-StrictMode -Version Latest`.<br>• `$ErrorActionPreference = 'Stop'`.<br>• Explicit parameter typing and CmdletBinding. | • Pester test suites<br>• Quality gates |
+| **11** | [CMDRules.md](file:///.agents/rules/CMDRules.md) | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | • Explicit echo control (`@echo off`).<br>• Error level verification (`if errorlevel 1`).<br>• ASCII-only batch character sets. | • Batch execution runners |
+| **12** | [JsonRules.md](file:///.agents/rules/JsonRules.md) | `JSON-RULES` | **Data Serialization** | `*.json` | • UTF-8 without BOM encoding.<br>• 2-space indentation formatting.<br>• `$schema` schema validation references. | • `ConvertTo-Json -Depth 5` |
+| **13** | [macro-definitions.md](file:///.agents/rules/macro-definitions.md) | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | • Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. | • Governance CLI dispatcher |
+
+---
+
+## 3. Child Repository Junction Deployment Matrix
+
+The following table lists the active NTFS junctions deployed across all governed child repositories, linking each repository's local `.agents\rules` directly to the Canonical Hub:
+
+| Child Repository Name | Junction Path | Target Canonical Hub | Discovery Status |
+|:---|:---|:---|:---:|
+| `BackgroundModifier` | `BackgroundModifier\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `BGMSAMVInv` | `BGMSAMVInv\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `BootEntryManager` | `BootEntryManager\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `DiskAssignmentStatus` | `DiskAssignmentStatus\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `GetRecoveryVolume` | `GetRecoveryVolume\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `InstallFonts` | `InstallFonts\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `MacriumTemplateUpdater` | `MacriumTemplateUpdater\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `MSG file conversion` | `MSG file conversion\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `NextBootTray` | `NextBootTray\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `OutlookVBAConversion` | `OutlookVBAConversion\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `PowerBGInfo` | `PowerBGInfo\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `ReEnableRadeonRx580` | `ReEnableRadeonRx580\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `SharedModules` | `SharedModules\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `TimeStamper` | `TimeStamper\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `VolumeInventory` | `VolumeInventory\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+| `Workspace_Inventory` | `Workspace_Inventory\.agents\rules` | `D:\Git_Repositories\.agents\rules` | 🟢 Active |
+
+---
+
+## 4. Rule Precedence and Exception Hierarchy
+
+1. **Safety & Review Invariant (`RULE-REV-001` / `RULE-LCM-004`)**:
+   * Beyond Compare 5 visual review is strictly required before any Git commit.
+   * **Sole Exemption**: `Workspace_Inventory` is exempt from visual review because it is purely agent/tool-controlled CM ledger data.
+2. **Efficiency Invariant (`RULE-EFF-001` - `RULE-EFF-004`)**:
+   * Mechanical telemetry, logs, and audit files are auto-accepted and never trigger test cascades or review pauses.
+3. **Execution Integrity (`RULE-PS-001` - `RULE-PS-006`)**:
+   * Strict mode array wrapping, Microsoft verb compliance, pipeline hygiene, and Pester v5 hyphenated syntax are non-negotiable quality gate invariants across all repositories.
+4. **Governance Synchronization (`RULE-AUTH-001` - `RULE-AUTH-002`)**:
+   * Single source of truth with mandatory synchronization of top-level `AGENTS.md` and this cross-reference matrix upon any rule modification.

@@ -2,15 +2,15 @@
 
 Module: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.3.0  
+Version: 5.0.0  
 Status: Authoritative Implementation  
-Date: 2026-08-16  
+Date: 2026-08-20  
 
 ---
 
 ## 1. Tooling & Script Inventory
 
-Under LCM v4.3.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v5.0.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 

@@ -1,21 +1,24 @@
 # Workspace_AI Documentation Directory
 
 Module: docs/README.md  
+Purpose: Master documentation catalog for the Lifecycle Model (LCM) framework.  
+Path: D:/Git_Repositories/Workspace_AI/docs/README.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 4.2.0  
+Version: 5.0.0  
 Status: Authoritative Standard  
-Date: 2026-08-16  
+Date: 2026-08-20  
 
 ---
 
 ## 1. System Prerequisites
 
 The LCM governance tooling requires:
-- **PowerShell 7 (`pwsh.exe` 7.0+)**: Authoritative runtime engine.
+- **PowerShell 7 (`pwsh.exe` 7.0+)**: Authoritative runtime engine for all modules and quality gates.
 - **Git for Windows**: Version control & SHA baseline logs.
-- **NTFS Filesystem**: Directory junctions & file hardlinks.
+- **NTFS Filesystem**: Directory junctions (`mklink /J`) & file hardlinks (`mklink /H`).
 - **Python Environment for Antigravity**: `.venv` (Python 3.10+), `google-antigravity` SDK & `agy` CLI.
-- **Antigravity IDE / VS Code**: Multi-root parent solution workspace.
+- **Beyond Compare 5**: Mandatory interactive visual diff review tool.
+- **Antigravity IDE / VS Code**: Multi-root parent solution workspace (`D:\Git_Repositories\`).
 
 ---
 
@@ -24,16 +27,18 @@ The LCM governance tooling requires:
 The authoritative Lifecycle Model (LCM) documentation is codified across three core documents:
 
 - **[Requirements.md](Requirements.md)** — Normative requirements, system prerequisites, lifecycle states, and acceptance criteria.
-- **[Architecture.md](Architecture.md)** — System design, dual-repo CM topology, NTFS junction projection, 1-file-per-CR junction mirroring, batch test bundling, and the 4-phase onboarding engine.
+- **[Architecture.md](Architecture.md)** — System topology, decoupled triad (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`), Hub-and-Spoke rule discovery, two-tier proposal & review stream, and the 4-phase onboarding engine.
 - **[Implementation.md](Implementation.md)** — Comprehensive inventory of PowerShell CLI tools, modules, data schemas, and requirement traceability matrix.
 
 ---
 
-## 3. Specialized Architecture & Operational References
+## 3. Specialized Architecture & Governance References
 
+- **[LCM-Rules-Cross-Reference.md](LCM-Rules-Cross-Reference.md)** — Master matrix of all 13 governance policies, formal rule codes (`RULE-*`), and enforcing tools.
 - **[LCM-Configuration-Management.md](LCM-Configuration-Management.md)** — Configuration Management (CM) operational engine, junction CR mirroring, and drift detection.
 - **[LCM-Onboarding-Architecture.md](LCM-Onboarding-Architecture.md)** — 4-Phase repository onboarding and update pipeline.
 - **[LCM-Repository-Inventory.md](LCM-Repository-Inventory.md)** — Multi-repository classification and state matrix.
+- **[MODULES_INVENTORY_REPORT.md](MODULES_INVENTORY_REPORT.md)** — Historical architectural influences and repository derivation analysis.
 - **[real-repo-dry-run.md](real-repo-dry-run.md)** — Real-repository dry-run workflow and safety boundaries.
 - **[Standards.md](Standards.md)** — Standards, formatting, and semantic versioning rules.
 - **[Workspace Conventions.md](Workspace%20Conventions.md)** — Workspace paths and governance rules.
