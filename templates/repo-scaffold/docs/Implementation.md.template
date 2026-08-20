@@ -1,0 +1,44 @@
+# {{REPO_NAME}} Implementation & Tooling Mapping
+
+Module: docs/Implementation.md  
+Purpose: Code-level representation of Architecture and Requirements for {{REPO_NAME}}.  
+Path: docs/Implementation.md  
+Authors: {{AUTHOR}}  
+Version: 1.0.0  
+Status: Authoritative Implementation  
+Date: {{DATE}}  
+
+---
+
+## 1. Module & Tooling Inventory
+
+The capabilities of `{{REPO_NAME}}` are physically implemented across the following modules, scripts, and data structures:
+
+### A. Core Modules
+| Module / File | Type | Primary Purpose | Exported Functions / Cmdlets |
+|---|---|---|---|
+| `{{MODULE_ROOT}}/{{REPO_NAME}}.psm1` | PowerShell Module | Main operational logic | `Get-{{REPO_NAME}}State`, `Invoke-{{REPO_NAME}}` |
+
+### B. CLI Entrypoints & Tools
+| Tool Script | Purpose | Parameters / Syntax |
+|---|---|---|
+| `tools/Run-{{REPO_NAME}}.ps1` | Interactive CLI runner | `pwsh -File .\tools\Run-{{REPO_NAME}}.ps1` |
+
+---
+
+## 2. Data Models & Schemas
+
+Data structures and serialized outputs follow standard JSON schema validation when applicable:
+- Configuration: `.lcm/config.json`
+- Local Overrides: `.lcm/overrides.json`
+
+---
+
+## 3. Requirement Traceability Matrix & Test Suites
+
+All normative requirements map directly to automated Pester v5 test assertions:
+
+| Requirement ID | Verifying Pester Test File | Assertion / Quality Gate |
+|---|---|---|
+| `RULE-REQ-001` | `tests/{{REPO_NAME}}.Tests.ps1` | `Should -Be`, determinism tests |
+| `RULE-REQ-002` | `tests/{{REPO_NAME}}.Tests.ps1` | StrictMode Latest compliance |

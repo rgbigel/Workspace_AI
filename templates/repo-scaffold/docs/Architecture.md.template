@@ -1,23 +1,37 @@
 # {{REPO_NAME}} Architecture
 
-Module: Architecture.md
-Purpose: Architectural design and dependency layout for {{REPO_NAME}}.
-Path: docs/Architecture.md
-Authors: {{AUTHOR}}
-Version: 1.0.0
-Changelog:
-- {{DATE}}: Initial architecture scaffolding.
+Module: Architecture.md  
+Purpose: Architectural design, end-user conceptual model, and component topology for {{REPO_NAME}}.  
+Path: docs/Architecture.md  
+Authors: {{AUTHOR}}  
+Version: 1.0.0  
+Status: Authoritative Architecture  
+Date: {{DATE}}  
 
 ---
-title: {{REPO_NAME}} Architecture
-updated: {{DATE}}
-created: {{DATE}}
----
 
-## 1. System Context & Responsibilities
+## 1. System Context & User Mental Model
+
 `{{REPO_NAME}}` provides focused capabilities within the solution workspace.
 
-## 2. Component Design
-- **Core Logic**: Maintained under `{{MODULE_ROOT}}`.
-- **Quality Gates**: Enforced via `tools/QualityGates/RepoQualityGates.psm1`.
-- **Governance**: Guided by core rules in `.agents/rules/core/`.
+* **Primary Purpose**: {{DESCRIPTION}}
+* **User / Consumer View**: End-users interact with this component via CLI entrypoints and exposed cmdlets.
+
+---
+
+## 2. Visual Component Topology & Workflow
+
+```mermaid
+graph TB
+    User["End-User / Operator"] --> CLI["CLI Entrypoint (tools/)"]
+    CLI --> Core["Core Module ({{MODULE_ROOT}}/)"]
+    Core --> QG["Quality Gates & Tests (tests/)"]
+```
+
+---
+
+## 3. External Integrations & Boundaries
+
+- **Upstream Dependencies**: PowerShell 7 (`pwsh.exe`), SharedModules atoms.
+- **Downstream Consumers**: Invoked interactively or by solution orchestration workflows.
+- **Repository Boundaries**: Scoped strictly to {{REPO_NAME}} domain responsibilities.

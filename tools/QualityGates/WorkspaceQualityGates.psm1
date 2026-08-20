@@ -659,4 +659,56 @@ function Assert-PesterV5Syntax {
   }
 }
 
-Export-ModuleMember -Function Get-WorkspaceRoot, Resolve-TargetMethodInstance, Assert-IgnoredRepositories, Assert-StabilizationPolicy, Assert-RealRepoTestPlan, Assert-StaleAuthorityReferences, Assert-PesterV5Syntax
+function Assert-TripartiteDocumentationCompliance {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory=$true)]
+    [string]$TargetRepositoryPath,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$ThrowOnMissing
+  )
+
+  if (-not (Test-Path -LiteralPath $TargetRepositoryPath)) {
+    throw "Target repository path not found: $TargetRepositoryPath"
+  }
+
+  $docsDir = Join-Path $TargetRepositoryPath 'docs'
+  $requiredDocs = @('Architecture.md', 'Requirements.md', 'Implementation.md')
+  $results = @{}
+  $missing = @()
+
+  foreach ($doc in $requiredDocs) {
+    $docPath = Join-Path $docsDir $doc
+    if (Test-Path -LiteralPath $docPath) {
+      $content = Get-Content -LiteralPath $docPath -Raw
+      $hasDox = ($content -match '(?m)^Module:\s+' -and $content -match '(?m)^Purpose:\s+')
+      $results[$doc] = [pscustomobject]@{
+        Exists  = $true
+        DoxHeader = $hasDox
+      }
+    }
+    else {
+      $results[$doc] = [pscustomobject]@{
+        Exists  = $false
+        DoxHeader = $false
+      }
+      $missing += $doc
+    }
+  }
+
+  $isCompliant = ($missing.Count -eq 0)
+
+  if ($ThrowOnMissing -and -not $isCompliant) {
+    throw "Repository '$TargetRepositoryPath' violates RULE-DOC-001 (Tripartite Documentation Standard). Missing: $($missing -join ', ')"
+  }
+
+  return [pscustomobject]@{
+    RepositoryPath = $TargetRepositoryPath
+    IsCompliant    = $isCompliant
+    MissingDocs    = $missing
+    Details        = $results
+  }
+}
+
+Export-ModuleMember -Function Get-WorkspaceRoot, Resolve-TargetMethodInstance, Assert-IgnoredRepositories, Assert-StabilizationPolicy, Assert-RealRepoTestPlan, Assert-StaleAuthorityReferences, Assert-PesterV5Syntax, Assert-TripartiteDocumentationCompliance

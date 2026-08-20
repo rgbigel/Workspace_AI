@@ -1,0 +1,27 @@
+# {{REPO_NAME}} Technical Requirements
+
+Module: Requirements.md  
+Purpose: Normative technical requirements, environmental prerequisites, and design constraints for {{REPO_NAME}}.  
+Path: docs/Requirements.md  
+Authors: {{AUTHOR}}  
+Version: 1.0.0  
+Status: Authoritative Standard  
+Date: {{DATE}}  
+
+---
+
+## 1. Environmental Prerequisites
+
+To execute and test `{{REPO_NAME}}`, the host system requires:
+1. **PowerShell 7 (`pwsh.exe` 7.0+)**: Strict runtime engine for all modules and CLI scripts.
+2. **Git for Windows**: Version control and SHA auditing.
+3. **Execution Context**: Standard User privilege unless elevation is explicitly declared in `.lcm/config.json`.
+
+---
+
+## 2. Normative Invariants & Constraints
+
+- **`RULE-REQ-001` (Determinism)**: Given identical inputs and system state, all cmdlets `MUST` produce deterministic, reproducible outputs.
+- **`RULE-REQ-002` (Strict Execution)**: All production code `MUST` execute under `Set-StrictMode -Version Latest` and `$ErrorActionPreference = 'Stop'`.
+- **`RULE-REQ-003` (ASCII Default)**: All code identifiers, function names, and parameter names `MUST` be strictly ASCII-only.
+- **`RULE-REQ-004` (Error Boundaries)**: Critical operations `MUST` implement defensive error trapping and never leave corrupt intermediate state.

@@ -43,7 +43,8 @@ graph TD
 | **10** | [PowerShellRules.md](file:///.agents/rules/PowerShellRules.md) | `POWERSHELL-RULES` | **Scripting Standards** | PowerShell code | • `Set-StrictMode -Version Latest`.<br>• `$ErrorActionPreference = 'Stop'`.<br>• Explicit parameter typing and CmdletBinding. | • Pester test suites<br>• Quality gates |
 | **11** | [CMDRules.md](file:///.agents/rules/CMDRules.md) | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | • Explicit echo control (`@echo off`).<br>• Error level verification (`if errorlevel 1`).<br>• ASCII-only batch character sets. | • Batch execution runners |
 | **12** | [JsonRules.md](file:///.agents/rules/JsonRules.md) | `JSON-RULES` | **Data Serialization** | `*.json` | • UTF-8 without BOM encoding.<br>• 2-space indentation formatting.<br>• `$schema` schema validation references. | • `ConvertTo-Json -Depth 5` |
-| **13** | [macro-definitions.md](file:///.agents/rules/macro-definitions.md) | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | • Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. | • Governance CLI dispatcher |
+| **13** | [DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md) | `RULE-DOC-001`<br>`RULE-DOC-002`<br>`RULE-DOC-003` | **Documentation Standards** | All `*.md`, `docs/` | • Mandatory tripartite core docs (`Architecture.md`, `Requirements.md`, `Implementation.md`).<br>• Audience separation (User View vs Technical Design vs Code Representation).<br>• DOX metadata header invariant across all docs. | • `WorkspaceQualityGates.psm1`<br>• `Invoke-LCMOnboardRepo.ps1` |
+| **14** | [macro-definitions.md](file:///.agents/rules/macro-definitions.md) | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | • Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. | • Governance CLI dispatcher |
 
 ---
 
