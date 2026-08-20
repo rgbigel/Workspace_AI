@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260820_221225
+Generated at: 20260820_223311
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 3ae7621 feat(docs): implement CR-2026-014 tripartite templates, quality gate, and cross-reference sync
+Latest commit at generation: 91b5c90 feat(lcm): release LCM baseline v5.0.1 (tripartite docs, install runbook, BC review lifecycle, ignored repos sync)
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -39,6 +39,7 @@ ce1bb1e 20260817_204832 refactor(governance): decouple git.ignoredRepositories f
 40e345b 20260818_222904 feat(governance): add Pester v5 quality gate, pre-push hook template, and D:\Tools paths
 7d708c1 20260820_180218 feat(lcm): release LCM v5.0.0 baseline, clean working artifacts, and flatten proposals
 3ae7621 20260820_184225 feat(docs): implement CR-2026-014 tripartite templates, quality gate, and cross-reference sync
+91b5c90 20260820_222153 feat(lcm): release LCM baseline v5.0.1 (tripartite docs, install runbook, BC review lifecycle, ignored repos sync)
 
 3. Footer
 ---------

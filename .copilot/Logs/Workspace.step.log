@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260820_221225
-Latest commit at generation: 3ae7621 feat(docs): implement CR-2026-014 tripartite templates, quality gate, and cross-reference sync
+Generated at: 20260820_223311
+Latest commit at generation: 91b5c90 feat(lcm): release LCM baseline v5.0.1 (tripartite docs, install runbook, BC review lifecycle, ignored repos sync)
 
 2. Change Proposals
 -------------------
@@ -810,12 +810,8 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M docs/Architecture.md
- M docs/Implementation.md
  M docs/LCM-Rules-Cross-Reference.md
- M docs/README.md
- M docs/Requirements.md
- M docs/Standards.md
+ M templates/repo-scaffold/tools/Test-RepoReadiness.ps1.template
 
 6. Current Generated Artifact Status
 ------------------------------------
