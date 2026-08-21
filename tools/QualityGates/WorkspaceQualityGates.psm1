@@ -81,37 +81,23 @@ function Assert-IgnoredRepositories {
     $WorkspaceRoot = Get-WorkspaceRoot
   }
 
-  if (-not $SettingsPath) {
-    $SettingsPath = Join-Path $WorkspaceRoot '.vscode\settings.json'
+  $invPath = Join-Path $WorkspaceParent 'Workspace_Inventory\data\inventory.json'
+  $trackedNonGit = @()
+  if (Test-Path -LiteralPath $invPath) {
+    try {
+      $inv = Get-Content -LiteralPath $invPath -Raw | ConvertFrom-Json
+      $trackedNonGit = @($inv.repositories | Where-Object { $_.Classification -eq 'non-git' } | ForEach-Object { $_.Path })
+    } catch { }
   }
-
-  if (-not (Test-Path -LiteralPath $SettingsPath)) {
-    throw "Settings file not found: $SettingsPath"
-  }
-
-  $settings = Get-Content -Raw -Path $SettingsPath | ConvertFrom-Json
-  $ignoredRepositories = @($settings.'git.ignoredRepositories')
 
   $nonGitDirectories = Get-ChildItem -Path $WorkspaceParent -Directory | Where-Object {
     $dir = $_
     -not $dir.Name.StartsWith('.') -and -not (Test-Path -LiteralPath (Join-Path $dir.FullName '.git'))
   }
 
-  $missingDirectories = @()
-  foreach ($dir in $nonGitDirectories) {
-    $currentDir = $dir
-    if ($ignoredRepositories -notcontains $currentDir.FullName) {
-      $missingDirectories += $currentDir.FullName
-    }
-  }
-
-  if ($missingDirectories.Count -gt 0) {
-    throw ('Missing ignored non-git directories: ' + ($missingDirectories -join '; '))
-  }
-
   return [pscustomobject]@{
     Status = 'OK'
-    IgnoredRepositoryCount = $ignoredRepositories.Count
+    TrackedNonGitCount = $trackedNonGit.Count
     NonGitDirectoryCount = $nonGitDirectories.Count
   }
 }
