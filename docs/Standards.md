@@ -1,11 +1,12 @@
-# version: 5.0.1
+# version: 5.0.2
 
 Module: Standards.md
 Purpose: Defines workspace documentation and operational rules for Standards.
 Path: D:/Git_Repositories/Workspace_AI/docs/Standards.md
 Authors: Rolf
-Version: 5.0.1
+Version: 5.0.2
 Changelog:
+- 2026-08-21: Bumped to LCM Version 5.0.2 (+0.0.1 patch release).
 - 2026-08-20: Bumped to LCM Version 5.0.1 (Tripartite documentation standard release).
 - 2026-08-20: Bumped to LCM Version 5.0.0.
 - 2026-08-15: Added linking standards and designated Junction Link Magic tool.

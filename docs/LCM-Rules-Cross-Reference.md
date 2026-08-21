@@ -2,9 +2,9 @@
 
 **Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`  
 **Governance Authority**: `Workspace_AI` / `Workspace_Inventory`  
-**LCM Governance Baseline**: `v5.0.1`  
+**LCM Governance Baseline**: `v5.0.2`  
 **Author**: Rolf & Antigravity AI Assistant  
-**Date**: 2026-08-20  
+**Date**: 2026-08-21  
 
 ---
 
@@ -44,7 +44,8 @@ graph TD
 | **11** | [CMDRules.md](file:///.agents/rules/CMDRules.md) | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | • Explicit echo control (`@echo off`).<br>• Error level verification (`if errorlevel 1`).<br>• ASCII-only batch character sets. | • Batch execution runners |
 | **12** | [JsonRules.md](file:///.agents/rules/JsonRules.md) | `JSON-RULES` | **Data Serialization** | `*.json` | • UTF-8 without BOM encoding.<br>• 2-space indentation formatting.<br>• `$schema` schema validation references. | • `ConvertTo-Json -Depth 5` |
 | **13** | [DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md) | `RULE-DOC-001`<br>`RULE-DOC-002`<br>`RULE-DOC-003` | **Documentation Standards** | All `*.md`, `docs/` | • Mandatory tripartite core docs (`Architecture.md`, `Requirements.md`, `Implementation.md`).<br>• Audience separation (User View vs Technical Design vs Code Representation).<br>• DOX metadata header invariant across all docs. | • `WorkspaceQualityGates.psm1`<br>• `Invoke-LCMOnboardRepo.ps1` |
-| **14** | [macro-definitions.md](file:///.agents/rules/macro-definitions.md) | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | • Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. | • Governance CLI dispatcher |
+| **14** | [SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md) | `RULE-SUB-001`<br>`RULE-SUB-002`<br>`RULE-SUB-003`<br>`RULE-SUB-004`<br>`RULE-SUB-005` | **Subsystem Architecture** | Subsystem Repositories | • Disjunct domain classification & tripartite conformance.<br>• Dedicated internal subsystem inventory engine.<br>• Host-side physical disk hardware serial matching.<br>• Safe Write 5-stage pipeline & JIT ephemeral authentication.<br>• Strict PC vs Subsystem log segregation. | • Subsystem inventory tools<br>• Safe mutation runners |
+| **15** | [macro-definitions.md](file:///.agents/rules/macro-definitions.md) | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | • Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. | • Governance CLI dispatcher |
 
 ---
 
