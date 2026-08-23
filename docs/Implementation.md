@@ -1,16 +1,16 @@
 # Workspace_AI Lifecycle Model (LCM) Implementation & Tooling Mapping
 
-Module: docs/Implementation.md  
+ModulePath: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.2  
+Version: 5.1.0  
 Status: Authoritative Implementation  
-Date: 2026-08-21  
+Date: 2026-08-23  
 
 ---
 
-## 1. Tooling & Script Inventory
+## 1. Directory Structure & Execution Topology
 
-Under LCM v5.0.2, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v5.1.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 

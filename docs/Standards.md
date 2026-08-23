@@ -1,11 +1,13 @@
-# version: 5.0.2
+# version: 5.1.0
 
-Module: Standards.md
-Purpose: Defines workspace documentation and operational rules for Standards.
-Path: D:/Git_Repositories/Workspace_AI/docs/Standards.md
-Authors: Rolf
-Version: 5.0.2
+Module: Workspace_AI/Standards
+Purpose: Authoritative specification of repository structure, file roles, and standard practices.
+Path: docs/Standards.md
+Authors: Rolf, Workspace_AI Engine
+Version: 5.1.0
+Date: 2026-08-23
 Changelog:
+- 2026-08-23: Bumped to LCM Version 5.1.0 (Minor version release: Subsystem Governance & Acceptance).
 - 2026-08-21: Bumped to LCM Version 5.0.2 (+0.0.1 patch release).
 - 2026-08-20: Bumped to LCM Version 5.0.1 (Tripartite documentation standard release).
 - 2026-08-20: Bumped to LCM Version 5.0.0.

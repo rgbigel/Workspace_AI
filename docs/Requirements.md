@@ -1,16 +1,16 @@
 # Workspace_AI Lifecycle Model (LCM) Normative Requirements
 
-Module: docs/Requirements.md  
+ModulePath: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 5.0.2  
-Status: Authoritative Standard  
-Date: 2026-08-21  
+Version: 5.1.0  
+Status: Authoritative Requirements  
+Date: 2026-08-23  
 
 ---
 
-## 1. Scope, Purpose & Conformance
+## 1. Scope & Governance Authority
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 5.0.2**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 5.1.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
