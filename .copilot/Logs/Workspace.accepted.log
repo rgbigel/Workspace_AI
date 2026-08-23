@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260821_164338
+Generated at: 20260823_224343
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 52e1ee7 docs(cross-reference): update RULE-DOC-004 in LCM rules cross-reference matrix
+Latest commit at generation: 1dcdd87 chore: bump LCM baseline to v5.1.0 (Minor Bump: Subsystem Governance & Acceptance)
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -44,6 +44,9 @@ b6185c2 20260820_223318 feat(rules): codify RULE-PS-007 and RULE-EFF-005 into cr
 16a8015 20260820_223843 fix(templates): update Invoke-ElevatedTest template with Pester v5+ module loader
 355a633 20260821_153725 chore(release): advance version to 5.0.2 and sync documentation standard
 52e1ee7 20260821_162153 docs(cross-reference): update RULE-DOC-004 in LCM rules cross-reference matrix
+86ef41c 20260821_164357 feat(release): LCM Baseline v5.0.2 (Subsystem Governance, JIT auth, BC5 review filter integration)
+8f3856e 20260821_203135 chore: end of day session synchronization
+1dcdd87 20260823_140130 chore: bump LCM baseline to v5.1.0 (Minor Bump: Subsystem Governance & Acceptance)
 
 3. Footer
 ---------

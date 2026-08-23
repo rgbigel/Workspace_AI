@@ -71,4 +71,9 @@ Assert-StaleAuthorityReferences -WorkspaceRoot $workspaceRoot | Out-Host
 .\tools/Generate-Log.ps1
 .\tools/Advance-Governance.ps1
 
+$toolUpdater = Join-Path $rootContainer 'tools\Update-ToolCatalog.ps1'
+if (Test-Path $toolUpdater) {
+  & $toolUpdater -Silent
+}
+
 Write-Host 'Workspace_AI readiness self-test: OK'
