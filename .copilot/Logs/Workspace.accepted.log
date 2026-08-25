@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260823_224343
+Generated at: 20260825_153658
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 1dcdd87 chore: bump LCM baseline to v5.1.0 (Minor Bump: Subsystem Governance & Acceptance)
+Latest commit at generation: 039e208 docs(lcm): update OneDrive repair runbook with AuthorizeMasterUser ACL standards v2.1
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -47,6 +47,9 @@ b6185c2 20260820_223318 feat(rules): codify RULE-PS-007 and RULE-EFF-005 into cr
 86ef41c 20260821_164357 feat(release): LCM Baseline v5.0.2 (Subsystem Governance, JIT auth, BC5 review filter integration)
 8f3856e 20260821_203135 chore: end of day session synchronization
 1dcdd87 20260823_140130 chore: bump LCM baseline to v5.1.0 (Minor Bump: Subsystem Governance & Acceptance)
+7cb3e25 20260823_234850 chore(readiness): integrate tool catalog synchronization into quality gate
+7c435a6 20260824_150652 docs(lcm): add authoritative OneDrive sync engine diagnostic and ghost repair runbook
+039e208 20260824_152936 docs(lcm): update OneDrive repair runbook with AuthorizeMasterUser ACL standards v2.1
 
 3. Footer
 ---------
