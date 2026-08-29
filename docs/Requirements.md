@@ -1,8 +1,8 @@
-# Workspace_AI Lifecycle Model (LCM) Normative Requirements
+﻿# Workspace_AI Lifecycle Model (LCM) Normative Requirements
 
 ModulePath: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 6.1.1  
+Version: 7.0.0  
 Status: Authoritative Requirements (Tool changes, Reviewed but not tested)  
 Date: 2026-08-29  
 
@@ -10,7 +10,7 @@ Date: 2026-08-29
 
 ## 1. Scope & Governance Authority
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 6.1.1**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 7.0.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
@@ -53,7 +53,7 @@ When rule sources overlap, the following strict authority order `MUST` govern:
 5. Generated Adapters and Templates.
 
 ### LCM-REQ-003 - Stable Identity Standard
-All active governance tools, logs, and templates `MUST` identify the baseline system as `Workspace_AI` (LCM v4.1.0). Legacy recovery prefixes (`Workspace_AC`, `Workspace_GC`) `MUST NOT` appear in active governance ledgers or filenames.
+All active governance tools, logs, and templates `MUST` identify the baseline system as `Workspace_AI` (LCM v7.0.0). Legacy recovery prefixes (`Workspace_AC`, `Workspace_GC`) `MUST NOT` appear in active governance ledgers or filenames.
 
 ### LCM-REQ-004 - Repository-Local Overrides Standard
 A repository `MAY` override standard baseline settings only via `.lcm/overrides.json`. Overrides `MUST` document the overridden rule, reason, scope, owner, and date.

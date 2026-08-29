@@ -1,8 +1,8 @@
-# Workspace_AI Lifecycle Model (LCM) Implementation & Tooling Mapping
+﻿# Workspace_AI Lifecycle Model (LCM) Implementation & Tooling Mapping
 
 ModulePath: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 6.1.1  
+Version: 7.0.0  
 Status: Authoritative Implementation (Tool changes, Reviewed but not tested)  
 Date: 2026-08-29  
 
@@ -10,7 +10,7 @@ Date: 2026-08-29
 
 ## 1. Directory Structure & Execution Topology
 
-Under LCM v6.1.1, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v7.0.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 
@@ -145,7 +145,7 @@ Instantiated in each governed repository during Phase 3 of onboarding:
 Generated automatically by `Update-WorkspaceInventory` during full scans.
 
 ### C. Change Request Test Bundles (`Workspace_Inventory/data/bundles/`)
-Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.json` for LCM v4.1.0 Baseline, `BUNDLE-2026-02.json` for CM Initialization).
+Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.json` for LCM v7.0.0 Baseline, `BUNDLE-2026-02.json` for CM Initialization).
 
 ---
 

@@ -1,4 +1,4 @@
----
+﻿---
 name: ReviewCommitGovernancePolicy
 description: Authoritative governance policy for Review-Gated Commits, Acceptance with Edits, and Forced Commit Overrides.
 globs: "*"
@@ -9,16 +9,18 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, and audit logging.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-16  
+Date: 2026-08-29  
 
 ---
 
 ## 1. Governance Rules
 
-### RULE-REV-001: Mandatory Review-Gated Commits
-Every Git commit action for source code, configuration, or structural assets in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal review process (e.g., Beyond Compare 5 via `Invoke-BeyondCompareReview.ps1` / `Submit-ReviewResult.ps1` / `RR.ps1`, or explicit user review in chat/CR).
+### RULE-REV-001: Mandatory Review-Gated Commits & Invariant Review Boundary
+1. **Mandatory Visual Review Gate**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
+2. **Conversational Directives Do Not Waive Gating**: Explicit user instructions in chat (e.g. "yes, remove that", "fix this error") grant authority to execute file edits and staging, but **DO NOT waive the Beyond Compare visual review gate**. The agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and await user review sign-off / folder clearance before executing `git commit` and `git push`.
+3. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
 
 ### RULE-REV-002: Accepted with Edits Qualification
 When a review outcome is recorded as `Accepted with Edits` (or `Accepted with Change`):
@@ -39,3 +41,4 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 1. `Workspace_Inventory/logs/cm_activity.log` (Append-only CM audit ledger).
 2. `Workspace_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
 3. The active Change Request (CR) record in `Workspace_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
+

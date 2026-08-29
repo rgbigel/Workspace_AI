@@ -1,9 +1,9 @@
-# Elevation & Privilege Governance Policy
+﻿# Elevation & Privilege Governance Policy
 
-- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-004`
+- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-005`
 - Scope: Solution-Wide (All Repositories Governed by LCM v4.1.0)
 - Classification: Invariant Rule
-- Version: 1.0.0
+- Version: 7.0.0
 - Updated: 2026-08-16
 
 ---
@@ -44,3 +44,16 @@ Every repository with `elevation_required: true` `MUST` provide a standardized e
 1. Automatically executes Pester tests in-process when the current session is already elevated.
 2. When called from a standard user session, dispatches an elevated worker process (`Start-Process -Verb RunAs`), captures the test run, and writes structured JSON test evidence (`out/test_results.json`).
 3. Quality gates `MUST` certify test passage based on the generated test evidence.
+
+### `RULE-ELEV-005` (Elevated Console Non-Auto-Close Invariant)
+When an interactive script or launcher delegates execution to an elevated console window (`Start-Process pwsh.exe ... -Verb RunAs` or `cmd.exe ... -Verb RunAs`), the spawned elevated window `MUST NOT` automatically close upon script completion.
+1. The process invocation `MUST` include `-NoExit` (for `pwsh.exe`) or `/k` (for `cmd.exe`), or terminate with an explicit interactive completion prompt (`Read-Host "Press Enter to exit..."`).
+2. This guarantees the operator can inspect output logs, execution summaries, and error diagnostics directly in the elevated terminal without premature window dismissal.
+3. **Caller & Worker Notification Standard**:
+   - The delegating caller (elevator) `MUST` explicitly display a structured pre-launch banner in the active terminal containing:
+     - **Timestamp**: Current system timestamp (`yyyy-MM-dd HH:mm:ss`).
+     - **Launch Method**: e.g. `Windows UAC Interactive Elevation (Start-Process -Verb RunAs)`.
+     - **Target Script & Arguments**: Full executable/script path and parameters forwarded.
+     - **Audit Log Path**: Destination log file where live execution telemetry is recorded.
+     - **Window Mode Notice**: Clear indication that the elevated console will remain open upon completion per `RULE-ELEV-005`.
+   - The elevated worker `MUST` output a clear completion notice upon finishing indicating that the window has been intentionally kept open for operator inspection.

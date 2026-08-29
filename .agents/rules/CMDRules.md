@@ -1,29 +1,27 @@
----
+﻿---
 name: CMDRules
-description: Authoritative governance rule mirror for CMDRules
-globs: "*"
+description: Authoritative rules for Windows Command Prompt (CMD/Batch) script generation and normalization.
+globs: "*.cmd,*.bat"
 ---
-<!-- ===================================================================== -->
-<!-- ANTIGRAVITY RULE MIRROR                                               -->
-<!-- Source Authority: .copilot/Rules/CMDRules.md                            -->
-<!-- Activation: Workspace Automatic                                       -->
-<!-- ===================================================================== -->
 # File: CMDRules.md
 
-Module: CMDRules
-Purpose: Authoritative rules for CMD batch generation and normalization.
-Path: .copilot/Rules/CMDRules.md
-Authors: Rolf
-Version: 2.0.0
-Changelog:
-- 2026-07-27: Split unified rule file; stabilized CMD rules.
+Module: CMDRules  
+Purpose: Authoritative rules for CMD batch generation, echo control, error levels, and normalization.  
+Path: .agents/rules/CMDRules.md  
+Authors: Rolf  
+Version: 7.0.0  
+Status: Authoritative Invariant Rule  
+Date: 2026-08-29  
 
-CMD-RULES
-- unified CMDRules stored as authoritative rule set
-- ascii-default: ASCII required
-- newline-crlf: batch files must end with CRLF
-- deterministic-output: identical input → identical output
+---
 
-CMD-METADATA
-- scope: durable-memory
-- location: .copilot/Rules/CMDRules.md
+## 1. Core CMD & Batch Rules
+
+### CMD-RULES
+- **echo-control**: Always begin batch scripts with `@echo off`.
+- **errorlevel-handling**: Always verify command outcomes using `if errorlevel 1` or `%ERRORLEVEL%` checks.
+- **ascii-default**: CMD batch scripts must strictly use ASCII-only character sets.
+- **newline-crlf**: All `*.cmd` and `*.bat` files must end with CRLF line endings.
+- **deterministic-output**: Identical input $\rightarrow$ identical output.
+- **indent-2**: 2-space indentation for logical blocks and parenthesized expressions.
+

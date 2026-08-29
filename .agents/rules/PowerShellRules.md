@@ -1,4 +1,4 @@
----
+﻿---
 name: PowerShellRules
 description: Authoritative governance rule mirror for PowerShellRules
 globs: "*"
@@ -14,7 +14,7 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .copilot/Rules/PowerShellRules.md
 Authors: Rolf
-Version: 2.0.0
+Version: 7.0.0
 Changelog:
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
 
@@ -32,3 +32,4 @@ POWERSHELL-RULES
 POWERSHELL-METADATA
 - scope: durable-memory
 - location: .copilot/Rules/PowerShellRules.md
+
