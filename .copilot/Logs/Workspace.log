@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260829_185833
-Latest commit at generation: 7f3e404 feat(lcm): synchronize Workspace_AI docs to baseline v6.1.0 and flush legacy items per RULE-DOC-006
+Generated at: 20260829_194620
+Latest commit at generation: 6639578 feat(lcm): bump LCM platform baseline to v6.1.1 per RULE-DOC-005
 
 2. Rule Authority
 -----------------
@@ -34,7 +34,9 @@ No reviewable changes.
 
 6. Generated Artifact Status
 ----------------------------
-No generated artifact changes.
+ M .copilot/Logs/Workspace.accepted.log
+ M .copilot/Logs/Workspace.log
+ M .copilot/Logs/Workspace.step.log
 
 7. Footer
 ---------

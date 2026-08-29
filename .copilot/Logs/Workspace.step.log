@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260829_185833
-Latest commit at generation: 7f3e404 feat(lcm): synchronize Workspace_AI docs to baseline v6.1.0 and flush legacy items per RULE-DOC-006
+Generated at: 20260829_194620
+Latest commit at generation: 6639578 feat(lcm): bump LCM platform baseline to v6.1.1 per RULE-DOC-005
 
 2. Change Proposals
 -------------------
@@ -814,7 +814,9 @@ No reviewable changes.
 
 6. Current Generated Artifact Status
 ------------------------------------
-No generated artifact changes.
+ M .copilot/Logs/Workspace.accepted.log
+ M .copilot/Logs/Workspace.log
+ M .copilot/Logs/Workspace.step.log
 
 7. Footer
 ---------
