@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260825_153658
+Generated at: 20260829_173002
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 039e208 docs(lcm): update OneDrive repair runbook with AuthorizeMasterUser ACL standards v2.1
+Latest commit at generation: a4ea1d8 ACCEPTED: Author architectural proposal for Host PC Subsystem Repository (HostSystem_PC)
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -50,6 +50,14 @@ b6185c2 20260820_223318 feat(rules): codify RULE-PS-007 and RULE-EFF-005 into cr
 7cb3e25 20260823_234850 chore(readiness): integrate tool catalog synchronization into quality gate
 7c435a6 20260824_150652 docs(lcm): add authoritative OneDrive sync engine diagnostic and ghost repair runbook
 039e208 20260824_152936 docs(lcm): update OneDrive repair runbook with AuthorizeMasterUser ACL standards v2.1
+7b34bf6 20260825_182251 feat(lcm): advance Lifecycle Model baseline to Version 6.0.0
+70b2c8a 20260826_224018 docs(rules): export updated LCM rules bundle (.md and .txt) for Gemini and Google Drive
+0c201b6 20260826_224509 docs(rules): update exported rules bundle for Show-ToolIndex v2.7.0
+26a3d6a 20260826_225533 docs(rules): update exported rules bundle for LcmTablePrintAtom v1.0.0
+6caa246 20260826_230056 docs(rules): update exported rules bundle for Show-ToolIndex v2.9.0
+71d14f9 20260826_230355 docs(rules): update exported rules bundle
+71beb70 20260827_205617 ACCEPTED: Synchronize LCM Rules Cross-Reference Matrix with PowerShell and Python rules
+a4ea1d8 20260827_205649 ACCEPTED: Author architectural proposal for Host PC Subsystem Repository (HostSystem_PC)
 
 3. Footer
 ---------

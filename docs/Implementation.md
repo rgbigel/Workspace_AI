@@ -23,10 +23,15 @@ Under LCM v6.0.0, the governance and execution tooling is organized into functio
 | **`Workspace_Inventory`** | [`tools/Invoke-WorkspaceAudit.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Invoke-WorkspaceAudit.ps1) | `1.0.0` | Multi-repository CM audit scanner; generates inventory JSON and dashboard markdown. |
 | **`Workspace_Inventory`** | [`tools/Invoke-LCMUpdate.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Invoke-LCMUpdate.ps1) | `1.0.0` | Governed LCM update tool; enforces proposal-first dry-run before live execution. |
 | **`Workspace_Inventory`** | [`tools/Find-ChangeRequest.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Find-ChangeRequest.ps1) | `1.0.0` | Query tool for searching Change Requests by text, repo, bundle, or status. |
-| **`Workspace_Inventory`** | [`tools/New-WorkspaceBaseline.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/New-WorkspaceBaseline.ps1) | `1.0.0` | Snapshot tool capturing full workspace state into versioned JSON baselines. |
+| **`Workspace_Inventory`** | [`tools/Create-WorkspaceBaseline.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Create-WorkspaceBaseline.ps1) | `1.1.0` | Snapshot tool capturing full workspace state into versioned JSON baselines. |
 | **`Workspace_Inventory`** | [`tools/Test-WorkspaceDrift.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Test-WorkspaceDrift.ps1) | `1.0.0` | Drift detection tool evaluating dirty copies, unpushed commits, and outdated LCM versions. |
 | **`Workspace_Inventory`** | [`tools/Clear-BCReviewTemp.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Clear-BCReviewTemp.ps1) | `1.5.0` | User command to inspect, list, and purge Beyond Compare temp review directories (`%TEMP%\BC_Review`). |
 | **`Workspace_Inventory`** | [`tools/Sync-IgnoredRepositories.ps1`](file:///D:/Git_Repositories/Workspace_Inventory/tools/Sync-IgnoredRepositories.ps1) | `1.0.0` | Reconciles `git.ignoredRepositories` in `.vscode/settings.json` against workspace non-git directories. |
+| **`LCM Hub (tools/)`** | [`tools/Create-LcmTool.ps1`](file:///D:/Git_Repositories/tools/Create-LcmTool.ps1) | `2.1.0` | Scaffolding engine creating standard `.ps1` tools, short names, and `tools/Cmd/` trampolines. |
+| **`LCM Hub (tools/)`** | [`tools/LcmDesktopDaemon.ps1`](file:///D:/Git_Repositories/tools/LcmDesktopDaemon.ps1) | `2.1.0` | Lightweight high-performance Session 1 REST bridge daemon for cross-session GUI dispatch. |
+| **`LCM Hub (tools/)`** | [`tools/Show-LcmDaemon.ps1`](file:///D:/Git_Repositories/tools/Show-LcmDaemon.ps1) | `1.1.0` | Real-time telemetry probe, live status monitor, read-only log viewer, and cleanup manager. |
+| **`LCM Hub (tools/)`** | [`tools/Show-Tools.ps1`](file:///D:/Git_Repositories/tools/Show-Tools.ps1) | `3.1.0` | Interactive LCM Tool Explorer dashboard runner with ShortName default view. |
+| **`LCM Hub (tools/)`** | [`tools/Update-ToolCatalog.ps1`](file:///D:/Git_Repositories/tools/Update-ToolCatalog.ps1) | `2.0.0` | Tool catalog sync engine parsing AST dependencies, taxonomy short names, and `tools/Cmd/` trampolines. |
 
 ---
 
@@ -57,8 +62,10 @@ Each review session launched via `Invoke-BeyondCompareReview.ps1` produces an is
 | :--- | :--- | :---: | :--- |
 | **`Workspace_AI`** | [`tools/Onboarding/LCMOnboarding.psm1`](file:///D:/Git_Repositories/Workspace_AI/tools/Onboarding/LCMOnboarding.psm1) | `1.0.0` | `Test-LCMPreFlight`, `New-LCMGovernanceLinks`, `Expand-LCMTemplate`, `Test-LCMIntegrity`, `Invoke-LCMOnboardRepo` |
 | **`Workspace_AI`** | [`tools/QualityGates/WorkspaceQualityGates.psm1`](file:///D:/Git_Repositories/Workspace_AI/tools/QualityGates/WorkspaceQualityGates.psm1) | `1.0.0` | `Test-WorkspaceQualityGates`, `Test-GovernanceRules`, `Test-DryRunEngine` |
-| **`Workspace_Inventory`** | [`modules/WorkspaceCM.psm1`](file:///D:/Git_Repositories/Workspace_Inventory/modules/WorkspaceCM.psm1) | `1.0.0` | `Get-WorkspaceRoot`, `Get-WorkspaceAIState`, `Get-RepoCMState`, `Update-WorkspaceInventory`, `Test-WorkspaceDrift`, `New-WorkspaceBaseline`, `Write-CMLog` |
+| **`Workspace_Inventory`** | [`modules/WorkspaceCM.psm1`](file:///D:/Git_Repositories/Workspace_Inventory/modules/WorkspaceCM.psm1) | `1.1.0` | `Get-WorkspaceRoot`, `Get-WorkspaceAIState`, `Get-RepoCMState`, `Update-WorkspaceInventory`, `Test-WorkspaceDrift`, `Create-WorkspaceBaseline`, `Write-CMLog` |
 | **`Workspace_Inventory`** | [`modules/ChangeRequestManager.psm1`](file:///D:/Git_Repositories/Workspace_Inventory/modules/ChangeRequestManager.psm1) | `2.0.0` | `Sync-CRJunctions`, `Get-ChangeRequests`, `Find-ChangeRequest`, `New-ChangeRequest`, `Get-CRBundles`, `New-CRBundle`, `Add-CRToBundle`, `Export-ChangeRequestDashboard` |
+| **`LCM Hub (tools/)`** | [`tools/modules/LcmDaemonCore.psm1`](file:///D:/Git_Repositories/tools/modules/LcmDaemonCore.psm1) | `2.1.0` | Strongly-typed OOP domain model: `DaemonEnvironment`, `DaemonActionController`, DTO classes, and `Send-DaemonJsonResponse`. |
+| **`LCM Hub (tools/)`** | [`tools/modules/LcmToolCatalog.psm1`](file:///D:/Git_Repositories/tools/modules/LcmToolCatalog.psm1) | `2.0.0` | HTML compiler, catalog rendering engine, switched short-name table view, and 8-mode action dropdown router. |
 
 ---
 

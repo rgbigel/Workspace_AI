@@ -189,3 +189,91 @@ Every governed repository conforms to the standard LCM directory layout:
 Automated upgrades enforce a **Proposal-First Permission Model**:
 1. **Default Mode (Proposal-Only)**: Calling `Invoke-LCMUpdate.ps1 -TargetRepository <Repo>` generates a proposal document in the target repo's `docs/Proposals/` and executes a read-only DryRun simulation.
 2. **Execute Mode (`-Execute`)**: Requires explicit operator instruction (`do #n Proposals`) to deploy junctions, instantiate templates, execute quality gates, and stage the baseline commit.
+
+---
+
+## 7. Desktop REST Bridge Daemon & Command Hub Architecture
+
+To bridge background agent workers, IDE processes, and interactive desktop GUI applications, the LCM container provides a dedicated **Desktop REST Bridge Daemon** and **Short-Name Command Hub**:
+
+```mermaid
+graph LR
+    subgraph AgentWorker ["Background Session (Session 0 / IDE Process)"]
+        Agent["Antigravity / CLI / Background Sub-Process"]
+    end
+
+    subgraph DesktopDaemon ["Interactive Desktop Bridge (Session 1 : Port 9876)"]
+        Daemon["<code>LcmDesktopDaemon.ps1</code><br/>(OOP Core: <code>LcmDaemonCore.psm1</code>)"]
+        Controller["<code>[DaemonActionController]</code>"]
+        Daemon --> Controller
+    end
+
+    subgraph InteractiveDesktop ["Interactive Windows Desktop (Session 1)"]
+        Browser["Default Web Browser<br/>(SHOW_TOOLS.html, Dashboard)"]
+        VSCode["VS Code / Code Editor<br/>(code -g file:line)"]
+        Console["Visible Pwsh Console<br/>(Interactive Dispatch)"]
+        BC["Beyond Compare 5<br/>(3-Way Diff Review)"]
+    end
+
+    subgraph CommandHub ["Short-Name Command Hub (tools/Cmd/)"]
+        Cmds["<code>tools/Cmd/*.cmd</code><br/>(140+ Short-Name Launchers)"]
+    end
+
+    Agent -->|"HTTP JSON-RPC (localhost:9876)"| Daemon
+    Controller -->|"ShellExecute / Process::Start"| Browser & VSCode & Console & BC
+    Cmds -->|"Bypass Trampoline"| Controller
+```
+
+### Invariants:
+1. **Session 1 Elevation & Focus Invariant**: UI tools launched from background agents execute via `http://127.0.0.1:9876` so they open with foreground focus in the operator's active Windows desktop session rather than hidden background workers.
+2. **Short-Name Command Trampoline**: All command scripts in `tools/Cmd/<ShortName>.cmd` use deterministic relative resolution (`%~dp0..\..\<Path>`) to ensure identical behavior in standalone shells and IDE terminals.
+3. **Creator Taxonomy Standard**: All tool creation utilities use the `Create-` verb (e.g. `Create-LcmTool.ps1` $\rightarrow$ `CreateTool`, `Create-WorkspaceBaseline.ps1` $\rightarrow$ `CreateWorkspaceBaseline`).
+4. **Authoritative Synchronization**: `tools/Update-ToolCatalog.ps1` acts as the single compiler reconciling script ASTs, short-name aliases, HTML dashboard indices, and `tools/tool_catalog.json`.
+
+---
+
+## 8. Bottom-Up Tripartite (3-Tier) Documentation Methodology
+
+Under the LCM framework, systems adhere to the **DOX Principle** (*Documentation Drives Implementation*). However, when onboarding existing codebases, absorbing rapid prototypes, or executing bottom-up Change Request Proposals (CRPs), documentation must frequently be synthesized retroactively from active code. 
+
+The **Bottom-Up Tripartite Synthesis Methodology** defines the canonical 4-step derivation pipeline to generate comprehensive, cohesive tripartite specifications (`RULE-DOC-001` through `004`):
+
+```mermaid
+graph TD
+    Step1["<b>Step 1: Implementation Details</b><br/>(<code>docs/Implementation.md</code>)<br/>• Extract baseline functions from module DOX comments<br/>• Document Design Choices & Alternative Trade-Offs<br/>• Specify Interface Contracts, DTOs & Error Codes<br/>• Map Customization Parameters & Cross-References"]
+    
+    Step2["<b>Step 2: Architecture & Mental Model</b><br/>(<code>docs/Architecture.md</code>)<br/>• Condense functions into User-Facing Mental Model<br/>• Formulate System Topology & Mermaid Flow Diagrams<br/>• Define Dual-Layer Execution & Cross-Session Mechanics<br/>• Codify Architectural Invariants & Lifecycle States"]
+    
+    Step3["<b>Step 3: Normative Technical Requirements</b><br/>(<code>docs/Requirements.md</code>)<br/>• Use Architecture structure as guide for REQ-* IDs<br/>• Define Normative Functional & Non-Functional Rules<br/>• Establish Privilege, Elevation & Security Constraints<br/>• Codify Quality Gate Verification & Acceptance Criteria"]
+    
+    Step4["<b>Step 4: Executive Summary & Navigation Index</b><br/>(<code>docs/README.md</code>)<br/>• Distill Executive Summary from Requirements<br/>• Build Tripartite Reference Matrix<br/>• Construct Operator Quick-Start CLI Runbook<br/>• Link Subsystem & Repository Cross-References"]
+
+    Step1 -->|"Condense structure"| Step2
+    Step2 -->|"Guide requirements"| Step3
+    Step3 -->|"Summarize index"| Step4
+```
+
+### Synthesis Execution Pipeline:
+
+1. **Step 1: Implementation Details (`Implementation.md`)**:
+   * **Source Baseline**: Harvest all exported functions, classes, parameter blocks, and comment help from source code.
+   * **Design Choices & Alternatives**: Explicitly document each critical architectural decision (e.g. why HTTP REST on localhost vs Named Pipes; why `%~dp0..\..\` trampolines vs PATH pollution; why `Create-` verb vs `New-`), contrasting it against rejected alternatives.
+   * **Interface Contracts**: Detail exact JSON-RPC schemas, request/response DTO structures, HTTP methods, and status codes.
+   * **Customization**: Document environment variable overrides, CLI switches, and configuration files.
+   * **Traceability**: Provide clickable file and line links to concrete source files.
+
+2. **Step 2: Architecture & User Mental Model (`Architecture.md`)**:
+   * **User-Facing View**: Abstract concrete code into what the solution *looks like* to the operator and what it *accomplishes*.
+   * **System Topology**: Construct Mermaid diagrams showing component boundaries, data flows, and IPC bridges.
+   * **Workflows & Invariants**: Detail operator interaction patterns (CLI, GUI, Agent) and immutable system invariants.
+
+3. **Step 3: Normative Technical Requirements (`Requirements.md`)**:
+   * **Normative Derivation**: Using the structural domains established in `Architecture.md`, write clear `REQ-*` requirements using normative RFC 2119 keywords (`MUST`, `MUST NOT`, `SHOULD`, `MAY`).
+   * **Archetype & Policy Rules**: Specify taxonomy naming standards, elevation constraints (`RULE-ELEV-001`), console persistence (`RULE-ELEV-005`), and StrictMode rules (`RULE-PS-001`).
+
+4. **Step 4: Executive Summary & Directory Index (`README.md`)**:
+   * **Executive Summary**: Synthesize the high-level purpose and core capabilities from `Requirements.md`.
+   * **Tripartite Matrix**: Provide an authoritative table linking `Architecture.md`, `Requirements.md`, and `Implementation.md`.
+   * **Quick-Start Runbook**: Provide immediate, copy-pasteable CLI commands for the most common operator workflows.
+
+
