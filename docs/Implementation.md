@@ -2,7 +2,7 @@
 
 ModulePath: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 6.1.0  
+Version: 6.1.1  
 Status: Authoritative Implementation (Tool changes, Reviewed but not tested)  
 Date: 2026-08-29  
 
@@ -10,7 +10,7 @@ Date: 2026-08-29
 
 ## 1. Directory Structure & Execution Topology
 
-Under LCM v6.1.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v6.1.1, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 
@@ -167,3 +167,4 @@ Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.j
 | **`LCM-REQ-023`** | Change Request Bundles | `data/bundles/*.json` batch test suites | **Active** |
 | **`LCM-REQ-030`** | Self-Readiness Quality Gate | `Test-WorkspaceReadiness.ps1` in `Workspace_AI` | **Active** |
 | **`LCM-REQ-032`** | Drift Evaluation | `Test-WorkspaceDrift.ps1` in `Workspace_Inventory` | **Active** |
+

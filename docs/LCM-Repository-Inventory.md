@@ -4,7 +4,7 @@ Module: LCM-Repository-Inventory.md
 Purpose: Comprehensive inventory and governance status of all repositories and directories under D:\Git_Repositories governed by Solution.code-workspace.
 Path: docs/LCM-Repository-Inventory.md
 Authors: Rolf, Workspace_AI Engine
-Version: 6.1.0
+Version: 6.1.1
 Date: 2026-08-15
 
 ---
@@ -85,4 +85,5 @@ Date: 2026-08-15
 ### 4. Non-Git Directories (10 Directories)
 * **Status**: Codified under `git.ignoredRepositories`.
 * **Transition Path**: When targeted for onboarding, `Invoke-LCMOnboardRepo.ps1` prompts to initialize `git init -b main`, writes standard `.gitignore`, and generates an initial `pre-LCM` baseline commit before seeding governance rules.
+
 

@@ -2,7 +2,7 @@
 
 ModulePath: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 6.1.0  
+Version: 6.1.1  
 Status: Authoritative Requirements (Tool changes, Reviewed but not tested)  
 Date: 2026-08-29  
 
@@ -10,7 +10,7 @@ Date: 2026-08-29
 
 ## 1. Scope & Governance Authority
 
-This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 6.1.0**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
+This document specifies the normative requirements for the **Workspace_AI Lifecycle Model (LCM) Version 6.1.1**, governing `Workspace_AI`, `Workspace_Inventory`, and all component repositories within the multi-root solution workspace (`D:\Git_Repositories\`).
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
@@ -155,3 +155,4 @@ Every governed repository `MUST` provide an `install/` directory containing `Ins
 1. **Runbook Scope**: Procedural runbook detailing prerequisites, customization, installation steps, readiness verification tests, and version upgrade procedures.
 2. **Structural Invariant**: `Installation.md` is unified and `MUST NOT` be split into tripartite parts. Complex installations may be divided into supporting markdown documents residing strictly within the `install/` directory.
 3. **Cross-Repository References**: Dependencies on shared components (e.g. `SharedModules`) `MUST` be referenced with their specific prerequisite requirements and installation steps.
+

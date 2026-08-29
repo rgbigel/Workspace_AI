@@ -1,12 +1,12 @@
-# version: 6.1.0
+# version: 6.1.1
 
 Module: version-bump-procedure.md
 Purpose: Defines workspace documentation and operational rules for version-bump-procedure and LCM Major Version Alignment.
 Path: D:/Git_Repositories/Workspace_AI/docs/version-bump-procedure.md
 Authors: Rolf
-Version: 6.1.0
+Version: 6.1.1
 Changelog:
-- 2026-08-29: Updated to LCM Version 6.1.0 with M.Y.Z Major Version Alignment Invariant (RULE-DOC-005).
+- 2026-08-29: Updated to LCM Version 6.1.1 with M.Y.Z Major Version Alignment Invariant (RULE-DOC-005).
 - 2026-08-15: Bumped to LCM pre-release Version 4.1.0.
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -37,3 +37,4 @@ DURABLE-MEMORY
 
 VARIABLE-MEMORY
 - rule: patch-only increments
+

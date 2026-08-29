@@ -2,7 +2,7 @@
 
 **Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`  
 **Governance Authority**: `Workspace_AI` / `Workspace_Inventory`  
-**LCM Governance Baseline**: `v6.1.0`  
+**LCM Governance Baseline**: `v6.1.1`  
 **Author**: Rolf & Antigravity AI Assistant  
 **Date**: 2026-08-29  
 
@@ -86,3 +86,4 @@ The following table lists the active NTFS junctions deployed across all governed
    * Strict mode array wrapping, Microsoft verb compliance, pipeline hygiene, and Pester v5 hyphenated syntax are non-negotiable quality gate invariants across all repositories.
 4. **Governance Synchronization (`RULE-AUTH-001` - `RULE-AUTH-002`)**:
    * Single source of truth with mandatory synchronization of top-level `AGENTS.md` and this cross-reference matrix upon any rule modification.
+
