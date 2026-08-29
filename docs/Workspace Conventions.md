@@ -4,7 +4,7 @@ Module: Workspace Conventions.md
 Purpose: Defines workspace documentation and operational rules for Workspace Conventions.
 Path: D:/Git_Repositories/Workspace_AI/docs/Workspace Conventions.md
 Authors: Rolf
-Version: 1.2.1
+Version: 6.2.1
 Changelog:
 - 2026-08-17: Decoupled git.ignoredRepositories from Workspace_AI; scoped to root container and Workspace_Inventory.
 - 2026-08-15: Codified Working directory scratchpad convention and .agents/skills packaging.
@@ -53,3 +53,4 @@ GIT-IGNORED-REPOSITORIES
   - D:\Git_Repositories\FileUtilities
   - D:\Git_Repositories\GitTools
   - D:\Git_Repositories\SystemConfiguration
+

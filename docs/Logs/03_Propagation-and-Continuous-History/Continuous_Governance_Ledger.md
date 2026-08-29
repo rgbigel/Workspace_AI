@@ -4,7 +4,9 @@ Module: docs/Logs/03_Propagation-and-Continuous-History/Continuous_Governance_Le
 Purpose: Active, chronological log of changes, verification runs, and propagation events for the current release cycle.
 Path: docs/Logs/03_Propagation-and-Continuous-History/Continuous_Governance_Ledger.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -32,3 +34,4 @@ Date: 2026-08-15
 * **Readiness Runner**: `.\tools\Test-WorkspaceReadiness.ps1`
 * **Rule Syntax Validator**: `.\tools\ValidateRules.ps1`
 * **Current Working Policy**: `write_allowed: false` (Self-Stabilization Phase).
+

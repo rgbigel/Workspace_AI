@@ -4,7 +4,9 @@ Module: docs/Logs/02_Method-and-Tooling-Evolution/README.md
 Purpose: Navigation index and summary of method and tooling evolution within Workspace_AI.
 Path: docs/Logs/02_Method-and-Tooling-Evolution/README.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -23,3 +25,4 @@ Date: 2026-08-15
    * Migration from legacy models to `Workspace_AI`, Antigravity customization bridge, English-only policy, and the 98 step proposals recorded in `.copilot/History/Logs/Proposals.json`.
 2. [**`02_Tooling_QualityGates_and_Onboarding_Engine.md`**](file:///d:/Git_Repositories/Workspace_AI/docs/Logs/02_Method-and-Tooling-Evolution/02_Tooling_QualityGates_and_Onboarding_Engine.md):
    * Evolution of `WorkspaceQualityGates.psm1`, purging of legacy `AI-` / `GC` prefixes, audit of 33 child directories, and implementation of `LCMOnboarding.psm1` (`Invoke-LCMOnboardRepo`).
+

@@ -4,7 +4,9 @@ Module: docs/Logs/02_Method-and-Tooling-Evolution/02_Tooling_QualityGates_and_On
 Purpose: Summary of Quality Gates module architecture, sibling repository audit, and the 4-Phase Onboarding Engine implementation.
 Path: docs/Logs/02_Method-and-Tooling-Evolution/02_Tooling_QualityGates_and_Onboarding_Engine.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -37,3 +39,4 @@ Designed and implemented in response to the requirement to standardize repositor
 3. **Phase 3 (`Expand-LCMTemplate`)**: Dynamic token expansion and instantiation of templates from `templates/repo-scaffold/` (`.lcm/`, `.vscode/`, `docs/`, `tools/`, `.github/agents/`).
 4. **Phase 4 (`Test-LCMIntegrity`)**: Structural validation (JSON syntax, script tokenization, junction/hardlink resolution) with interactive operator confirmation and atomic `LCM-001` baseline commit.
 5. **Update Mode (`-Update`)**: Version-aware upgrade flow for bringing previously onboarded repositories up to the latest LCM release baseline while strictly preserving target-local `.lcm/overrides.json`.
+

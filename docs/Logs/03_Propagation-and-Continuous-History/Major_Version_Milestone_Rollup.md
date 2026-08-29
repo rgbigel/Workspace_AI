@@ -4,7 +4,9 @@ Module: docs/Logs/03_Propagation-and-Continuous-History/Major_Version_Milestone_
 Purpose: Consolidated archive of high-level milestones rolled up at major version boundaries.
 Path: docs/Logs/03_Propagation-and-Continuous-History/Major_Version_Milestone_Rollup.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -33,3 +35,4 @@ This ledger records consolidated milestone rollups. At each major version releas
 * **v0.3.0 (2026-08-01)**: Native PowerShell governance bridge and Markdown-first proposal queues.
 * **v0.2.0 (2026-07-31)**: `Workspace_AC` S1/S2 rule atomization and invariant stabilization.
 * **v0.1.0 (2026-07-15)**: Post-crash recovery scripts, system state restoration, and package source inventories.
+

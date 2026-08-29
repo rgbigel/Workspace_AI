@@ -4,7 +4,9 @@ Module: docs/Logs/01_Pre-AI-Evolution/02_Workspace_GC_Transitional_Governance.md
 Purpose: Summary of Workspace_GC governance development, dry-run design, and Version 4.0.0 baseline.
 Path: docs/Logs/01_Pre-AI-Evolution/02_Workspace_GC_Transitional_Governance.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -35,3 +37,4 @@ Date: 2026-08-15
 1. **Target-Local Sovereignty**: Target repositories must store their own proposals, dry-run outputs, and execution logs under `Docs/Methods/`.
 2. **Read-Only Safety**: Candidate selection never implies write approval. Write modifications require explicit step-by-step human acceptance.
 3. **Ignored Repositories**: Established policy for non-git child directories to avoid false-positive repository assertions.
+

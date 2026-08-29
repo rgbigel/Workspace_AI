@@ -1,4 +1,4 @@
-﻿# Lifecycle Model (LCM) Authoritative Governance Framework
+# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
 > *Exported on: 2026-08-26 23:03:45 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
@@ -44,7 +44,7 @@ Module: RuleAuthority
 Purpose: Defines canonical rule authority, governance hierarchy, and mandatory cross-reference synchronization across the workspace.  
 Path: .agents/rules/RuleAuthority.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 2.0.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-20  
 
@@ -82,7 +82,7 @@ Module: InvariantRules
 Purpose: Authoritative invariant rules for workspace behavior, encoding, determinism, and generation.  
 Path: .agents/rules/InvariantRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-20  
 
@@ -179,7 +179,7 @@ Module: LanguagePolicy
 Purpose: Authoritative rule enforcing English language usage across all workspace documentation, file names, and code.
 Path: .agents/rules/LanguagePolicy.md
 Authors: Rolf
-Version: 1.0.0
+Version: 6.0.0
 Changelog:
 - 2026-08-15: Initial persistent rule for English language invariant across all documentation, file names, code, and comments.
 
@@ -202,7 +202,7 @@ Module: RepositoryContextPolicy
 Purpose: Defines automatic active-document repository detection, fast-tier context priming, candidate fallback, and scan optimization invariants.  
 Path: .agents/rules/RepositoryContextPolicy.md  
 Authors: Rolf, Workspace_AI  
-Version: 1.1.1  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-17  
 
@@ -247,7 +247,7 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-20  
 
@@ -299,7 +299,7 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, and audit logging.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-16  
 
@@ -344,7 +344,7 @@ Module: MethodEfficiencyPolicy.md
 Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry and logs.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-16  
 
@@ -405,7 +405,7 @@ Module: PowerShellStandardsPolicy
 Purpose: Defines mandatory PowerShell standards for strict mode resilience, verb compliance, string interpolation, pipeline hygiene, and testing across all repositories.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.3.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-26  
 
@@ -570,7 +570,7 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .copilot/Rules/PowerShellRules.md
 Authors: Rolf
-Version: 2.0.0
+Version: 6.0.0
 Changelog:
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
 
@@ -601,7 +601,7 @@ Module: PythonRules
 Purpose: Authoritative rule definitions for Python code quality, import ordering, string formatting, and linter compliance.  
 Path: .agents/rules/PythonRules.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-23  
 
@@ -636,7 +636,7 @@ Module: CMDRules
 Purpose: Authoritative rules for CMD batch generation, echo control, error levels, and normalization.  
 Path: .agents/rules/CMDRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-20  
 
@@ -664,7 +664,7 @@ Module: JsonRules
 Purpose: Authoritative rules for JSON normalization, schema referencing, encoding, and indentation.  
 Path: .agents/rules/JsonRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 6.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-08-20  
 
@@ -692,7 +692,7 @@ Module: DocumentationStandardsPolicy
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-20  
 
@@ -730,7 +730,7 @@ Module: <Relative Path>
 Purpose: <1-2 Sentence Summary of Purpose>  
 Path: <Canonical Path>  
 Authors: <Author Name / Engine>  
-Version: <MAJOR.MINOR.PATCH>  
+Version: 6.0.0  
 Status: <Authoritative Standard | Reference | Policy>  
 Date: <YYYY-MM-DD>  
 ```
@@ -766,7 +766,7 @@ Module: SubsystemGovernancePolicy
 Purpose: Governs disjunct Subsystem repositories (e.g. Home Assistant OS), dedicated subsystem inventories, JIT ephemeral write authentication, host hardware interlocks, and log segregation.  
 Path: .agents/rules/SubsystemGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Authoritative Policy  
 Date: 2026-08-21  
 
@@ -959,4 +959,5 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 This workspace is governed by the Lifecycle Model (LCM) framework.
 See authoritative rules in `.agents/rules/`, [`AGENTS.md`](file:///AGENTS.md), and the [`LCM-Rules-Cross-Reference.md`](file:///Workspace_AI/docs/LCM-Rules-Cross-Reference.md).
+
 

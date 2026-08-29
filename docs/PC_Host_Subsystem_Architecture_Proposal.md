@@ -4,7 +4,7 @@ Module: PC_Host_Subsystem_Architecture_Proposal.md
 Purpose: Authoritative architectural proposal and specification for modeling the physical Host PC as a dedicated Lifecycle Model (LCM) Subsystem.  
 Path: Workspace_AI/docs/PC_Host_Subsystem_Architecture_Proposal.md  
 Authors: Rolf, Workspace_AI Architecture Engine  
-Version: 1.0.0  
+Version: 6.0.0  
 Status: Architectural Proposal  
 Date: 2026-08-27  
 
@@ -136,3 +136,4 @@ pwsh -File tools/Audit-HostBaseline.ps1 -Export
    - Build `install/Installation.md` conforming to the 7-phase standard.
 5. **Step 5: Register in Workspace Tool Catalog**:
    - Index `HostSystem_PC` audit and management tools in `tools/tool_catalog.json` and `tools/README.md`.
+

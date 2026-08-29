@@ -4,7 +4,9 @@ Module: docs/Logs/01_Pre-AI-Evolution/01_Workspace_AC_System_Recovery_Lineage.md
 Purpose: Summary of post-crash recovery tools, normalization steps, and atomic fix history from Workspace_AC.
 Path: docs/Logs/01_Pre-AI-Evolution/01_Workspace_AC_System_Recovery_Lineage.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -40,3 +42,4 @@ The recovery work transitioned into structured rule enforcement through the **S1
 
 1. **Recovery Isolation**: System recovery scripts are operational utilities specific to the recovery epoch and must be quarantined away from standard runtime governance.
 2. **Deterministic Rules**: The structural invariants established during `Fix_S1E06` (2-space JSON indentation, CRLF line endings, UTF-8 without BOM) became the immutable foundation for all subsequent LCM rules.
+

@@ -4,7 +4,9 @@ Module: docs/Logs/02_Method-and-Tooling-Evolution/01_Workspace_AI_Foundational_M
 Purpose: Summary of foundational milestones, proposal step progression (STEP-001 to STEP-098), and policy standardizations in Workspace_AI.
 Path: docs/Logs/02_Method-and-Tooling-Evolution/01_Workspace_AI_Foundational_Milestones.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.0.0
+Version: 6.0.0
+Status: Authoritative Historical Ledger
+Classification: permanent-evolution-history
 Date: 2026-08-15
 
 ---
@@ -31,3 +33,4 @@ The internal evolution of `Workspace_AI` was executed across 98 recorded governa
 | **STEP-036 – STEP-055** | Target-Local Method Instance Bootstrap | Built `Initialize-RealRepoMethodInstance.ps1` and `Test-RealRepoProposalCleanup.ps1` to ensure target repositories retain their own artifacts. |
 | **STEP-056 – STEP-075** | Invariant & Schema Hardening | Normalized JSON schemas, PowerShell parameters, rule validators (`ValidateRules.ps1`), and profile assertions (`Validate-CopilotProfile.ps1`). |
 | **STEP-076 – STEP-098** | Quality Gate Unification & Prefix Alignment | Consolidated `WorkspaceQualityGates.psm1`, eliminated legacy `AI-` / `GC` prefixes, aligned proposal IDs from `AI-STEP-*` to standard `STEP-*`. |
+

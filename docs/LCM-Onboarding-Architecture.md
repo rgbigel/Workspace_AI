@@ -4,7 +4,7 @@ Module: LCM-Onboarding-Architecture.md
 Purpose: Architectural specification for the modular 4-Phase Lifecycle Model (LCM) Repository Onboarding & Update Engine.
 Path: D:/Git_Repositories/Workspace_AI/docs/LCM-Onboarding-Architecture.md
 Authors: Rolf, Workspace_AI Engine
-Version: 1.1.0
+Version: 6.1.0
 Changelog:
 - 2026-08-15: Codified 4-state Workspace_AI lifecycle, LCM repository inventory, and Update mode.
 - 2026-08-15: Initial architectural specification and interface definition.
@@ -132,3 +132,4 @@ Deploys the **Hybrid Link Model**:
 # Update / Upgrade Existing Onboarded Repository to Latest LCM Release
 .\tools\Invoke-LCMOnboardRepo.ps1 -TargetRepositoryPath "D:\Git_Repositories\<TargetRepo>" -Update
 ```
+

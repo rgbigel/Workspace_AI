@@ -4,7 +4,7 @@ Module: real-repo-dry-run.md
 Purpose: Describes inspectable Workspace_AI real-repository dry-run cases, flows, gates, and non-goals.
 Path: D:/Git_Repositories/Workspace_AI/docs/real-repo-dry-run.md
 Authors: Workspace_AI Engine
-Version: 1.2.0
+Version: 6.2.0
 Changelog:
 - 2026-08-02: Added read-only target-local proposal cleanup scanner.
 - 2026-08-02: Added target-local method instance bootstrap command and policy.
