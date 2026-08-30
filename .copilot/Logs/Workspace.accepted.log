@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260830_113725
+Generated at: 20260830_152006
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 2e380c3 CR-2026-033: Codify RULE-REV-006 Mandatory Review Stop and Turn Termination Invariant
+Latest commit at generation: 5085788 CR-2026-029: Default to Lightweight BUG Report on Error/Unwanted Behavior Feedback
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -67,6 +67,7 @@ c19f2e0 20260829_223555 chore(governance): update workspace readiness logs
 194db84 20260829_224556 chore(governance): update readiness logs for v7.0.0
 f8b95ab 20260830_112720 CR-2026-032: Google Drive Gemini Inbox Watcher, Mandatory Timestamping, and Security Intake Queue
 2e380c3 20260830_113450 CR-2026-033: Codify RULE-REV-006 Mandatory Review Stop and Turn Termination Invariant
+5085788 20260830_120517 CR-2026-029: Default to Lightweight BUG Report on Error/Unwanted Behavior Feedback
 
 3. Footer
 ---------

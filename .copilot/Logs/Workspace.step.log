@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260830_113725
-Latest commit at generation: 2e380c3 CR-2026-033: Codify RULE-REV-006 Mandatory Review Stop and Turn Termination Invariant
+Generated at: 20260830_152006
+Latest commit at generation: 5085788 CR-2026-029: Default to Lightweight BUG Report on Error/Unwanted Behavior Feedback
 
 2. Change Proposals
 -------------------
@@ -817,7 +817,9 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 6. Current Generated Artifact Status
 ------------------------------------
-No generated artifact changes.
+ M .copilot/Logs/Workspace.accepted.log
+ M .copilot/Logs/Workspace.log
+ M .copilot/Logs/Workspace.step.log
 
 7. Footer
 ---------

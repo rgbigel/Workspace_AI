@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-08-30 11:37:19 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-08-30 13:08:01 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -260,9 +260,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-08-30  
 
 ---
 
@@ -321,6 +321,17 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
      - **Affected Scope**: Target repository and affected modules.
      - **Proposed Remediation Plan**: High-level proposed fix strategy.
 2. **Mandatory Operator Stop**: Upon emitting the Lightweight BUG Report, the agent `MUST STOP` and await explicit operator direction (`do <fix>`, `create CRP`, or alternate instructions) before executing code modifications.
+
+### RULE-LCM-009: Scope and Version-Explicit CRP Naming Standard
+1. **Canonical Filename Convention**: All Change Request Proposals (CRPs) `MUST` follow the standardized structure:
+   `CRP-YYYY-NNN-[Scope]-[Version]-[DescriptiveSlug].md`
+   - `[Scope]`: Affected repository/subsystem name (e.g. `Workspace_AI`, `Installation_LCD`, `SystemConfiguration`, `HaSSD06`), `LCM` for core governance, or `Multiple` for cross-cutting bundles.
+   - `[Version]`: Target baseline or affected version horizon (e.g. `v7.0.0`, `v6.2.0`, `v1.0.0-v1.2.0`).
+   - `[DescriptiveSlug]`: Kebab-case intent description.
+2. **Mandatory Header Metadata**: Every CRP specification `MUST` include explicit metadata fields:
+   - `Target Scope`: Explicit repository or subsystem boundary.
+   - `Affected Version Range`: Semantic version or range.
+   - `Impacted Repositories`: Array of modified repositories.
 
 ---
 

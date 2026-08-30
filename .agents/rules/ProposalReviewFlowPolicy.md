@@ -9,9 +9,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-08-30  
 
 ---
 
@@ -70,4 +70,34 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
      - **Affected Scope**: Target repository and affected modules.
      - **Proposed Remediation Plan**: High-level proposed fix strategy.
 2. **Mandatory Operator Stop**: Upon emitting the Lightweight BUG Report, the agent `MUST STOP` and await explicit operator direction (`do <fix>`, `create CRP`, or alternate instructions) before executing code modifications.
+
+### RULE-LCM-009: Scope and Version-Explicit CRP Naming Standard
+1. **Canonical Filename Convention**: All Change Request Proposals (CRPs) `MUST` follow the standardized structure:
+   `CRP-YYYY-NNN-[Scope]-[Version]-[DescriptiveSlug].md`
+   - `[Scope]`: Affected repository/subsystem name (e.g. `Workspace_AI`, `Installation_LCD`, `SystemConfiguration`, `HaSSD06`), `LCM` for core governance, or `Multiple` for cross-cutting bundles.
+   - `[Version]`: Target baseline or affected version horizon (e.g. `v7.0.0`, `v6.2.0`, `v1.0.0-v1.2.0`).
+   - `[DescriptiveSlug]`: Kebab-case intent description.
+2. **Mandatory Header Metadata**: Every CRP specification `MUST` include explicit metadata fields:
+   - `Target Scope`: Explicit repository or subsystem boundary.
+   - `Affected Version Range`: Semantic version or range.
+   - `Impacted Repositories`: Array of modified repositories.
+
+### RULE-LCM-010: Mandatory Self-Discovered Bug Registration Invariant
+1. **Mandatory Self-Discovery Reporting**: Whenever the AI agent discovers a bug, syntax defect, unhandled runtime exception, parser failure, or regression in a permanent tool, platform script, shared module, or web UI during development, testing, or tool execution, the AI agent `MUST` formally register a Bug Report in `Workspace_Inventory/data/proposals/proposals.json` and generate an accompanying plan and walkthrough.
+2. **Prohibition of Silent In-Place Hotfixing**: The AI agent `MUST NOT` silently patch defects in permanent tools without registering a formal BUG entry in the Configuration Management ledger.
+
+### RULE-LCM-011: Scope and Version-Explicit Bug Report Naming Standard
+1. **Canonical Bug Filename Convention**: All formal Bug Reports `MUST` follow the standardized structure:
+   `BUG-YYYY-NNN-[Scope]-[Version]-[DescriptiveSlug].md`
+   under `Workspace_Inventory/docs/Proposals/`.
+2. **Mandatory Frontmatter Metadata**: Every Bug Report `MUST` include explicit frontmatter fields:
+   - `Bug-ID`: Sequential unique identifier (e.g. `BUG-2026-001`).
+   - `Scope`: Affected repository or subsystem boundary.
+   - `Version`: Target release baseline (e.g. `v7.1.0`).
+   - `Affected-Repos`: Array of modified repositories.
+   - `Severity`: Impact assessment (`Low`, `Medium`, `High`, `Critical`).
+   - `Status`: Lifecycle status (`Open`, `In-Progress`, `Completed`).
+   - `Root-Cause`: Concise explanation of failure mechanics.
+
+
 
