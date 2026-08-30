@@ -13,7 +13,7 @@ Module: OneDrive-Sync-Diagnostic-and-Repair-Guide
 Path: `Workspace_AI/docs/OneDrive-Sync-Diagnostic-and-Repair-Guide.md`  
 Authors: Rolf, Workspace_AI Governance  
 Date: 2026-08-24  
-Version: 6.1.0  
+Version: 7.1.0  
 
 ---
 
@@ -75,4 +75,5 @@ pwsh D:\OneDrive\cmd\@Repair\Diagnose-OneDriveSync.ps1 -All
 2. **Dynamic Executable Resolution**: Supports modern 64-bit Windows 11 paths (`C:\Program Files\Microsoft OneDrive\OneDrive.exe`) and legacy AppData user paths.
 3. **Automatic De-Elevation via Shell COM**: If executed from an Administrator shell, the `/reset` trigger is automatically dispatched through Windows Explorer's non-elevated user token (`Shell.Application.ShellExecute`), completely bypassing Microsoft's administrator popup block.
 4. **Zero Data Loss Guarantee**: Running `onedrive.exe /reset` only clears the local SQLite index cache and forces a cloud manifest comparison. It does **not** delete local documents, repositories, or photos.
+
 

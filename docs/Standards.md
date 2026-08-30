@@ -4,7 +4,7 @@ Module: Workspace_AI/Standards
 Purpose: Authoritative specification of repository structure, file roles, and standard practices.
 Path: docs/Standards.md
 Authors: Rolf, Workspace_AI Engine
-Version: 6.1.1
+Version: 7.1.1
 Date: 2026-08-23
 Changelog:
 - 2026-08-23: Bumped to LCM Version 5.1.0 (Minor version release: Subsystem Governance & Acceptance).
@@ -35,5 +35,6 @@ VERSIONING-STANDARDS
 - variable-memory: increment PATCH only
 - version-parity: all control files share MAJOR
 - version-format: MAJOR.MINOR.PATCH
+
 
 

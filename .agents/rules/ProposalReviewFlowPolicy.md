@@ -104,6 +104,13 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`CRP-YYYY-NNN-[Scope]-[Version]-[DescriptiveSlug].md`) in `Workspace_Inventory/docs/Proposals/` before or alongside ledger registration.
 2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent `CRP-*.md` specification file in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP document.
 
+### RULE-LCM-013: Mandatory Pre-Push Gemini AI & Knowledge Base Synchronization Invariant
+1. **Mandatory Automated Pre-Push Execution**: Every multi-repository push operation executed via `Invoke-WorkspacePush.ps1` (or 1-click UI triggers) `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories.
+2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`Workspace_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
+3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `Workspace_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
+
+
+
 
 
 

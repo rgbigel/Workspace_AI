@@ -2,7 +2,7 @@
 # Purpose: Authoritative specification for Google Gemini Cloud & Gem inbox message formatting and intake security.
 # Path: Workspace_AI/docs/GEMINI_INBOX_SPECIFICATION.md
 # Authors: Rolf, Workspace_AI Engine
-# Version: 1.0.0
+Version: 7.0.0
 # Date: 2026-08-30
 
 # Gemini Cloud to LCM Inbox Specification
@@ -95,3 +95,4 @@ When configuring a Gemini Gem or prompting Gemini to output to Google Drive, use
 4. **Plan Preservation**: Copies full detailed analysis into `Workspace_Inventory/data/proposals/plans/`.
 5. **Inbox Archiving**: Moves the processed input to `INBOX/archive/` and deletes the active inbox copy.
 6. **Telemetry**: Records intake event in `.lcd/logs/Sync-GeminiInbox-*.log`.
+
