@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-08-30 15:55:46 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-08-30 16:39:11 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -417,6 +417,9 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
      - Top-level `README.md` and repository manifests.
      - `Workspace_Inventory/data/inventory.json` repository record.
    - Commit messages and review receipts `MUST` record the resulting semantic version (e.g. `feat(cm): ... [v7.1.1]`).
+3. **Workspace_Inventory Operational Data Exemption**:
+   - Routine data accounting mutations within `Workspace_Inventory` (specifically `data/inventory.json`, `data/proposals/proposals.json`, `logs/cm_activity.log`, `docs/INVENTORY_DASHBOARD.md`, and `data/reviews/*`) occurring as a standard byproduct of reviews, audits, proposal lifecycle transitions, or push recording `SHALL NOT` increment `Workspace_Inventory`'s semantic version.
+   - Semantic version increments for `Workspace_Inventory` apply strictly when source code (`tools/*.ps1`, `modules/*.psm1`), specifications (`docs/*.md`), or governance policies are modified.
 
 ---
 
