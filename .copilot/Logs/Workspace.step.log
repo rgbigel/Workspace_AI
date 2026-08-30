@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260830_152006
-Latest commit at generation: 5085788 CR-2026-029: Default to Lightweight BUG Report on Error/Unwanted Behavior Feedback
+Generated at: 20260830_154407
+Latest commit at generation: d909375 chore(lcm): sync rules and governance logs for Proposal #19, #23, and #24
 
 2. Change Proposals
 -------------------
@@ -811,15 +811,10 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 5. Current Reviewable Git Status
 --------------------------------
  M .agents/rules/ProposalReviewFlowPolicy.md
- M docs/LCM_Rules.txt
- M docs/LCM_Rules_Gemini_Export.md
- M docs/LCM_Rules_Gemini_Export.txt
 
 6. Current Generated Artifact Status
 ------------------------------------
- M .copilot/Logs/Workspace.accepted.log
- M .copilot/Logs/Workspace.log
- M .copilot/Logs/Workspace.step.log
+No generated artifact changes.
 
 7. Footer
 ---------

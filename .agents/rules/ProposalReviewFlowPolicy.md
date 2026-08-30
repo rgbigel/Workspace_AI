@@ -51,10 +51,11 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 ### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
 1. **Dual-State Separation**: Every proposal in `Workspace_Inventory/data/proposals/proposals.json` `MUST` track both:
-   - **Governance Plan State (`state`)**: Document approval state (`suggested`, `approved`, `deferred`, `rejected`, `completed`).
-   - **Implementation Progress State (`progress_state`)**: Physical execution progress (`undecided`, `queued`, `in_progress`, `verification`, `completed`, `blocked`, `failed`).
+   - **Governance Plan State (`state`)**: Document approval state (`bug`, `suggested`, `approved`, `deferred`, `rejected`, `completed`, `pushed`).
+   - **Implementation Progress State (`progress_state`)**: Physical execution progress (`undecided`, `queued`, `in_progress`, `verification`, `completed`, `pushed`, `blocked`, `failed`).
 2. **Initial Invariant**: Every newly submitted proposal and unapproved plan `MUST` initialize with `progress_state: "undecided"`.
-3. **Mandatory CM Plan & Walkthrough Archival**:
+3. **Pushed Lifecycle Transition**: Upon successful execution of `Invoke-WorkspacePush.ps1` (or CM Control Hub Push), proposals in `completed` state whose origin repository was pushed `MUST` transition to `pushed` (`pushed_at` timestamp recorded).
+4. **Mandatory CM Plan & Walkthrough Archival**:
    - All Markdown implementation plans and execution walkthroughs `MUST` be persistently archived in the governed CM repository under:
      - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
      - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
@@ -98,6 +99,11 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - `Severity`: Impact assessment (`Low`, `Medium`, `High`, `Critical`).
    - `Status`: Lifecycle status (`Open`, `In-Progress`, `Completed`).
    - `Root-Cause`: Concise explanation of failure mechanics.
+
+### RULE-LCM-012: Mandatory Scope-and-Version Explicit CRP Specification Generation Invariant
+1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`CRP-YYYY-NNN-[Scope]-[Version]-[DescriptiveSlug].md`) in `Workspace_Inventory/docs/Proposals/` before or alongside ledger registration.
+2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent `CRP-*.md` specification file in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP document.
+
 
 
 
