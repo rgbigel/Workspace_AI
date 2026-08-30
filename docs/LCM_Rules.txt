@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-08-30 15:53:32 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-08-30 15:55:46 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -404,6 +404,19 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 1. **Mandatory Turn Termination**: Whenever an agent carries out a CRP or code modification reaching the visual review stage, the agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and **immediately terminate the current response turn without making additional tool calls**.
 2. **Prohibition of Same-Turn Submissions**: The agent `MUST NOT` invoke `Submit-ReviewResult.ps1`, stage files, or execute `git commit` within the same execution turn cycle as the review launcher.
 3. **Discrete Operator Disposition Requirement**: Review dispositions (`ACCEPTED`, `ACCEPTED_WITH_EDITS`, `REJECTED`, `DEFERRED`) `SHALL ONLY` be consumed and processed when received as a discrete, independent message submitted by the operator in a subsequent turn.
+
+### RULE-REV-007: Mandatory Automatic Semantic Version Increment per Change Invariant
+1. **Universal Version Increment Invariant**: Every change, proposal, or bug fix committed to any LCM-governed repository `MUST` increment that repository's semantic version before or during review commit:
+   - **Patch Increment (`+0.0.1`)**: Standard default for all bug fixes, refinements, single-purpose enhancements, and incremental proposal completions.
+   - **Minor Increment (`+0.1.0`)**: For substantive new feature sets, new tools, new sub-frameworks, or major multi-component proposals.
+   - **Major Increment (`+1.0.0`)**: For global platform architectural transitions, governed by `RULE-DOC-005`.
+2. **Synchronized Artifact Updates**:
+   - The incremented version `MUST` be updated in:
+     - DOX metadata headers of modified scripts and modules (`Version: M.Y.Z`).
+     - Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`).
+     - Top-level `README.md` and repository manifests.
+     - `Workspace_Inventory/data/inventory.json` repository record.
+   - Commit messages and review receipts `MUST` record the resulting semantic version (e.g. `feat(cm): ... [v7.1.1]`).
 
 ---
 
