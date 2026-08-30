@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260830_113442
-Latest commit at generation: f8b95ab CR-2026-032: Google Drive Gemini Inbox Watcher, Mandatory Timestamping, and Security Intake Queue
+Generated at: 20260830_113725
+Latest commit at generation: 2e380c3 CR-2026-033: Codify RULE-REV-006 Mandatory Review Stop and Turn Termination Invariant
 
 2. Change Proposals
 -------------------
@@ -810,7 +810,7 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M .agents/rules/ReviewCommitGovernancePolicy.md
+ M .agents/rules/ProposalReviewFlowPolicy.md
  M docs/LCM_Rules.txt
  M docs/LCM_Rules_Gemini_Export.md
  M docs/LCM_Rules_Gemini_Export.txt

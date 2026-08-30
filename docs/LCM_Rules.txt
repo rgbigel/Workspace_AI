@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-08-30 11:34:36 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-08-30 11:37:19 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -310,6 +310,17 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
      - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
      - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
    - Explicit relative links `plan_path` and `walkthrough_path` `MUST` be recorded in `proposals.json`.
+
+### RULE-LCM-008: Lightweight BUG Report & Error Feedback Invariant
+1. **Default Lightweight Report on Negative Feedback**: Whenever the operator reports errors, unexpected script failures, broken dependencies, or unwanted agent behavior via prompts, chat, or backchannel inbox:
+   - The agent `MUST NOT` immediately initiate a full-scale code rewrite or uncontrolled repository file mutations.
+   - The agent `MUST` default to producing a concise **Lightweight BUG Report** containing:
+     - **Issue Summary**: Clear description of the symptom or discrepancy.
+     - **Superficial Root Cause**: Initial diagnostic hypothesis.
+     - **Criticality Assessment**: Impact rating (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
+     - **Affected Scope**: Target repository and affected modules.
+     - **Proposed Remediation Plan**: High-level proposed fix strategy.
+2. **Mandatory Operator Stop**: Upon emitting the Lightweight BUG Report, the agent `MUST STOP` and await explicit operator direction (`do <fix>`, `create CRP`, or alternate instructions) before executing code modifications.
 
 ---
 
