@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-08-26 23:03:45 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-08-30 11:18:44 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -44,9 +44,9 @@ Module: RuleAuthority
 Purpose: Defines canonical rule authority, governance hierarchy, and mandatory cross-reference synchronization across the workspace.  
 Path: .agents/rules/RuleAuthority.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 2.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -82,9 +82,9 @@ Module: InvariantRules
 Purpose: Authoritative invariant rules for workspace behavior, encoding, determinism, and generation.  
 Path: .agents/rules/InvariantRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -122,10 +122,10 @@ Date: 2026-08-20
 
 # Elevation & Privilege Governance Policy
 
-- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-004`
+- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-005`
 - Scope: Solution-Wide (All Repositories Governed by LCM v4.1.0)
 - Classification: Invariant Rule
-- Version: 1.0.0
+- Version: 7.0.0
 - Updated: 2026-08-16
 
 ---
@@ -167,6 +167,19 @@ Every repository with `elevation_required: true` `MUST` provide a standardized e
 2. When called from a standard user session, dispatches an elevated worker process (`Start-Process -Verb RunAs`), captures the test run, and writes structured JSON test evidence (`out/test_results.json`).
 3. Quality gates `MUST` certify test passage based on the generated test evidence.
 
+### `RULE-ELEV-005` (Elevated Console Non-Auto-Close Invariant)
+When an interactive script or launcher delegates execution to an elevated console window (`Start-Process pwsh.exe ... -Verb RunAs` or `cmd.exe ... -Verb RunAs`), the spawned elevated window `MUST NOT` automatically close upon script completion.
+1. The process invocation `MUST` include `-NoExit` (for `pwsh.exe`) or `/k` (for `cmd.exe`), or terminate with an explicit interactive completion prompt (`Read-Host "Press Enter to exit..."`).
+2. This guarantees the operator can inspect output logs, execution summaries, and error diagnostics directly in the elevated terminal without premature window dismissal.
+3. **Caller & Worker Notification Standard**:
+   - The delegating caller (elevator) `MUST` explicitly display a structured pre-launch banner in the active terminal containing:
+     - **Timestamp**: Current system timestamp (`yyyy-MM-dd HH:mm:ss`).
+     - **Launch Method**: e.g. `Windows UAC Interactive Elevation (Start-Process -Verb RunAs)`.
+     - **Target Script & Arguments**: Full executable/script path and parameters forwarded.
+     - **Audit Log Path**: Destination log file where live execution telemetry is recorded.
+     - **Window Mode Notice**: Clear indication that the elevated console will remain open upon completion per `RULE-ELEV-005`.
+   - The elevated worker `MUST` output a clear completion notice upon finishing indicating that the window has been intentionally kept open for operator inspection.
+
 ---
 
 <a id="languagepolicymd"></a>
@@ -179,7 +192,7 @@ Module: LanguagePolicy
 Purpose: Authoritative rule enforcing English language usage across all workspace documentation, file names, and code.
 Path: .agents/rules/LanguagePolicy.md
 Authors: Rolf
-Version: 1.0.0
+Version: 7.0.0
 Changelog:
 - 2026-08-15: Initial persistent rule for English language invariant across all documentation, file names, code, and comments.
 
@@ -202,9 +215,9 @@ Module: RepositoryContextPolicy
 Purpose: Defines automatic active-document repository detection, fast-tier context priming, candidate fallback, and scan optimization invariants.  
 Path: .agents/rules/RepositoryContextPolicy.md  
 Authors: Rolf, Workspace_AI  
-Version: 1.1.1  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-17  
+Date: 2026-08-29  
 
 ---
 
@@ -247,9 +260,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -287,6 +300,17 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 - **`resume LCM`**: Re-activates strict proposal-first governance.
 - LCM status is scoped per repository and automatically resets to default active governance across new sessions.
 
+### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
+1. **Dual-State Separation**: Every proposal in `Workspace_Inventory/data/proposals/proposals.json` `MUST` track both:
+   - **Governance Plan State (`state`)**: Document approval state (`suggested`, `approved`, `deferred`, `rejected`, `completed`).
+   - **Implementation Progress State (`progress_state`)**: Physical execution progress (`undecided`, `queued`, `in_progress`, `verification`, `completed`, `blocked`, `failed`).
+2. **Initial Invariant**: Every newly submitted proposal and unapproved plan `MUST` initialize with `progress_state: "undecided"`.
+3. **Mandatory CM Plan & Walkthrough Archival**:
+   - All Markdown implementation plans and execution walkthroughs `MUST` be persistently archived in the governed CM repository under:
+     - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
+     - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
+   - Explicit relative links `plan_path` and `walkthrough_path` `MUST` be recorded in `proposals.json`.
+
 ---
 
 <a id="reviewcommitgovernancepolicymd"></a>
@@ -299,9 +323,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, and audit logging.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-16  
+Date: 2026-08-29  
 
 ---
 
@@ -344,9 +368,9 @@ Module: MethodEfficiencyPolicy.md
 Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry and logs.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-16  
+Date: 2026-08-29  
 
 ---
 
@@ -405,9 +429,9 @@ Module: PowerShellStandardsPolicy
 Purpose: Defines mandatory PowerShell standards for strict mode resilience, verb compliance, string interpolation, pipeline hygiene, and testing across all repositories.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.3.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-26  
+Date: 2026-08-29  
 
 ---
 
@@ -556,7 +580,53 @@ All PowerShell scripts, automation tools, and diagnostic reporters that launch i
    - File Explorers (`explorer.exe /select,"<Path>"`)
    - Text Editors (`notepad.exe`, `notepad++.exe`)
    - Interactive Consoles & Terminals (`wt.exe`, `pwsh.exe -NoExit`)
-   - GUI Windows & WPF Launchers (`Show-LcmActiveLauncher.ps1`)
+
+---
+
+### RULE-PS-012: Prohibition of Bare Inline `(if ...)` in Command Invocations
+PowerShell parses parentheses `(...)` as an expression group. In PowerShell syntax, `if`, `switch`, and `foreach` are **language statements**, not expressions.
+- **The Failure**: Placing a bare `(if (...) { ... } else { ... })` inside a command argument causes the parser to treat `if` as a cmdlet/function name, throwing:
+  `The term 'if' is not recognized as a name of a cmdlet, function, script file, or executable program.`
+- **Mandatory Invariant**:
+  1. **Primary Standard (Pre-assignment - Recommended)**: Pre-calculate the conditional value into an explicitly named local variable immediately before invoking the command.
+     ```powershell
+     $targetSubsystem = if ($Group -ne 'All') { $Group } else { 'LCM' }
+     Build-LcmToolIndexHtml -Subsystem $targetSubsystem
+     ```
+  2. **Subexpression `$()` Standard**: If evaluated inline, developers `MUST` prefix with the subexpression operator `$(`:
+     ```powershell
+     Build-LcmToolIndexHtml -Subsystem $(if ($Group -ne 'All') { $Group } else { 'LCM' })
+     ```
+  3. **PowerShell 7+ Ternary Operator**: Use standard ternary syntax `($cond ? $trueVal : $falseVal)`:
+     ```powershell
+     Build-LcmToolIndexHtml -Subsystem ($Group -ne 'All' ? $Group : 'LCM')
+     ```
+- **Strictly Forbidden**:
+  ```powershell
+  Build-LcmToolIndexHtml -Subsystem (if ($Group -ne 'All') { $Group } else { 'LCM' })  # Fatal Parser Error
+  ```
+
+---
+
+### RULE-PS-013: Module Import Parameter Compliance (`Import-Module -Name`)
+Unlike filesystem cmdlets (`Get-Content`, `Test-Path`, `Set-Content`), `Import-Module` does `NOT` accept a `-LiteralPath` parameter.
+- **Mandatory Invariant**: Always use `-Name` or positional path when importing `.psm1` or `.psd1` files:
+  ```powershell
+  Import-Module -Name $modulePath -Force
+  ```
+- **Forbidden**:
+  ```powershell
+  Import-Module -LiteralPath $modulePath -Force  # ParameterBindingException
+  ```
+
+---
+
+### RULE-PS-014: High-Performance NTFS Permission & Smart Inheritance Standard
+Brute-force file-by-file recursion (`icacls /T`, `takeown /R`) across entire storage volumes causes millions of redundant disk writes and extreme execution latency (15-45 minutes).
+- **Mandatory Invariant**:
+  1. Scripts managing NTFS security descriptors `MUST` establish container and object inheritance (`(OI)(CI)(F)`) on parent/root nodes and re-enable clean inheritance (`/inheritance:e`) to allow child objects to inherit permissions dynamically in 0ms.
+  2. Explicit `icacls` or `takeown` executions `MUST` be targeted specifically to directory nodes where inheritance is severed or blocked (`Acl.AreAccessRulesProtected == $true`), explicit `DENY` rules are present, or directory junctions require `/L` link-level authorization.
+  3. Blind whole-volume recursive rewriting across millions of healthy inheriting files is strictly prohibited.
 
 ---
 
@@ -570,7 +640,7 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .copilot/Rules/PowerShellRules.md
 Authors: Rolf
-Version: 2.0.0
+Version: 7.0.0
 Changelog:
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
 
@@ -601,9 +671,9 @@ Module: PythonRules
 Purpose: Authoritative rule definitions for Python code quality, import ordering, string formatting, and linter compliance.  
 Path: .agents/rules/PythonRules.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-23  
+Date: 2026-08-29  
 
 ---
 
@@ -636,9 +706,9 @@ Module: CMDRules
 Purpose: Authoritative rules for CMD batch generation, echo control, error levels, and normalization.  
 Path: .agents/rules/CMDRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -664,9 +734,9 @@ Module: JsonRules
 Purpose: Authoritative rules for JSON normalization, schema referencing, encoding, and indentation.  
 Path: .agents/rules/JsonRules.md  
 Authors: Rolf  
-Version: 2.1.0  
+Version: 7.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -692,9 +762,9 @@ Module: DocumentationStandardsPolicy
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-20  
+Date: 2026-08-29  
 
 ---
 
@@ -756,6 +826,33 @@ Every LCM-governed repository that deploys or installs operational payloads `MUS
 
 ---
 
+### RULE-DOC-005: LCM Major Version Alignment Invariant (`M.Y.Z`)
+Whenever a new major LCM version $M$ (e.g. `v6.0.0`, `v7.0.0`) is established and pushed:
+1. **Major Parity**: All contained modules, specification documents, scripts, and configuration manifests `MUST` have their version updated such that their **Major** version component matches $M$.
+2. **Subversion Preservation**: Subversions (**Minor** $Y$ and **Patch** $Z$) `MUST NOT` be reset or wiped by pre-push major version actions; their relative evolution history and component-level differentiation are strictly preserved.
+3. **Transformation Formula**: If a module or spec has version $X.Y.Z$ and the new LCM major version is $M$, the new version becomes:
+   $$\text{NewVersion} = M.Y.Z$$
+   *(Example: A module at version `2.3.1` when major version 7 is established becomes `7.3.1`).*
+4. **Baseline Synchronization**: All explicit global baseline references in configuration files (`.lcm/config.json`, `.vscode/settings.json`, `.github/agents/Config.json`), agent profiles, and DOX headers `MUST` reference the current active LCM baseline.
+
+---
+
+### RULE-DOC-006: Major Release Retention Horizon Policy & Evolution History Taxonomy
+At the time of a major release push $M$ (e.g. `v6.0.0`, `v7.0.0`):
+1. **2-Major-Release Retention Horizon ($M - 2$)**:
+   - All transient operational logs (`tools/logs/*.log`, `Workspace_Inventory/logs/*.log`), temporary scratch dumps (`scratch/`), and legacy deletion trees (`Deletions/`) from major releases older than 2 major versions ($\le M - 2$) `MUST` be completely flushed.
+   - For major release $M=6$, all artifacts and deletion trees from major releases $\le 4$ are purged.
+   - Transient logs within the active operational window ($M$ and $M-1$) are retained.
+2. **Permanent Historical Evolution Logs Exemption**:
+   - Logs documenting macro-architectural evolution milestones, lineage transitions, and continuous governance history `MUST NOT` be pruned.
+3. **Standardized Evolution History Taxonomy**:
+   - **Directory Naming**: `{Sequence:02d}_{Theme_or_Era}-Evolution/` (e.g., `01_Pre-AI-Evolution/`, `02_Method-and-Tooling-Evolution/`, `03_Propagation-and-Continuous-History/`).
+   - **File Naming**: `{Sequence:02d}_{Subject}_{MilestoneType}.md` (where `MilestoneType` $\in$ `{Lineage, Governance, Milestones, Architecture, Ledger, Rollup}`).
+   - **DOX Metadata Invariant**: All permanent evolution log documents `MUST` declare `Classification: permanent-evolution-history` and `Status: Authoritative Historical Ledger`.
+   - **Automated Protection**: All directories matching `*-Evolution/` or files with `Classification: permanent-evolution-history` are unconditionally protected from deletion by cleanup engines and daemons.
+
+---
+
 <a id="subsystemgovernancepolicymd"></a>
 ## Rule #15: SubsystemGovernancePolicy.md
 > **Category**: 4. Documentation & Subsystem Architecture | **Canonical Source**: `.agents/rules/SubsystemGovernancePolicy.md`
@@ -766,9 +863,9 @@ Module: SubsystemGovernancePolicy
 Purpose: Governs disjunct Subsystem repositories (e.g. Home Assistant OS), dedicated subsystem inventories, JIT ephemeral write authentication, host hardware interlocks, and log segregation.  
 Path: .agents/rules/SubsystemGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 1.0.0  
+Version: 7.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-21  
+Date: 2026-08-29  
 
 ---
 
@@ -838,7 +935,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 > **Category**: 4. Documentation & Subsystem Architecture | **Canonical Source**: `.agents/rules/macro-definitions.md`
 
 # macro-definitions.md
-# version: 4.0.0
+# version: 4.2.0
 
 # MACRO-DEFINITIONS-METADATA
 # scope: durable-memory
@@ -876,15 +973,15 @@ MACRO: @profile status
   - summarize version alignment
 
 MACRO: @tools
-- description: display authoritative alphabetical index of LCM and HaSSD06 tools
-- aliases: @t, @tools, @menu
+- description: display authoritative alphabetical index of LCM and HaSSD06 tools via Show-ToolIndex.ps1
+- aliases: ShowTools, showtools, ShowToolsIndex, Show-ToolIndex, @tools, @t, @menu
 - rules:
-  - '@tools' or '@t' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience User'
-  - '@tools dev' or '@t dev' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience Dev'
-  - '@tools ha' or '@t ha' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group HaSSD06'
-  - '@tools lcm' or '@t lcm' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group LCM'
-  - '@tools all' or '@t all' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience All'
-  - supports -Filter <query> and -Grid
+  - 'ShowTools' / 'showtools' / '@tools' / '@t' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience User'
+  - 'ShowTools dev' / 'showtools dev' / '@tools dev' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience Dev'
+  - 'ShowTools ha' / 'showtools ha' / '@tools ha' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group HaSSD06'
+  - 'ShowTools lcm' / 'showtools lcm' / '@tools lcm' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group LCM'
+  - 'ShowTools all' / 'showtools all' / '@tools all' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience All'
+  - supports -Filter <query> and -NoBrowser / -Cli
 
 MACRO: @set-tool-audience
 - description: update whether a tool is User-exposed or Developer-only
@@ -897,6 +994,20 @@ MACRO: @log
 - rules:
   - '@log' or '@logs' -> executes 'pwsh -File tools/Show-LastLog.ps1'
   - '@log <ToolName>' -> executes 'pwsh -File tools/Show-LastLog.ps1 -ToolName <ToolName>'
+
+MACRO: @BCR
+- description: launch Beyond Compare 5 visual review display for a repository against baseline commit
+- aliases: BCR, @bcr, bcr
+- rules:
+  - 'BCR <repo>' or 'bcr <repo>' -> executes 'pwsh -File tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
+  - 'BCR <repo> <commit>' -> executes 'pwsh -File tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
+
+MACRO: @ACCEPT
+- description: submit review result as Accepted, close Beyond Compare review window, run quality gates, and commit
+- aliases: ACCEPT, ACCEPTED, @accept, @accepted
+- rules:
+  - 'ACCEPT <repo>' or 'ACCEPT' -> executes 'pwsh -File tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
+  - automatically closes matching Beyond Compare review window
 
 ---
 
@@ -917,11 +1028,11 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `006` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync. |
-| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `011` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, and interactive desktop dispatch routing. |
-| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `005` | **Commit Gating & RR** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `007` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, and CM plan archive. |
+| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
+| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `005` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
-| **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `ELEVATION-POLICY` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands. |
+| **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `005` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, and elevated console non-auto-close invariant. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
 | **[RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md)** | `REPO-CONTEXT` | **Context Scoping** | Child Repositories | Strict repository boundary separation, deterministic relative path resolution, CM-only cross-repo writes. |
 | **[InvariantRules.md](file:///.agents/rules/InvariantRules.md)** | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | Determinism, reproducibility, ASCII default, 2-space indentation, CRLF newlines, UTF-8 without BOM. |
@@ -929,7 +1040,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[CMDRules.md](file:///.agents/rules/CMDRules.md)** | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | Explicit echo control (`@echo off`), errorlevel verification, ASCII character sets. |
 | **[JsonRules.md](file:///.agents/rules/JsonRules.md)** | `JSON-RULES` | **Data Serialization** | `*.json` | UTF-8 without BOM, 2-space indentation, `$schema` references. |
 | **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `007` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration. |
-| **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `004` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers. |
+| **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `006` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, and $M-2$ retention horizon. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `006` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
 | **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. |

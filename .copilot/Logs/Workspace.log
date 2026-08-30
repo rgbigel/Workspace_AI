@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260829_224552
-Latest commit at generation: 70ae8c5 feat(spec): promote normative specifications and governance authority to LCM v7.0.0
+Generated at: 20260830_112654
+Latest commit at generation: 194db84 chore(governance): update readiness logs for v7.0.0
 
 2. Rule Authority
 -----------------
@@ -30,7 +30,10 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
-No reviewable changes.
+ M docs/LCM_Rules.txt
+ M docs/LCM_Rules_Gemini_Export.md
+ M docs/LCM_Rules_Gemini_Export.txt
+?? docs/GEMINI_INBOX_SPECIFICATION.md
 
 6. Generated Artifact Status
 ----------------------------
