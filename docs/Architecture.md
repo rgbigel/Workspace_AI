@@ -215,8 +215,8 @@ graph LR
         BC["Beyond Compare 5<br/>(3-Way Diff Review)"]
     end
 
-    subgraph CommandHub ["Short-Name Command Hub (tools/Cmd/)"]
-        Cmds["<code>tools/Cmd/*.cmd</code><br/>(140+ Short-Name Launchers)"]
+    subgraph CommandHub ["Short-Name Command Hub (.lcm/Cmd/)"]
+        Cmds["<code>.lcm/Cmd/*.cmd</code><br/>(140+ Short-Name Launchers)"]
     end
 
     Agent -->|"HTTP JSON-RPC (localhost:9876)"| Daemon
@@ -226,7 +226,7 @@ graph LR
 
 ### Invariants:
 1. **Session 1 Elevation & Focus Invariant**: UI tools launched from background agents execute via `http://127.0.0.1:9876` so they open with foreground focus in the operator's active Windows desktop session rather than hidden background workers.
-2. **Short-Name Command Trampoline**: All command scripts in `tools/Cmd/<ShortName>.cmd` use deterministic relative resolution (`%~dp0..\..\<Path>`) to ensure identical behavior in standalone shells and IDE terminals.
+2. **Short-Name Command Trampoline**: All command scripts in `.lcm/Cmd/<ShortName>.cmd` use deterministic relative resolution (`%~dp0..\..\<Path>`) to ensure identical behavior in standalone shells and IDE terminals.
 3. **Creator Taxonomy Standard**: All tool creation utilities use the `Create-` verb (e.g. `Create-LcmTool.ps1` $\rightarrow$ `CreateTool`, `Create-WorkspaceBaseline.ps1` $\rightarrow$ `CreateWorkspaceBaseline`).
 4. **Authoritative Synchronization**: `tools/Update-ToolCatalog.ps1` acts as the single compiler reconciling script ASTs, short-name aliases, HTML dashboard indices, and `tools/tool_catalog.json`.
 
@@ -275,6 +275,7 @@ graph TD
    * **Executive Summary**: Synthesize the high-level purpose and core capabilities from `Requirements.md`.
    * **Tripartite Matrix**: Provide an authoritative table linking `Architecture.md`, `Requirements.md`, and `Implementation.md`.
    * **Quick-Start Runbook**: Provide immediate, copy-pasteable CLI commands for the most common operator workflows.
+
 
 
 

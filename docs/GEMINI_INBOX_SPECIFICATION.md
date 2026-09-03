@@ -94,5 +94,6 @@ When configuring a Gemini Gem or prompting Gemini to output to Google Drive, use
 3. **Queue Creation**: Invokes `New-WorkspaceProposal` to register a `suggested` proposal in `proposals.json`.
 4. **Plan Preservation**: Copies full detailed analysis into `Workspace_Inventory/data/proposals/plans/`.
 5. **Inbox Archiving**: Moves the processed input to `INBOX/archive/` and deletes the active inbox copy.
-6. **Telemetry**: Records intake event in `.lcd/logs/Sync-GeminiInbox-*.log`.
+6. **Telemetry**: Records intake event in `.lcm/logs/Sync-GeminiInbox-*.log`.
+
 

@@ -93,7 +93,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/tools/hooks/Enforce-LcmPreToolPolicy.ps1"
+          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Enforce-LcmPreToolPolicy.ps1"
         ],
         "timeoutSeconds": 5
       }
@@ -106,7 +106,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/tools/hooks/Enforce-LcmPostToolPolicy.ps1"
+          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Enforce-LcmPostToolPolicy.ps1"
         ],
         "timeoutSeconds": 5
       }
@@ -119,7 +119,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/tools/hooks/Invoke-LcmSessionAudit.ps1"
+          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Invoke-LcmSessionAudit.ps1"
         ],
         "timeoutSeconds": 10
       }
@@ -136,3 +136,4 @@ Executes immediately following tool execution:
 2. **Phase 2 (AST & Quality PostToolUse)**: Implement `Enforce-LcmPostToolPolicy.ps1` with real-time PowerShell and Python AST linting.
 3. **Phase 3 (Session Invariant Auditing)**: Implement `Invoke-LcmSessionAudit.ps1` to audit NTFS junctions and hardware invariants.
 4. **Phase 4 (Manifest & Integration)**: Deploy `.agents/hooks.json` and register into global Antigravity config (`C:\Users\rgbig\.gemini\config\hooks.json`).
+
