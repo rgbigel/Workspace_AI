@@ -6,13 +6,13 @@
   Purpose: Executes the full Gemini AI integration pipeline:
            1. Consolidates all 17+ LCM governance policies via Export-LCMRules.ps1.
            2. Mirrors workspace repository code and tripartite docs to Google Drive (D:\GDrive\LCM)
-              with .txt normalization via Export-LcmKnowledgeBase.ps1.
+              with .txt normalization via Sync-LCMResearchSnapshot.ps1.
            3. Ingests instructions and bug reports from D:\GDrive\LCM\INBOX via Sync-GeminiInbox.ps1.
            Conforms to RULE-PS-008 (Metadata Headers), RULE-PS-009 (Audit Logging), and RULE-PS-010 (CLI Help).
   Path: Workspace_AI/tools/Update-Gemini.ps1
   Authors: Rolf, Workspace_AI Engine
-  Version: 1.0.0
-  Date: 2026-08-30
+  Version: 1.1.0
+  Date: 2026-09-04
 .PARAMETER Force
   Forces a full clean export of knowledge base files.
 .PARAMETER ToClipboard
@@ -80,16 +80,20 @@ if (Test-Path -LiteralPath $exportRulesScript) {
 # ------------------------------------------------------------------------------
 # 2. Mirror Workspace Knowledge Base to Google Drive with .txt Normalization
 # ------------------------------------------------------------------------------
-Write-Host "`n[2/3] Mirroring Workspace Knowledge Base to Google Drive (D:\GDrive\LCM)..." -ForegroundColor Yellow
-$exportKbScript = Join-Path $lcdInternal 'Export-LcmKnowledgeBase.ps1'
-if (Test-Path -LiteralPath $exportKbScript) {
+Write-Host "`n[2/3] Mirroring Workspace Knowledge Base Snapshot to Google Drive (D:\GDrive\LCM)..." -ForegroundColor Yellow
+$syncSnapshotScript = Join-Path $lcdInternal 'Sync-LCMResearchSnapshot.ps1'
+if (-not (Test-Path -LiteralPath $syncSnapshotScript)) {
+  $syncSnapshotScript = Join-Path $workspaceRoot 'tools\Sync-LCMResearchSnapshot.ps1'
+}
+
+if (Test-Path -LiteralPath $syncSnapshotScript) {
   if ($Force) {
-    & $exportKbScript -Force
+    & $syncSnapshotScript -Force
   } else {
-    & $exportKbScript
+    & $syncSnapshotScript
   }
 } else {
-  Write-Warning "Export-LcmKnowledgeBase.ps1 not found in $lcdInternal"
+  Write-Warning "Sync-LCMResearchSnapshot.ps1 not found in $lcdInternal or tools"
 }
 
 # ------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-02 16:19:42 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-04 21:52:17 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -82,9 +82,9 @@ Module: InvariantRules
 Purpose: Authoritative invariant rules for workspace behavior, encoding, determinism, and generation.  
 Path: .agents/rules/InvariantRules.md  
 Authors: Rolf  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-04  
 
 ---
 
@@ -103,15 +103,21 @@ Date: 2026-08-29
 - **utf8-without-bom**: All text and code files must be saved as UTF-8 without BOM.
 - **structure**: Clear hierarchical markdown sections, bulleted lists, and typed code blocks.
 - **no-assumptions**: State unknown facts rather than guessing; never invent facts or speculate.
-- **no-verbosity**: Minimal, direct, and non-repetitive communication; no filler text.
+- **no-verbosity**: Minimal, direct, and non-repetitive communication; zero conversational padding or pleasantries.
+- **zero-conversational-padding**: Prohibit conversational filler, greetings, pleasantries, or preamble/postamble framing.
+- **explicit-reasoning**: Provide clear, deterministic technical rationale for all actions, architecture, and diagnostics.
 - **english-default-language**: English invariant for all code, comments, documentation, and commit messages.
-- **timestamp-header-rule**: Use standard `yyyyMMdd_HHmmss` or ISO format (`yyyy-MM-dd HH:mm:ss`).
+- **timestamp-header-rule**: Mandatory response output header on every assistant response in the exact format:
+  `YYYYMMDD_HHMM "<short-task-description>"`
+  Permanent, automated mechanism inherited across all sessions (replaces manual `@tsr` / `@THR` / `@TRH` prompting).
+- **no-backtick-line-continuations**: Script generation must not use backticks (`` ` ``) for line continuation; use splatting, pipeline wrapping, or parenthesized expressions instead.
 
 ---
 
-## 2. Activation Commands
-- `@IRA`: Activates InvariantRules.
-- `@THR`: Activates TimeStampHeaderRule.
+## 2. Activation Commands & Legacy Macro Compatibility
+
+- **Native Rule Inheritance**: Rules in this file are auto-inherited across all agent interactions via `.agents/rules/`.
+- `@tsr` / `@THR` / `@TRH` / `@IRA`: Legacy prompt macros for TimestampHeaderRule and InvariantRules. Now superseded by persistent, native rule enforcement.
 - `@ml`: Shows ordered visible messages in current chat.
 
 ---
@@ -260,9 +266,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.1.0  
+Version: 7.2.0  
 Status: Authoritative Policy  
-Date: 2026-08-30  
+Date: 2026-09-04  
 
 ---
 
@@ -289,6 +295,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 ### RULE-LCM-004: Visual Diff Review & Exemption Scope
 - **Governed Repositories & Root Container**: Every governed repository and the Root Container (`D:\Git_Repositories`) `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 <RepoName>` before commit.
+- **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `.lcm\.agents`, or `.agents\rules` pointing to `.lcm\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
 - **Sole Exemption**: `Workspace_Inventory` is **the only exempt repository** from visual BC5 review because it acts strictly as the tool/agent-controlled CM ledger (proposals, session state, review evidence, logs).
 
 ### RULE-LCM-005: Dual-Commit and Push Synchronization Invariant
@@ -379,12 +386,12 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 # File: ReviewCommitGovernancePolicy.md
 
 Module: ReviewCommitGovernancePolicy  
-Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, and audit logging.  
+Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-09-04  
 
 ---
 
@@ -436,6 +443,14 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
    - Routine data accounting mutations within `Workspace_Inventory` (specifically `data/inventory.json`, `data/proposals/proposals.json`, `logs/cm_activity.log`, `docs/INVENTORY_DASHBOARD.md`, and `data/reviews/*`) occurring as a standard byproduct of reviews, audits, proposal lifecycle transitions, or push recording `SHALL NOT` increment `Workspace_Inventory`'s semantic version.
    - Semantic version increments for `Workspace_Inventory` apply strictly when source code (`tools/*.ps1`, `modules/*.psm1`), specifications (`docs/*.md`), or governance policies are modified.
 
+### RULE-REV-008: Dual-Session Beyond Compare Review for Reparse Points & Directory Junctions (.agents)
+1. **Mandatory Dual-Session Review**: Whenever `Invoke-BeyondCompareReview.ps1` (or `BCR`) is executed against any repository containing NTFS directory junctions (specifically `.agents` pointing to `.lcm\.agents`, or `.agents\rules` pointing to `.lcm\.agents\rules`), the review tool `MUST` automatically detect the junction and dispatch a second Beyond Compare review session.
+2. **Junction Session Layout**:
+   - **Left Pane (Baseline Snapshot)**: The extracted Git baseline directory corresponding to the junction (e.g. `<TempReviewRoot>\.agents` or `<TempReviewRoot>\.agents\rules`). If the directory does not exist in the baseline snapshot, the tool `MUST` initialize it.
+   - **Right Pane (Live Junction Target)**: The resolved live junction destination on disk (e.g. `D:\Git_Repositories\.lcm\.agents` or `D:\Git_Repositories\.lcm\.agents\rules`).
+3. **Session Persistence**: The second comparison `MUST` be registered in `BCSessions.xml` under `LCM_Review_<JunctionName>` and launched to Session 1 desktop via the interactive desktop dispatcher.
+4. **Staging & Review Directives**: All review actions (Accept, Edit, Delete, Defer) applied in the second session `MUST` be tracked and integrated into the review audit manifest (`staged_review_<Repo>.json`).
+
 ---
 
 <a id="methodefficiencypolicymd"></a>
@@ -448,9 +463,9 @@ Module: MethodEfficiencyPolicy.md
 Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry and logs.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-03  
 
 ---
 
@@ -489,6 +504,31 @@ AI pair-programming agents operating under the Lifecycle Model (LCM) `SHALL` exe
 1. **Short-Circuit on Upstream Failure**: Multi-phase quality gates (`Test-RepoReadiness.ps1`, `Test-WorkspaceReadiness.ps1`) `MUST` execute tiered validations in prerequisite order (`Structure` $\rightarrow$ `Formatting` $\rightarrow$ `GovernanceLinks` $\rightarrow$ `ElevationConsistency` $\rightarrow$ `DocumentationFabric` $\rightarrow$ `PesterSuite`). If any structural tier fails, execution `MUST` abort immediately with a diagnostic message without executing downstream test suites.
 2. **Zero Negative-Outcome Execution**: Agents and runners `MUST NEVER` dispatch tests or commands whose operational prerequisites (e.g. elevation, required modules, linked junctions) are known to be absent.
 
+### RULE-EFF-006 (Agent Direct Execution Alignment — Reserved)
+Reserved for future use. See RULE-EFF-004 for current agent execution policy.
+
+---
+
+### RULE-EFF-007: Mandatory Search Dispatch Standard
+- **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
+- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`.lcm/tools/internal/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
+- CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
+
+---
+
+### RULE-EFF-008: Canonical Tool Discovery Standard
+- Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `.lcm/tools/internal/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
+- Agents are **strictly prohibited** from executing broad, unindexed grep searches across `.psm1`, `.ps1`, or `.cmd` files to locate tool signatures or parameters when `tool_catalog.json` can satisfy the query.
+
+---
+
+### RULE-ENV-003: Zero Speculative Relative Pathing
+- Speculative dot-traversal paths (such as `.\..lcm`, `..\..\`, or any path containing `..` without explicit validation) are **prohibited** in tool invocations and script references.
+- Tool and script invocations **must** anchor strictly to one of:
+  1. `$PSScriptRoot` for same-repository references.
+  2. Registered trampolines in `.lcm/Cmd/` for cross-repository dispatch.
+  3. An explicit `Resolve-Path` / `Test-Path` pre-flight check before any path is consumed.
+
 ---
 
 ## 3. Enforcement & Governance Integration
@@ -496,6 +536,9 @@ AI pair-programming agents operating under the Lifecycle Model (LCM) `SHALL` exe
 - **Readiness Runners**: `Test-RepoReadiness.ps1` and `Test-WorkspaceReadiness.ps1` treat changes in log directories and `out/` as non-invalidating evidence and enforce short-circuiting on failure.
 - **Git Commit Workflow**: Automated audit syncs and baseline captures may be committed and pushed directly as `chore(audit)` or `chore(telemetry)` without entering formal Change Request review loops.
 - **Agent Execution Policy**: Agents must operate in direct execution mode; interactive approval loops in chat UI are superseded by the RR pipeline.
+- **Search Enforcement (RULE-EFF-007)**: All agents and tooling must route file-system searches through `Search-Everything.ps1` or the Everything HTTP API; `rg.exe` is the mandatory content-search tool.
+- **Tool Discovery Enforcement (RULE-EFF-008)**: `tool_catalog.json` is the first-query target for all tool and command discovery; broad unindexed filesystem scans are prohibited.
+- **Path Safety Enforcement (RULE-ENV-003)**: All path constructions must be grounded via `$PSScriptRoot`, registered trampolines, or explicit pre-flight resolution; speculative traversal is prohibited.
 
 ---
 
@@ -509,9 +552,9 @@ Module: PowerShellStandardsPolicy
 Purpose: Defines mandatory PowerShell standards for strict mode resilience, verb compliance, string interpolation, pipeline hygiene, and testing across all repositories.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-09-03  
 
 ---
 
@@ -707,6 +750,33 @@ Brute-force file-by-file recursion (`icacls /T`, `takeown /R`) across entire sto
   1. Scripts managing NTFS security descriptors `MUST` establish container and object inheritance (`(OI)(CI)(F)`) on parent/root nodes and re-enable clean inheritance (`/inheritance:e`) to allow child objects to inherit permissions dynamically in 0ms.
   2. Explicit `icacls` or `takeown` executions `MUST` be targeted specifically to directory nodes where inheritance is severed or blocked (`Acl.AreAccessRulesProtected == $true`), explicit `DENY` rules are present, or directory junctions require `/L` link-level authorization.
   3. Blind whole-volume recursive rewriting across millions of healthy inheriting files is strictly prohibited.
+
+---
+
+### RULE-PS-015: Variable String Interpolation and Colon Boundaries
+The bare syntax `"$var:"` inside double-quoted strings is **strictly prohibited** to avoid PowerShell scope-provider collisions (`ParserError`). PowerShell parses `$identifier:` as an unclosed scope qualifier (`$global:`, `$script:`, `$env:`, drive provider `C:`), causing a fatal parse error at script load time.
+
+- **Mandatory Invariants**:
+  1. **Brace Delimitation**: Whenever an interpolated variable is immediately followed by a colon or any non-identifier character that would ambiguate the variable boundary, enclose the variable name in curly braces:
+     ```powershell
+     Write-Host "Verified Baseline Resolution: [${commitSha}: $commitMsg]"
+     Write-Host "Drive root: ${driveLetter}:\\"
+     ```
+  2. **Format String Alternative**: Use PowerShell format strings as a fully safe alternative for structured output:
+     ```powershell
+     Write-Host ("Verified Baseline Resolution: [{0}: {1}]" -f $commitSha, $commitMsg)
+     ```
+  3. **Sub-Expression for Object Properties**: Object property access and nested expressions inside double-quoted strings `MUST` always use sub-expression syntax:
+     ```powershell
+     Write-Host "Status: $($result.Status) at $($result.Timestamp)"
+     ```
+
+- **Strictly Forbidden**:
+  ```powershell
+  Write-Host "Baseline: [$commitSha: $commitMsg]"   # ParserError — $commitSha: treated as scope qualifier
+  Write-Host "Drive: $driveLetter:\\"               # ParserError — $driveLetter: treated as drive provider
+  Write-Host "Value: $obj.Property"                 # Silent failure — expands $obj then appends literal '.Property'
+  ```
 
 ---
 
@@ -1015,7 +1085,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 > **Category**: 4. Documentation & Subsystem Architecture | **Canonical Source**: `.agents/rules/macro-definitions.md`
 
 # macro-definitions.md
-# version: 4.2.0
+# version: 4.3.0
 
 # MACRO-DEFINITIONS-METADATA
 # scope: durable-memory
@@ -1089,6 +1159,15 @@ MACRO: @ACCEPT
   - 'ACCEPT <repo>' or 'ACCEPT' -> executes 'pwsh -File tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
   - automatically closes matching Beyond Compare review window
 
+MACRO: @tsr
+- description: legacy timestamp header rule trigger (superseded by persistent TimestampHeaderRule per CRP-005)
+- aliases: @tsr, @THR, @TRH, @IRA
+- status: replaced / automated
+- rules:
+  - permanently codified in .agents/rules/InvariantRules.md
+  - automatically active on every turn across all sessions without requiring manual invocation
+  - format: YYYYMMDD_HHMM "<short-task-description>"
+
 ---
 
 <a id="workspace-agentsmd-directive"></a>
@@ -1110,7 +1189,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 |:---|:---|:---|:---|:---|
 | **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `014` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, and Auto-Proceed Block. |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
-| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `005` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
+| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
 | **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `005` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, and elevated console non-auto-close invariant. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
@@ -1123,7 +1202,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `006` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, and $M-2$ retention horizon. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `006` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
-| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Shorthand activation macros: `@IRA`, `@THR`, `@RULEAUTH`, `@ml`. |
+| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Shorthand activation macros: `@tsr` / `@THR` / `@IRA` (superseded by persistent `TimestampHeaderRule`), `@RULEAUTH`, `@ml`. |
 
 ---
 
