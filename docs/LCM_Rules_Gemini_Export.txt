@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-04 22:19:53 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-05 22:33:05 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -266,9 +266,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.2.0  
+Version: 7.3.0  
 Status: Authoritative Policy  
-Date: 2026-09-04  
+Date: 2026-09-05  
 
 ---
 
@@ -376,6 +376,38 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 ### RULE-LCM-014: Implementation Plan Auto-Proceed Block Invariant
 1. **Mandatory Stop on Open Questions**: Whenever an Implementation Plan (e.g., implementation_plan.md) is drafted and contains **Open Questions** requiring operator clarification, architectural feedback, or explicit decisions, the AI agent MUST NOT proceed to execution under any circumstances.
 2. **Override of Auto-Approval**: Even if automated workspace review policies or system hooks attempt to automatically approve the artifact and trigger execution, the AI agent MUST explicitly halt, reject the auto-proceed, highlight the unresolved questions, and await a direct, human-authored response from the operator before executing any code modifications.
+
+### RULE-LCM-015: Strict BUG: and CRP: Intake Gate Invariant
+1. **Intake Signal Only**: The appearance of `BUG:` or `CRP:` designators in user input `MUST NEVER` be interpreted as a request to begin analysis, develop an Implementation Plan, or execute code modifications.
+2. **Mandatory OPEN Intake**: The AI agent's sole initial responsibility upon receiving `BUG:` or `CRP:` input is to register the items into the Configuration Management ledger (`Workspace_Inventory/data/proposals/proposals.json` and formal specifications under `Workspace_Inventory/docs/Proposals/`) in the **`OPEN`** state (`state: "bug"` or `"suggested"`, `progress_state: "open"`).
+3. **Priority Hierarchy**:
+   - Items designated `BUG:` `MUST` automatically receive higher initial triage priority than `CRP:` items.
+   - Priority markings (including "*highest priority*" or "*critical*") affect ordering only; they `DO NOT` authorize departure from the `OPEN` state.
+4. **Prohibition of Premature Planning**: The agent `MUST NOT` generate an `implementation_plan.md` or execute source code changes for any registered item without receiving an explicit activation trigger.
+
+### RULE-LCM-016: Explicit PROCEED and PROCEED ALL Activation Triggers
+Proposals held in the `OPEN` state may transition to Implementation Planning and execution `ONLY` upon receiving one of two explicit operator triggers:
+1. **`PROCEED <Item/ID>`**:
+   - Authorizes implementation planning and subsequent execution for the **single** designated BUG or CRP item only.
+   - All other items in the batch remain strictly in the `OPEN` state.
+2. **`PROCEED ALL`**:
+   - Authorizes execution **strictly for the items positioned ABOVE the `PROCEED ALL` keyword** in the user's prompt or batch submission.
+   - `MUST NOT` apply to any items listed below or following the `PROCEED ALL` marker.
+3. **Strict Invariant**: In the absence of an explicit `PROCEED` or `PROCEED ALL` trigger, the AI agent `MUST STOP` immediately after intake registration and present the registered items to the operator for document review.
+
+### RULE-LCM-017: Autonomous System Exception Boundary & 2-Attempt Loop Breaker
+1. **Autonomous Exception Scope**: As a sole exception to `RULE-LCM-016`, the AI agent is permitted to assume an implicit `PROCEED` to immediately remediate a self-discovered or runtime-generated `BUG` `ONLY IF` all of the following conditions are simultaneously met:
+   - **Critical System/Transport Behavior**: The defect represents a severe runtime blocker directly disrupting operations (e.g., REST daemon socket drops on Port 9876, IPC transport failures, or blocking background daemon aborts).
+   - **Within Agent Capability**: The root cause is definitively identified and remediable within the agent's direct operational scope.
+   - **No Architectural Redesign**: The fix requires no architectural redesign, schema changes, or breaking API alterations.
+   - **Net Positive Impact**: The fix will not create cascading side-effects or regressions exceeding the problem being solved.
+2. **Mandatory 2-Attempt Loop Breaker**:
+   - If two (2) consecutive attempts to fix the runtime defect fail to resolve the issue, the autonomous `PROCEED` exception is **immediately and irrevocably revoked**.
+   - The agent `MUST HALT` all modification attempts, mark the BUG item as `blocked`/`open` in the ledger, document the failure telemetry, and yield full control back to the operator.
+
+### RULE-LCM-018: Credit Exhaustion & Batch Execution Granularity Guard
+1. **Batch Size Safety**: Multi-item batches `MUST` be segmented into manageable, verifiable increments to prevent credit, context, and token exhaustion.
+2. **Discrete Review Boundaries**: Each approved proposal or tight batch `MUST` reach a stable, verifiable state before proceeding to subsequent items, guaranteeing that uncommitted or partially modified code never leaves the workspace in an unrecoverable state.
 
 ---
 
@@ -1187,7 +1219,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `014` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, and Auto-Proceed Block. |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `018` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Auto-Proceed Block, intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, and credit exhaustion guards. |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
