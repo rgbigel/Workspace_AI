@@ -168,4 +168,18 @@ Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.j
 | **`LCM-REQ-030`** | Self-Readiness Quality Gate | `Test-WorkspaceReadiness.ps1` in `Workspace_AI` | **Active** |
 | **`LCM-REQ-032`** | Drift Evaluation | `Test-WorkspaceDrift.ps1` in `Workspace_Inventory` | **Active** |
 
+---
+
+## 5. Design Choices & Implementation Rationale
+
+| Design Choice | Approach Selected | Alternative Considered | Rationale & Trade-Off Analysis |
+| :--- | :--- | :--- | :--- |
+| **Defect Intake Gate** | **Mandatory `OPEN` State on `BUG:` / `CRP:` Designators (`RULE-LCM-015`)** | Immediate analysis, plan generation, or immediate code modification | Operator bug enumerations are reports, not work orders. Immediate execution causes credit exhaustion, premature code mutations, and unapproved refactorings. Mandating `OPEN` state ensures complete intake and explicit operator control. |
+| **Activation Trigger Scope** | **Directional `PROCEED ALL` (strictly applies ABOVE keyword) (`RULE-LCM-016`)** | Global `PROCEED ALL` applying to all items in prompt or active session | Operators often provide subsequent notes, deferred items, or caveats below `PROCEED ALL`. Restricting `PROCEED ALL` strictly to items listed *above* the marker guarantees no unintended downstream items are executed. |
+| **Single-Item Activation** | **`PROCEED <Item/ID>` (`RULE-LCM-016`)** | Automatic batch cascading | Authorizing single items allows tight, discrete step-by-step verification without consuming full session quota across unreviewed items. |
+| **Runtime Bug Remediations** | **Autonomous Exception strictly for Critical System/Transport Issues (`RULE-LCM-017`)** | Universal strict stop on all errors, OR uncontrolled autonomous patching | A hard stop on every transient local connection blip (e.g. REST daemon Port 9876 drop) freezes automation unnecessarily. Restricting autonomous proceed strictly to critical system/transport issues avoids deadlock while preventing runaway code rewrites. |
+| **Runaway Loop Protection** | **Hard 2-Attempt Loop Breaker (`RULE-LCM-017`)** | Unlimited retry attempts, or heuristic retry counts | If a runtime defect cannot be resolved in 2 attempts, the failure is structural or environmental. Halting immediately and marking the item `blocked`/`open` stops token exhaustion and prevents catastrophic file thrashing. |
+| **Batch Size Execution Guard** | **Discrete Batch Granularity (`RULE-LCM-018`)** | Monolithic multi-proposal execution | Monolithic execution of large defect lists risks mid-flight credit/token exhaustion, leaving repositories in an uncommitted, dirty, broken state. Discrete batches ensure each accepted change is safely verified and committed. |
+
+
 
