@@ -1247,7 +1247,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 ## 3. Durable Memory & System Troubleshooting Context
 - **Active Troubleshooting Thread**: Mouse focus/flicker investigation & background services isolation.
 - **Logitech Suppression Status**: Audited against `KillLogitechUpdateFull.ps1` (54/54 items 100% enforced, 0 reversions).
-- **Authoritative System Restore Tool**: [`tools/Restore-SystemSettings.ps1`](file:///D:/Git_Repositories/.tools/Restore-SystemSettings.ps1).
+- **Authoritative System Restore Tool**: [`tools/Restore-SystemSettings.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Restore-SystemSettings.ps1).
 - **Active Session State File**: [`.agents/ACTIVE_SESSION.md`](file:///D:/Git_Repositories/.agents/ACTIVE_SESSION.md).
 
 ---
