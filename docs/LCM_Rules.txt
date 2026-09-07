@@ -1,6 +1,6 @@
-# Lifecycle Model (LCM) Authoritative Governance Framework
+﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-05 22:33:05 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-07 12:58:16 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -128,11 +128,11 @@ Date: 2026-09-04
 
 # Elevation & Privilege Governance Policy
 
-- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-005`
+- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-006`
 - Scope: Solution-Wide (All Repositories Governed by LCM v4.1.0)
 - Classification: Invariant Rule
-- Version: 7.0.0
-- Updated: 2026-08-16
+- Version: 7.3.0
+- Updated: 2026-09-07
 
 ---
 
@@ -185,6 +185,19 @@ When an interactive script or launcher delegates execution to an elevated consol
      - **Audit Log Path**: Destination log file where live execution telemetry is recorded.
      - **Window Mode Notice**: Clear indication that the elevated console will remain open upon completion per `RULE-ELEV-005`.
    - The elevated worker `MUST` output a clear completion notice upon finishing indicating that the window has been intentionally kept open for operator inspection.
+
+### `RULE-ELEV-006` (Automated Privilege-Aware Tool Execution & Elevation Interception)
+Ensure that any tool, script, or shorthand command requiring administrative privileges is never executed directly within a standard un-elevated user context. Instead, enforce automatic discovery and routing through the background desktop daemon or `gsudo` bridge.
+
+Before executing any tool, script, or shorthand command, the AI agent `MUST` perform the following validation sequence:
+1. **Catalog & Schema Lookup**:
+   - Query the authoritative tool catalog (`.lcm/config/tool_catalog.json` / `WorkspaceInventory`) to resolve the target tool's metadata record.
+   - Inspect whether the execution profile defines `"Admin": true` (or equivalent elevation requirement flag).
+2. **Context & Privilege Verification**:
+   - Check whether the current runtime shell session holds elevated administrative rights (e.g. `([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)`).
+3. **Execution Routing & Interception**:
+   - **Standard Execution**: If the tool does **not** require admin rights (`"Admin": false` or unset), execute it directly in the current session.
+   - **Elevated Interception**: If `"Admin": true` and the current session is running under a standard un-elevated user context, **do not** execute the script directly in that session. Immediately intercept the call and route the execution through the established background desktop daemon bridge (`POST http://127.0.0.1:9876/execute` with `{ elevated: true, noExit: true }`) or `Invoke-InteractiveDesktop.ps1` / `gsudo` to trigger the proper privilege escalation pipeline rather than falling back to a partial user-level modification. Console windows launched via elevation `MUST` include `-NoExit` / `/k` per `RULE-ELEV-005`.
 
 ---
 
@@ -853,9 +866,9 @@ Module: PythonRules
 Purpose: Authoritative rule definitions for Python code quality, import ordering, string formatting, and linter compliance.  
 Path: .agents/rules/PythonRules.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.0.0  
+Version: 7.1.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-06  
 
 ---
 
@@ -869,6 +882,11 @@ Date: 2026-08-29
 - **utf8-stdout-reconfigure** (`RULE-PY-005`): In standalone CLI tools and automation scripts targeting Windows environments, always configure `sys.stdout.reconfigure(encoding='utf-8')` immediately following the `import sys` block to prevent Unicode encoding faults.
 - **exception-handling-cleanliness** (`RULE-PY-006`): Do not name unused exception variables in catch blocks (use `except Exception:` instead of `except Exception as e:` if `e` is not referenced in the block).
 - **cross-repo-path-resolution** (`RULE-PY-007`): Scripts referencing shared modules or sibling repositories must resolve paths deterministically or configure `sys.path` dynamically relative to `__file__`.
+- **template-interpolation-safety** (`RULE-PY-008`): When generating or emitting secondary languages (HTML, JavaScript, CSS, JSON, SQL, or shell scripts) from Python:
+  1. **Escape & Collision Invariant**: Never mix raw f-strings (`f"""..."""`) with JavaScript or CSS code blocks containing `{...}` or `${...}` without complete double-brace escaping (`{{...}}` and `${{...}}`).
+  2. **Safe Serialization**: When injecting Python data into JavaScript or HTML context, always serialize via `json.dumps()` (e.g., `const DATA = {json.dumps(obj)};`) rather than ad-hoc string formatting.
+  3. **No Embedded Backtick Ambiguity**: When constructing dynamic paths or strings in generated JavaScript, use standard JavaScript string concatenation (`tabName + '_suffix.html'`) rather than backtick template literals (` `${tabName}_...` `) to avoid escape-stripping defects across string generation pipelines.
+  4. **Ahead-of-Occurrence Verification**: Python scripts that generate web artifacts (HTML, JS, JSON) must perform pre-emission syntax validation (e.g. `json.loads()` on JSON payloads, or verifying no unexpanded Python expressions `{...}` remain in the emitted text).
 
 ---
 
@@ -1053,9 +1071,9 @@ Date: 2026-08-29
 
 ## 1. Scope & Motivation
 
-A **Subsystem** represents an autonomous runtime domain (e.g., `HaSSD06` running Home Assistant OS) that is disjunct from the host PC's multi-boot Windows environment. 
+A **Subsystem** represents an autonomous runtime or supervisory domain (e.g., `HaSSD06` running Home Assistant OS, or `Workspace_Supervision` operating continuous task telemetry and status observation) that has specialized operational lifecycles distinct from general scripting utilities. 
 
-While Subsystems inherit standard LCM **documentation and quality gate rules**, their internal parts (integrations, devices, entities, add-ons) require domain-specific configuration management and elevated safety protocols.
+While Subsystems inherit standard LCM **documentation and quality gate rules**, their internal parts (integrations, devices, tasks, telemetry ledgers, entities) require domain-specific configuration management and elevated safety protocols.
 
 ---
 
@@ -1223,14 +1241,14 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
-| **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `005` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, and elevated console non-auto-close invariant. |
+| **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `006` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, elevated console non-auto-close invariant, and automated privilege-aware execution/elevation interception. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
 | **[RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md)** | `REPO-CONTEXT` | **Context Scoping** | Child Repositories | Strict repository boundary separation, deterministic relative path resolution, CM-only cross-repo writes. |
 | **[InvariantRules.md](file:///.agents/rules/InvariantRules.md)** | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | Determinism, reproducibility, ASCII default, 2-space indentation, CRLF newlines, UTF-8 without BOM. |
 | **[PowerShellRules.md](file:///.agents/rules/PowerShellRules.md)** | `POWERSHELL-RULES` | **Scripting Standards** | PowerShell code | StrictMode Latest, `$ErrorActionPreference = 'Stop'`, explicit CmdletBinding. |
 | **[CMDRules.md](file:///.agents/rules/CMDRules.md)** | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | Explicit echo control (`@echo off`), errorlevel verification, ASCII character sets. |
 | **[JsonRules.md](file:///.agents/rules/JsonRules.md)** | `JSON-RULES` | **Data Serialization** | `*.json` | UTF-8 without BOM, 2-space indentation, `$schema` references. |
-| **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `007` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration. |
+| **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `008` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration, template/JS interpolation safety. |
 | **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `006` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, and $M-2$ retention horizon. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `006` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |

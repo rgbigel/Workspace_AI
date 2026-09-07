@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260905_223134
-Latest commit at generation: c37fe85 docs: implement CRP-2026-022 design choices in Implementation.md and update LCM rules cross-reference
+Generated at: 20260905_224349
+Latest commit at generation: a57eedb docs(governance): synchronize SubsystemGovernancePolicy rule junction
 
 2. Rule Authority
 -----------------
