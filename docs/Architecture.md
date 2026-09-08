@@ -4,9 +4,9 @@ Module: docs/Architecture.md
 Purpose: Authoritative architectural specification for the Lifecycle Model (LCM) multi-repository governance framework.  
 Path: D:/Git_Repositories/Workspace_AI/docs/Architecture.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.1.1  
+Version: 7.2.2  
 Status: Authoritative Architecture  
-Date: 2026-08-30  
+Date: 2026-09-08  
 
 ---
 
@@ -16,15 +16,16 @@ The **Lifecycle Model (LCM) Version 7.1.1** operates across a decoupled multi-re
 
 ```mermaid
 graph TB
-    subgraph RootContainer ["Root Solution Container (D:\Git_Repositories\)"]
+    classDef default font-size:8pt;
+    subgraph RootContainer ["Root Solution Container<br/>(D:\Git_Repositories\)"]
         direction TB
-        CanonicalHub["<b>Canonical Rule Hub</b><br/><code>.agents/rules/</code> (14 Authoritative Policies)"]
-        RootEntry["<b>Root Entrypoints & Tools</b><br/><code>AGENTS.md</code>, <code>GEMINI.md</code><br/><code>Invoke-BeyondCompareReview.ps1</code>, <code>RR.ps1</code>"]
+        CanonicalHub["<b>Canonical Rule Hub</b><br/><code>.agents/rules/</code><br/>(14 Authoritative Policies)"]
+        RootEntry["<b>Root Entrypoints & Tools</b><br/><code>AGENTS.md</code>, <code>GEMINI.md</code><br/><code>Invoke-BeyondCompareReview.ps1</code>,<br/><code>RR.ps1</code>"]
         
         subgraph LCMTriad ["LCM Architectural Triad"]
-            WAI["<b>Workspace_AI</b><br/>(Baseline Authority, Quality Gates & Specs)"]
-            WI["<b>Workspace_Inventory</b><br/>(CM Engine, Proposals Ledger, Review Audit & Rule Health)"]
-            SM["<b>SharedModules</b><br/>(Reusable PowerShell Atoms: Logging, Volume, BCD)"]
+            WAI["<b>Workspace_AI</b><br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
+            WI["<b>Workspace_Inventory</b><br/>(CM Engine, Proposals Ledger,<br/>Review Audit & Rule Health)"]
+            SM["<b>SharedModules</b><br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
         end
 
         subgraph GovernedRepos ["Governed Component Repositories"]
@@ -42,6 +43,7 @@ graph TB
     COMP3 ==>|"docs/Proposals [NTFS Junction]"| WI
     WI -->|"Audits Drift & Manages Review Receipts"| RootContainer
     WI -->|"Dispatches Automated Rule Reconciliation"| GovernedRepos
+
 ```
 
 ---
@@ -52,7 +54,8 @@ To eliminate rule divergence across multi-repository workspaces, LCM employs a *
 
 ```mermaid
 graph TD
-    Hub["<b>Canonical Rule Hub</b><br><code>D:\Git_Repositories\.agents\rules\</code><br>(All 13 Authoritative Rules)"]
+    classDef default font-size:8pt;
+    Hub["<b>Canonical Rule Hub</b><br/><code>D:\Git_Repositories\.agents\rules\</code><br/>(All 13 Authoritative Rules)"]
     
     Hub -->|NTFS Junction| J1["<code>BootEntryManager\.agents\rules</code>"]
     Hub -->|NTFS Junction| J2["<code>VolumeInventory\.agents\rules</code>"]
@@ -60,6 +63,7 @@ graph TD
     Hub -->|NTFS Junction| J4["<code>SharedModules\.agents\rules</code>"]
     Hub -->|NTFS Junction| J5["<code>BackgroundModifier\.agents\rules</code>"]
     Hub -->|NTFS Junction| J6["<code>(All Other Governed Repos...)</code>"]
+
 ```
 
 ### Invariants:
@@ -76,6 +80,7 @@ The LCM review engine establishes a structured, non-blocking two-tier proposal a
 
 ```mermaid
 sequenceDiagram
+    classDef default font-size:8pt;
     autonumber
     actor User as Operator / Developer
     participant Agent as Antigravity AI Agent
@@ -112,6 +117,7 @@ sequenceDiagram
     end
     Agent->>Live: Executes Review-Gated Git Commit
     Agent->>PL: Syncs Dual-Commit in Workspace_Inventory
+
 ```
 
 ### 3.1 Visual Review Lifecycle & Acceptance Protocols
@@ -140,17 +146,18 @@ sequenceDiagram
 
 Configuration Management is administered through specialized CLI tools in `Workspace_Inventory/tools/`:
 
-```
-+-----------------------------------------------------------------------------------------------+
-|                           LCM CONFIGURATION MANAGEMENT ENGINE                                 |
-+-----------------------------------------------------------------------------------------------+
-| 1. Diagnostics:    Test-LCMRuleHealth.ps1     -> Audits junctions, duplicates, versions       |
-| 2. Reconciliation: Repair-LCMRules.ps1        -> 1-command auto-heal, re-links & syncs        |
-| 3. Proposal CLI:   Get-OpenProposals.ps1      -> Fast query for open #n proposals            |
-| 4. Review Queue:   Get-ReposUnderReview.ps1   -> Scans workspace for active review stops      |
-| 5. Action Runner:  Invoke-ProposalAction.ps1  -> Batch processor for 'do', 'delete', 'defer'  |
-| 6. Audit Logging:  Submit-ReviewResult.ps1    -> Generates immutable REVIEW-*.json receipts   |
-+-----------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    classDef default font-size:8pt;
+    subgraph ENGINE["⚙️ LCM CONFIGURATION MANAGEMENT<br/>ENGINE"]
+        direction TB
+        D1["<b>1. Diagnostics</b><br/><code>Test-LCMRuleHealth.ps1</code><br/><i>Audits junctions, duplicates,<br/>versions</i>"]
+        D2["<b>2. Reconciliation</b><br/><code>Repair-LCMRules.ps1</code><br/><i>1-command auto-heal, re-links &<br/>syncs</i>"]
+        D3["<b>3. Proposal CLI</b><br/><code>Get-OpenProposals.ps1</code><br/><i>Fast query for open #n proposals</i>"]
+        D4["<b>4. Review Queue</b><br/><code>Get-ReposUnderReview.ps1</code><br/><i>Scans workspace for active review<br/>stops</i>"]
+        D5["<b>5. Action Runner</b><br/><code>Invoke-ProposalAction.ps1</code><br/><i>Batch processor for 'do', 'delete'<br/>, 'defer'</i>"]
+        D6["<b>6. Audit Logging</b><br/><code>Submit-ReviewResult.ps1</code><br/><i>Generates immutable REVIEW-*.json<br/>receipts</i>"]
+    end
 ```
 
 ---
@@ -198,17 +205,18 @@ To bridge background agent workers, IDE processes, and interactive desktop GUI a
 
 ```mermaid
 graph LR
-    subgraph AgentWorker ["Background Session (Session 0 / IDE Process)"]
-        Agent["Antigravity / CLI / Background Sub-Process"]
+    classDef default font-size:8pt;
+    subgraph AgentWorker ["Background Session (Session 0 / IDE<br/>Process)"]
+        Agent["Antigravity / CLI / Background Sub-<br/>Process"]
     end
 
-    subgraph DesktopDaemon ["Interactive Desktop Bridge (Session 1 : Port 9876)"]
+    subgraph DesktopDaemon ["Interactive Desktop Bridge (Session<br/>1 : Port 9876)"]
         Daemon["<code>LcmDesktopDaemon.ps1</code><br/>(OOP Core: <code>LcmDaemonCore.psm1</code>)"]
         Controller["<code>[DaemonActionController]</code>"]
         Daemon --> Controller
     end
 
-    subgraph InteractiveDesktop ["Interactive Windows Desktop (Session 1)"]
+    subgraph InteractiveDesktop ["Interactive Windows Desktop<br/>(Session 1)"]
         Browser["Default Web Browser<br/>(SHOW_TOOLS.html, Dashboard)"]
         VSCode["VS Code / Code Editor<br/>(code -g file:line)"]
         Console["Visible Pwsh Console<br/>(Interactive Dispatch)"]
@@ -222,6 +230,7 @@ graph LR
     Agent -->|"HTTP JSON-RPC (localhost:9876)"| Daemon
     Controller -->|"ShellExecute / Process::Start"| Browser & VSCode & Console & BC
     Cmds -->|"Bypass Trampoline"| Controller
+
 ```
 
 ### Invariants:
@@ -240,17 +249,19 @@ The **Bottom-Up Tripartite Synthesis Methodology** defines the canonical 4-step 
 
 ```mermaid
 graph TD
-    Step1["<b>Step 1: Implementation Details</b><br/>(<code>docs/Implementation.md</code>)<br/>• Extract baseline functions from module DOX comments<br/>• Document Design Choices & Alternative Trade-Offs<br/>• Specify Interface Contracts, DTOs & Error Codes<br/>• Map Customization Parameters & Cross-References"]
+    classDef default font-size:8pt;
+    Step1["<b>Step 1: Implementation Details</b><br/>(<code>docs/Implementation.md</code>)<br/>• Extract baseline functions from<br/>module DOX comments<br/>• Document Design Choices &<br/>Alternative Trade-Offs<br/>• Specify Interface Contracts, DTOs<br/>& Error Codes<br/>• Map Customization Parameters &<br/>Cross-References"]
     
-    Step2["<b>Step 2: Architecture & Mental Model</b><br/>(<code>docs/Architecture.md</code>)<br/>• Condense functions into User-Facing Mental Model<br/>• Formulate System Topology & Mermaid Flow Diagrams<br/>• Define Dual-Layer Execution & Cross-Session Mechanics<br/>• Codify Architectural Invariants & Lifecycle States"]
+    Step2["<b>Step 2: Architecture & Mental Model</b><br/>(<code>docs/Architecture.md</code>)<br/>• Condense functions into User-<br/>Facing Mental Model<br/>• Formulate System Topology &<br/>Mermaid Flow Diagrams<br/>• Define Dual-Layer Execution &<br/>Cross-Session Mechanics<br/>• Codify Architectural Invariants &<br/>Lifecycle States"]
     
-    Step3["<b>Step 3: Normative Technical Requirements</b><br/>(<code>docs/Requirements.md</code>)<br/>• Use Architecture structure as guide for REQ-* IDs<br/>• Define Normative Functional & Non-Functional Rules<br/>• Establish Privilege, Elevation & Security Constraints<br/>• Codify Quality Gate Verification & Acceptance Criteria"]
+    Step3["<b>Step 3: Normative Technical<br/>Requirements</b><br/>(<code>docs/Requirements.md</code>)<br/>• Use Architecture structure as<br/>guide for REQ-* IDs<br/>• Define Normative Functional & Non<br/>-Functional Rules<br/>• Establish Privilege, Elevation &<br/>Security Constraints<br/>• Codify Quality Gate Verification<br/>& Acceptance Criteria"]
     
-    Step4["<b>Step 4: Executive Summary & Navigation Index</b><br/>(<code>docs/README.md</code>)<br/>• Distill Executive Summary from Requirements<br/>• Build Tripartite Reference Matrix<br/>• Construct Operator Quick-Start CLI Runbook<br/>• Link Subsystem & Repository Cross-References"]
+    Step4["<b>Step 4: Executive Summary &<br/>Navigation Index</b><br/>(<code>docs/README.md</code>)<br/>• Distill Executive Summary from<br/>Requirements<br/>• Build Tripartite Reference Matrix<br/>• Construct Operator Quick-Start<br/>CLI Runbook<br/>• Link Subsystem & Repository Cross<br/>-References"]
 
     Step1 -->|"Condense structure"| Step2
     Step2 -->|"Guide requirements"| Step3
     Step3 -->|"Summarize index"| Step4
+
 ```
 
 ### Synthesis Execution Pipeline:
