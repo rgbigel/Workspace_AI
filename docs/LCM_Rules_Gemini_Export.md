@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-08 20:37:49 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-09 22:37:38 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -53,8 +53,8 @@ Date: 2026-08-29
 ## 1. Governance Authority Invariants
 
 ### `RULE-AUTH-001` (Single Source of Truth & Zero Rule Forking)
-- **Canonical Hub**: `D:\Git_Repositories\.agents\rules\` is the single, authoritative canonical root for all LCM governance rules.
-- **Child Repositories**: All governed child repositories `MUST` link their local `.agents\rules` directory to the canonical hub via NTFS junction (`mklink /J`).
+- **Canonical Physical Hub**: `Workspace_Inventory\.agents\rules\` is the single, authoritative physical host and primary commit gate for all LCM governance rules.
+- **Root & Child Discovery**: The root workspace container links `D:\Git_Repositories\.agents\rules\` (via `.lcm\.agents\rules`) directly to `Workspace_Inventory\.agents\rules\` via NTFS directory junction (`mklink /J`), avoiding rule commit churn on the root container. All governed child repositories link their local `.agents\rules` directory to this canonical hub.
 - **No Independent Truth**: Child repositories and IDE adapter surfaces `MUST NOT` fork, maintain conflicting local copies, or override core governance policies without an approved Change Request.
 
 ---
@@ -309,7 +309,9 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 ### RULE-LCM-004: Visual Diff Review & Exemption Scope
 - **Governed Repositories & Root Container**: Every governed repository and the Root Container (`D:\Git_Repositories`) `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 <RepoName>` before commit.
 - **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `.lcm\.agents`, or `.agents\rules` pointing to `.lcm\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
-- **Sole Exemption**: `Workspace_Inventory` is **the only exempt repository** from visual BC5 review because it acts strictly as the tool/agent-controlled CM ledger (proposals, session state, review evidence, logs).
+- **Privileged Subsystem Data Exemption vs. Tool Scrutiny**:
+  - **Dynamic Configuration & Ledger Data Exemption (`RULE-EFF-001`)**: Ledger data, review staging receipts, baseline manifests, telemetry logs, and scratch generation outputs located in `Workspace_Inventory` (`data/`, `logs/`, `scratch/`) are auto-accepted mechanical evidence and exempt from visual diff review stops.
+  - **Executable Tools & Documentation Scrutiny**: All permanent scripts, PowerShell modules, test suites, and architectural documentation located in `Workspace_Inventory` (`tools/`, `modules/`, `docs/`, `tests/`, `Cmd/`) are first-class governed LCM software assets and `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 Workspace_Inventory` prior to commit.
 
 ### RULE-LCM-005: Dual-Commit and Push Synchronization Invariant
 1. Whenever code changes in a target repository are accepted and committed, `Workspace_Inventory` `MUST ALWAYS` be updated (updating proposal state to `completed`, recording review evidence) and **committed immediately**.
@@ -378,7 +380,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent `CRP-*.md` specification file in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP document.
 
 ### RULE-LCM-013: Mandatory Pre-Push Gemini AI & Knowledge Base Synchronization Invariant
-1. **Mandatory Automated Pre-Push Execution**: Every multi-repository push operation executed via `Invoke-WorkspacePush.ps1` (or 1-click UI triggers) `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories.
+1. **Mandatory Automated Pre-Push Execution**: Every push operation executed via `Invoke-WorkspacePush.ps1` (or 1-click UI triggers), whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
 2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`Workspace_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
 3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `Workspace_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
 
@@ -1259,8 +1261,8 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 ---
 
 ## 2. Rule Discovery Architecture
-- **Canonical Hub**: `D:\Git_Repositories\.agents\rules\` (16 authoritative rule files).
-- **Child Repositories**: Every governed repository links `.agents/rules` directly to the canonical root via NTFS junction, guaranteeing 100% rule discovery whether opening the workspace root or an individual repository folder.
+- **Canonical Hub**: `Workspace_Inventory\.agents\rules\` (16 authoritative rule files; physical owner & primary commit gate).
+- **Root & Child Discovery**: Root `D:\Git_Repositories\.agents\rules` links to `Workspace_Inventory\.agents\rules` via junction, eliminating root commit churn. Every governed child repository links `.agents/rules` directly to this hub, guaranteeing 100% rule discovery whether opening the workspace root or an individual repository folder.
 
 ---
 
