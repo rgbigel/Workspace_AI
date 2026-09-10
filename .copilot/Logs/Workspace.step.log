@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260910_141528
-Latest commit at generation: 0249b65 chore(gemini): pre-push synchronization of rules export and knowledge base
+Generated at: 20260910_141735
+Latest commit at generation: 9f4d9c5 fix(governance): add standard -h / -Help parameter support to Advance-Governance.ps1 [v7.5.0]
 
 2. Change Proposals
 -------------------
@@ -810,7 +810,7 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M tools/Advance-Governance.ps1
+No reviewable changes.
 
 6. Current Generated Artifact Status
 ------------------------------------
