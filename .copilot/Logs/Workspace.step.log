@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260907_161811
-Latest commit at generation: 64ce61c docs(rules): synchronize RULE-ELEV-006 cross-reference and Gemini exports [v7.2.1]
+Generated at: 20260910_141528
+Latest commit at generation: 0249b65 chore(gemini): pre-push synchronization of rules export and knowledge base
 
 2. Change Proposals
 -------------------
@@ -810,11 +810,7 @@ Generated artifacts are implicit outputs. They are regenerated, committed with a
 
 5. Current Reviewable Git Status
 --------------------------------
- M docs/Architecture.md
- M docs/LCM-Rules-Cross-Reference.md
- M docs/LCM_Rules.txt
- M docs/LCM_Rules_Gemini_Export.md
- M docs/LCM_Rules_Gemini_Export.txt
+ M tools/Advance-Governance.ps1
 
 6. Current Generated Artifact Status
 ------------------------------------

@@ -12,7 +12,10 @@ param(
 
   [string]$StabilizationPath,
 
-  [string]$RealRepoTestPlanPath
+  [string]$RealRepoTestPlanPath,
+
+  [Alias('h', '?')]
+  [switch]$Help
 )
 
 <#
@@ -20,9 +23,11 @@ Module: Advance-Governance.ps1
 Purpose: Validate native Workspace_AI governance readiness and log separation without staging or committing changes.
 Path: tools/Advance-Governance.ps1
 Authors: Workspace_AI Engine
-Version: 2.15.1
+Version: 2.15.2
+Date: 2026-09-10
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
 Changelog:
+- 2026-09-10: Added -h / -Help CLI parameter per RULE-PS-010.
 - 2026-08-17: Scoped ignored-repositories check to root container settings.json.
 - 2026-08-02: Added proposal cleanup check reporting.
 - 2026-08-02: Added target-local method instance bootstrap reporting.
@@ -48,6 +53,30 @@ Changelog:
 - 2026-08-01: Added validation for step-oriented and permanent accepted governance logs.
 - 2026-08-01: Added native governance advancement check for Gemini/Continue migration.
 #>
+
+if ($Help) {
+  Write-Host "==========================================================================" -ForegroundColor Cyan
+  Write-Host " WORKSPACE_AI ADVANCE GOVERNANCE VALIDATOR (v2.15.2)" -ForegroundColor Cyan
+  Write-Host "==========================================================================" -ForegroundColor Cyan
+  Write-Host "SYNOPSIS:" -ForegroundColor Yellow
+  Write-Host "  Validates native Workspace_AI governance readiness, log separation, and"
+  Write-Host "  proposal status integrity without staging or committing changes."
+  Write-Host ""
+  Write-Host "USAGE:" -ForegroundColor Yellow
+  Write-Host "  pwsh tools/Advance-Governance.ps1 [-LogPath <path>] [-StepLogPath <path>] [-Help]"
+  Write-Host ""
+  Write-Host "PARAMETERS:" -ForegroundColor Yellow
+  Write-Host "  -LogPath                : Path to Workspace.log file."
+  Write-Host "  -StepLogPath            : Path to Workspace.step.log file."
+  Write-Host "  -PermanentLogPath       : Path to Workspace.accepted.log file."
+  Write-Host "  -ProposalLogPath        : Path to Proposals.json ledger."
+  Write-Host "  -ProposalValidationPath : Path to Proposals.validation.json."
+  Write-Host "  -StabilizationPath      : Path to stabilization artifact."
+  Write-Host "  -RealRepoTestPlanPath   : Path to test plan artifact."
+  Write-Host "  -h, -Help, -?           : Displays this parameter reference."
+  Write-Host "==========================================================================" -ForegroundColor Cyan
+  return
+}
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
 $copilotRoot = Join-Path $workspaceRoot '.copilot'
