@@ -5,8 +5,8 @@ Workspace_AI Step-Oriented Governance Log
 ---------
 Purpose: Checkpoint log for proposed changes, reasons, and dispositions.
 Lifecycle: May be overwritten at checkpoint regeneration.
-Generated at: 20260910_141735
-Latest commit at generation: 9f4d9c5 fix(governance): add standard -h / -Help parameter support to Advance-Governance.ps1 [v7.5.0]
+Generated at: 20260910_144531
+Latest commit at generation: 803f767 chore(governance): record readiness pass for BUG-133 and CRP-134 completion [v7.5.0]
 
 2. Change Proposals
 -------------------

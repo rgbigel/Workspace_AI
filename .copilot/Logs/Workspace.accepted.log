@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260910_141735
+Generated at: 20260910_144531
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: 9f4d9c5 fix(governance): add standard -h / -Help parameter support to Advance-Governance.ps1 [v7.5.0]
+Latest commit at generation: 803f767 chore(governance): record readiness pass for BUG-133 and CRP-134 completion [v7.5.0]
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -100,6 +100,7 @@ c001d51 20260908_165344 docs(rules): synchronize ProposalReviewFlowPolicy, cross
 e40addf 20260909_223508 docs(governance): update canonical rule authority to Workspace_Inventory [v7.5.0]
 0249b65 20260909_223824 chore(gemini): pre-push synchronization of rules export and knowledge base
 9f4d9c5 20260910_141712 fix(governance): add standard -h / -Help parameter support to Advance-Governance.ps1 [v7.5.0]
+803f767 20260910_141744 chore(governance): record readiness pass for BUG-133 and CRP-134 completion [v7.5.0]
 
 3. Footer
 ---------
