@@ -1,14 +1,56 @@
+<#
+.SYNOPSIS
+  Create a target-local Docs/Methods method instance for a selected real repository.
+
+.PARAMETER RepositoryPath
+  Absolute or relative path to the target repository.
+
+.PARAMETER Force
+  Overwrites existing method instance if present.
+
+.PARAMETER Trace
+  Enables verbose diagnostic tracing output.
+
+.PARAMETER AsJson
+  Output initialization result as JSON.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Absolute or relative path to the target repository.')]
   [string]$RepositoryPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Overwrites existing method instance if present.')]
   [switch]$Force,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Enables verbose diagnostic tracing output.')]
   [Alias('t')]
   [switch]$Trace,
 
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output initialization result as JSON.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Initialize-RealRepoMethodInstance.ps1 - Bootstrap target-local Docs/Methods instance." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Initialize-RealRepoMethodInstance.ps1 [-RepositoryPath <path>] [-Force] [-Trace] [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -RepositoryPath Path to target repository."
+  Write-Host "  -Force          Overwrite existing method instance."
+  Write-Host "  -Trace (-t)     Verbose diagnostic tracing."
+  Write-Host "  -AsJson         Output as JSON."
+  Write-Host "  -Help (-h, -?)  Displays this help message."
+  exit 0
+}
 
 <#
 Module: Initialize-RealRepoMethodInstance.ps1

@@ -1,7 +1,34 @@
+<#
+.SYNOPSIS
+  Read Workspace_AI real-repository test plan state without changing it.
+
+.PARAMETER AsJson
+  Output the test plan state in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output the test plan state in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Get-RealRepoTestPlan.ps1 - Inspect real-repository test plan state." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Get-RealRepoTestPlan.ps1 [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -AsJson Output plan state as JSON."
+  Write-Host "  -Help   (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Get-RealRepoTestPlan.ps1

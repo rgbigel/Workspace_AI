@@ -1,13 +1,55 @@
+<#
+.SYNOPSIS
+  Generate native Workspace_AI step and permanent governance logs.
+
+.PARAMETER OutputPath
+  Destination path for generated Workspace log.
+
+.PARAMETER StepLogPath
+  Destination path for step-oriented governance log.
+
+.PARAMETER PermanentLogPath
+  Destination path for permanent accepted-change governance log.
+
+.PARAMETER ProposalLogPath
+  Path to authoritative Proposals.json ledger.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Destination path for generated Workspace log.')]
   [string]$OutputPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Destination path for step-oriented governance log.')]
   [string]$StepLogPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Destination path for permanent accepted-change governance log.')]
   [string]$PermanentLogPath,
 
-  [string]$ProposalLogPath
+  [Parameter(Mandatory = $false, HelpMessage = 'Path to authoritative Proposals.json ledger.')]
+  [string]$ProposalLogPath,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Generate-Log.ps1 - Generate native Workspace_AI step and permanent governance logs." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Generate-Log.ps1 [-OutputPath <path>] [-StepLogPath <path>] [-PermanentLogPath <path>] [-ProposalLogPath <path>] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -OutputPath       Path for Workspace.log output."
+  Write-Host "  -StepLogPath      Path for Workspace.step.log output."
+  Write-Host "  -PermanentLogPath Path for Workspace.accepted.log output."
+  Write-Host "  -ProposalLogPath  Path to Proposals.json ledger."
+  Write-Host "  -Help             (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Generate-Log.ps1

@@ -1,7 +1,34 @@
+<#
+.SYNOPSIS
+  Validate that loaded Workspace_AI rule sets are present and non-empty.
+
+.PARAMETER rules
+  Hashtable of rule sets returned by LoadRules.ps1.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-    [hashtable]$rules
+  [Parameter(Mandatory = $false, HelpMessage = 'Hashtable of rule sets returned by LoadRules.ps1.')]
+  [hashtable]$rules,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "ValidateRules.ps1 - Validate loaded rule sets are present and non-empty." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File ValidateRules.ps1 [-rules <hashtable>] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -rules Hashtable of rule sets."
+  Write-Host "  -Help  (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: ValidateRules.ps1

@@ -1,18 +1,70 @@
+<#
+.SYNOPSIS
+  Update the Workspace_AI real-repository test plan without enabling writes.
+
+.PARAMETER RepositoryPath
+  Path to candidate target repository.
+
+.PARAMETER Mode
+  Target test plan mode ('not-selected', 'candidate-selected', 'dry-run').
+
+.PARAMETER ClearSelection
+  Clears the current target candidate selection.
+
+.PARAMETER EnableDryRun
+  Requests enabling dry-run mode for candidate.
+
+.PARAMETER ConfirmReadOnlyDryRun
+  Confirms that dry-run is strictly read-only.
+
+.PARAMETER AsJson
+  Output updated test plan in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Path to candidate target repository.')]
   [string]$RepositoryPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Target test plan mode (not-selected, candidate-selected, dry-run).')]
   [ValidateSet('not-selected', 'candidate-selected', 'dry-run')]
   [string]$Mode,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Clears the current target candidate selection.')]
   [switch]$ClearSelection,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Requests enabling dry-run mode for candidate.')]
   [switch]$EnableDryRun,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Confirms that dry-run is strictly read-only.')]
   [switch]$ConfirmReadOnlyDryRun,
 
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output updated test plan in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Set-RealRepoTestPlan.ps1 - Update real-repository test plan state." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Set-RealRepoTestPlan.ps1 [-RepositoryPath <path>] [-Mode <mode>] [-ClearSelection] [-EnableDryRun] [-ConfirmReadOnlyDryRun] [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -RepositoryPath         Path to repository."
+  Write-Host "  -Mode                   Target mode."
+  Write-Host "  -ClearSelection         Clear selection."
+  Write-Host "  -EnableDryRun           Request dry-run."
+  Write-Host "  -ConfirmReadOnlyDryRun  Confirm read-only execution."
+  Write-Host "  -AsJson                 Output as JSON."
+  Write-Host "  -Help (-h, -?)          Displays this help message."
+  exit 0
+}
 
 <#
 Module: Set-RealRepoTestPlan.ps1

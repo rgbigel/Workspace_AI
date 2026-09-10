@@ -1,10 +1,45 @@
+<#
+.SYNOPSIS
+  Run native Workspace_AI fix descriptor validation from PowerShell 7.
+
+.PARAMETER FixName
+  Name or ID of the fix module to validate.
+
+.PARAMETER NoLog
+  Suppresses writing audit telemetry logs.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory=$true)]
+  [Parameter(Mandatory = $false, HelpMessage = 'Name or ID of the fix module to validate.')]
   [string]$FixName,
 
-  [switch]$NoLog
+  [Parameter(Mandatory = $false, HelpMessage = 'Suppresses writing audit telemetry logs.')]
+  [switch]$NoLog,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "APPLY.ps1 - Run native Workspace_AI fix descriptor validation." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File APPLY.ps1 -FixName <string> [-NoLog] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -FixName Name or ID of the fix module."
+  Write-Host "  -NoLog   Do not write to validation log."
+  Write-Host "  -Help    (-h, -?) Displays this help message."
+  exit 0
+}
+
+if (-not $FixName) {
+  throw "Parameter -FixName is required."
+}
 
 <#
 Module: APPLY.ps1

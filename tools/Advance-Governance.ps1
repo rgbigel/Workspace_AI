@@ -1,17 +1,24 @@
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the primary governance log file')]
   [string]$LogPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the step-level governance log file')]
   [string]$StepLogPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the permanent accepted governance log file')]
   [string]$PermanentLogPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the proposal registry history JSON file')]
   [string]$ProposalLogPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the proposal validation entries file')]
   [string]$ProposalValidationPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the stabilization policy file')]
   [string]$StabilizationPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Custom path to the real-repository test plan file')]
   [string]$RealRepoTestPlanPath,
 
   [Alias('h', '?')]

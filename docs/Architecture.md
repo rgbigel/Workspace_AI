@@ -287,6 +287,46 @@ graph TD
    * **Tripartite Matrix**: Provide an authoritative table linking `Architecture.md`, `Requirements.md`, and `Implementation.md`.
    * **Quick-Start Runbook**: Provide immediate, copy-pasteable CLI commands for the most common operator workflows.
 
+---
+
+## 9. Automated Regression CRP Lifecycle & Cycle Governance ([CRP-135](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md))
+
+To manage cross-repository ripple effects deterministically, LCM implements automated regression proposal derivation and Directed Acyclic Graph (DAG) cycle governance established by [CRP-135](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md):
+
+```mermaid
+graph TD
+    classDef default font-size:8pt;
+    ParentCRP["<b>Primary Change Request</b><br/>(e.g. Shared Interface Modification)<br/><code>RegressionNeeded: true</code>"]
+    
+    subgraph DetectionEngine ["CM Collision & Scope Detector"]
+        Check1["<b>Trigger A:</b> Explicit Declaration / Global Scope"]
+        Check2["<b>Trigger B & C:</b> Overlap with Active Uncompleted CRPs"]
+    end
+
+    subgraph ChildGeneration ["Automated Child CRP Minting (Depth 1-2)"]
+        Child1["<b>Regression CRP (Depth 1)</b><br/><code>Priority: -1</code> (Base Consumers)<br/>State: OPEN"]
+        Child2["<b>Regression CRP (Depth 2)</b><br/><code>Priority: -2</code> (Leaf Consumers)<br/>State: OPEN"]
+    end
+
+    subgraph SafetyGuard ["Governor Cycle & Depth Guard"]
+        DepthCheck{"Depth <= 2?"}
+        CycleCheck{"Cycle Detected?<br/>(DAG Traversal)"}
+        BlockedCycle["<b>State: Blocked_Cycle</b><br/>Governor Remediation Action:<br/>• Interface Hoisting<br/>• Atomic Joint Review Bundle<br/>• Backward-Compatibility Exemption"]
+    end
+
+    ParentCRP --> DetectionEngine
+    DetectionEngine --> SafetyGuard
+    SafetyGuard -->|"Depth Valid & No Cycle"| ChildGeneration
+    SafetyGuard -->|"Cycle or Depth > 2"| BlockedCycle
+```
+
+### Core Architecture Invariants:
+1. **Automated Child CRP Generation**: Child regression proposals (`Regression: <Area> for CRP-<ParentId>`) are generated in the `suggested` (`OPEN`) state per `RULE-LCM-015`.
+2. **Topological Negative-Priority Sorting**: Downstream tasks in `ListOfChangesRequired` are assigned negative priorities (`-1`, `-2`, `-3`...) reflecting execution dependencies from foundational base layers (`-1`) out to leaf consumers.
+3. **Deterministic Depth Ceiling (`MaxRegressionDepth = 2`)**: Derivative regressions are strictly bounded to 2 hops from the primary proposal.
+4. **Governor Remedial Action on `Blocked_Cycle`**: When mutual circular coupling occurs, the CM Governor halts cascading mutations and instantiates a specialized **Cycle Resolution Proposal** offering interface hoisting, atomic joint review bundling, or one-way backward compatibility exemption.
+
+
 
 
 

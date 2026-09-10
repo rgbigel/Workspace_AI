@@ -1,28 +1,67 @@
+<#
+.SYNOPSIS
+  Update Workspace_AI proposal disposition records deterministically.
+
+.PARAMETER Id
+  Target proposal identifier to update.
+
+.PARAMETER Disposition
+  Updated proposal review disposition (pending-review, accepted, rejected, modified).
+
+.PARAMETER DispositionReason
+  Reason or rationale for the review disposition update.
+
+.PARAMETER FinalResult
+  Final execution or validation result string.
+
+.PARAMETER ProposalLogPath
+  Path to authoritative Proposals.json ledger.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory=$true)]
+  [Parameter(Mandatory = $false, HelpMessage = 'Target proposal identifier to update.')]
   [string]$Id,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Updated proposal review disposition (pending-review, accepted, rejected, modified).')]
   [ValidateSet('pending-review', 'accepted', 'rejected', 'modified')]
   [string]$Disposition,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Reason or rationale for the review disposition update.')]
   [string]$DispositionReason,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Final execution or validation result string.')]
   [string]$FinalResult,
 
-  [string]$ProposalLogPath
+  [Parameter(Mandatory = $false, HelpMessage = 'Path to authoritative Proposals.json ledger.')]
+  [string]$ProposalLogPath,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
 
-<#
-Module: Update-Proposal.ps1
-Purpose: Update Workspace_AI proposal disposition records deterministically.
-Path: tools/Update-Proposal.ps1
-Authors: Workspace_AI Engine
-Version: 1.0.0
-Caller Contract: Called with a proposal id and optional disposition fields; updates Proposals.json without committing changes.
-Changelog:
-- 2026-08-01: Added native proposal registry update command.
-#>
+if ($Help) {
+  Write-Host "Update-Proposal.ps1 - Update proposal disposition records." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Update-Proposal.ps1 -Id <id> [-Disposition <disp>] [-DispositionReason <reason>] [-FinalResult <result>] [-ProposalLogPath <path>] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -Id                Proposal identifier."
+  Write-Host "  -Disposition       Review disposition state."
+  Write-Host "  -DispositionReason Rationale for state update."
+  Write-Host "  -FinalResult       Final validation result."
+  Write-Host "  -ProposalLogPath   Path to Proposals.json."
+  Write-Host "  -Help (-h, -?)     Displays this help message."
+  exit 0
+}
+
+if (-not $Id) {
+  throw "Parameter -Id is required."
+}
 
 if (-not $ProposalLogPath) {
   $copilotRoot = Split-Path $PSScriptRoot -Parent

@@ -1,7 +1,34 @@
+<#
+.SYNOPSIS
+  Build a read-only intended-action preview for a selected real-repository dry-run target.
+
+.PARAMETER AsJson
+  Output the action plan in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output the action plan in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Get-RealRepoActionPlan.ps1 - Preview real-repository intended adapter actions." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Get-RealRepoActionPlan.ps1 [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -AsJson Output action plan as JSON."
+  Write-Host "  -Help   (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Get-RealRepoActionPlan.ps1

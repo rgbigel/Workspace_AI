@@ -1,7 +1,34 @@
+<#
+.SYNOPSIS
+  Report Workspace_AI real-repository dry-run readiness without writing to any target repository.
+
+.PARAMETER AsJson
+  Output dry-run report in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output dry-run report in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Invoke-RealRepoDryRun.ps1 - Report real-repository dry-run readiness." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Invoke-RealRepoDryRun.ps1 [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -AsJson Output dry-run status as JSON."
+  Write-Host "  -Help   (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Invoke-RealRepoDryRun.ps1

@@ -1,12 +1,49 @@
+<#
+.SYNOPSIS
+  Report target-local proposal files that are void because they are accepted and implemented.
+
+.PARAMETER RepositoryPath
+  Path to target repository to scan for cleanup candidates.
+
+.PARAMETER Trace
+  Enables verbose diagnostic tracing output.
+
+.PARAMETER AsJson
+  Output cleanup scan report in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Path to target repository to scan for cleanup candidates.')]
   [string]$RepositoryPath,
 
+  [Parameter(Mandatory = $false, HelpMessage = 'Enables verbose diagnostic tracing output.')]
   [Alias('t')]
   [switch]$Trace,
 
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output cleanup scan report in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Test-RealRepoProposalCleanup.ps1 - Scan target-local proposal files for cleanup candidates." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Test-RealRepoProposalCleanup.ps1 [-RepositoryPath <path>] [-Trace] [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -RepositoryPath Path to repository."
+  Write-Host "  -Trace (-t)     Verbose tracing."
+  Write-Host "  -AsJson         Output as JSON."
+  Write-Host "  -Help (-h, -?)  Displays this help message."
+  exit 0
+}
 
 <#
 Module: Test-RealRepoProposalCleanup.ps1

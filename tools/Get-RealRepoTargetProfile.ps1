@@ -1,7 +1,34 @@
+<#
+.SYNOPSIS
+  Build a read-only profile of the selected real-repository dry-run target.
+
+.PARAMETER AsJson
+  Output the profile in JSON format.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
 param(
-  [switch]$AsJson
+  [Parameter(Mandatory = $false, HelpMessage = 'Output the profile in JSON format.')]
+  [switch]$AsJson,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
 )
+
+if ($Help) {
+  Write-Host "Get-RealRepoTargetProfile.ps1 - Profile selected real-repository dry-run target." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Get-RealRepoTargetProfile.ps1 [-AsJson] [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -AsJson Output profile as JSON."
+  Write-Host "  -Help   (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Get-RealRepoTargetProfile.ps1

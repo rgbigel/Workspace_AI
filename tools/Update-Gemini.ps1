@@ -27,9 +27,13 @@
 
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Forces a full clean export of knowledge base files')]
   [switch]$Force,
+
+  [Parameter(Mandatory = $false, HelpMessage = 'Copies the consolidated governance rules to clipboard')]
   [Alias('c', 'CopyToClipboard')]
   [switch]$ToClipboard,
+
   [Alias('h', '?')]
   [switch]$Help
 )

@@ -36,6 +36,7 @@ The authoritative Lifecycle Model documentation is structured into three foundat
 ## 3. Configuration Management & Extended Guides
 
 * **[Configuration Management Architecture (`docs/LCM-Configuration-Management.md`)](docs/LCM-Configuration-Management.md)**: Details `Workspace_Inventory` operational CM, junction CR mirroring, visual review tooling, and drift detection.
+* **[Automated Regression CRP Lifecycle (`CRP-135`)](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md)**: Normative specification for `RegressionNeeded` property detection, active CRP collision checks, `MaxRegressionDepth = 2` bounding, DAG cycle detection, and `Blocked_Cycle` remediation workflows.
 * **[Repository Onboarding Architecture (`docs/LCM-Onboarding-Architecture.md`)](docs/LCM-Onboarding-Architecture.md)**: Deep dive into the 4-phase onboarding engine.
 * **[Repository Inventory Matrix (`docs/LCM-Repository-Inventory.md`)](docs/LCM-Repository-Inventory.md)**: Classification and state matrix across all 33+ workspace directories.
 * **[Standards & Versioning (`docs/Standards.md`)](docs/Standards.md)**: Semantic versioning, formatting, and file encoding standards.

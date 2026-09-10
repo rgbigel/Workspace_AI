@@ -1,5 +1,27 @@
+<#
+.SYNOPSIS
+  Validate the active Workspace_AI .copilot profile structure.
+
+.PARAMETER Help
+  Displays this synopsis and usage screen.
+#>
 [CmdletBinding()]
-param()
+param(
+  [Parameter(Mandatory = $false, HelpMessage = 'Displays this synopsis and usage screen.')]
+  [Alias('h', '?')]
+  [switch]$Help
+)
+
+if ($Help) {
+  Write-Host "Validate-CopilotProfile.ps1 - Validate active .copilot profile structure." -ForegroundColor Cyan
+  Write-Host ""
+  Write-Host "Usage:"
+  Write-Host "  pwsh -File Validate-CopilotProfile.ps1 [-Help]"
+  Write-Host ""
+  Write-Host "Parameters:"
+  Write-Host "  -Help (-h, -?) Displays this help message."
+  exit 0
+}
 
 <#
 Module: Validate-CopilotProfile.ps1
