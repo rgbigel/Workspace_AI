@@ -1,0 +1,9 @@
+# LCM Local Governance Link
+.agents/
+
+# Logs & Temporary Files
+logs/
+scratch/
+*.log
+*.tmp
+*.bak
