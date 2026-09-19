@@ -4,8 +4,8 @@
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260919_195128
-Latest commit at generation: eb944db docs(baseline): align tripartite specifications (Architecture, Requirements, Implementation) to LCM v7.0.0
+Generated at: 20260919_202452
+Latest commit at generation: 09aaaab docs: align tripartite specifications, Mermaid diagrams, and tool help flags to LCM Baseline v7.0.0
 
 2. Rule Authority
 -----------------
@@ -30,16 +30,7 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- M docs/Architecture.md
- M docs/LCM-Configuration-Management.md
- M docs/LCM-Onboarding-Architecture.md
- M docs/LCM-Rules-Cross-Reference.md
- M docs/LCM_Deterministic_Hook_Engine_Architecture.md
- M docs/PC_Host_Subsystem_Architecture_Proposal.md
- M tools/LoadAtoms.ps1
- M tools/LoadFixes.ps1
- M tools/LoadMethods.ps1
- M tools/LoadRules.ps1
+No reviewable changes.
 
 6. Generated Artifact Status
 ----------------------------
