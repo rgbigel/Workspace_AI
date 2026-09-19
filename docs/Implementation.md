@@ -2,15 +2,15 @@
 
 ModulePath: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.1.1  
+Version: 7.0.0  
 Status: Authoritative Implementation  
-Date: 2026-08-30  
+Date: 2026-09-19  
 
 ---
 
 ## 1. Directory Structure & Execution Topology
 
-Under LCM v7.1.1, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
+Under LCM v7.0.0, the governance and execution tooling is organized into functional categories across [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) (Governance Authority & Baseline Source) and [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) (Configuration Management Engine).
 
 ### A. PowerShell CLI Tools
 
