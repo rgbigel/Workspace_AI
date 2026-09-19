@@ -28,20 +28,20 @@ By modeling the **Host PC itself as a first-class Lifecycle Model Subsystem (`Ho
 
 ```mermaid
 graph TD
-    Root["<b>LCM Multi-Repository Governance Root</b><br><code>D:\Git_Repositories\</code>"]
+    Root["LCM Multi-Repository Governance Root<br>D:/Git_Repositories/"]
     
-    subgraph HostSubsystem["<b>Host Machine Subsystem: HostSystem_PC</b>"]
-        H_Docs["<b>Tripartite Documentation</b><br>• docs/Architecture.md<br>• docs/Requirements.md<br>• docs/Implementation.md"]
-        H_Install["<b>Universal Runbook</b><br>• install/Installation.md<br>(7-Phase Re-provisioning)"]
-        H_Data["<b>Declarative State Ledgers</b><br>• data/hardware_topology.json<br>• data/software_packages.json<br>• data/registry_invariants.json<br>• data/boot_profiles.json"]
-        H_Tools["<b>Host Audit & Enforcement Engine</b><br>• tools/Audit-HostBaseline.ps1<br>• tools/Export-SoftwareManifest.ps1<br>• tools/Apply-HostInvariants.ps1"]
+    subgraph HostSubsystem["Host Machine Subsystem: HostSystem_PC"]
+        H_Docs["Tripartite Documentation<br>• docs/Architecture.md<br>• docs/Requirements.md<br>• docs/Implementation.md"]
+        H_Install["Universal Runbook<br>• install/Installation.md<br>(7-Phase Re-provisioning)"]
+        H_Data["Declarative State Ledgers<br>• data/hardware_topology.json<br>• data/software_packages.json<br>• data/registry_invariants.json<br>• data/boot_profiles.json"]
+        H_Tools["Host Audit & Enforcement Engine<br>• tools/Audit-HostBaseline.ps1<br>• tools/Export-SoftwareManifest.ps1<br>• tools/Apply-HostInvariants.ps1"]
     end
     
-    subgraph SpecializedRepos["<b>Existing Specialized Repositories (Retained & Linked)</b>"]
-        SC["<code>SystemConfiguration</code><br>(Step-by-step @nn scripts)"]
-        BM["<code>BootEntryManager</code><br>(BCD & Multi-boot entries)"]
-        DAS["<code>DiskAssignmentStatus</code><br>(Physical drive mappings)"]
-        VI["<code>VolumeInventory</code><br>(Volume serials & letters)"]
+    subgraph SpecializedRepos["Existing Specialized Repositories (Retained & Linked)"]
+        SC["SystemConfiguration<br>(Step-by-step @nn scripts)"]
+        BM["BootEntryManager<br>(BCD & Multi-boot entries)"]
+        DAS["DiskAssignmentStatus<br>(Physical drive mappings)"]
+        VI["VolumeInventory<br>(Volume serials & letters)"]
     end
     
     Root --> HostSubsystem
@@ -49,6 +49,7 @@ graph TD
     HostSubsystem -->|Integrates Telemetry| BM
     HostSubsystem -->|Integrates Telemetry| DAS
     HostSubsystem -->|Integrates Telemetry| VI
+
 ```
 
 ---
@@ -136,5 +137,6 @@ pwsh -File tools/Audit-HostBaseline.ps1 -Export
    - Build `install/Installation.md` conforming to the 7-phase standard.
 5. **Step 5: Register in Workspace Tool Catalog**:
    - Index `HostSystem_PC` audit and management tools in `tools/tool_catalog.json` and `tools/README.md`.
+
 
 

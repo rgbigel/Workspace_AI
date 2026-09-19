@@ -21,13 +21,13 @@ The **LCM Deterministic Hook Engine** introduces a deterministic execution bound
 
 ```mermaid
 graph TD
-    AGENT["AI Agent (Antigravity)"] -->|Requests Tool Call<br/>(e.g., run_command, write_to_file)| HOOK_PRE["PreToolUse Hook Handler<br/>(Enforce-LcmPreToolPolicy.ps1)"]
+    AGENT["AI Agent (Antigravity)"] -->|"Requests Tool Call<br/>(e.g., run_command, write_to_file)"| HOOK_PRE["PreToolUse Hook Handler<br/>(Enforce-LcmPreToolPolicy.ps1)"]
     
-    subgraph Deterministic_Validation ["Deterministic Policy Engine"]
-        V_GIT["Commit & Push Gating<br/>(RULE-REV-001)"]
+    subgraph Deterministic_Validation["Deterministic Policy Engine"]
+        V_GIT["Commit and Push Gating<br/>(RULE-REV-001)"]
         V_BOUND["Repository Boundary Isolation<br/>(REPO-CONTEXT)"]
         V_ENC["Encoding Invariant (UTF-8 No BOM, CRLF)<br/>(INVARIANT-RULES)"]
-        V_ELEV["Privilege & Elevation Guard<br/>(RULE-ELEV-001)"]
+        V_ELEV["Privilege and Elevation Guard<br/>(RULE-ELEV-001)"]
     end
 
     HOOK_PRE --> V_GIT
@@ -35,21 +35,21 @@ graph TD
     HOOK_PRE --> V_ENC
     HOOK_PRE --> V_ELEV
 
-    V_GIT -->|Pass| EXEC["Tool Execution Engine"]
-    V_BOUND -->|Pass| EXEC
-    V_ENC -->|Pass| EXEC
-    V_ELEV -->|Pass| EXEC
+    V_GIT -->|"Pass"| EXEC["Tool Execution Engine"]
+    V_BOUND -->|"Pass"| EXEC
+    V_ENC -->|"Pass"| EXEC
+    V_ELEV -->|"Pass"| EXEC
 
-    V_GIT -->|Block| REJECT["Deterministic Rejection<br/>(Returns Detailed Governance Error)"]
-    V_BOUND -->|Block| REJECT
-    V_ENC -->|Block| REJECT
-    V_ELEV -->|Block| REJECT
+    V_GIT -->|"Block"| REJECT["Deterministic Rejection<br/>(Returns Detailed Governance Error)"]
+    V_BOUND -->|"Block"| REJECT
+    V_ENC -->|"Block"| REJECT
+    V_ELEV -->|"Block"| REJECT
 
     REJECT --> AGENT
 
     EXEC --> HOOK_POST["PostToolUse Hook Handler<br/>(Enforce-LcmPostToolPolicy.ps1)"]
-    HOOK_POST --> AUDIT[("Audit Ledger<br/>(logs/hooks_audit.log)")]
-    HOOK_POST --> LINT["Syntax & AST Lint Verification"]
+    HOOK_POST --> AUDIT["Audit Ledger<br/>(logs/hooks_audit.log)"]
+    HOOK_POST --> LINT["Syntax and AST Lint Verification"]
     LINT --> AGENT
 ```
 
@@ -136,4 +136,5 @@ Executes immediately following tool execution:
 2. **Phase 2 (AST & Quality PostToolUse)**: Implement `Enforce-LcmPostToolPolicy.ps1` with real-time PowerShell and Python AST linting.
 3. **Phase 3 (Session Invariant Auditing)**: Implement `Invoke-LcmSessionAudit.ps1` to audit NTFS junctions and hardware invariants.
 4. **Phase 4 (Manifest & Integration)**: Deploy `.agents/hooks.json` and register into global Antigravity config (`C:\Users\rgbig\.gemini\config\hooks.json`).
+
 

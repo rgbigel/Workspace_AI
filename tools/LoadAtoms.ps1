@@ -1,5 +1,18 @@
 [CmdletBinding()]
-param()
+param(
+    [Alias('h', '?')]
+    [switch]$Help
+)
+
+if ($Help) {
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host " LOAD ATOMS (Workspace_AI/tools/LoadAtoms.ps1)" -ForegroundColor Cyan
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host "SYNOPSIS: Loads atom files for Workspace_AI fix-module execution."
+    Write-Host "USAGE:    pwsh tools/LoadAtoms.ps1 [-h]"
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    return
+}
 
 <#
 Module: LoadAtoms.ps1

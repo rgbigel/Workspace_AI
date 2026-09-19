@@ -1,5 +1,18 @@
 [CmdletBinding()]
-param()
+param(
+    [Alias('h', '?')]
+    [switch]$Help
+)
+
+if ($Help) {
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host " LOAD METHODS (Workspace_AI/tools/LoadMethods.ps1)" -ForegroundColor Cyan
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host "SYNOPSIS: Loads method script metadata for Workspace_AI fix-module execution."
+    Write-Host "USAGE:    pwsh tools/LoadMethods.ps1 [-h]"
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    return
+}
 
 <#
 Module: LoadMethods.ps1

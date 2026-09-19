@@ -15,15 +15,16 @@ All LCM governance rules originate from the **Canonical Hub** at the workspace r
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    Hub["<b>Canonical Rule Hub</b><br/><code>D:\Git_Repositories\.agents\rules\</code><br/>(17 Authoritative Rule Files)"]
+    Hub["Canonical Rule Hub<br/>D:/Git_Repositories/.agents/rules/<br/>(17 Authoritative Rule Files)"]
     
-    Hub -->|NTFS Junction| J1["<code>BootEntryManager\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J2["<code>VolumeInventory\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J3["<code>Workspace_Inventory\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J4["<code>SharedModules\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J5["<code>BackgroundModifier\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J6["<code>DiskAssignmentStatus\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J7["<code>(All Other Governed Repos...)</code>"]
+    Hub -->|NTFS Junction| J1["BootEntryManager/.agents/rules"]
+    Hub -->|NTFS Junction| J2["VolumeInventory/.agents/rules"]
+    Hub -->|NTFS Junction| J3["Workspace_Inventory/.agents/rules"]
+    Hub -->|NTFS Junction| J4["SharedModules/.agents/rules"]
+    Hub -->|NTFS Junction| J5["BackgroundModifier/.agents/rules"]
+    Hub -->|NTFS Junction| J6["DiskAssignmentStatus/.agents/rules"]
+    Hub -->|NTFS Junction| J7["(All Other Governed Repos...)"]
+
 
 ```
 
@@ -64,45 +65,46 @@ flowchart LR
     classDef repo fill:#1e293b,stroke:#10b981,stroke-width:1.5px,color:#f1f5f9,font-size:8pt;
 
     subgraph HUB_CLUSTER["🎯 Canonical Governance Hub"]
-        HUB["<b>D:\Git_Repositories\.agents\rules</b><br/><i>(16 Authoritative Rule<br/>Specifications)</i>"]:::hub
+        HUB["D:/Git_Repositories/.agents/rules<br/>(16 Authoritative Rule<br/>Specifications)"]:::hub
     end
 
     subgraph COL1["Governed Repositories (A - D)"]
         direction TB
-        R01["BackgroundModifier\.agents\rules<br/>🟢 Active"]:::repo
-        R02["BGMSAMVInv\.agents\rules  🟢 Active"]:::repo
-        R03["BootEntryManager\.agents\rules  🟢<br/>Active"]:::repo
-        R04["DiskAssignmentStatus\.agents\rules<br/>🟢 Active"]:::repo
+        R01["BackgroundModifier/.agents/rules<br/>🟢 Active"]:::repo
+        R02["BGMSAMVInv/.agents/rules  🟢 Active"]:::repo
+        R03["BootEntryManager/.agents/rules  🟢<br/>Active"]:::repo
+        R04["DiskAssignmentStatus/.agents/rules<br/>🟢 Active"]:::repo
     end
 
     subgraph COL2["Governed Repositories (G - M)"]
         direction TB
-        R05["GetRecoveryVolume\.agents\rules  🟢<br/>Active"]:::repo
-        R06["InstallFonts\.agents\rules  🟢<br/>Active"]:::repo
-        R07["MacriumTemplateUpdater\.agents\<br/>rules  🟢 Active"]:::repo
-        R08["MSG file conversion\.agents\rules<br/>🟢 Active"]:::repo
+        R05["GetRecoveryVolume/.agents/rules  🟢<br/>Active"]:::repo
+        R06["InstallFonts/.agents/rules  🟢<br/>Active"]:::repo
+        R07["MacriumTemplateUpdater/.agents/<br/>rules  🟢 Active"]:::repo
+        R08["MSG file conversion/.agents/rules<br/>🟢 Active"]:::repo
     end
 
     subgraph COL3["Governed Repositories (N - R)"]
         direction TB
-        R09["NextBootTray\.agents\rules  🟢<br/>Active"]:::repo
-        R10["OutlookVBAConversion\.agents\rules<br/>🟢 Active"]:::repo
-        R11["PowerBGInfo\.agents\rules  🟢<br/>Active"]:::repo
-        R12["ReEnableRadeonRx580\.agents\rules<br/>🟢 Active"]:::repo
+        R09["NextBootTray/.agents/rules  🟢<br/>Active"]:::repo
+        R10["OutlookVBAConversion/.agents/rules<br/>🟢 Active"]:::repo
+        R11["PowerBGInfo/.agents/rules  🟢<br/>Active"]:::repo
+        R12["ReEnableRadeonRx580/.agents/rules<br/>🟢 Active"]:::repo
     end
 
     subgraph COL4["Governed Repositories (S - W)"]
         direction TB
-        R13["SharedModules\.agents\rules  🟢<br/>Active"]:::repo
-        R14["TimeStamper\.agents\rules  🟢<br/>Active"]:::repo
-        R15["VolumeInventory\.agents\rules  🟢<br/>Active"]:::repo
-        R16["Workspace_Inventory\.agents\rules<br/>🟢 Active"]:::repo
+        R13["SharedModules/.agents/rules  🟢<br/>Active"]:::repo
+        R14["TimeStamper/.agents/rules  🟢<br/>Active"]:::repo
+        R15["VolumeInventory/.agents/rules  🟢<br/>Active"]:::repo
+        R16["Workspace_Inventory/.agents/rules<br/>🟢 Active"]:::repo
     end
 
     COL1 ===>|"NTFS Junction"| HUB
     COL2 ===>|"NTFS Junction"| HUB
     COL3 ===>|"NTFS Junction"| HUB
     COL4 ===>|"NTFS Junction"| HUB
+
 ```
 
 ---
@@ -118,4 +120,5 @@ flowchart LR
    * Strict mode array wrapping, Microsoft verb compliance, pipeline hygiene, and Pester v5 hyphenated syntax are non-negotiable quality gate invariants across all repositories.
 4. **Governance Synchronization (`RULE-AUTH-001` - `RULE-AUTH-002`)**:
    * Single source of truth with mandatory synchronization of top-level `AGENTS.md` and this cross-reference matrix upon any rule modification.
+
 

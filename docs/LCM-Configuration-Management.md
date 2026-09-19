@@ -16,7 +16,7 @@ The **`Workspace_Inventory`** repository serves as the authoritative CM operatio
 
 ```mermaid
 graph TB
-    subgraph SolutionWorkspace ["Solution Workspace Container (D:\Git_Repositories)"]
+    subgraph SolutionWorkspace["Solution Workspace Container (D:/Git_Repositories)"]
         direction TB
         WAI["Workspace_AI<br/>(Baseline Source & Governance Authority)"]
         WI["Workspace_Inventory<br/>(Configuration Management Engine)"]
@@ -29,6 +29,7 @@ graph TB
     WI -->|"Audits States & Detects Drift"| SolutionWorkspace
     WI -->|"Maintains Central CR Index & Bundles"| COMP
     WI -->|"Governed Update Dispatch (Invoke-LCMUpdate)"| COMP
+
 ```
 
 ---
@@ -114,6 +115,7 @@ To eliminate cold-start discovery scans and maintain instant conversational cont
    * `RULE-CTX-002` (Fast-Tier Ingestion): Automatically inspects `<TargetRepo>/.lcm/config.json`, `README.md`, and pending proposals in `docs/Methods/Proposals/` in a single targeted step.
    * `RULE-CTX-003` (Zero Redundant Scan Invariant): Forbids multi-step recursive searches across sibling directories when focused on a single repository.
    * `RULE-CTX-004` (Methodology Awareness): Enforces continuous awareness of the `Workspace_AI` / `Workspace_Inventory` / `SharedModules` triad.
+
 
 
 

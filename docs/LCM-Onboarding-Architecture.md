@@ -46,6 +46,7 @@ stateDiagram-v2
     State3_ReleasedBaseline --> State4_UnlockedProposal: Initiate Change Proposal
     State4_UnlockedProposal: State 4 - Unlocked for LCM Evolution
     State4_UnlockedProposal --> State1_ActiveWorkshop: Transition to active development
+
 ```
 
 1. **State 1: Active Development & Design Workshop (`Workspace_AI` Unlocked)**:
@@ -81,6 +82,7 @@ graph TD
     K --> L[Interactive Operator Confirmation Gate]
     L --> M[Stage Changes & Commit LCM Baseline / Update]
     M --> N[Onboarding / Update Complete]
+
 ```
 
 ### Phase 1: Discovery & Pre-Flight Audit (`Test-LCMPreFlight`)
@@ -132,6 +134,7 @@ Deploys the **Hybrid Link Model**:
 # Update / Upgrade Existing Onboarded Repository to Latest LCM Release
 .\tools\Invoke-LCMOnboardRepo.ps1 -TargetRepositoryPath "D:\Git_Repositories\<TargetRepo>" -Update
 ```
+
 
 
 

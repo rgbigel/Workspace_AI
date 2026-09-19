@@ -1,5 +1,18 @@
 [CmdletBinding()]
-param()
+param(
+    [Alias('h', '?')]
+    [switch]$Help
+)
+
+if ($Help) {
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host " LOAD FIXES (Workspace_AI/tools/LoadFixes.ps1)" -ForegroundColor Cyan
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host "SYNOPSIS: Loads fix-module descriptors for Workspace_AI fix-module execution."
+    Write-Host "USAGE:    pwsh tools/LoadFixes.ps1 [-h]"
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    return
+}
 
 <#
 Module: LoadFixes.ps1

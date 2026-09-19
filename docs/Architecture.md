@@ -17,33 +17,39 @@ The **Lifecycle Model (LCM) Version 7.0.0** operates across a decoupled multi-re
 ```mermaid
 graph TB
     classDef default font-size:8pt;
-    subgraph RootContainer ["Root Solution Container<br/>(D:\Git_Repositories\)"]
+    subgraph RootContainer["Root Solution Container<br/>(D:/Git_Repositories/)"]
         direction TB
-        CanonicalHub["<b>Canonical Rule Hub</b><br/><code>.agents/rules/</code><br/>(14 Authoritative Policies)"]
-        RootEntry["<b>Root Entrypoints & Tools</b><br/><code>AGENTS.md</code>, <code>GEMINI.md</code><br/><code>Invoke-BeyondCompareReview.ps1</code>,<br/><code>RR.ps1</code>"]
+        CanonicalHub["Canonical Rule Hub<br/>.agents/rules/<br/>(14 Authoritative Policies)"]
+        RootEntry["Root Entrypoints & Tools<br/>AGENTS.md, GEMINI.md<br/>Invoke-BeyondCompareReview.ps1,<br/>RR.ps1"]
         
-        subgraph LCMTriad ["LCM Architectural Triad"]
-            WAI["<b>Workspace_AI</b><br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
-            WI["<b>Workspace_Inventory</b><br/>(CM Engine, Proposals Ledger,<br/>Review Audit & Rule Health)"]
-            SM["<b>SharedModules</b><br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
+        subgraph LCMTriad["LCM Architectural Triad"]
+            WAI["Workspace_AI<br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
+            WI["Workspace_Inventory<br/>(CM Engine, Proposals Ledger,<br/>Review Audit & Rule Health)"]
+            SM["SharedModules<br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
         end
 
-        subgraph GovernedRepos ["Governed Component Repositories"]
-            COMP1["<b>BootEntryManager</b><br/><code>docs/Proposals/</code>, <code>.lcm/config.json</code>"]
-            COMP2["<b>VolumeInventory</b><br/><code>docs/Proposals/</code>, <code>.lcm/config.json</code>"]
-            COMP3["<b>BackgroundModifier</b><br/><code>docs/Proposals/</code>, <code>.lcm/config.json</code>"]
-            OTHER["<b>30+ Other Repositories</b>"]
+        subgraph GovernedRepos["Governed Component Repositories"]
+            COMP1["BootEntryManager<br/>docs/Proposals/, .lcm/config.json"]
+            COMP2["VolumeInventory<br/>docs/Proposals/, .lcm/config.json"]
+            COMP3["BackgroundModifier<br/>docs/Proposals/, .lcm/config.json"]
+            OTHER["30+ Other Repositories"]
         end
     end
 
-    CanonicalHub ==>|".agents/rules [NTFS Junction]"| WAI & WI & SM & COMP1 & COMP2 & COMP3 & OTHER
-    WAI -->|"Releases LCM Baselines (v5.0.1)"| WI & GovernedRepos
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| WAI
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| WI
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| SM
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP1
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP2
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP3
+    CanonicalHub ==>|".agents/rules [NTFS Junction]"| OTHER
+    WAI -->|"Releases LCM Baselines"| WI
+    WAI -->|"Releases LCM Baselines"| GovernedRepos
     COMP1 ==>|"docs/Proposals [NTFS Junction]"| WI
     COMP2 ==>|"docs/Proposals [NTFS Junction]"| WI
     COMP3 ==>|"docs/Proposals [NTFS Junction]"| WI
     WI -->|"Audits Drift & Manages Review Receipts"| RootContainer
     WI -->|"Dispatches Automated Rule Reconciliation"| GovernedRepos
-
 ```
 
 ---
@@ -55,14 +61,15 @@ To eliminate rule divergence across multi-repository workspaces, LCM employs a *
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    Hub["<b>Canonical Rule Hub</b><br/><code>D:\Git_Repositories\.agents\rules\</code><br/>(All 13 Authoritative Rules)"]
+    Hub["Canonical Rule Hub<br/>D:/Git_Repositories/.agents/rules/<br/>(All 13 Authoritative Rules)"]
     
-    Hub -->|NTFS Junction| J1["<code>BootEntryManager\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J2["<code>VolumeInventory\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J3["<code>Workspace_Inventory\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J4["<code>SharedModules\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J5["<code>BackgroundModifier\.agents\rules</code>"]
-    Hub -->|NTFS Junction| J6["<code>(All Other Governed Repos...)</code>"]
+    Hub -->|NTFS Junction| J1["BootEntryManager/.agents/rules"]
+    Hub -->|NTFS Junction| J2["VolumeInventory/.agents/rules"]
+    Hub -->|NTFS Junction| J3["Workspace_Inventory/.agents/rules"]
+    Hub -->|NTFS Junction| J4["SharedModules/.agents/rules"]
+    Hub -->|NTFS Junction| J5["BackgroundModifier/.agents/rules"]
+    Hub -->|NTFS Junction| J6["(All Other Governed Repos...)"]
+
 
 ```
 
@@ -80,7 +87,6 @@ The LCM review engine establishes a structured, non-blocking two-tier proposal a
 
 ```mermaid
 sequenceDiagram
-    classDef default font-size:8pt;
     autonumber
     actor User as Operator / Developer
     participant Agent as Antigravity AI Agent
@@ -118,6 +124,7 @@ sequenceDiagram
     Agent->>Live: Executes Review-Gated Git Commit
     Agent->>PL: Syncs Dual-Commit in Workspace_Inventory
 
+
 ```
 
 ### 3.1 Visual Review Lifecycle & Acceptance Protocols
@@ -151,13 +158,14 @@ flowchart TD
     classDef default font-size:8pt;
     subgraph ENGINE["⚙️ LCM CONFIGURATION MANAGEMENT<br/>ENGINE"]
         direction TB
-        D1["<b>1. Diagnostics</b><br/><code>Test-LCMRuleHealth.ps1</code><br/><i>Audits junctions, duplicates,<br/>versions</i>"]
-        D2["<b>2. Reconciliation</b><br/><code>Repair-LCMRules.ps1</code><br/><i>1-command auto-heal, re-links &<br/>syncs</i>"]
-        D3["<b>3. Proposal CLI</b><br/><code>Get-OpenProposals.ps1</code><br/><i>Fast query for open #n proposals</i>"]
-        D4["<b>4. Review Queue</b><br/><code>Get-ReposUnderReview.ps1</code><br/><i>Scans workspace for active review<br/>stops</i>"]
-        D5["<b>5. Action Runner</b><br/><code>Invoke-ProposalAction.ps1</code><br/><i>Batch processor for 'do', 'delete'<br/>, 'defer'</i>"]
-        D6["<b>6. Audit Logging</b><br/><code>Submit-ReviewResult.ps1</code><br/><i>Generates immutable REVIEW-*.json<br/>receipts</i>"]
+        D1["1. Diagnostics<br/>Test-LCMRuleHealth.ps1<br/>Audits junctions, duplicates,<br/>versions"]
+        D2["2. Reconciliation<br/>Repair-LCMRules.ps1<br/>1-command auto-heal, re-links &<br/>syncs"]
+        D3["3. Proposal CLI<br/>Get-OpenProposals.ps1<br/>Fast query for open #n proposals"]
+        D4["4. Review Queue<br/>Get-ReposUnderReview.ps1<br/>Scans workspace for active review<br/>stops"]
+        D5["5. Action Runner<br/>Invoke-ProposalAction.ps1<br/>Batch processor for 'do', 'delete'<br/>, 'defer'"]
+        D6["6. Audit Logging<br/>Submit-ReviewResult.ps1<br/>Generates immutable REVIEW-*.json<br/>receipts"]
     end
+
 ```
 
 ---
@@ -206,30 +214,34 @@ To bridge background agent workers, IDE processes, and interactive desktop GUI a
 ```mermaid
 graph LR
     classDef default font-size:8pt;
-    subgraph AgentWorker ["Background Session (Session 0 / IDE<br/>Process)"]
+    subgraph AgentWorker["Background Session (Session 0 / IDE<br/>Process)"]
         Agent["Antigravity / CLI / Background Sub-<br/>Process"]
     end
 
-    subgraph DesktopDaemon ["Interactive Desktop Bridge (Session<br/>1 : Port 9876)"]
-        Daemon["<code>LcmDesktopDaemon.ps1</code><br/>(OOP Core: <code>LcmDaemonCore.psm1</code>)"]
-        Controller["<code>[DaemonActionController]</code>"]
+    subgraph DesktopDaemon["Interactive Desktop Bridge (Session<br/>1 : Port 9876)"]
+        Daemon["LcmDesktopDaemon.ps1<br/>(OOP Core: LcmDaemonCore.psm1)"]
+        Controller["[DaemonActionController]"]
         Daemon --> Controller
     end
 
-    subgraph InteractiveDesktop ["Interactive Windows Desktop<br/>(Session 1)"]
+    subgraph InteractiveDesktop["Interactive Windows Desktop<br/>(Session 1)"]
         Browser["Default Web Browser<br/>(SHOW_TOOLS.html, Dashboard)"]
         VSCode["VS Code / Code Editor<br/>(code -g file:line)"]
         Console["Visible Pwsh Console<br/>(Interactive Dispatch)"]
         BC["Beyond Compare 5<br/>(3-Way Diff Review)"]
     end
 
-    subgraph CommandHub ["Short-Name Command Hub (.lcm/Cmd/)"]
-        Cmds["<code>.lcm/Cmd/*.cmd</code><br/>(140+ Short-Name Launchers)"]
+    subgraph CommandHub["Short-Name Command Hub (.lcm/Cmd/)"]
+        Cmds[".lcm/Cmd/*.cmd<br/>(140+ Short-Name Launchers)"]
     end
 
     Agent -->|"HTTP JSON-RPC (localhost:9876)"| Daemon
-    Controller -->|"ShellExecute / Process::Start"| Browser & VSCode & Console & BC
+    Controller -->|"ShellExecute / Process::Start"| Browser
+    Controller -->|"ShellExecute / Process::Start"| VSCode
+    Controller -->|"ShellExecute / Process::Start"| Console
+    Controller -->|"ShellExecute / Process::Start"| BC
     Cmds -->|"Bypass Trampoline"| Controller
+
 
 ```
 
@@ -250,17 +262,18 @@ The **Bottom-Up Tripartite Synthesis Methodology** defines the canonical 4-step 
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    Step1["<b>Step 1: Implementation Details</b><br/>(<code>docs/Implementation.md</code>)<br/>• Extract baseline functions from<br/>module DOX comments<br/>• Document Design Choices &<br/>Alternative Trade-Offs<br/>• Specify Interface Contracts, DTOs<br/>& Error Codes<br/>• Map Customization Parameters &<br/>Cross-References"]
+    Step1["Step 1: Implementation Details<br/>(docs/Implementation.md)<br/>• Extract baseline functions from<br/>module DOX comments<br/>• Document Design Choices &<br/>Alternative Trade-Offs<br/>• Specify Interface Contracts, DTOs<br/>& Error Codes<br/>• Map Customization Parameters &<br/>Cross-References"]
     
-    Step2["<b>Step 2: Architecture & Mental Model</b><br/>(<code>docs/Architecture.md</code>)<br/>• Condense functions into User-<br/>Facing Mental Model<br/>• Formulate System Topology &<br/>Mermaid Flow Diagrams<br/>• Define Dual-Layer Execution &<br/>Cross-Session Mechanics<br/>• Codify Architectural Invariants &<br/>Lifecycle States"]
+    Step2["Step 2: Architecture & Mental Model<br/>(docs/Architecture.md)<br/>• Condense functions into User-<br/>Facing Mental Model<br/>• Formulate System Topology &<br/>Mermaid Flow Diagrams<br/>• Define Dual-Layer Execution &<br/>Cross-Session Mechanics<br/>• Codify Architectural Invariants &<br/>Lifecycle States"]
     
-    Step3["<b>Step 3: Normative Technical<br/>Requirements</b><br/>(<code>docs/Requirements.md</code>)<br/>• Use Architecture structure as<br/>guide for REQ-* IDs<br/>• Define Normative Functional & Non<br/>-Functional Rules<br/>• Establish Privilege, Elevation &<br/>Security Constraints<br/>• Codify Quality Gate Verification<br/>& Acceptance Criteria"]
+    Step3["Step 3: Normative Technical<br/>Requirements<br/>(docs/Requirements.md)<br/>• Use Architecture structure as<br/>guide for REQ-* IDs<br/>• Define Normative Functional & Non<br/>-Functional Rules<br/>• Establish Privilege, Elevation &<br/>Security Constraints<br/>• Codify Quality Gate Verification<br/>& Acceptance Criteria"]
     
-    Step4["<b>Step 4: Executive Summary &<br/>Navigation Index</b><br/>(<code>docs/README.md</code>)<br/>• Distill Executive Summary from<br/>Requirements<br/>• Build Tripartite Reference Matrix<br/>• Construct Operator Quick-Start<br/>CLI Runbook<br/>• Link Subsystem & Repository Cross<br/>-References"]
+    Step4["Step 4: Executive Summary &<br/>Navigation Index<br/>(docs/README.md)<br/>• Distill Executive Summary from<br/>Requirements<br/>• Build Tripartite Reference Matrix<br/>• Construct Operator Quick-Start<br/>CLI Runbook<br/>• Link Subsystem & Repository Cross<br/>-References"]
 
     Step1 -->|"Condense structure"| Step2
     Step2 -->|"Guide requirements"| Step3
     Step3 -->|"Summarize index"| Step4
+
 
 ```
 
@@ -296,28 +309,29 @@ To manage cross-repository ripple effects deterministically, LCM implements auto
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    ParentCRP["<b>Primary Change Request</b><br/>(e.g. Shared Interface Modification)<br/><code>RegressionNeeded: true</code>"]
+    ParentCRP["Primary Change Request<br/>(e.g. Shared Interface Modification)<br/>RegressionNeeded: true"]
     
-    subgraph DetectionEngine ["CM Collision & Scope Detector"]
-        Check1["<b>Trigger A:</b> Explicit Declaration / Global Scope"]
-        Check2["<b>Trigger B & C:</b> Overlap with Active Uncompleted CRPs"]
+    subgraph DetectionEngine["CM Collision & Scope Detector"]
+        Check1["Trigger A: Explicit Declaration / Global Scope"]
+        Check2["Trigger B & C: Overlap with Active Uncompleted CRPs"]
     end
 
-    subgraph ChildGeneration ["Automated Child CRP Minting (Depth 1-2)"]
-        Child1["<b>Regression CRP (Depth 1)</b><br/><code>Priority: -1</code> (Base Consumers)<br/>State: OPEN"]
-        Child2["<b>Regression CRP (Depth 2)</b><br/><code>Priority: -2</code> (Leaf Consumers)<br/>State: OPEN"]
+    subgraph ChildGeneration["Automated Child CRP Minting (Depth 1-2)"]
+        Child1["Regression CRP (Depth 1)<br/>Priority: -1 (Base Consumers)<br/>State: OPEN"]
+        Child2["Regression CRP (Depth 2)<br/>Priority: -2 (Leaf Consumers)<br/>State: OPEN"]
     end
 
-    subgraph SafetyGuard ["Governor Cycle & Depth Guard"]
+    subgraph SafetyGuard["Governor Cycle & Depth Guard"]
         DepthCheck{"Depth <= 2?"}
         CycleCheck{"Cycle Detected?<br/>(DAG Traversal)"}
-        BlockedCycle["<b>State: Blocked_Cycle</b><br/>Governor Remediation Action:<br/>• Interface Hoisting<br/>• Atomic Joint Review Bundle<br/>• Backward-Compatibility Exemption"]
+        BlockedCycle["State: Blocked_Cycle<br/>Governor Remediation Action:<br/>• Interface Hoisting<br/>• Atomic Joint Review Bundle<br/>• Backward-Compatibility Exemption"]
     end
 
     ParentCRP --> DetectionEngine
     DetectionEngine --> SafetyGuard
-    SafetyGuard -->|"Depth Valid & No Cycle"| ChildGeneration
+    SafetyGuard -->|"Depth Valid and No Cycle"| ChildGeneration
     SafetyGuard -->|"Cycle or Depth > 2"| BlockedCycle
+
 ```
 
 ### Core Architecture Invariants:
@@ -325,6 +339,7 @@ graph TD
 2. **Topological Negative-Priority Sorting**: Downstream tasks in `ListOfChangesRequired` are assigned negative priorities (`-1`, `-2`, `-3`...) reflecting execution dependencies from foundational base layers (`-1`) out to leaf consumers.
 3. **Deterministic Depth Ceiling (`MaxRegressionDepth = 2`)**: Derivative regressions are strictly bounded to 2 hops from the primary proposal.
 4. **Governor Remedial Action on `Blocked_Cycle`**: When mutual circular coupling occurs, the CM Governor halts cascading mutations and instantiates a specialized **Cycle Resolution Proposal** offering interface hoisting, atomic joint review bundling, or one-way backward compatibility exemption.
+
 
 
 

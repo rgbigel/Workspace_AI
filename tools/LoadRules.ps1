@@ -1,5 +1,18 @@
 [CmdletBinding()]
-param()
+param(
+    [Alias('h', '?')]
+    [switch]$Help
+)
+
+if ($Help) {
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host " LOAD RULES (Workspace_AI/tools/LoadRules.ps1)" -ForegroundColor Cyan
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    Write-Host "SYNOPSIS: Loads Workspace_AI rule files for native governance validation."
+    Write-Host "USAGE:    pwsh tools/LoadRules.ps1 [-h]"
+    Write-Host "==========================================================================" -ForegroundColor Cyan
+    return
+}
 
 <#
 Module: LoadRules.ps1
