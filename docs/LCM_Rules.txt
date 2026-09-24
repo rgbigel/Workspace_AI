@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-20 14:42:27 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-24 22:05:35 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -96,6 +96,7 @@ Date: 2026-09-04
 - **ascii-default**: ASCII required unless explicit exceptions apply:
   - Markdown (`.md`) files may contain Unicode (arrows, bullets, umlauts, typographic symbols).
   - PowerShell literal strings and comments may contain umlauts.
+  - HTML and UI presentation assets (`.html`, `.css`, `.js`) may contain Unicode glyphs and standard UI emojis as defined in DisplayStandardsPolicy.md.
 - **no-non-ascii-identifiers**: Identifiers, variables, function names, and file names must be ASCII-only.
 - **constant-string-apostrophes**: Use single ASCII apostrophes (`'...'`) for constant strings.
 - **indent-2**: Indentation level is exactly 2 spaces (no tabs).
@@ -110,6 +111,7 @@ Date: 2026-09-04
 - **timestamp-header-rule**: Mandatory response output header on every assistant response in the exact format:
   `YYYYMMDD_HHMM "<short-task-description>"`
   Permanent, automated mechanism inherited across all sessions (replaces manual `@tsr` / `@THR` / `@TRH` prompting).
+- **tool-and-log-timestamp-precision**: Tool execution timestamps, generated log file names, and internal log entries `MUST` include at least second-level precision (`ss`) (e.g. `yyyyMMdd_HHmmss` or `yyyy-MM-dd HH:mm:ss[.fff]`). The minute-level format (`YYYYMMDD_HHMM`) applies strictly and exclusively to the assistant chat response header, never to tools or logs.
 - **no-backtick-line-continuations**: Script generation must not use backticks (`` ` ``) for line continuation; use splatting, pipeline wrapping, or parenthesized expressions instead.
 
 ---
@@ -126,13 +128,15 @@ Date: 2026-09-04
 ## Rule #3: ElevationPolicy.md
 > **Category**: 1. Core Governance, Invariants & Security | **Canonical Source**: `.agents/rules/ElevationPolicy.md`
 
-# Elevation & Privilege Governance Policy
+# File: ElevationPolicy.md
 
-- Rule ID: `RULE-ELEV-001` through `RULE-ELEV-006`
-- Scope: Solution-Wide (All Repositories Governed by LCM v4.1.0)
-- Classification: Invariant Rule
-- Version: 7.5.3
-- Updated: 2026-09-19
+Module: ElevationPolicy  
+Purpose: Defines mandatory elevation, runner delegation, and privilege interception rules across all repositories.  
+Path: .agents/rules/ElevationPolicy.md  
+Authors: Rolf, Workspace_AI Governance  
+Version: 7.6.0  
+Status: Authoritative Invariant Rule  
+Date: 2026-09-24  
 
 ---
 
@@ -297,11 +301,15 @@ When working in LCM mode (`active`), all user ideas, questions, and exploratory 
 - When discussion yields a conclusive path of action, register the Change Request / Proposal with State `suggested` in `Workspace_Inventory\data\proposals\proposals.json`.
 
 ### RULE-LCM-002: Batch Execution & Control Commands
-Proposals transition through the defined lifecycle only upon explicit user instruction:
-- **`give open Proposals`**: Returns numbered list of active proposals (`#n`).
-- **`do <all, #n, #n-#m> Proposals`**: Sets matching proposals to `processed` and initiates code changes.
+Proposals transition through the defined lifecycle via deterministic operator commands:
+- **`Proceed` / `Proceed <ID>`**: **Single-step status increment**. Deterministically advances matching proposal(s) forward by exactly one discrete state:
+  - At Gate 1: Advances from `SUGGESTED` $\rightarrow$ `IN_PROGRESS` (initiates implementation in Normal Cycle).
+  - At Gate 2: Advances from `REVIEW` $\rightarrow$ `COMMITTED` (satisfies visual review, records disposition, increments SemVer, and commits to local Git).
+- **`do <all, #n, #n-#m> Proposals`**: **Activates `DOIT` mode** (`always-proceed = $true`). Bypasses Gate 1 planning pauses and executes planned tool operations, script runs, and file edits continuously until downstream Gate 2 is reached per `RULE-EFF-004`.
+- **`ACCEPT` / `ACCEPT ALL`**: **Alias to PUSH**. Pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`) in lockstep, enforcing the remote push version synchronization per `RULE-REV-007`. Uncommitted, suggested, or in-review items are strictly excluded from push.
 - **`delete <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deleted` and clears associated CRs.
 - **`defer <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deferred`.
+- **`give open Proposals`**: Returns numbered list of active proposals (`#n`).
 - **`give repos under review`**: Displays repositories with uncommitted changes, their BC5 review status, and commit readiness.
 
 ### RULE-LCM-003: Review Granularity Controls
@@ -319,12 +327,18 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 ### RULE-LCM-005: Dual-Commit and Push Synchronization Invariant
 1. Whenever code changes in a target repository are accepted and committed, `Workspace_Inventory` `MUST ALWAYS` be updated (updating proposal state to `completed`, recording review evidence) and **committed immediately**.
-2. On any `git push`, all modified target repositories and `Workspace_Inventory` `MUST` be pushed to their respective remotes in lockstep.
+2. On any `git push` (`ACCEPT ALL`), all modified target repositories and `Workspace_Inventory` `MUST` be pushed to their respective remotes in lockstep.
 
-### RULE-LCM-006: Pause and Resume Controls
-- **`pause LCM`**: Temporarily suspends the proposal-first requirement for rapid ad-hoc tasks.
-- **`resume LCM`**: Re-activates strict proposal-first governance.
-- LCM status is scoped per repository and automatically resets to default active governance across new sessions.
+### RULE-LCM-006: Pause, Resume, and Escape Controls
+1. **`LCM OFF` (Emergency Escape Switch)**:
+   - Temporarily suspends proposal bundle scaffolding and governance gating to enable immediate emergency remediation of corrupted host configurations or broken environments.
+   - Re-activated via `LCM ON` or `resume LCM`.
+2. **`Testing OFF` (Deferred Deep Testing Switch)**:
+   - Suppresses heavy, multi-minute test cascades (deep Pester DAGs, elevated integration test suites) during rapid interactive development and intermediate Gate 2 checkpoints.
+   - Syntax validation and fast unit checks still run, but deep testing is strictly deferred to the pre-push quality gate.
+   - **Deferred Failure Protocol**: If deep testing encounters errors during pre-push validation, the push is immediately aborted and the failure automatically spawns a formal **`BUG`** proposal bundle in `DOIT` mode (`RULE-LCM-008`).
+3. **Push Auto-Reset Invariant (Self-Healing Governance)**:
+   - Neither `LCM OFF` nor `Testing OFF` may remain active after publication. Upon any push invocation (`ACCEPT`, `ACCEPT ALL`, `Invoke-WorkspacePush.ps1`), both **LCM Mode** and **Testing Mode** `MUST` unconditionally reset to `ON` (`active`).
 
 ### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
 1. **Dual-State Separation**: Every proposal in `Workspace_Inventory/data/proposals/proposals.json` `MUST` track both:
@@ -338,37 +352,32 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
      - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
    - Explicit relative links `plan_path` and `walkthrough_path` `MUST` be recorded in `proposals.json`.
 
-### RULE-LCM-008: Lightweight BUG Report & Error Feedback Invariant
-1. **Default Lightweight Report on Negative Feedback**: Whenever the operator reports errors, unexpected script failures, broken dependencies, or unwanted agent behavior via prompts, chat, or backchannel inbox:
-   - The agent `MUST NOT` immediately initiate a full-scale code rewrite or uncontrolled repository file mutations.
-   - The agent `MUST` default to producing a concise **Lightweight BUG Report** containing:
-     - **Issue Summary**: Clear description of the symptom or discrepancy.
-     - **Superficial Root Cause**: Initial diagnostic hypothesis.
-     - **Criticality Assessment**: Impact rating (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
-     - **Affected Scope**: Target repository and affected modules.
-     - **Proposed Remediation Plan**: High-level proposed fix strategy.
-2. **Mandatory Operator Stop**: Upon emitting the Lightweight BUG Report, the agent `MUST STOP` and await explicit operator direction (`do <fix>`, `create CRP`, or alternate instructions) before executing code modifications.
+### RULE-LCM-008: BUG Lifecycle, DOIT Mode & Gate 2 Non-Circumvention Invariant
+1. **Birth in `DOIT` Mode**: When a `BUG` is born (whether reported by the operator or self-discovered during test execution), it automatically initializes in **`DOIT` Mode** (`always-proceed = $true`).
+   - The agent scaffolds the BUG proposal bundle (`docs/Proposals/BUG-<nnn>-[Slug]/`) and immediately executes code modifications, script adjustments, and unit verification tests continuously without pausing for a Gate 1 planning approval.
+2. **Strict Gate 2 Non-Circumvention Invariant**:
+   - **Even a critical, urgent, or internally generated BUG MUST NOT circumvent Gate 2.**
+   - Once the fix is verified in the working tree and logged in `Walkthrough.md`, the agent `MUST UNCONDITIONALLY HALT` at Gate 2, dispatch the visual review session (`Invoke-BeyondCompareReview.ps1`), and await explicit operator review disposition. The agent `MUST NEVER` self-commit or self-push bug fixes.
 
 ### RULE-LCM-009: Scope and Version-Explicit CRP Naming Standard
-1. **Canonical Filename Convention**: All Change Request Proposals (CRPs) `MUST` follow the standardized structure:
-   `CRP-nnn-[Scope]-[Version]-[DescriptiveSlug].md`
+1. **Canonical Directory Bundle Convention**: All Change Request Proposals (CRPs) `MUST` follow the standardized bundle directory structure:
+   `docs/Proposals/CRP-<nnn>-[Slug]/` containing `Specification.md`, `Implementation_Plan.md`, and `Walkthrough.md`.
    - `nnn`: Universal monotonic sequence integer zero-padded to at least 3 digits (e.g. `018`, `119`), matching the proposal ledger `id` 1:1.
-   - `[Scope]`: Affected repository/subsystem name (e.g. `Workspace_AI`, `Installation_LCD`, `SystemConfiguration`, `HaSSD06`), `LCM` for core governance, or `Multiple` for cross-cutting bundles.
-   - `[Version]`: Target baseline or affected version horizon (e.g. `v7.0.0`, `v6.2.0`, `v1.0.0-v1.2.0`).
-   - `[DescriptiveSlug]`: Kebab-case intent description.
+   - `[Slug]`: Descriptive kebab-case intent description.
 2. **Mandatory Header Metadata**: Every CRP specification `MUST` include explicit metadata fields:
    - `Target Scope`: Explicit repository or subsystem boundary.
    - `Affected Version Range`: Semantic version or range.
    - `Impacted Repositories`: Array of modified repositories.
+3. **Legacy Flat File Fallback**: Historical CRPs (e.g. `CRP-001` through `CRP-017`) authored as flat `.md` files remain valid and governed under `RULE-LCM-020` Mode 3 (Legacy Fallback).
 
 ### RULE-LCM-010: Mandatory Self-Discovered Bug Registration Invariant
-1. **Mandatory Self-Discovery Reporting**: Whenever the AI agent discovers a bug, syntax defect, unhandled runtime exception, parser failure, or regression in a permanent tool, platform script, shared module, or web UI during development, testing, or tool execution, the AI agent `MUST` formally register a Bug Report in `Workspace_Inventory/data/proposals/proposals.json` and generate an accompanying plan and walkthrough.
-2. **Prohibition of Silent In-Place Hotfixing**: The AI agent `MUST NOT` silently patch defects in permanent tools without registering a formal BUG entry in the Configuration Management ledger.
+1. **Mandatory Self-Discovery Reporting**: Whenever the AI agent discovers a bug, syntax defect, unhandled runtime exception, parser failure, or regression in a permanent tool, platform script, shared module, or web UI during development, testing, or tool execution (including deferred deep testing failures per `RULE-LCM-006`), the AI agent `MUST` formally register a Bug Report in `Workspace_Inventory/data/proposals/proposals.json` and scaffold the accompanying proposal bundle.
+2. **Immediate Remediation in `DOIT` Mode**: The self-discovered bug transitions directly into `DOIT` mode to diagnose and resolve the failure, but remains bound by the Gate 2 Non-Circumvention Invariant (`RULE-LCM-008`).
+3. **Prohibition of Silent In-Place Hotfixing**: The AI agent `MUST NOT` silently patch defects in permanent tools without registering a formal BUG entry in the Configuration Management ledger.
 
 ### RULE-LCM-011: Scope and Version-Explicit Bug Report Naming Standard
-1. **Canonical Bug Filename Convention**: All formal Bug Reports `MUST` follow the standardized structure:
-   `BUG-nnn-[Scope]-[Version]-[DescriptiveSlug].md`
-   under `Workspace_Inventory/docs/Proposals/`.
+1. **Canonical Bug Bundle Directory Convention**: All formal Bug Reports `MUST` follow the standardized bundle structure:
+   `docs/Proposals/BUG-<nnn>-[Slug]/` containing `Specification.md`, `Implementation_Plan.md`, and `Walkthrough.md`.
    - `nnn`: Universal monotonic sequence integer zero-padded to at least 3 digits (e.g. `024`, `092`), sharing the exact same sequence counter as CRPs and matching the proposal ledger `id` 1:1.
 2. **Mandatory Frontmatter Metadata**: Every Bug Report `MUST` include explicit frontmatter fields:
    - `Bug-ID`: Sequential unique identifier sharing the sequence counter with CRPs (e.g. `BUG-024`, `BUG-092`).
@@ -378,48 +387,45 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - `Severity`: Impact assessment (`Low`, `Medium`, `High`, `Critical`).
    - `Status`: Lifecycle status (`Open`, `In-Progress`, `Completed`).
    - `Root-Cause`: Concise explanation of failure mechanics.
+3. **Legacy Flat File Fallback**: Historical Bug Reports (e.g. `BUG-024` through `BUG-094`) authored as flat `.md` files remain valid and governed under `RULE-LCM-020` Mode 3 (Legacy Fallback).
 
 ### RULE-LCM-012: Mandatory Scope-and-Version Explicit CRP Specification Generation Invariant
-1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`CRP-nnn-[Scope]-[Version]-[DescriptiveSlug].md`) in `Workspace_Inventory/docs/Proposals/` before or alongside ledger registration.
-2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent `CRP-*.md` specification file in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP document.
+1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`Specification.md`) within its proposal bundle in `Workspace_Inventory/docs/Proposals/` before or alongside ledger registration.
+2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent proposal bundle in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP bundle.
 
 ### RULE-LCM-013: Mandatory Pre-Push Gemini AI & Knowledge Base Synchronization Invariant
-1. **Mandatory Automated Pre-Push Execution**: Every push operation executed via `Invoke-WorkspacePush.ps1` (or 1-click UI triggers), whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
+1. **Mandatory Automated Pre-Push Execution**: Every push operation executed via `Invoke-WorkspacePush.ps1` (or `ACCEPT ALL` triggers), whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
 2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`Workspace_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
 3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `Workspace_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
 
+### RULE-LCM-014: Dual-Gate Architecture & CRP Planning Gate Invariant
+1. **CRP Birth in SUGGESTED State**: For any non-bug Change Request Proposal (`CRP`), the proposal `MUST` birth in the **`SUGGESTED`** state under the Normal Review Cycle.
+2. **Gate 1 Planning Halt**: The AI agent `MUST` scaffold the Proposal Bundle directory, register the entry in `proposals.json`, present the plan, and `UNCONDITIONALLY HALT`. No source code, permanent script, configuration, or test file may be modified, created, or deleted while at Gate 1.
+3. **Gate 1 Activation Triggers**:
+   - **`Proceed`**: Advances state from `SUGGESTED` $\rightarrow$ `IN_PROGRESS` in the Normal Review Cycle (interactive checkpoints if open questions or design alternatives exist).
+   - **`do` / `do <ID>`**: Advances state to `IN_PROGRESS` and activates **`DOIT` Mode** (`always-proceed = $true`), executing planned modifications continuously until Gate 2 is reached per `RULE-EFF-004`.
+4. **Strict Dual-Gate Lifecycle**:
+   - **Gate 1 (Planning Gate)**: Propose solution / Register proposal bundle & plan $\rightarrow$ `STOP` and await explicit operator direction (`Proceed` or `do`). (BUGs bypass Gate 1 into `DOIT` mode).
+   - **Gate 2 (Review Gate / BC5 Gate)**: Implement approved changes $\rightarrow$ Present visual diffs / walkthrough / BC5 review $\rightarrow$ `STOP` and await operator review disposition. **Mandatory for all proposals, including BUGs.**
 
+### RULE-LCM-015: Strict Intake Classification Gate
+1. **Intake Signal Classification**:
+   - `CRP:` designator indicates a Change Request Proposal: enters `SUGGESTED` state and halts at Gate 1.
+   - `BUG:` designator indicates a Defect Report: enters `DOIT` mode immediately and executes directly to Gate 2.
+2. **Priority Ordering**: Priority markings (including "*highest priority*" or "*critical*") affect execution order in batch queues; they `DO NOT` authorize bypassing Gate 2 visual review.
 
-
-
-
-
-### RULE-LCM-014: Unconditional Proposal & Implementation Plan Approval Gate (Anti-Auto-Proceed Invariant)
-1. **Unconditional Review Gate on Every Proposal & Plan**: Whenever the AI agent proposes a solution, architectural design, or drafts/updates an Implementation Plan (`implementation_plan.md`), the agent `MUST UNCONDITIONALLY HALT` and stop calling tools immediately after generating or presenting the artifact. The agent `MUST NEVER` proceed to execute code modifications, script runs, or file mutations without receiving an explicit, human-authored approval trigger (`Proceed`, `do`, `ok`, `approved`).
-2. **Zero Sticky Auto-Proceed (Turn Boundary Expiration)**: Any previous `PROCEED`, `do`, or execution authorization expires immediately upon completion of the specific task or increment that was authorized. Prior approvals `MUST NEVER` bleed into or carry over to new user requests, follow-up proposals, subsequent turns, or newly drafted implementation plans. Every new proposed solution starts strictly in the **`UNAPPROVED`** state and requires its own dedicated approval.
-3. **Mandatory Stop on Open Questions & Alternatives**: If an Implementation Plan contains open questions, design tradeoffs, or architectural decisions, the agent `MUST` explicitly highlight them in the plan, halt execution, and await the operator's decision before executing any code changes.
-4. **Strict Dual-Gate Lifecycle (Planning Gate + Review Gate)**:
-   - **Gate 1 (Planning Gate)**: Propose solution / Draft `implementation_plan.md` $\rightarrow$ `STOP` and await explicit human approval.
-   - **Gate 2 (Review Gate / BC5 Gate)**: Implement approved changes $\rightarrow$ Present visual diffs / walkthrough / BC5 review $\rightarrow$ `STOP` and await `ACCEPT` / commit approval.
-5. **Prohibition of Premature Code Mutations**: No source code, permanent script, configuration, or test file may be modified, created, or deleted while at the Planning Gate. Only non-mutating research tools and artifact creation (`implementation_plan.md`) are permitted prior to operator approval.
-
-### RULE-LCM-015: Strict BUG: and CRP: Intake Gate Invariant
-1. **Intake Signal Only**: The appearance of `BUG:` or `CRP:` designators in user input `MUST NEVER` be interpreted as a request to begin analysis, develop an Implementation Plan, or execute code modifications.
-2. **Mandatory OPEN Intake**: The AI agent's sole initial responsibility upon receiving `BUG:` or `CRP:` input is to register the items into the Configuration Management ledger (`Workspace_Inventory/data/proposals/proposals.json` and formal specifications under `Workspace_Inventory/docs/Proposals/`) in the **`OPEN`** state (`state: "bug"` or `"suggested"`, `progress_state: "open"`).
-3. **Priority Hierarchy**:
-   - Items designated `BUG:` `MUST` automatically receive higher initial triage priority than `CRP:` items.
-   - Priority markings (including "*highest priority*" or "*critical*") affect ordering only; they `DO NOT` authorize departure from the `OPEN` state.
-4. **Prohibition of Premature Planning**: The agent `MUST NOT` generate an `implementation_plan.md` or execute source code changes for any registered item without receiving an explicit activation trigger.
-
-### RULE-LCM-016: Explicit PROCEED and PROCEED ALL Activation Triggers
-Proposals held in the `OPEN` state may transition to Implementation Planning and execution `ONLY` upon receiving one of two explicit operator triggers:
-1. **`PROCEED <Item/ID>`**:
-   - Authorizes implementation planning and subsequent execution for the **single** designated BUG or CRP item only.
-   - All other items in the batch remain strictly in the `OPEN` state.
-2. **`PROCEED ALL`**:
-   - Authorizes execution **strictly for the items positioned ABOVE the `PROCEED ALL` keyword** in the user's prompt or batch submission.
-   - `MUST NOT` apply to any items listed below or following the `PROCEED ALL` marker.
-3. **Strict Invariant**: In the absence of an explicit `PROCEED` or `PROCEED ALL` trigger, the AI agent `MUST STOP` immediately after intake registration and present the registered items to the operator for document review.
+### RULE-LCM-016: Deterministic Lifecycle Command Invariants
+1. **`Proceed` / `Proceed <ID>`**:
+   - Deterministic single-status pulse: advances the target proposal forward by exactly **one discrete state**.
+   - Gate 1: `SUGGESTED` $\rightarrow$ `IN_PROGRESS`.
+   - Gate 2: `REVIEW` $\rightarrow$ `COMMITTED` (satisfies review, records audit disposition, increments SemVer, and commits to local Git).
+2. **`do <ID>` / `do <batch>`**:
+   - Activates **`DOIT` Mode** (`always-proceed = $true`), running all planned tool operations continuously from Gate 1 to Gate 2.
+3. **`ACCEPT` / `ACCEPT ALL`**:
+   - Authoritative alias to **`PUSH`**.
+   - Filters and pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`).
+   - Uncommitted, suggested, or in-review items remain strictly in their local state and are never pushed.
+   - Enforces the Push Auto-Reset Invariant (`RULE-LCM-006`): resets `LCM Mode` and `Testing Mode` to `ON`.iew.
 
 ### RULE-LCM-017: Autonomous System Exception Boundary & 2-Attempt Loop Breaker
 1. **Autonomous Exception Scope**: As a sole exception to `RULE-LCM-016`, the AI agent is permitted to assume an implicit `PROCEED` to immediately remediate a self-discovered or runtime-generated `BUG` `ONLY IF` all of the following conditions are simultaneously met:
@@ -450,6 +456,27 @@ Proposals held in the `OPEN` state may transition to Implementation Planning and
    - The bug cannot be marked `completed` or `committed` until the unit tests of the primary App *and* the integration tests of all affected Apps pass 100%.
    - On `ACCEPT`, documentation updates are synthesized across all affected App sections in a single atomic step.
 
+### RULE-LCM-020: Proposal Bundle Directory Architecture, Dual Lifecycle & Git Object Document Retrieval
+1. **Self-Contained Proposal Directory Bundles**:
+   - Every proposal across the workspace (whether LCM core or child repository feature) `MUST` be stored in a dedicated proposal bundle directory:
+     `docs/Proposals/CRP-<nnn>-[Slug]/` (or `BUG-<nnn>-[Slug]/`).
+   - Each proposal bundle directory `MUST` contain three standardized Markdown documents:
+     - `Specification.md` (Domain intent, problem statement, requirements, architectural tradeoffs, and metadata header)
+     - `Implementation_Plan.md` (Technical file diff breakdown, component plans, and verification strategy)
+     - `Walkthrough.md` (Execution receipts, test execution logs, before/after evidence, and operational verification)
+2. **Pre-Push Working Tree Lifecycle**:
+   - During proposal authoring, implementation planning, active coding, and review gating, the proposal bundle directory lives in the local repository working tree and is directly queryable by developers, CLI tools, and the CM Control Hub.
+3. **Post-Push Working Tree Purge Invariant**:
+   - Upon `Invoke-WorkspacePush.ps1` (or push workflow execution):
+     - The target repository head commit SHA `MUST` be captured and recorded in `proposals.json` (`commit_sha: "<SHA>"`).
+     - The remote GitHub tree link `MUST` be generated and recorded (`github_url: "<URL>"`).
+     - The completed local proposal bundle directory `MUST` be purged from the working tree, ensuring 0 dead or redundant proposal directories remain in the working tree.
+4. **Dual-Mode Document Retrieval Protocol (`Get-LcmProposalDocument`)**:
+   - Tools, scripts, and dashboards `MUST` resolve proposal documents using the dual-mode resolution protocol:
+     - **Mode 1 (Live Disk)**: If the bundle directory exists on disk (`Test-Path`), read content directly from the working tree.
+     - **Mode 2 (Git Object Extraction)**: If the local directory has been purged, extract document content directly from the local repository Git object store using `git -C <RepoPath> show "<commit_sha>:<bundle_dir>/<file>"`.
+     - **Mode 3 (Legacy Fallback)**: For pre-CRP-162 historic proposals, fall back to flat `plan_path` and `walkthrough_path` targets.
+
 ---
 
 <a id="reviewcommitgovernancepolicymd"></a>
@@ -470,10 +497,14 @@ Date: 2026-09-04
 
 ## 1. Governance Rules
 
-### RULE-REV-001: Mandatory Review-Gated Commits & Invariant Review Boundary
-1. **Mandatory Visual Review Gate**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
-2. **Conversational Directives Do Not Waive Gating**: Explicit user instructions in chat (e.g. "yes, remove that", "fix this error") grant authority to execute file edits and staging, but **DO NOT waive the Beyond Compare visual review gate**. The agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and await user review sign-off / folder clearance before executing `git commit` and `git push`.
-3. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
+### RULE-REV-001: Mandatory Review-Gated Commits & Gate 2 Non-Circumvention Invariant
+1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
+2. **Strict Gate 2 Non-Circumvention for All Items**:
+   - **Even critical, urgent, or internally generated BUGs MUST NOT circumvent Gate 2.**
+   - While `BUG` items execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, they `MUST HALT` at Gate 2 for operator review before reaching `COMMITTED`.
+3. **Conversational Directives Do Not Waive Gating**: Explicit user instructions in chat (e.g. "yes, remove that", "fix this error") grant authority to execute file edits and staging, but **DO NOT waive the Beyond Compare visual review gate**. The agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and await user review sign-off / folder clearance before stepping to `COMMITTED`.
+4. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
+5. **Non-Interactive / Headless Environment Fallback**: If Beyond Compare 5 or Session 1 interactive GUI execution is physically unavailable (e.g. running inside a headless CI/CD runner, container, or non-GUI remote SSH terminal), the agent `SHALL` present unified console diffs alongside the proposal's `Walkthrough.md` verification evidence for explicit terminal disposition before committing.
 
 ### RULE-REV-002: Accepted with Edits Qualification
 When a review outcome is recorded as `Accepted with Edits` (or `Accepted with Change`):
@@ -495,10 +526,16 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 2. `Workspace_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
 3. The active Change Request (CR) record in `Workspace_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
 
-### RULE-REV-006: Mandatory Review Stop & Turn Termination Invariant
-1. **Mandatory Turn Termination**: Whenever an agent carries out a CRP or code modification reaching the visual review stage, the agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and **immediately terminate the current response turn without making additional tool calls**.
-2. **Prohibition of Same-Turn Submissions**: The agent `MUST NOT` invoke `Submit-ReviewResult.ps1`, stage files, or execute `git commit` within the same execution turn cycle as the review launcher.
-3. **Discrete Operator Disposition Requirement**: Review dispositions (`ACCEPTED`, `ACCEPTED_WITH_EDITS`, `REJECTED`, `DEFERRED`) `SHALL ONLY` be consumed and processed when received as a discrete, independent message submitted by the operator in a subsequent turn.
+### RULE-REV-006: Mandatory Review Stop & Lifecycle Step Invariant
+1. **Mandatory Review Stop**: Whenever an agent carries out a CRP or code modification reaching the visual review stage (Gate 2), the agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and **immediately terminate the current response turn without making additional tool calls**.
+2. **`Proceed` at Gate 2**: Upon operator submission of **`Proceed`** (or `Proceed <ID>`) after review inspection:
+   - The proposal advances by exactly one status pulse: `REVIEW` $\rightarrow$ **`COMMITTED`**.
+   - The local Git commit is created with the required SemVer increment per `RULE-REV-007`.
+3. **`ACCEPT` / `ACCEPT ALL` (Push Trigger)**:
+   - The `ACCEPT` command serves as an authoritative alias to **`PUSH`**.
+   - `ACCEPT ALL` pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`).
+   - Uncommitted proposals remain strictly in their local state.
+   - Enforces the Push Auto-Reset Invariant: both `LCM Mode` and `Testing Mode` unconditionally revert to `ON`.
 
 ### RULE-REV-007: Mandatory Automatic Semantic Version Increment per Change Invariant
 1. **Universal Version Increment Invariant**: Every change, proposal, or bug fix committed to any LCM-governed repository `MUST` increment that repository's semantic version before or during review commit:
@@ -530,15 +567,15 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 ## Rule #8: MethodEfficiencyPolicy.md
 > **Category**: 2. Proposal, Review & Commit Lifecycle | **Canonical Source**: `.agents/rules/MethodEfficiencyPolicy.md`
 
-# MethodEfficiencyPolicy
+# File: MethodEfficiencyPolicy.md
 
-Module: MethodEfficiencyPolicy.md  
-Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry and logs.  
+Module: MethodEfficiencyPolicy  
+Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry, logs, DOIT mode execution velocity, and tool discovery.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.1.0  
+Version: 7.6.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-03  
+Date: 2026-09-24  
 
 ---
 
@@ -570,8 +607,10 @@ Modifications to the mechanical artifacts listed in `RULE-EFF-001` **MUST NEVER*
 ### RULE-EFF-003 (Machine-Only Mutation Authority)
 Human operators and AI assistants `MUST NOT` hand-edit `inventory.json`, `INVENTORY_DASHBOARD.md`, or baseline snapshots. They must be modified solely by designated CM tools (`Invoke-WorkspaceAudit.ps1`, `New-WorkspaceBaseline.ps1`, `Invoke-LCMUpdate.ps1`).
 
-### RULE-EFF-004 (Agent Direct Execution & RR Review Gating Alignment)
-AI pair-programming agents operating under the Lifecycle Model (LCM) `SHALL` execute tool operations, script commands, and file edits directly under `always-proceed` and `allow` policies without introducing interactive chat planning pauses or confirmation prompts. Formal review gating, safety verification, and user acceptance are strictly and exclusively enforced downstream at the Review Request / Beyond Compare (`RR.ps1` / `Invoke-BeyondCompareReview.ps1`) commit stage per `RULE-REV-001`.
+### RULE-EFF-004 (DOIT Mode & Autonomous Execution Velocity Standard)
+1. **DOIT Mode Execution**: When a proposal is in **`DOIT` Mode** (`always-proceed = $true`) — which occurs automatically upon `BUG` birth or when explicitly triggered on a `CRP` via the `do` command — AI pair-programming agents `SHALL` execute tool operations, script commands, and file edits directly under `always-proceed` and `allow` policies without introducing interactive chat planning pauses or per-tool confirmation prompts.
+2. **Universal Gate 2 Review Boundary**: Execution velocity under `DOIT` mode proceeds continuously until the downstream Gate 2 Review stage (`RR.ps1` / `Invoke-BeyondCompareReview.ps1`) is reached per `RULE-REV-001`. Even critical, urgent, or internally generated BUGs `MUST NOT` circumvent Gate 2 review.
+3. **Normal Cycle Alignment**: For CRPs progressing under the Normal Review Cycle via `Proceed`, agents implement approved changes with interactive checkpoints whenever open questions, architectural alternatives, or user choices are encountered.
 
 ### RULE-EFF-005 (Quality Gate Short-Circuiting & Negative-Outcome Prevention)
 1. **Short-Circuit on Upstream Failure**: Multi-phase quality gates (`Test-RepoReadiness.ps1`, `Test-WorkspaceReadiness.ps1`) `MUST` execute tiered validations in prerequisite order (`Structure` $\rightarrow$ `Formatting` $\rightarrow$ `GovernanceLinks` $\rightarrow$ `ElevationConsistency` $\rightarrow$ `DocumentationFabric` $\rightarrow$ `PesterSuite`). If any structural tier fails, execution `MUST` abort immediately with a diagnostic message without executing downstream test suites.
@@ -586,6 +625,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 - **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
 - All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`.lcm/tools/internal/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
 - CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
+- **Search Fallback Protocol**: If the Everything 1.5a HTTP REST API (port 8080) is unreachable or not running, tooling and agents `SHALL` fall back gracefully to `rg.exe --files` or PowerShell `Get-ChildItem` with scoped directory boundaries, ensuring operations never fail due to an inactive background daemon.
 
 ---
 
@@ -736,14 +776,14 @@ Whenever an existing script is modified, the `Date:` field (and changelog/versio
 
 ### RULE-PS-009: Mandatory Structured Tool Logging & Summary Invariants
 All PowerShell automation tools performing system mutations, diagnostics, remediations, repairs, or administrative tasks `MUST`:
-1. **Persistent Audit Logging**: Automatically write a timestamped log file to `D:\OneDrive\cmd\logs\` (or repository-specific `logs/` directory) with millisecond-precision timestamps (`yyyy-MM-dd HH:mm:ss.fff`).
+1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `.lcm/logs/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
 2. **Structured Log Levels**: Classify every message using standard log levels: `[INFO]`, `[WARN]`, `[ERROR]`, `[DEBUG]`, `[ACTION]`, `[SUMMARY]` (converging on the `SharedModules/Logging` standard).
 3. **Mandatory `[SUMMARY]` Footer**: Emit a standardized terminal and log summary block upon completion displaying:
    - Tool name
    - Version number
    - Execution status (`COMPLETED` / `FAILED`)
    - Exact log file path on disk
-   - Execution timestamp
+   - Execution timestamp (including at least seconds: `yyyy-MM-dd HH:mm:ss`)
 4. **Detailed Inspection Support (`-ShowAll`)**: Tools must support `-ShowAll` / `-Detailed` to expose granular step-by-step diagnostic telemetry to the interactive terminal.
 
 ---
@@ -861,7 +901,7 @@ The bare syntax `"$var:"` inside double-quoted strings is **strictly prohibited*
 
 Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
-Path: .copilot/Rules/PowerShellRules.md
+Path: .agents/rules/PowerShellRules.md
 Authors: Rolf
 Version: 7.0.0
 Changelog:
@@ -990,9 +1030,9 @@ Module: DocumentationStandardsPolicy
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.5.0  
+Version: 7.6.0  
 Status: Authoritative Policy  
-Date: 2026-09-19  
+Date: 2026-09-20  
 
 ---
 
@@ -1019,19 +1059,29 @@ Every LCM-governed repository `MUST` maintain three distinct core specifications
 
 ---
 
-### RULE-DOC-003: DOX Metadata Header Invariant
-Every Markdown document in `docs/` and `.agents/rules/` `MUST` begin with a standardized DOX metadata header:
-```markdown
-# <Document Title>
+### RULE-DOC-003: DOX Metadata Header & Rule Frontmatter Invariant
+1. **General Markdown Documents (`docs/`)**: Every general Markdown document `MUST` begin with a standardized DOX metadata header:
+   ```markdown
+   # <Document Title>
 
-Module: <Relative Path>  
-Purpose: <1-2 Sentence Summary of Purpose>  
-Path: <Canonical Path>  
-Authors: <Author Name / Engine>  
-Version: <MAJOR.MINOR.PATCH>  
-Status: <Authoritative Standard | Reference | Policy>  
-Date: <YYYY-MM-DD>  
-```
+   Module: <Relative Path>  
+   Purpose: <1-2 Sentence Summary of Purpose>  
+   Path: <Canonical Path>  
+   Authors: <Author Name / Engine>  
+   Version: <MAJOR.MINOR.PATCH>  
+   Status: <Authoritative Standard | Reference | Policy>  
+   Date: <YYYY-MM-DD>  
+   ```
+2. **Governance Rule Documents (`.agents/rules/`)**: Governance rule files `MUST` utilize a hybrid structure to ensure compatibility with modern AI agent rule discovery engines and IDEs:
+   - **Lines 1–5**: Mandatory YAML Frontmatter declaring rule metadata:
+     ```yaml
+     ---
+     name: <RulePolicyName>
+     description: <Concise description of governed domains and invariants>
+     globs: "<Applicable file patterns or *>"
+     ---
+     ```
+   - **Immediately below frontmatter**: The standardized DOX metadata header block per Section 1.
 
 ---
 
@@ -1088,14 +1138,20 @@ For governed repositories that scale beyond single-purpose scripts into multi-ca
    - Repositories not requiring modular slicing remain standard un-prefixed tripartite documents.
 2. **Tripartite Slicing Consistency Invariant**:
    - When `App: N` is declared in `Architecture.md`, corresponding `## App: N` sections `MUST` exist in `Requirements.md` (normative constraints) and `Implementation.md` (code blueprint).
-3. **Constituent Manifest Table Standard (`Implementation.md`)**:
-   - Under each `## App: N` section in `Implementation.md`, an authoritative **Constituent Manifest Table** `MUST` be maintained:
+3. **Directory Separation Layout (`docs/App#<N>-<Slug>/`)**:
+   - When directory separation is utilized (`-SplitDocs` or `Split-LcmAppDocs`), each App's tripartite specifications `MUST` be housed in a dedicated subdirectory located **directly under `docs/`**:
+     `docs/App#<N>-<Slug>/` (e.g. `docs/App#1-SystemIdentityStateCaptureEngine/`).
+   - Intermediate wrapper directories (such as `docs/apps/`) are strictly prohibited.
+   - Each `docs/App#<N>-<Slug>/` folder `MUST` contain its dedicated `Architecture.md`, `Requirements.md`, and `Implementation.md`.
+   - The root `Architecture.md` `MUST` maintain an authoritative **App Subsystems & Sliced Specifications Index Table** linking directly to each `docs/App#<N>-<Slug>/` tripartite document.
+4. **Constituent Manifest Table Standard (`Implementation.md`)**:
+   - Under each `## App: N` section (or inside each dedicated `docs/App#<N>-<Slug>/Implementation.md`), an authoritative **Constituent Manifest Table** `MUST` be maintained:
      `| Relative Path | Role / Layer | Primary Cmdlets / Entrypoints | Pester Test Suite |`
-4. **Code DOX Header Annotation**:
+5. **Code DOX Header Annotation**:
    - Every script, module, or UI asset belonging to an App `MUST` declare `App: App: N - <Title>` in its standard DOX metadata header.
-5. **Machine-Readable Registry (`data/catalog/apps.json`)**:
+6. **Machine-Readable Registry (`data/catalog/apps.json`)**:
    - Repositories utilizing App slicing `MUST` maintain a zero-drift machine-readable catalog at `data/catalog/apps.json`, synchronized via AST scanning.
-6. **Inter-App Contract Governance (The "Glue")**:
+7. **Inter-App Contract Governance (The "Glue")**:
    - Apps `MUST NOT` communicate via private internal functions or implicit global variables. All cross-App interactions `MUST` be governed by declared, registered Public Interface Contracts (Cmdlet Exports, JSON Schemas, REST DTOs, Event Broadcasts) cataloged in `data/catalog/contracts.json`.
 
 ---
@@ -1186,7 +1242,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 
 # MACRO-DEFINITIONS-METADATA
 # scope: durable-memory
-# location: .copilot/Rules/macro-definitions.md
+# location: .agents/rules/macro-definitions.md
 # update-policy: manual
 
 MACRO: @technical
@@ -1284,10 +1340,10 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `019` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, and automated tripartite synthesis on `ACCEPT`. |
-| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `020` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `ACCEPT`, and Proposal Bundle Directory Architecture with Git Object Dual Lifecycle (`RULE-LCM-020`). |
+| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `015` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, and variable string interpolation & colon boundaries. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
-| **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
+| **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `008`, `RULE-ENV-003` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures, DOIT autonomous execution velocity, search dispatch routing (`Search-Everything.ps1`/`rg.exe`), tool catalog discovery, zero speculative relative pathing. |
 | **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `006` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, elevated console non-auto-close invariant, and automated privilege-aware execution/elevation interception. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
 | **[RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md)** | `REPO-CONTEXT` | **Context Scoping** | Child Repositories | Strict repository boundary separation, deterministic relative path resolution, CM-only cross-repo writes. |
@@ -1298,7 +1354,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `008` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration, template/JS interpolation safety. |
 | **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `007` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, $M-2$ retention horizon, and App-Centric Modular Architecture (`App: #`) with Constituent Manifests & Contract Governance. |
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `008` | **HTML & UI Display Standards** | All HTML Viewers & Dashboards | Canonical CSS tokens (`StandardTableDisplay.css`), double-row sticky table headers, column filters, large sort/inspect indicators, theme persistence, and desktop dispatching. |
-| **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `006` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling. |
+| **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `007` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling, central registry non-mutation invariant. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
 | **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Shorthand activation macros: `@tsr` / `@THR` / `@IRA` (superseded by persistent `TimestampHeaderRule`), `@RULEAUTH`, `@ml`. |
 
