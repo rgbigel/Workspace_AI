@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-19 21:29:32 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-20 14:42:27 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -283,9 +283,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.3.1  
+Version: 7.6.0  
 Status: Authoritative Policy  
-Date: 2026-09-08  
+Date: 2026-09-20  
 
 ---
 
@@ -394,9 +394,14 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 
 
-### RULE-LCM-014: Implementation Plan Auto-Proceed Block Invariant
-1. **Mandatory Stop on Open Questions**: Whenever an Implementation Plan (e.g., implementation_plan.md) is drafted and contains **Open Questions** requiring operator clarification, architectural feedback, or explicit decisions, the AI agent MUST NOT proceed to execution under any circumstances.
-2. **Override of Auto-Approval**: Even if automated workspace review policies or system hooks attempt to automatically approve the artifact and trigger execution, the AI agent MUST explicitly halt, reject the auto-proceed, highlight the unresolved questions, and await a direct, human-authored response from the operator before executing any code modifications.
+### RULE-LCM-014: Unconditional Proposal & Implementation Plan Approval Gate (Anti-Auto-Proceed Invariant)
+1. **Unconditional Review Gate on Every Proposal & Plan**: Whenever the AI agent proposes a solution, architectural design, or drafts/updates an Implementation Plan (`implementation_plan.md`), the agent `MUST UNCONDITIONALLY HALT` and stop calling tools immediately after generating or presenting the artifact. The agent `MUST NEVER` proceed to execute code modifications, script runs, or file mutations without receiving an explicit, human-authored approval trigger (`Proceed`, `do`, `ok`, `approved`).
+2. **Zero Sticky Auto-Proceed (Turn Boundary Expiration)**: Any previous `PROCEED`, `do`, or execution authorization expires immediately upon completion of the specific task or increment that was authorized. Prior approvals `MUST NEVER` bleed into or carry over to new user requests, follow-up proposals, subsequent turns, or newly drafted implementation plans. Every new proposed solution starts strictly in the **`UNAPPROVED`** state and requires its own dedicated approval.
+3. **Mandatory Stop on Open Questions & Alternatives**: If an Implementation Plan contains open questions, design tradeoffs, or architectural decisions, the agent `MUST` explicitly highlight them in the plan, halt execution, and await the operator's decision before executing any code changes.
+4. **Strict Dual-Gate Lifecycle (Planning Gate + Review Gate)**:
+   - **Gate 1 (Planning Gate)**: Propose solution / Draft `implementation_plan.md` $\rightarrow$ `STOP` and await explicit human approval.
+   - **Gate 2 (Review Gate / BC5 Gate)**: Implement approved changes $\rightarrow$ Present visual diffs / walkthrough / BC5 review $\rightarrow$ `STOP` and await `ACCEPT` / commit approval.
+5. **Prohibition of Premature Code Mutations**: No source code, permanent script, configuration, or test file may be modified, created, or deleted while at the Planning Gate. Only non-mutating research tools and artifact creation (`implementation_plan.md`) are permitted prior to operator approval.
 
 ### RULE-LCM-015: Strict BUG: and CRP: Intake Gate Invariant
 1. **Intake Signal Only**: The appearance of `BUG:` or `CRP:` designators in user input `MUST NEVER` be interpreted as a request to begin analysis, develop an Implementation Plan, or execute code modifications.
@@ -429,6 +434,21 @@ Proposals held in the `OPEN` state may transition to Implementation Planning and
 ### RULE-LCM-018: Credit Exhaustion & Batch Execution Granularity Guard
 1. **Batch Size Safety**: Multi-item batches `MUST` be segmented into manageable, verifiable increments to prevent credit, context, and token exhaustion.
 2. **Discrete Review Boundaries**: Each approved proposal or tight batch `MUST` reach a stable, verifiable state before proceeding to subsequent items, guaranteeing that uncommitted or partially modified code never leaves the workspace in an unrecoverable state.
+
+### RULE-LCM-019: Active App Context Inheritance & Automated Tripartite Synthesis on ACCEPT
+1. **Active Context Inheritance (`Workon:`)**:
+   - When an active App context is set via `Workon: A<#>` (e.g. `Workon: A1`), all subsequent Change Request Proposals (`crp: ...`), Bug Reports (`bug: ...`), and tasks generated during this focus `MUST` automatically inherit the active `app_id` (e.g. `"App: 1"`) in `proposals.json`.
+   - When set to `Workon: Architecture` or cleared (`Workon: Base`), proposals are recorded with `app_id: $null` (foundational system scope).
+2. **Automated Tripartite Synthesis upon `ACCEPT`**:
+   - The `ACCEPT <id>` / `complete <id>` command serves as the authoritative lifecycle trigger that concludes an App increment.
+   - Upon `ACCEPT`, the conclusive architecture decisions, technical requirements, and code manifests associated with the proposal `MUST` be synthesized into the repository's tripartite documentation under the designated `App: #` section:
+     - Architectural summary $\rightarrow$ `Architecture.md` under `## App: #`
+     - Normative invariants $\rightarrow$ `Requirements.md` under `## App: #`
+     - Manifest table $\rightarrow$ `Implementation.md` under `## App: #`
+3. **Multi-App Problem Resolution Gating**:
+   - For multi-App bugs (`BUG-###`), the proposal `MUST` explicitly declare `primary_app` (root cause) and `affected_apps` (blast radius).
+   - The bug cannot be marked `completed` or `committed` until the unit tests of the primary App *and* the integration tests of all affected Apps pass 100%.
+   - On `ACCEPT`, documentation updates are synthesized across all affected App sections in a single atomic step.
 
 ---
 
@@ -970,9 +990,9 @@ Module: DocumentationStandardsPolicy
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 7.5.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-09-19  
 
 ---
 
@@ -1058,6 +1078,25 @@ At the time of a major release push $M$ (e.g. `v6.0.0`, `v7.0.0`):
    - **File Naming**: `{Sequence:02d}_{Subject}_{MilestoneType}.md` (where `MilestoneType` $\in$ `{Lineage, Governance, Milestones, Architecture, Ledger, Rollup}`).
    - **DOX Metadata Invariant**: All permanent evolution log documents `MUST` declare `Classification: permanent-evolution-history` and `Status: Authoritative Historical Ledger`.
    - **Automated Protection**: All directories matching `*-Evolution/` or files with `Classification: permanent-evolution-history` are unconditionally protected from deletion by cleanup engines and daemons.
+
+---
+
+### RULE-DOC-007: App-Centric Modular Tripartite Architecture & Constituent Manifest Standard
+For governed repositories that scale beyond single-purpose scripts into multi-capability systems:
+1. **Optional Modular Slicing (`App: #`)**:
+   - Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`) `MAY` be partitioned into numbered `App: # - <Title>` sections (e.g. `App: 1 - CM Interactive Control Hub`).
+   - Repositories not requiring modular slicing remain standard un-prefixed tripartite documents.
+2. **Tripartite Slicing Consistency Invariant**:
+   - When `App: N` is declared in `Architecture.md`, corresponding `## App: N` sections `MUST` exist in `Requirements.md` (normative constraints) and `Implementation.md` (code blueprint).
+3. **Constituent Manifest Table Standard (`Implementation.md`)**:
+   - Under each `## App: N` section in `Implementation.md`, an authoritative **Constituent Manifest Table** `MUST` be maintained:
+     `| Relative Path | Role / Layer | Primary Cmdlets / Entrypoints | Pester Test Suite |`
+4. **Code DOX Header Annotation**:
+   - Every script, module, or UI asset belonging to an App `MUST` declare `App: App: N - <Title>` in its standard DOX metadata header.
+5. **Machine-Readable Registry (`data/catalog/apps.json`)**:
+   - Repositories utilizing App slicing `MUST` maintain a zero-drift machine-readable catalog at `data/catalog/apps.json`, synchronized via AST scanning.
+6. **Inter-App Contract Governance (The "Glue")**:
+   - Apps `MUST NOT` communicate via private internal functions or implicit global variables. All cross-App interactions `MUST` be governed by declared, registered Public Interface Contracts (Cmdlet Exports, JSON Schemas, REST DTOs, Event Broadcasts) cataloged in `data/catalog/contracts.json`.
 
 ---
 
@@ -1245,7 +1284,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `018` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Auto-Proceed Block, intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, and credit exhaustion guards. |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `019` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, and automated tripartite synthesis on `ACCEPT`. |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `014` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, and Smart Inheritance propagation. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `005` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures. |
@@ -1257,7 +1296,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[CMDRules.md](file:///.agents/rules/CMDRules.md)** | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | Explicit echo control (`@echo off`), errorlevel verification, ASCII character sets. |
 | **[JsonRules.md](file:///.agents/rules/JsonRules.md)** | `JSON-RULES` | **Data Serialization** | `*.json` | UTF-8 without BOM, 2-space indentation, `$schema` references. |
 | **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `008` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration, template/JS interpolation safety. |
-| **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `006` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, and $M-2$ retention horizon. |
+| **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `007` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, $M-2$ retention horizon, and App-Centric Modular Architecture (`App: #`) with Constituent Manifests & Contract Governance. |
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `008` | **HTML & UI Display Standards** | All HTML Viewers & Dashboards | Canonical CSS tokens (`StandardTableDisplay.css`), double-row sticky table headers, column filters, large sort/inspect indicators, theme persistence, and desktop dispatching. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `006` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |

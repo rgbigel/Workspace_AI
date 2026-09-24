@@ -4,7 +4,7 @@ Module: docs/Architecture.md
 Purpose: Authoritative architectural specification for the Lifecycle Model (LCM) multi-repository governance framework.  
 Path: D:/Git_Repositories/Workspace_AI/docs/Architecture.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.0.0  
+Version: 7.5.0  
 Status: Authoritative Architecture  
 Date: 2026-09-19  
 
@@ -339,6 +339,247 @@ graph TD
 2. **Topological Negative-Priority Sorting**: Downstream tasks in `ListOfChangesRequired` are assigned negative priorities (`-1`, `-2`, `-3`...) reflecting execution dependencies from foundational base layers (`-1`) out to leaf consumers.
 3. **Deterministic Depth Ceiling (`MaxRegressionDepth = 2`)**: Derivative regressions are strictly bounded to 2 hops from the primary proposal.
 4. **Governor Remedial Action on `Blocked_Cycle`**: When mutual circular coupling occurs, the CM Governor halts cascading mutations and instantiates a specialized **Cycle Resolution Proposal** offering interface hoisting, atomic joint review bundling, or one-way backward compatibility exemption.
+
+---
+
+## 10. App-Centric Architectural Decomposition, Active Context Engine & Cross-App Problem Governance ([CRP-048](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-048-LCM-v7.5.0-App-Centric-Architecture-Engine.md))
+
+As governed repositories scale from single-purpose scripts into multifaceted systems, monolithic tripartite documentation creates cognitive friction, documentation sprawl, and excessive LLM context consumption during automated code generation. 
+
+Under the LCM framework's **DOX Principle** (*Documentation Drives Implementation*), documentation is the primary specification and code generation blueprint—a "Super-CRP". **CRP-048** formalizes the **App-Centric Architectural Decomposition**, an **Active Context Engine (`Workon:`)**, and **Cross-App Problem Management**:
+
+```mermaid
+flowchart TB
+    classDef default font-size:8pt;
+    subgraph CONTEXT["🎯 ACTIVE CONTEXT ENGINE (.agents/ACTIVE_SESSION.md)"]
+        direction LR
+        W1["Workon: A1<br/>(Focus: App: 1)"]
+        W2["Workon: A2<br/>(Focus: App: 2)"]
+        W0["Workon: Architecture<br/>(Focus: Base System)"]
+    end
+
+    subgraph DOCS["📚 TRIPARTITE DOCUMENTATION SLICES"]
+        direction TB
+        subgraph ARCH["Architecture.md"]
+            A0["1. Foundational System Overview"]
+            A1["App: 1 - CM Interactive Control Hub"]
+            A2["App: 2 - Dual-State Proposal Governance"]
+        end
+        subgraph REQ["Requirements.md"]
+            R0["1. Core Environmental Invariants"]
+            R1["App: 1 - UI & REST Bridge Requirements"]
+            R2["App: 2 - Ledger & Action Invariants"]
+        end
+        subgraph IMP["Implementation.md"]
+            I0["1. Core Module Loaders & Types"]
+            I1["App: 1 - Constituent Manifest (Tools/UI)"]
+            I2["App: 2 - Constituent Manifest (Modules/CLI)"]
+        end
+    end
+
+    subgraph CATALOG["Authoritative Catalog (apps.json)"]
+        AC["apps.json<br/>(Zero-Drift AST Extraction)"]
+    end
+
+    subgraph SURFACES["Display & Execution Surfaces"]
+        S1["CM Control Hub (Apps Modal & Badge)"]
+        S2["Targeted Code Generation (Scoped Context)"]
+        S3["Cross-App Problem Management (Blast Radius)"]
+    end
+
+    CONTEXT -->|"Auto-tags Intake"| DOCS
+    DOCS -->|"Sync-LcmAppCatalog"| CATALOG
+    CATALOG --> S1
+    CATALOG --> S2
+    CATALOG --> S3
+```
+
+---
+
+### 10.1 Architectural Decisions & Trade-Offs Matrix (Concluded Alternatives)
+
+During the formalization of CRP-048, several architectural approaches were evaluated:
+
+| Architectural Option | Alternative Evaluated | Final Decision | Rationale & Trade-Off |
+| :--- | :--- | :--- | :--- |
+| **Discussion Capture** | Raw Discussion Logging (AADD transcripts / meeting notes) | **Feature/App-Driven Synthesis** | *Rejected*: Raw transcripts accumulate noise, lack cohesion, and decay rapidly. *Adopted*: Conclusive discussions synthesize directly into named `App: #` sections upon `ACCEPT`. |
+| **Directory Structure** | Subdirectory Sprawl (`docs/App1/`, `docs/App2/`) | **Flat In-Document Section Slices** | *Rejected*: Directory sprawl fragments the clean single-entrypoint tripartite standard (`RULE-DOC-001`). *Adopted*: In-document `App: #` headers inside tripartite specs; folders reserved strictly for autonomous subsystems. |
+| **Prefix Syntax** | Angle/Square Brackets (`<App: 1>`, `[App: 1]`) | **Hyphenated Colon Format (`App: 1 - <Title>`)** | *Rejected*: Brackets add typing friction in CLI/markdown. *Adopted*: Clean plain-text `App: 1 - <Title>` and shorthand `A1`. |
+| **Domain Nomenclature** | Commercial "Feature" naming (`Feat1`) | **Neutral "App" Slice Taxonomy (`App: 1`)** | *Rejected*: "Feature" carries end-user product bias unsuitable for low-level tooling/governance. *Adopted*: Versatile `App` (Application Slice / Architectural Increment). |
+
+---
+
+### 10.2 The `App:` Syntax & Active Context Engine (`Workon:`)
+
+#### 1. Creation Operators:
+- **`App: <Title>`** (Auto-numbering): Automatically resolves the next available integer (e.g. `App: 3 - Realtime Streamer`) and scaffolds the section across `Architecture.md`, `Requirements.md`, and `Implementation.md`.
+- **`App: <Number> - <Title>`** (Explicit numbering): Binds an explicit identifier.
+
+#### 2. Active Context Switching:
+- **`Workon: A1` (or `Workon: 1`)**: Sets the active focus in `.agents/ACTIVE_SESSION.md`. Any new proposal intake (`crp: ...`, `bug: ...`) automatically inherits `app_id: "App: 1"`.
+- **`Workon: Architecture` (or `Workon: Base`)**: Clears App slicing and targets the foundational, unpartitioned system architecture and core primitives.
+
+---
+
+### 10.3 3-Tier Code-to-App Mapping & Authoritative Catalog (`apps.json`)
+
+To establish 100% bidirectional traceability between documentation and code without AST re-parsing on every request:
+
+1. **Tier 1 (Specification Manifest)**: Each `App: #` in `Implementation.md` maintains a **Constituent Manifest Table** listing relative paths, architectural roles, entrypoints, and test suites.
+2. **Tier 2 (In-Code DOX Header Annotation)**: Every script and module declares its parent App in its header comment:
+   ```powershell
+   <#
+   .DESCRIPTION
+       Module: modules/ProposalManager.psm1
+       App: App: 2 - Dual-State Proposal Governance
+   #>
+   ```
+3. **Tier 3 (Machine-Readable Catalog `apps.json`)**: Compiled automatically by `Sync-LcmAppCatalog.ps1` into `Workspace_Inventory/data/catalog/apps.json` for sub-10ms queries by daemons, CLI runners, and HTML dashboards.
+
+---
+
+### 10.4 Impact on Code Generation & LLM Context Scoping
+
+Partitioning specifications into `App: #` slices transforms automated code generation:
+- **Scoped Context Windows**: When generating or modifying code for `App: 1`, code generation engines load *only* the `App: 1` sections across `Architecture.md`, `Requirements.md`, and `Implementation.md`.
+- **Zero-Regression Invariant**: Isolating context eliminates unintended side-effects and hallucinations across unrelated repository modules.
+- **Deterministic 1-to-1 Translation**: Code generation operates directly from the explicit parameter tables, schemas, and cmdlet lists in `Implementation.md`.
+
+---
+
+### 10.5 Cross-App Problem Management & Blast Radius Governance
+
+Real-world problems frequently cross modular boundaries. Problem management is governed across four topologies:
+
+```mermaid
+flowchart LR
+    classDef default font-size:8pt;
+    subgraph P1["1. Isolated Bug"]
+        A1["App: 1 (Internal Glitch)"]
+    end
+    subgraph P2["2. Contract Breach"]
+        B1["App: 1 (Caller Symptom)"] -.->|Interface Failure| B2["App: 2 (Root Cause Fix)"]
+    end
+    subgraph P3["3. Foundational Break"]
+        C0["Foundational Core"] ==> C1["App: 1"] & C2["App: 2"]
+    end
+    subgraph P4["4. Cascading Ripple"]
+        D2["App: 2 Fix"] -->|Blast Radius| D1["App: 1 Verification"] & D3["App: 3 Verification"]
+    end
+```
+
+#### Problem Governance Rules:
+1. **Multi-App Decoupling**: Bug proposals (`BUG-###`) explicitly declare `primary_app` (where the root cause is resolved) and `affected_apps` (the observed symptom or caller blast radius).
+2. **Automated Blast Radius Probing**: When a fix touches `App: 2`, the AST Reverse Dependency Engine (`CRP-121` WUD) scans all callers in `App: 1` and `App: 3` and flags them for verification.
+3. **Joint Multi-App Verification Gate**: A multi-App bug cannot be marked `completed` or `committed` until the unit tests of the primary App *and* the integration tests of all affected Apps pass 100%.
+4. **Multi-Section Synthesis on `ACCEPT`**: The `ACCEPT <id>` command updates `Implementation.md` under `## App: 2` and `Requirements.md` under `## App: 1` in a single atomic lifecycle step.
+
+---
+
+### 10.6 High-Order Lifecycle Operators
+
+To manage large-scale architectural restructuring, LCM provides high-order operators:
+
+- **`Split-LcmArchitectureToApps.ps1`**: Decomposes legacy monolithic tripartite documents into structured `App: #` sections with constituent tables.
+- **`Merge-RepositoriesToApps.ps1`**: Ingests external child repositories into an umbrella repo, preserving their tripartite specifications, code history, and tests as distinct `App: #` slices.
+- **`Sync-LcmAppCatalog.ps1`**: Executes AST zero-drift verification between `Implementation.md`, file headers, and `apps.json`.
+
+---
+
+### 10.7 Git & GitHub Version Control Mapping
+
+- **Commit Message Format**: `feat(App: 1): <summary> [CRP-###]` (enabling instant filtering via `git log --grep="App: 1"`).
+- **GitHub Labels**: Structured labels (`app: 1`, `app: 2`, `app: architecture`) for Issue and PR tracking.
+- **Grouped GitHub Releases**: Release notes generated via `gh release` automatically group changelogs under `### App: 1`, `### App: 2`, and `### Foundational Architecture`.
+
+---
+
+### 10.8 Inter-App Contract Governance (The "Glue")
+
+To prevent modular repositories from degenerating into tight, unmaintainable coupling, **Apps must never communicate through implicit private state or ad-hoc internals**. All inter-App interactions are governed by formal, registered **Interface Contracts**:
+
+```mermaid
+flowchart LR
+    classDef default font-size:8pt;
+    subgraph APP1["App: 1 (CM Control Hub)"]
+        UI["UI / Console Engine"]
+    end
+
+    subgraph GLUE["🏛️ CONTRACT REGISTRY (data/catalog/contracts.json)"]
+        C1["REST Contract (/execute, /proposals)"]
+        C2["Schema Contract (proposals.json)"]
+        C3["Cmdlet Contract (Invoke-ProposalAction)"]
+    end
+
+    subgraph APP2["App: 2 (Dual-State Governance)"]
+        ENG["Proposal State Machine"]
+    end
+
+    UI -->|"Consumes Contract"| C1 & C2 & C3
+    C1 & C2 & C3 -->|"Provided by"| ENG
+```
+
+#### The Four Contract Archetypes:
+1. **Cmdlet Export Contracts (`Type: Cmdlet`)**: Formally exported public cmdlets using approved verbs, typed parameters, strict `ValidateSet` bounds, and structured pipeline output.
+2. **Schema Contracts (`Type: Schema`)**: Versioned JSON schemas governing shared serialized state (e.g. `proposals.json`, `active_session.json`).
+3. **REST JSON-RPC Contracts (`Type: REST`)**: Route paths, HTTP verbs, request/response DTOs, and CORS/Private Network Access (PNA) security invariants.
+4. **Broadcast Event Contracts (`Type: Broadcast`)**: IPC broadcast channels (e.g. `BroadcastChannel`) and typed event payload definitions.
+
+#### Contract Inventory & Automated Drift Auditing:
+- Every App in `apps.json` explicitly declares its `provides_contracts` and `consumes_contracts`.
+- The Rule Health checker (`Test-LCMRuleHealth.ps1`) and AST Dependency Prober (`CRP-121`) audit all cross-file calls. Any inter-App invocation bypassing a declared public contract is flagged as an **Unsanctioned Coupling Violation**.
+
+---
+
+### 10.9 The Atomic Assembly Paradigm — The Ultimate Goal of LCM
+
+The ultimate goal of the Lifecycle Model (LCM) methodology is to transform software development from **handcrafted, bespoke coding** into **Deterministic Atomic Assembly**:
+
+```mermaid
+graph TB
+    classDef default font-size:8pt;
+    subgraph LEVEL3["Level 3: Repository / Solution Container"]
+        REPO["Governed Repository Ecosystem (Workspace_Inventory, Workspace_AI)"]
+    end
+
+    subgraph LEVEL2["Level 2: Apps (Macro Capabilities)"]
+        A1["App: 1 - CM Control Hub"]
+        A2["App: 2 - Dual-State Governance"]
+    end
+
+    subgraph LEVEL1["Level 1: High-Level Assemblies (Functional Molecules)"]
+        M1["ProposalStore State Machine"]
+        M2["DaemonActionController REST Engine"]
+        M3["DynamicTableEngine & Filter Atom"]
+    end
+
+    subgraph LEVEL0["Level 0: Elementary Atoms (Elementary Particles)"]
+        ATOM1["TablePrintAtom.js"]
+        ATOM2["StrictDOXHeaderParser.ps1"]
+        ATOM3["PNA-CORS Bridge Primitives"]
+        ATOM4["AST CallGraph Scanner Atom"]
+    end
+
+    REPO ==> A1 & A2
+    A1 --> M2 & M3
+    A2 --> M1
+    M1 --> ATOM2 & ATOM4
+    M2 --> ATOM3
+    M3 --> ATOM1
+```
+
+#### The Composition Hierarchy:
+1. **Level 0: Elementary Atoms (Particles)**: Pure, single-purpose, side-effect-free primitives (e.g., table renderer atoms, header parsers, AST tokens, string normalizers, REST encoders).
+2. **Level 1: High-Level Assemblies (Molecules)**: Cohesive functional building blocks composed of atoms (e.g., `ProposalStore`, `DaemonActionController`, `RegressionDAGOrder`).
+3. **Level 2: Apps (Organisms)**: Complete, marketable capability slices composed of assemblies and atoms (e.g., `App: 1 - CM Interactive Control Hub`, `App: 2 - Dual-State Proposal Governance`).
+4. **Level 3: Repository Ecosystem**: The coordinated constellation of Apps bound together by formal inter-App contracts.
+
+#### User & Operator Perspective (Why This is the Ultimate Payoff):
+- **Zero-Hallucination AI Code Synthesis**: When an operator commands `App: <Title>`, the AI agent does not generate fragile, boilerplate code from scratch. Instead, it **assembles pre-verified atomic particles and high-level assemblies** according to the contractual blueprint in `Implementation.md`.
+- **Lego-Brick Composability & Portability**: High-level assemblies can be reused, reconfigured, or merged across repositories (`Merge-RepositoriesToApps`) with guaranteed behavioral integrity.
+- **True Isolation & Non-Breaking Maintenance**: Updating an underlying atom or assembly automatically enhances all consuming Apps while contract boundaries prevent cross-domain breakage.
+
+
 
 
 

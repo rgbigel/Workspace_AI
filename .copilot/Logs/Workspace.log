@@ -1,11 +1,11 @@
-﻿Workspace_AI Governance Log
+Workspace_AI Governance Log
 ===========================
 
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260919_202452
-Latest commit at generation: 09aaaab docs: align tripartite specifications, Mermaid diagrams, and tool help flags to LCM Baseline v7.0.0
+Generated at: 20260920_162656
+Latest commit at generation: d0da601 chore(gemini): pre-push synchronization of rules export and knowledge base
 
 2. Rule Authority
 -----------------
@@ -30,7 +30,15 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
-No reviewable changes.
+ M .agents/rules/DocumentationStandardsPolicy.md
+ M .agents/rules/ProposalReviewFlowPolicy.md
+ M docs/Architecture.md
+ M docs/LCM-Rules-Cross-Reference.md
+ M docs/LCM_Rules.txt
+ M docs/LCM_Rules_Gemini_Export.md
+ M docs/LCM_Rules_Gemini_Export.txt
+?? docs/Proposals/CRP-167-App-Sliced-Feature/
+?? docs/Proposals/CRP-169-Foundational-Core-Refactor/
 
 6. Generated Artifact Status
 ----------------------------
