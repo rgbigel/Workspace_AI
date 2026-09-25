@@ -5,9 +5,9 @@ Workspace_AI Permanent Accepted Change Log
 ---------
 Purpose: Permanent log for accepted changes represented by local commits after the baseline.
 Lifecycle: Pushed accepted entries may be archived or reset to an initialized push reference.
-Generated at: 20260920_162656
+Generated at: 20260925_204027
 Baseline commit: ebbf8448cbe814bfc63f25f159fece6e3f86f6dd
-Latest commit at generation: d0da601 chore(gemini): pre-push synchronization of rules export and knowledge base
+Latest commit at generation: 695f693 feat(gemini): CRP-173 shared AI memory safeguards, baseline hashing, and pre-push integration
 
 2. Accepted Local Commits Since Baseline
 ---------------------------------------
@@ -110,6 +110,10 @@ eb944db 20260919_180304 docs(baseline): align tripartite specifications (Archite
 fb46aa1 20260919_202509 chore(readiness): update readiness audit logs
 fac092d 20260919_212927 CRP-118: Mirror ElevationPolicy.md v7.5.3 and updated LCM rules export
 d0da601 20260919_212945 chore(gemini): pre-push synchronization of rules export and knowledge base
+10061e5 20260924_220450 docs(lcm): synchronize cross-reference matrix to v7.6.0 for CRP-170
+06c36ba 20260924_220614 chore(gemini): pre-push synchronization of rules export and knowledge base
+a751a11 20260925_024031 chore(gemini): pre-push synchronization of rules export and knowledge base
+695f693 20260925_203854 feat(gemini): CRP-173 shared AI memory safeguards, baseline hashing, and pre-push integration
 
 3. Footer
 ---------

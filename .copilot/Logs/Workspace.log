@@ -4,8 +4,8 @@ Workspace_AI Governance Log
 1. Header
 ---------
 Workspace name: Workspace_AI
-Generated at: 20260920_162656
-Latest commit at generation: d0da601 chore(gemini): pre-push synchronization of rules export and knowledge base
+Generated at: 20260925_204027
+Latest commit at generation: 695f693 feat(gemini): CRP-173 shared AI memory safeguards, baseline hashing, and pre-push integration
 
 2. Rule Authority
 -----------------
@@ -30,15 +30,7 @@ modified: 0
 
 5. Reviewable Git Status
 ------------------------
- M .agents/rules/DocumentationStandardsPolicy.md
- M .agents/rules/ProposalReviewFlowPolicy.md
- M docs/Architecture.md
- M docs/LCM-Rules-Cross-Reference.md
- M docs/LCM_Rules.txt
- M docs/LCM_Rules_Gemini_Export.md
- M docs/LCM_Rules_Gemini_Export.txt
-?? docs/Proposals/CRP-167-App-Sliced-Feature/
-?? docs/Proposals/CRP-169-Foundational-Core-Refactor/
+No reviewable changes.
 
 6. Generated Artifact Status
 ----------------------------
