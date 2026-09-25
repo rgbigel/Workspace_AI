@@ -11,8 +11,8 @@
            Conforms to RULE-PS-008 (Metadata Headers), RULE-PS-009 (Audit Logging), and RULE-PS-010 (CLI Help).
   Path: Workspace_AI/tools/Update-Gemini.ps1
   Authors: Rolf, Workspace_AI Engine
-  Version: 1.1.0
-  Date: 2026-09-04
+  Version: 7.2.0
+  Date: 2026-09-25
 .PARAMETER Force
   Forces a full clean export of knowledge base files.
 .PARAMETER ToClipboard
