@@ -1,0 +1,14 @@
+{
+  "id":  "default-cli-project",
+  "name":  "CLI Project",
+  "projectResources":  {
+    "resources":  [
+      {
+        "gitFolder":  {
+          "folderUri":  "file:///d%3A/Git_Repositories"
+        }
+      }
+    ]
+  },
+  "updatedAt":  "2026-09-21T10:28:53.354683400Z"
+}

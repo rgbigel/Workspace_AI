@@ -1,0 +1,23 @@
+{
+  "plugins": {
+    "android-cli-plugin": {
+      "enabled": true
+    },
+    "firebase": {
+      "enabled": true
+    },
+    "google-antigravity-sdk": {
+      "enabled": true
+    }
+  },
+  "userSettings": {
+    "globalPermissionGrants": {
+      "allow": [
+        "read_url(antigravity.google)"
+      ]
+    },
+    "remoteControlEnabled": true,
+    "remoteControlHostname": "d5p0-ssd980-z-frozen-ray",
+    "themeMode": "THEME_MODE_LIGHT"
+  }
+}

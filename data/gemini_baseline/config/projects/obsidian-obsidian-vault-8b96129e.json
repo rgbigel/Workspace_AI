@@ -1,0 +1,19 @@
+{
+  "id": "obsidian-obsidian-vault-8b96129e",
+  "name": "Obsidian Vault",
+  "projectResources": {
+    "resources": [
+      {
+        "gitFolder": {
+          "folderUri": "file://D:\\OneDrive\\Documents\\Obsidian Vault"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_AUTO"
+  },
+  "updatedAt": "2026-09-21T10:28:53.356259700Z",
+  "isWorkspaceOnly": false
+}

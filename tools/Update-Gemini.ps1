@@ -103,7 +103,7 @@ if (Test-Path -LiteralPath $syncSnapshotScript) {
 # ------------------------------------------------------------------------------
 # 3. Synchronize Gemini Google Drive Inbox Queue
 # ------------------------------------------------------------------------------
-Write-Host "`n[3/3] Synchronizing Gemini Google Drive Inbox Queue (D:\GDrive\LCM\INBOX)..." -ForegroundColor Yellow
+Write-Host "`n[3/4] Synchronizing Gemini Google Drive Inbox Queue (D:\GDrive\LCM\INBOX)..." -ForegroundColor Yellow
 $syncInboxScript = Join-Path $lcdInternal 'Sync-GeminiInbox.ps1'
 if (Test-Path -LiteralPath $syncInboxScript) {
   & $syncInboxScript
@@ -111,9 +111,66 @@ if (Test-Path -LiteralPath $syncInboxScript) {
   Write-Warning "Sync-GeminiInbox.ps1 not found in $lcdInternal"
 }
 
+# ------------------------------------------------------------------------------
+# 4. Synchronize .gemini Baseline Manifest & Cryptographic Hashes
+# ------------------------------------------------------------------------------
+Write-Host "`n[4/4] Synchronizing .gemini Configuration Baseline & Computing SHA256 Hashes..." -ForegroundColor Yellow
+try {
+  $geminiConfig = Join-Path $env:USERPROFILE '.gemini\config'
+  if (-not (Test-Path -LiteralPath $geminiConfig) -and (Test-Path -LiteralPath 'A:\.gemini\config')) {
+    $geminiConfig = 'A:\.gemini\config'
+  }
+
+  if (Test-Path -LiteralPath $geminiConfig) {
+    $baselineDir = Join-Path $workspaceRoot 'Workspace_AI\data\gemini_baseline'
+    $targetConfig = Join-Path $baselineDir 'config'
+    if (-not (Test-Path -LiteralPath $targetConfig)) {
+      New-Item -Path $targetConfig -ItemType Directory -Force | Out-Null
+    }
+
+    & robocopy.exe $geminiConfig $targetConfig /MIR /R:2 /W:1 /XJ /NP /NFL /NDL | Out-Null
+
+    $files = @(Get-ChildItem -Path $targetConfig -Recurse -File | Sort-Object FullName)
+    $fileMap = [ordered]@{}
+    $hashLines = [System.Collections.Generic.List[string]]::new()
+
+    foreach ($f in $files) {
+      $rel = $f.FullName.Substring($targetConfig.Length).TrimStart('\').Replace('\', '/')
+      $h = (Get-FileHash -Path $f.FullName -Algorithm SHA256).Hash
+      $fileMap[$rel] = $h
+      $hashLines.Add("$($rel):$($h)")
+    }
+
+    $combined = $hashLines -join "`n"
+    $stream = [System.IO.MemoryStream]::new([System.Text.Encoding]::UTF8.GetBytes($combined))
+    $rootHash = (Get-FileHash -InputStream $stream -Algorithm SHA256).Hash
+
+    $nowUtc = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+    $commitSha = try { (git -C (Join-Path $workspaceRoot 'Workspace_AI') rev-parse HEAD).Trim() } catch { '' }
+
+    $manifest = [PSCustomObject]@{
+      version     = '1.2.0'
+      updated_at  = $nowUtc
+      commit_sha  = $commitSha
+      root_hash   = $rootHash
+      total_files = $files.Count
+      files       = $fileMap
+    }
+
+    $manifestPath = Join-Path $baselineDir 'gemini_manifest.json'
+    $manifest | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $manifestPath -Encoding UTF8
+    Write-Host "  -> Baseline synchronized: $($files.Count) files (Root SHA256: $($rootHash.Substring(0, 12))...)" -ForegroundColor Green
+  } else {
+    Write-Warning ".gemini configuration directory not found at $geminiConfig"
+  }
+} catch {
+  Write-Warning "Failed to synchronize .gemini baseline manifest: $_"
+}
+
 Write-Host "`n==========================================================================" -ForegroundColor Cyan
 Write-Host " [SUMMARY] Gemini AI Context & Knowledge Base Pipeline Completed" -ForegroundColor Green
 Write-Host " Consolidated Rules : Workspace_AI/docs/LCM_Rules_Gemini_Export.md"
 Write-Host " Google Drive Mirror: D:\GDrive\LCM (Code & Tripartite Docs with .txt)"
 Write-Host " Google Drive Inbox : D:\GDrive\LCM\INBOX"
+Write-Host " Baseline Manifest  : Workspace_AI/data/gemini_baseline/gemini_manifest.json"
 Write-Host "==========================================================================" -ForegroundColor Cyan
