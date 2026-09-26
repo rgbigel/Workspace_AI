@@ -2,7 +2,7 @@
 
 ModulePath: docs/Implementation.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Implementation  
 Date: 2026-09-19  
 
@@ -180,6 +180,7 @@ Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.j
 | **Runtime Bug Remediations** | **Autonomous Exception strictly for Critical System/Transport Issues (`RULE-LCM-017`)** | Universal strict stop on all errors, OR uncontrolled autonomous patching | A hard stop on every transient local connection blip (e.g. REST daemon Port 9876 drop) freezes automation unnecessarily. Restricting autonomous proceed strictly to critical system/transport issues avoids deadlock while preventing runaway code rewrites. |
 | **Runaway Loop Protection** | **Hard 2-Attempt Loop Breaker (`RULE-LCM-017`)** | Unlimited retry attempts, or heuristic retry counts | If a runtime defect cannot be resolved in 2 attempts, the failure is structural or environmental. Halting immediately and marking the item `blocked`/`open` stops token exhaustion and prevents catastrophic file thrashing. |
 | **Batch Size Execution Guard** | **Discrete Batch Granularity (`RULE-LCM-018`)** | Monolithic multi-proposal execution | Monolithic execution of large defect lists risks mid-flight credit/token exhaustion, leaving repositories in an uncommitted, dirty, broken state. Discrete batches ensure each accepted change is safely verified and committed. |
+
 
 
 

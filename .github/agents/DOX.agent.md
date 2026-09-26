@@ -12,7 +12,7 @@ Module: DOX.agent.md
 Purpose: Defines unified workspace documentation behavior for DOX.agent.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/DOX.agent.md
 Authors: Rolf
-Version: 1.1.1
+Version: 8.1.1
 Changelog:
 - 2026-07-31: Resolved DOX unification follow-ups; confirmed custom-agent discovery, workspace rule alignment, and index alignment are complete.
 - 2026-07-31: Moved custom-agent frontmatter to file start and aligned behavior with Workspace-Rules and WorkspaceAgentIndex.
@@ -64,3 +64,4 @@ DOX unification is resolved when:
 - WorkspaceAgentIndex.md describes the same DOX role, scope, constraints, and activation model
 - Workspace-Rules.md permits DOX unification as explicit documentation work
 - no open DOX action markers remain in Workspace_AI control files
+

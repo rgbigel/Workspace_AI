@@ -43,7 +43,6 @@ $requiredFiles = @(
     'MEMORY.md',
     'CopilotRules.md',
     'CopilotTools.md',
-    'Step1Engine.json',
     'VSCode_Agent.md',
     'problems.md',
     'Rules/RuleAuthority.md',

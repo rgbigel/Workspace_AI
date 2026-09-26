@@ -4,7 +4,7 @@ Module: MIGRATION-Rules.md
 Purpose: Defines workspace documentation and operational rules for MIGRATION-Rules.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/MIGRATION-Rules.md
 Authors: Rolf
-Version: 1.0.0
+Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -51,7 +51,7 @@ Module: <filename.ext>
 Purpose: <one sentence>
 Path: <relative path>
 Authors: <list>
-Version: <semantic version>
+Version: 8.0.0 version>
 Changelog:
   - <entry>
 #>
@@ -158,3 +158,4 @@ no premature migration, SharedModules grows only when needed, atoms discovered s
 
 ## 13. Versioning
 Semantic versioning. Current version: 1.0.0
+

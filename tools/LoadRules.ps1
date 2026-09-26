@@ -26,7 +26,7 @@ Changelog:
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
-$root = Join-Path $workspaceRoot ".copilot\Rules"
+$root = Join-Path $workspaceRoot ".agents\rules"
 
 $rules = @{
     invariant  = Get-Content (Join-Path $root "InvariantRules.md")

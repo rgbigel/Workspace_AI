@@ -1,0 +1,45 @@
+{
+  "version": "3.0.0",
+  "tests": [
+    {
+      "name": "command-prefix",
+      "input": "@status code",
+      "expect": "single-line classification output"
+    },
+    {
+      "name": "quoted-block",
+      "input": "@echo \"abc\\\"def\"",
+      "expect": "abc\\\"def"
+    },
+    {
+      "name": "stepwise-mode",
+      "input": "@mode stepwise",
+      "expect": "stepwise-mode-activated"
+    },
+    {
+      "name": "continuation-token",
+      "input": "OK",
+      "expect": "next-step-output"
+    },
+    {
+      "name": "operator-technical",
+      "input": "@technical",
+      "expect": "ascii-only deterministic output"
+    },
+    {
+      "name": "operator-user",
+      "input": "@user",
+      "expect": "human-readable prose"
+    },
+    {
+      "name": "operator-S",
+      "input": "@S",
+      "expect": "<timestamp> @S <systemname>"
+    },
+    {
+      "name": "workspace-location",
+      "input": "@profile status",
+      "expect": "workspace-root = D:\\Git_Repositories"
+    }
+  ]
+}

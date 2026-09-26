@@ -9,9 +9,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.1.0  
+Version: 8.1.0  
 Status: Authoritative Policy  
-Date: 2026-09-04  
+Date: 2026-09-26  
 
 ---
 
@@ -78,3 +78,4 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 2. **Unified Single-Window Invariant**: Dual-session Beyond Compare review dispatch is retired. All repository review comparisons execute in a single Beyond Compare window without opening a separate junction review instance.
 3. **Automated Baseline Rules Provisioning**: When reviewing a child repository where the baseline Git commit does not natively track `.agents/rules`, `Invoke-BeyondCompareReview.ps1` `MUST` automatically populate the baseline rules directory (`<TempReviewRoot>\.agents\rules`) from the authoritative `Workspace_AI` baseline to ensure accurate inline diffing.
 4. **Exclusion Filter Alignment**: Review exclusion filter lists `MUST NOT` filter out `-.agents\rules\`, ensuring all governance rule diffs remain directly inspectable in the primary review pane.
+

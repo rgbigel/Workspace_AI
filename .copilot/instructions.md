@@ -1,10 +1,10 @@
-# version: 4.0.0
+# version: 3.0.0
 
 Module: instructions.md
 Purpose: Defines workspace documentation and operational rules for instructions.
 Path: D:/Git_Repositories/Workspace_AI/.copilot/instructions.md
 Authors: Rolf Bercht
-Version: 4.0.0
+Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -140,15 +140,17 @@ SECTION: workspace-location
 # FORMAT: ascii-only, copyable, no-prose
 
 WORKSPACE-ROOT
-- D:\Git_Repositories\Workspace_AI
+- D:\Git_Repositories
 
 WORKSPACE-RULES
 - all copilot control files stored under ".copilot"
-- authoritative path: D:\Git_Repositories\Workspace_AI\.copilot\
-- instructions.md: D:\Git_Repositories\Workspace_AI\.copilot\instructions.md
-- MEMORY.md: D:\Git_Repositories\Workspace_AI\.copilot\MEMORY.md
-- macro-definitions.md: D:\Git_Repositories\Workspace_AI\.copilot\Rules\macro-definitions.md
-- test-suite: D:\Git_Repositories\Workspace_AI\tools\Test-WorkspaceReadiness.ps1
+- authoritative path: D:\Git_Repositories\.copilot\
+- instructions.md: D:\Git_Repositories\.copilot\instructions.md
+- config.json: D:\Git_Repositories\.copilot\config.json
+- agent.json: D:\Git_Repositories\.copilot\agent.json
+- copilot365-agent.json: D:\Git_Repositories\.copilot\copilot365-agent.json
+- MEMORY.md: D:\Git_Repositories\.copilot\MEMORY.md
+- test-suite: D:\Git_Repositories\.copilot\tests\profile-tests.md
 
 WORKSPACE-CONVENTIONS
 - workspace-root defines authoritative context
@@ -159,7 +161,7 @@ SECTION: macro-definitions
 # FORMAT: ascii-only, technical, deterministic
 
 MACRO-DEFINITIONS-FILE
-- path: .copilot/Rules/macro-definitions.md
+- path: .copilot/macro-definitions.md
 - scope: durable-memory
 - purpose: define macro semantics and substitution rules
 - integration: referenced by behavioral-operators
@@ -180,3 +182,7 @@ SECTION: config-reference
 - instructions: "./instructions.md"
 - durable-memory: "./MEMORY.md"
 - variable-memory: ["./problems.md", "./projects.md", "./servicing-notes.md"]
+
+
+
+

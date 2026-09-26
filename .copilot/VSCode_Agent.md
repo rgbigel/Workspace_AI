@@ -1,5 +1,5 @@
 # Name: VSCode_Agent
-# Version: 1.0.0
+Version: 8.0.0
 # Path: .copilot/VSCode_Agent.md
 # Purpose: Define the execution model for fix-modules inside Workspace_AI.
 
@@ -120,3 +120,4 @@ No implicit chaining unless defined in a wrapper module.
 =====================================================================
 END OF FILE
 =====================================================================
+

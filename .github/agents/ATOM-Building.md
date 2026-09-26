@@ -4,7 +4,7 @@ Module: ATOM-Building.md
 Purpose: Defines workspace documentation and operational rules for ATOM-Building.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/ATOM-Building.md
 Authors: Rolf
-Version: 1.0.0
+Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -111,3 +111,4 @@ Atoms evolve independently:
 - old atoms can be deprecated
 - interfaces remain stable
 - SharedModules atoms propagate across repositories
+

@@ -4,7 +4,7 @@ Module: CopilotTools.md
 Purpose: Defines workspace documentation and operational rules for CopilotTools.
 Path: D:/Git_Repositories/Workspace_AI/.copilot/CopilotTools.md
 Authors: Rolf
-Version: 1.0.0
+Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -33,4 +33,8 @@ TOOLS-ENTRY
 - path: "D:\\Tools\\Beyond Compare 5\\BCompare.exe"
 - usage: file diff, folder diff, merge tool; LCM visual review
 - version: 5.0.0
+
+
+
+
 

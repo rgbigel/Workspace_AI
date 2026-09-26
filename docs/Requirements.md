@@ -2,7 +2,7 @@
 
 ModulePath: docs/Requirements.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Requirements  
 Date: 2026-09-19  
 
@@ -155,4 +155,5 @@ Every governed repository `MUST` provide an `install/` directory containing `Ins
 1. **Runbook Scope**: Procedural runbook detailing prerequisites, customization, installation steps, readiness verification tests, and version upgrade procedures.
 2. **Structural Invariant**: `Installation.md` is unified and `MUST NOT` be split into tripartite parts. Complex installations may be divided into supporting markdown documents residing strictly within the `install/` directory.
 3. **Cross-Repository References**: Dependencies on shared components (e.g. `SharedModules`) `MUST` be referenced with their specific prerequisite requirements and installation steps.
+
 

@@ -1,7 +1,7 @@
 # Antigravity Workspace Instructions
 
 **Workspace**: $targetName  
-**Canonical Source Authority**: .copilot/Rules/  
+**Canonical Source Authority**: .agents/rules/  
 **Generated**: 2026-08-13 21:31:26  
 
 ---

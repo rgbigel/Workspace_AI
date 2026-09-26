@@ -134,11 +134,22 @@ try {
     $fileMap = [ordered]@{}
     $hashLines = [System.Collections.Generic.List[string]]::new()
 
-    foreach ($f in $files) {
-      $rel = $f.FullName.Substring($targetConfig.Length).TrimStart('\').Replace('\', '/')
-      $h = (Get-FileHash -Path $f.FullName -Algorithm SHA256).Hash
-      $fileMap[$rel] = $h
-      $hashLines.Add("$($rel):$($h)")
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    try {
+      foreach ($f in $files) {
+        $rel = $f.FullName.Substring($targetConfig.Length).TrimStart('\').Replace('\', '/')
+        $fs = [System.IO.FileStream]::new($f.FullName, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+        try {
+          $hashBytes = $sha256.ComputeHash($fs)
+          $h = [System.BitConverter]::ToString($hashBytes).Replace('-', '')
+        } finally {
+          $fs.Dispose()
+        }
+        $fileMap[$rel] = $h
+        $hashLines.Add("$($rel):$($h)")
+      }
+    } finally {
+      $sha256.Dispose()
     }
 
     $combined = $hashLines -join "`n"
@@ -158,7 +169,8 @@ try {
     }
 
     $manifestPath = Join-Path $baselineDir 'gemini_manifest.json'
-    $manifest | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $manifestPath -Encoding UTF8
+    $manifestJson = $manifest | ConvertTo-Json -Depth 10
+    [System.IO.File]::WriteAllText($manifestPath, $manifestJson, [System.Text.Encoding]::UTF8)
     Write-Host "  -> Baseline synchronized: $($files.Count) files (Root SHA256: $($rootHash.Substring(0, 12))...)" -ForegroundColor Green
   } else {
     Write-Warning ".gemini configuration directory not found at $geminiConfig"

@@ -1,9 +1,10 @@
 {
   "meta": {
-    "version": "8.0.0",
+    "version": "3.0.0",
     "config_path": "D:\\Git_Repositories\\.copilot\\config.json",
     "config_type": "copilot-profile"
   },
+
   "profile": {
     "workspace_root": "D:\\Git_Repositories",
     "copilot_directory": "D:\\Git_Repositories\\.copilot",
@@ -12,8 +13,8 @@
       "config.json",
       "agent.json",
       "copilot365-agent.json",
-      "macro-definitions.md",
-      "InvariantRules.md",
+      "Rules/macro-definitions.md",
+      "Rules/InvariantRules.md",
       "Standards.md",
       "MEMORY.md",
       "MyTools.md",

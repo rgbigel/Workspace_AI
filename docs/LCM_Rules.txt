@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-25 20:45:07 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-26 15:15:16 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -44,9 +44,9 @@ Module: RuleAuthority
 Purpose: Defines canonical rule authority, governance hierarchy, and mandatory cross-reference synchronization across the workspace.  
 Path: .agents/rules/RuleAuthority.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-09-26  
 
 ---
 
@@ -54,7 +54,7 @@ Date: 2026-08-29
 
 ### `RULE-AUTH-001` (Single Source of Truth & Zero Rule Forking)
 - **Canonical Physical Hub**: `Workspace_AI\.agents\rules\` is the single, authoritative physical host and primary commit gate for all LCM governance rules.
-- **Root & Child Discovery**: The root workspace container links `D:\Git_Repositories\.agents\rules\` (via `.lcm\.agents\rules`) directly to `Workspace_AI\.agents\rules\` via NTFS directory junction (`mklink /J`), avoiding rule commit churn on the root container. All governed child repositories link their local `.agents\rules` directory to this canonical hub.
+- **Root & Child Discovery**: The root workspace container links `D:\Git_Repositories\.agents\rules\` directly to `Workspace_AI\.agents\rules\` via NTFS directory junction (`mklink /J`), avoiding rule commit churn on the root container. All governed child repositories link their local `.agents\rules` directory to this canonical hub.
 - **No Independent Truth**: Child repositories and IDE adapter surfaces `MUST NOT` fork, maintain conflicting local copies, or override core governance policies without an approved Change Request.
 
 ---
@@ -82,9 +82,9 @@ Module: InvariantRules
 Purpose: Authoritative invariant rules for workspace behavior, encoding, determinism, and generation.  
 Path: .agents/rules/InvariantRules.md  
 Authors: Rolf  
-Version: 7.1.0  
+Version: 8.1.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-04  
+Date: 2026-09-26  
 
 ---
 
@@ -134,9 +134,9 @@ Module: ElevationPolicy
 Purpose: Defines mandatory elevation, runner delegation, and privilege interception rules across all repositories.  
 Path: .agents/rules/ElevationPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.6.0  
+Version: 8.6.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-24  
+Date: 2026-09-26  
 
 ---
 
@@ -219,7 +219,7 @@ Module: LanguagePolicy
 Purpose: Authoritative rule enforcing English language usage across all workspace documentation, file names, and code.
 Path: .agents/rules/LanguagePolicy.md
 Authors: Rolf
-Version: 7.0.0
+Version: 8.0.0
 Changelog:
 - 2026-08-15: Initial persistent rule for English language invariant across all documentation, file names, code, and comments.
 
@@ -242,9 +242,9 @@ Module: RepositoryContextPolicy
 Purpose: Defines automatic active-document repository detection, fast-tier context priming, candidate fallback, and scan optimization invariants.  
 Path: .agents/rules/RepositoryContextPolicy.md  
 Authors: Rolf, Workspace_AI  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-26  
 
 ---
 
@@ -287,9 +287,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.6.0  
+Version: 8.6.0  
 Status: Authoritative Policy  
-Date: 2026-09-20  
+Date: 2026-09-26  
 
 ---
 
@@ -320,7 +320,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 ### RULE-LCM-004: Visual Diff Review & Exemption Scope
 - **Governed Repositories & Root Container**: Every governed repository and the Root Container (`D:\Git_Repositories`) `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 <RepoName>` before commit.
-- **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `.lcm\.agents`, or `.agents\rules` pointing to `.lcm\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
+- **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `Workspace_AI\.agents`, or `.agents\rules` pointing to `Workspace_AI\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
 - **Privileged Subsystem Data Exemption vs. Tool Scrutiny**:
   - **Dynamic Configuration & Ledger Data Exemption (`RULE-EFF-001`)**: Ledger data, review staging receipts, baseline manifests, telemetry logs, and scratch generation outputs located in `Workspace_Inventory` (`data/`, `logs/`, `scratch/`) are auto-accepted mechanical evidence and exempt from visual diff review stops.
   - **Executable Tools & Documentation Scrutiny**: All permanent scripts, PowerShell modules, test suites, and architectural documentation located in `Workspace_Inventory` (`tools/`, `modules/`, `docs/`, `tests/`, `Cmd/`) are first-class governed LCM software assets and `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 Workspace_Inventory` prior to commit.
@@ -489,9 +489,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.1.0  
+Version: 8.1.0  
 Status: Authoritative Policy  
-Date: 2026-09-04  
+Date: 2026-09-26  
 
 ---
 
@@ -571,9 +571,9 @@ Module: MethodEfficiencyPolicy
 Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry, logs, DOIT mode execution velocity, and tool discovery.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.6.0  
+Version: 8.6.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-24  
+Date: 2026-09-26  
 
 ---
 
@@ -660,12 +660,12 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 # File: PowerShellStandardsPolicy.md
 
 Module: PowerShellStandardsPolicy  
-Purpose: Defines mandatory PowerShell standards for strict mode resilience, verb compliance, string interpolation, pipeline hygiene, and testing across all repositories.  
+Purpose: Defines mandatory PowerShell 7 (pwsh) standards for strict mode resilience, verb compliance, string interpolation, intermediate code execution, and pipeline hygiene.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.1.0  
+Version: 8.6.0  
 Status: Authoritative Policy  
-Date: 2026-09-03  
+Date: 2026-09-26  
 
 ---
 
@@ -891,6 +891,52 @@ The bare syntax `"$var:"` inside double-quoted strings is **strictly prohibited*
 
 ---
 
+### RULE-PS-016: Single-Quoted Here-String Invariant for Inline & Intermediate Code
+When an AI agent or automated script invokes PowerShell commands via `pwsh -Command` (intermediate code execution in chat or orchestration), multi-line script blocks, path-bearing commands, and nested string interpolations `MUST` be enclosed in **single-quoted here-strings** (`@' ... '@`).
+- **Rationale**: Double-quoted command strings unescape outer quotes and mangle backslashes (`\`) prematurely during CLI argument parsing, triggering fatal `ParserError` or `ParameterBindingException` (`A positional parameter cannot be found that accepts argument...`).
+- **Mandatory Invariant**:
+  ```powershell
+  pwsh -NoProfile -Command @'
+    $target = 'D:\Git_Repositories'
+    Write-Host "Target: $target"
+  '@
+  ```
+- **Forbidden**: Passing multi-line or path-heavy scripts via double-quoted strings (`pwsh -Command "..."`).
+
+---
+
+### RULE-PS-017: Lock-Free Concurrency & FileShare Invariant
+When inspecting, reading, or hashing files in active, synchronized, or cloud-mirrored directories (such as `D:\GDrive\`, `.gemini\`, or live daemon roots), file handles `MUST NOT` be opened with exclusive locks (`FileShare.None`).
+- **Mandatory Read Pattern**: Employ explicit `[System.IO.FileStream]` with `[System.IO.FileShare]::ReadWrite` or non-exclusive readers:
+  ```powershell
+  $fs = [System.IO.FileStream]::new($file, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+  try {
+      $hashBytes = $sha256.ComputeHash($fs)
+  } finally {
+      $fs.Dispose()
+  }
+  ```
+- **Mandatory Write Pattern**: Writes to shared or synced paths `MUST` use atomic temporary file staging (`.tmp` $\rightarrow$ `[System.IO.File]::Move($tmp, $dest, $true)`) wrapped in an exponential backoff retry loop (minimum 3 attempts).
+
+---
+
+### RULE-PS-018: Reparse Point & Link Shell Extension (LSE) Safe Deletion Invariant
+NTFS directory junctions and symbolic links represent discrete filesystem reparse pointers.
+- **Mandatory Invariant**: Deleting a junction or link `MUST NEVER` invoke naive recursive deletion (`Remove-Item -Recurse -Force`) without reparse verification, as some PowerShell engines traverse into the junction and delete physical target files.
+- **Safe Deletion**:
+  1. Inspect the reparse attribute: `$item.Attributes -band [System.IO.FileAttributes]::ReparsePoint`.
+  2. Call `.Delete()` directly on the filesystem item: `(Get-Item -LiteralPath $path -Force).Delete()`.
+  3. Or delegate to Windows shell / Link Shell Extension (LSE) tools or `cmd /c rmdir $path`.
+
+---
+
+### RULE-PS-019: Universal Scope Invariant (Script & Intermediate Code Parity)
+The PowerShell standards codified in this policy (`RULE-PS-001` through `RULE-PS-018`) apply with **equal force to both permanent repository scripts (`*.ps1`, `*.psm1`) and ad-hoc intermediate command blocks (`pwsh -Command`)**.
+- The AI agent `MUST NOT` relax coding hygiene, error handling, strict typing, or parameter safety when generating inline or temporary execution blocks.
+- **Runtime Host Mandate**: The workspace engine is **PowerShell 7 (`pwsh`) exclusively**. Invoking legacy `powershell.exe` (Windows PowerShell 5.1) is strictly prohibited. Modern PS7 features (`||`, `&&`, ternary `? :`, null-coalescing `??`) are fully authorized and preferred.
+
+---
+
 <a id="powershellrulesmd"></a>
 ## Rule #10: PowerShellRules.md
 > **Category**: 3. Language & Coding Standards | **Canonical Source**: `.agents/rules/PowerShellRules.md`
@@ -901,11 +947,14 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .agents/rules/PowerShellRules.md
 Authors: Rolf
-Version: 7.0.0
+Version: 8.6.0
 Changelog:
+- 2026-09-26: Standardized on PS7 (pwsh) runtime exclusively; parity for intermediate code.
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
 
 POWERSHELL-RULES
+- ps7-exclusive: pwsh (PS7) is mandatory workspace-wide; legacy powershell.exe (5.1) is forbidden
+- intermediate-parity: rules apply equally to permanent scripts and inline pwsh -Command blocks
 - ascii-default: ASCII required; umlauts allowed in literal strings and comments
 - utf8-without-bom: scripts must be UTF-8 without BOM
 - newline-crlf: scripts must end with CRLF
@@ -918,7 +967,7 @@ POWERSHELL-RULES
 
 POWERSHELL-METADATA
 - scope: durable-memory
-- location: .copilot/Rules/PowerShellRules.md
+- location: .agents/rules/PowerShellRules.md
 
 ---
 
@@ -932,9 +981,9 @@ Module: PythonRules
 Purpose: Authoritative rule definitions for Python code quality, import ordering, string formatting, and linter compliance.  
 Path: .agents/rules/PythonRules.md  
 Authors: Rolf, Workspace_AI Engine  
-Version: 7.1.0  
+Version: 8.1.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-06  
+Date: 2026-09-26  
 
 ---
 
@@ -972,9 +1021,9 @@ Module: CMDRules
 Purpose: Authoritative rules for CMD batch generation, echo control, error levels, and normalization.  
 Path: .agents/rules/CMDRules.md  
 Authors: Rolf  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-26  
 
 ---
 
@@ -1000,9 +1049,9 @@ Module: JsonRules
 Purpose: Authoritative rules for JSON normalization, schema referencing, encoding, and indentation.  
 Path: .agents/rules/JsonRules.md  
 Authors: Rolf  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-08-29  
+Date: 2026-09-26  
 
 ---
 
@@ -1028,9 +1077,9 @@ Module: DocumentationStandardsPolicy
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.6.0  
+Version: 8.6.0  
 Status: Authoritative Policy  
-Date: 2026-09-20  
+Date: 2026-09-26  
 
 ---
 
@@ -1164,9 +1213,9 @@ Module: SubsystemGovernancePolicy
 Purpose: Governs disjunct Subsystem repositories (e.g. Home Assistant OS), dedicated subsystem inventories, JIT ephemeral write authentication, host hardware interlocks, and log segregation.  
 Path: .agents/rules/SubsystemGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 7.0.0  
+Version: 8.0.0  
 Status: Authoritative Policy  
-Date: 2026-08-29  
+Date: 2026-09-26  
 
 ---
 

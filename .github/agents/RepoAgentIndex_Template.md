@@ -4,7 +4,7 @@ Module: RepoAgentIndex_Template.md
 Purpose: Defines workspace documentation and operational rules for RepoAgentIndex_Template.
 Path: D:/Git_Repositories/Workspace_AI/.github/agents/RepoAgentIndex_Template.md
 Authors: Rolf
-Version: 1.0.0
+Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
@@ -156,3 +156,4 @@ Rules:
 =====================================================================
 END OF TEMPLATE
 =====================================================================
+
