@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-27 01:55:34 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-27 21:12:24 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -287,9 +287,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 8.6.0  
+Version: 8.7.0  
 Status: Authoritative Policy  
-Date: 2026-09-26  
+Date: 2026-09-27  
 
 ---
 
@@ -476,6 +476,14 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
      - **Mode 1 (Live Disk)**: If the bundle directory exists on disk (`Test-Path`), read content directly from the working tree.
      - **Mode 2 (Git Object Extraction)**: If the local directory has been purged, extract document content directly from the local repository Git object store using `git -C <RepoPath> show "<commit_sha>:<bundle_dir>/<file>"`.
      - **Mode 3 (Legacy Fallback)**: For pre-CRP-162 historic proposals, fall back to flat `plan_path` and `walkthrough_path` targets.
+
+### RULE-LCM-021: Tool & Macro Synchronization Invariant
+1. **Synchronous Macro Maintenance**: Whenever any tool, trampoline command (`.cmd`), alias, or CLI parameter interface is added, renamed, refactored, or deprecated across the workspace:
+   - The authoritative macro reference in `macro-definitions.md` (`.agents/rules/macro-definitions.md`) `MUST` be updated synchronously within the same proposal or commit increment to reflect accurate tool names, current aliases, and available parameters.
+   - Obsolete tool references (such as deprecated script paths or legacy trampolines) `MUST NOT` be retained as primary commands.
+2. **Antigravity IDE Bare-Word Precedence**:
+   - In Antigravity IDE environments, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`, `DO <#>`) `SHALL` be documented as the primary macro syntax to prevent collisions with the IDE's interactive context attachment menu triggered by `@`.
+   - The `@` prefix remains recognized as a backward-compatible alias.
 
 ---
 
@@ -694,19 +702,23 @@ All exported module cmdlets and public functions `MUST` strictly adhere to stand
 
 ---
 
-### RULE-PS-003: Colon-Safe String Interpolation
-When interpolating a variable immediately followed by a colon (`:`) within a double-quoted string, developers `MUST` delimit the variable using `$($var):` or `${var}:`.
-- **Rationale**: PowerShell treats `$var:` as an unclosed scope qualifier (e.g., `$global:`, `$script:`), causing a fatal `ParserError`.
+### RULE-PS-003: Colon-Safe String Interpolation & Boundary Delimitation
+When interpolating a variable immediately followed by a colon (`:`) within any double-quoted string, error message, or inline `-Command` execution block, developers and AI agents `MUST` delimit the variable using `${var}:` or `$($var):`, or use explicit string concatenation (`'Prefix ' + $var + ':'`) or format operator (`"{0}:" -f $var`).
+- **Rationale**: PowerShell treats `$var:` as an unclosed scope qualifier or drive specification (like `$env:`, `$script:`, `$global:`), causing a fatal `ParserError: Variable reference is not valid. ':' was not followed by a valid variable name character.`
+- **Universal Scope Mandate**: This rule applies with zero exception to **all ad-hoc, intermediate, or one-liner inline commands** (e.g., `Write-Error "Error in $f:"` is strictly forbidden).
 - **Correct**:
   ```powershell
+  Write-Error "AST error in ${f}: $($errors | Out-String)"
   Write-Host ("Created Proposal #{0}: {1}" -f $newId, $Title)
-  # or
   Write-Host "Created Proposal #$($newId): $Title"
+  Write-Host ('AST error in ' + $f + ':')
   ```
 - **Forbidden**:
   ```powershell
+  Write-Error "AST error in $f: $errors"         # Throws ParserError ($f: treated as drive scope)
   Write-Host "Created Proposal #$newId: $Title"  # Throws ParserError
   ```
+- **Mechanical Linter Pattern**: Any occurrence of `\$[a-zA-Z0-9_]+:(?!\/\/|[a-zA-Z])` within double-quoted strings or inline code is a quality gate violation.
 
 ---
 
@@ -937,6 +949,12 @@ The PowerShell standards codified in this policy (`RULE-PS-001` through `RULE-PS
 
 ---
 
+### RULE-PS-020: Class Dependency Runspace Pre-loading for AST Validation
+When performing static AST validation on PowerShell scripts that utilize custom classes as type annotations, all prerequisite class definition files must be dot-sourced into the runspace before invoking `[System.Management.Automation.Language.Parser]::ParseFile()`.
+- **Rationale**: PowerShell's AST parser cannot resolve custom type tokens unless the type is already loaded in the active runspace, throwing false-positive syntax errors.
+
+---
+
 <a id="powershellrulesmd"></a>
 ## Rule #10: PowerShellRules.md
 > **Category**: 3. Language & Coding Standards | **Canonical Source**: `.agents/rules/PowerShellRules.md`
@@ -947,14 +965,17 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .agents/rules/PowerShellRules.md
 Authors: Rolf
-Version: 8.6.0
+Version: 8.7.0
 Changelog:
+- 2026-09-27: Added inline-single-quotes invariant and colon-safe-interpolation rule to eliminate host shell pre-expansion and parsing errors.
 - 2026-09-26: Standardized on PS7 (pwsh) runtime exclusively; parity for intermediate code.
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
 
 POWERSHELL-RULES
 - ps7-exclusive: pwsh (PS7) is mandatory workspace-wide; legacy powershell.exe (5.1) is forbidden
 - intermediate-parity: rules apply equally to permanent scripts and inline pwsh -Command blocks
+- inline-single-quotes: inline pwsh -Command blocks MUST use single-quoted script blocks '& { ... }' or here-strings to prevent outer shell variable pre-expansion ($var)
+- colon-safe-interpolation: variables followed by colons MUST use explicit braces (${var}:)
 - ascii-default: ASCII required; umlauts allowed in literal strings and comments
 - utf8-without-bom: scripts must be UTF-8 without BOM
 - newline-crlf: scripts must end with CRLF
@@ -1285,15 +1306,20 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 > **Category**: 4. Documentation & Subsystem Architecture | **Canonical Source**: `.agents/rules/macro-definitions.md`
 
 # macro-definitions.md
-# version: 4.3.0
+# version: 5.1.0
+# date: 2026-09-27
 
 # MACRO-DEFINITIONS-METADATA
 # scope: durable-memory
 # location: .agents/rules/macro-definitions.md
 # update-policy: manual
 
-MACRO: @technical
+## Syntax Convention: Antigravity IDE Bare-Word Standard
+In the Antigravity IDE environment, typing the `@` character triggers the IDE's interactive context-attachment popup (`@Files`, `@Docs`, `@Git`). Therefore, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`, `DO <#>`, etc.) are the primary and preferred syntax. The `@` prefix remains supported as a backward-compatible alias.
+
+MACRO: technical
 - description: enforce strict technical, ascii-only, deterministic output
+- syntax: technical | @technical
 - rules:
   - no prose
   - no decoration
@@ -1301,72 +1327,93 @@ MACRO: @technical
   - no unicode
   - explicit structures only
 
-MACRO: @user
+MACRO: user
 - description: normal user-facing mode
+- syntax: user | @user
 - rules:
   - allow brief explanations
   - allow minimal formatting
   - keep responses concise
 
-MACRO: @S
+MACRO: S
 - description: system-aligned mode
+- syntax: S | @S
 - rules:
   - follow workspace rules
   - follow copilot profile
   - respect durable-memory files
 
-MACRO: @profile status
+MACRO: profile status
 - description: report current copilot profile state
+- syntax: profile status | @profile status
 - rules:
   - summarize durable-memory presence
   - summarize test-suite presence
   - summarize version alignment
 
-MACRO: @tools
-- description: display authoritative alphabetical index of LCM and HaSSD06 tools via Show-ToolIndex.ps1
-- aliases: ShowTools, showtools, ShowToolsIndex, Show-ToolIndex, @tools, @t, @menu
-- rules:
-  - 'ShowTools' / 'showtools' / '@tools' / '@t' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience User'
-  - 'ShowTools dev' / 'showtools dev' / '@tools dev' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience Dev'
-  - 'ShowTools ha' / 'showtools ha' / '@tools ha' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group HaSSD06'
-  - 'ShowTools lcm' / 'showtools lcm' / '@tools lcm' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Group LCM'
-  - 'ShowTools all' / 'showtools all' / '@tools all' -> executes 'pwsh -File tools/Show-ToolIndex.ps1 -Audience All'
-  - supports -Filter <query> and -NoBrowser / -Cli
+MACRO: ToolExplorer
+- description: generate and launch the authoritative LCM Tool Explorer interactive HTML application via Show-ToolsExplorer.ps1
+- syntax: ToolExplorer [switches] | tools [switches] | ShowTools [switches]
+- aliases: tools, ToolsExplorer, ShowTools
+- primary target: .lcm/tools/internal/Show-ToolsExplorer.ps1 (trampolines: .lcm/Cmd/ToolExplorer.cmd, ToolsExplorer.cmd)
+- parameters:
+  - -Audience <User|Dev|All>: pre-filter audience category (defaults to 'User')
+  - -Group <Name>: pre-filter by group or subsystem (e.g. 'HaSSD06', 'LCM', 'SystemConfiguration')
+  - -Subsystem <Name>: direct filter for specific subsystem (e.g. 'HaSSD06', 'Workspace_Inventory')
+  - -HaSSD06 (or -Ha): quick switch to filter directly to Home Assistant HaSSD06 tools
+  - -Role <RoleName>: pre-filter by functional role (e.g. 'QualityGate', 'ReviewGate', 'Elevation', 'DesktopGUI')
+  - -Tool <ToolName>: pre-select and highlight specific tool
+  - -Env <PS1|CMD|PY|REG|LNK|All>: pre-filter by tool execution environment
+  - -Filter <query>: initial text search keyword on startup (supports '!term' negation)
+  - -NoBrowser (or -Cli, -Text): suppress browser and output catalog to terminal
+  - -NoLaunch: generate HTML dashboard and cache without browser launch
+  - -h (or -Help): display comprehensive parameter reference
+- examples:
+  - 'ToolExplorer' or 'tools' -> launches Tool Explorer filtered to Audience=User
+  - 'ToolExplorer -Audience Dev' -> launches Tool Explorer filtered to internal developer tools
+  - 'ToolExplorer -HaSSD06' -> launches Tool Explorer filtered to HaSSD06 subsystem
+  - 'ToolExplorer -NoBrowser' -> renders tool catalog directly in console
 
-MACRO: @set-tool-audience
-- description: update whether a tool is User-exposed or Developer-only
-- rules:
-  - execute 'pwsh -File tools/Set-ToolAudience.ps1 -ToolName <name> -Audience <User|Developer>'
+MACRO: set-tool-audience
+- description: configure whether a tool is User-exposed or Developer-only
+- syntax: set-tool-audience | @set-tool-audience
+- note: Tool audience, role, and metadata are maintained interactively directly within the ToolExplorer application (or via Update-ToolCatalog.ps1)
 
-MACRO: @log
+MACRO: log
 - description: locate and open latest LCM log file and reveal full log history in File Explorer
-- aliases: @log, @logs, @lastlog
+- syntax: log [ToolName] | logs [ToolName]
+- aliases: log, logs, lastlog
 - rules:
-  - '@log' or '@logs' -> executes 'pwsh -File tools/Show-LastLog.ps1'
-  - '@log <ToolName>' -> executes 'pwsh -File tools/Show-LastLog.ps1 -ToolName <ToolName>'
+  - 'log' or 'logs' -> executes 'pwsh -File tools/Show-LastLog.ps1'
+  - 'log <ToolName>' -> executes 'pwsh -File tools/Show-LastLog.ps1 -ToolName <ToolName>'
 
-MACRO: @BCR
+MACRO: BCR
 - description: launch Beyond Compare 5 visual review display for a repository against baseline commit
-- aliases: BCR, @bcr, bcr
+- syntax: bcr <repo> [commit] | BCR <repo> [commit]
+- aliases: bcr, BCR, @bcr
 - rules:
-  - 'BCR <repo>' or 'bcr <repo>' -> executes 'pwsh -File tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
-  - 'BCR <repo> <commit>' -> executes 'pwsh -File tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
+  - 'bcr <repo>' or 'BCR <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
+  - 'bcr <repo> <commit>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
 
-MACRO: @ACCEPT
+MACRO: ACCEPT
 - description: submit review result as Accepted, close Beyond Compare review window, run quality gates, and commit
-- aliases: ACCEPT, ACCEPTED, @accept, @accepted
+- syntax: accept [repo] | ACCEPT [repo]
+- aliases: accept, ACCEPT, accepted
 - rules:
-  - 'ACCEPT <repo>' or 'ACCEPT' -> executes 'pwsh -File tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
+  - 'accept <repo>' or 'ACCEPT <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
   - automatically closes matching Beyond Compare review window
 
-MACRO: @tsr
-- description: legacy timestamp header rule trigger (superseded by persistent TimestampHeaderRule per CRP-005)
-- aliases: @tsr, @THR, @TRH, @IRA
-- status: replaced / automated
+MACRO: tsr (Legacy / Automated)
+- note: Superseded by persistent TimestampHeaderRule codified in InvariantRules.md. Automated on every turn; manual macro invocation is deprecated.
+
+MACRO: ar
+- description: generate retrospective execution trace and error triage diagnostics report analogous to BC5-Resolution-Analysis.md
+- syntax: ar [offset] | AnalyzeReasoning [offset]
+- aliases: ar, AR, AnalyzeReasoning
 - rules:
-  - permanently codified in .agents/rules/InvariantRules.md
-  - automatically active on every turn across all sessions without requiring manual invocation
-  - format: YYYYMMDD_HHMM "<short-task-description>"
+  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or .lcm/Cmd/ar.cmd)
+  - 'ar <offset>' or 'AnalyzeReasoning <offset>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset <offset>'
+  - generates a structured report in Workspace_Inventory/data/logs/ containing Execution Trace, Error Triage & Avoidance Matrix, and Decision Rationale
 
 ---
 
@@ -1387,7 +1434,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `020` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `ACCEPT`, and Proposal Bundle Directory Architecture with Git Object Dual Lifecycle (`RULE-LCM-020`). |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `021` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `ACCEPT`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), and Tool & Macro Synchronization Invariant (`RULE-LCM-021`). |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `015` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, and variable string interpolation & colon boundaries. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `008`, `RULE-ENV-003` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures, DOIT autonomous execution velocity, search dispatch routing (`Search-Everything.ps1`/`rg.exe`), tool catalog discovery, zero speculative relative pathing. |
@@ -1403,7 +1450,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `008` | **HTML & UI Display Standards** | All HTML Viewers & Dashboards | Canonical CSS tokens (`StandardTableDisplay.css`), double-row sticky table headers, column filters, large sort/inspect indicators, theme persistence, and desktop dispatching. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `007` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling, central registry non-mutation invariant. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
-| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Shorthand activation macros: `@tsr` / `@THR` / `@IRA` (superseded by persistent `TimestampHeaderRule`), `@RULEAUTH`, `@ml`. |
+| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Antigravity IDE bare-word standard (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`), `@tsr` superseded by persistent `TimestampHeaderRule`, `@RULEAUTH`, `@ml`. |
 
 ---
 
