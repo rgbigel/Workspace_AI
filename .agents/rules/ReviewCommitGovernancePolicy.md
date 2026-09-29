@@ -1,6 +1,6 @@
 ---
 name: ReviewCommitGovernancePolicy
-description: Authoritative governance policy for Review-Gated Commits, Acceptance with Edits, and Forced Commit Overrides.
+description: Authoritative governance policy for Review-Gated Commits, Completion with Edits, and Forced Commit Overrides.
 globs: "*"
 ---
 # File: ReviewCommitGovernancePolicy.md
@@ -18,7 +18,7 @@ Date: 2026-09-26
 ## 1. Governance Rules
 
 ### RULE-REV-001: Mandatory Review-Gated Commits & Gate 2 Non-Circumvention Invariant
-1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
+1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
 2. **Strict Gate 2 Non-Circumvention for All Items**:
    - **Even critical, urgent, or internally generated BUGs MUST NOT circumvent Gate 2.**
    - While `BUG` items execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, they `MUST HALT` at Gate 2 for operator review before reaching `COMMITTED`.
@@ -26,11 +26,11 @@ Date: 2026-09-26
 4. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
 5. **Non-Interactive / Headless Environment Fallback**: If Beyond Compare 5 or Session 1 interactive GUI execution is physically unavailable (e.g. running inside a headless CI/CD runner, container, or non-GUI remote SSH terminal), the agent `SHALL` present unified console diffs alongside the proposal's `Walkthrough.md` verification evidence for explicit terminal disposition before committing.
 
-### RULE-REV-002: Accepted with Edits Qualification
-When a review outcome is recorded as `Accepted with Edits` (or `Accepted with Change`):
+### RULE-REV-002: Completed with Edits Qualification
+When a review outcome is recorded as `Completed with Edits` (or `Completed with Change`):
 1. The modified codebase `MUST` execute and satisfy all repository quality gates (`Test-RepoReadiness.ps1`).
 2. The modifications `MUST NOT` introduce rule violations, regression errors, or broken dependencies.
-3. Upon satisfying all quality gates, the state `SHALL` be classified as fully `ACCEPTED` and committed to Git.
+3. Upon satisfying all quality gates, the state `SHALL` be classified as fully `COMPLETED` and committed to Git.
 
 ### RULE-REV-003: Override & Force Authority for Rejected/Deferred States
 If a review outcome is `REJECTED` or `DEFERRED`:
@@ -41,7 +41,7 @@ If a review outcome is `REJECTED` or `DEFERRED`:
 The review-gating rules (`RULE-REV-001` through `RULE-REV-003`) take strict precedence over any general "all commands are permitted" or automated background execution policies in effect across the workspace.
 
 ### RULE-REV-005: Universal Audit & Change Request Traceability
-Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) `MUST` be recorded with an immutable timestamp, reviewer identity, repository HEAD SHA, and notes into:
+Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferred`) `MUST` be recorded with an immutable timestamp, reviewer identity, repository HEAD SHA, and notes into:
 1. `Workspace_Inventory/logs/cm_activity.log` (Append-only CM audit ledger).
 2. `Workspace_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
 3. The active Change Request (CR) record in `Workspace_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
@@ -51,9 +51,9 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 2. **`Proceed` at Gate 2**: Upon operator submission of **`Proceed`** (or `Proceed <ID>`) after review inspection:
    - The proposal advances by exactly one status pulse: `REVIEW` $\rightarrow$ **`COMMITTED`**.
    - The local Git commit is created with the required SemVer increment per `RULE-REV-007`.
-3. **`ACCEPT` / `ACCEPT ALL` (Push Trigger)**:
-   - The `ACCEPT` command serves as an authoritative alias to **`PUSH`**.
-   - `ACCEPT ALL` pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`).
+3. **`PUSH` (Publication Trigger)**:
+   - `PUSH` is the only lifecycle command that may invoke a remote push.
+   - It pushes only a fully preflighted cohort of `COMPLETED` proposals and `Workspace_Inventory` in lockstep.
    - Uncommitted proposals remain strictly in their local state.
    - Enforces the Push Auto-Reset Invariant: both `LCM Mode` and `Testing Mode` unconditionally revert to `ON`.
 

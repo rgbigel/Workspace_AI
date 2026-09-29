@@ -18,7 +18,7 @@ globs: "*"
 # update-policy: manual
 
 ## Syntax Convention: Antigravity IDE Bare-Word Standard
-In the Antigravity IDE environment, typing the `@` character triggers the IDE's interactive context-attachment popup (`@Files`, `@Docs`, `@Git`). Therefore, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`, `DO <#>`, etc.) are the primary and preferred syntax. The `@` prefix remains supported as a backward-compatible alias.
+In the Antigravity IDE environment, typing the `@` character triggers the IDE's interactive context-attachment popup (`@Files`, `@Docs`, `@Git`). Therefore, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `COMPLETE`, `PUSH`, `DO <#>`, etc.) are the primary and preferred syntax. The `@` prefix remains supported as a backward-compatible alias.
 
 MACRO: technical
 - description: enforce strict technical, ascii-only, deterministic output
@@ -98,13 +98,22 @@ MACRO: BCR
   - 'bcr <repo>' or 'BCR <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
   - 'bcr <repo> <commit>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
 
-MACRO: ACCEPT
-- description: submit review result as Accepted, close Beyond Compare review window, run quality gates, and commit
-- syntax: accept [repo] | ACCEPT [repo]
-- aliases: accept, ACCEPT, accepted
+MACRO: COMPLETE
+- description: submit a completed review result, close the Beyond Compare review window, run quality gates, and commit locally
+- syntax: complete [repo] | COMPLETE [repo]
+- aliases: complete, COMPLETE, completed
 - rules:
-  - 'accept <repo>' or 'ACCEPT <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
+  - 'complete <repo>' or 'COMPLETE <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Completed'
   - automatically closes matching Beyond Compare review window
+  - never invokes a remote push
+
+MACRO: PUSH
+- description: publish a completed proposal cohort and Workspace_Inventory to their remotes in lockstep
+- syntax: push [repo] | PUSH [repo]
+- aliases: push, PUSH
+- rules:
+  - 'push <repo>' or 'PUSH <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-WorkspacePush.ps1 -Repositories <repo>'
+  - requires every target proposal to be completed and Workspace_Inventory to be ahead before any remote dispatch
 
 MACRO: tsr (Legacy / Automated)
 - note: Superseded by persistent TimestampHeaderRule codified in InvariantRules.md. Automated on every turn; manual macro invocation is deprecated.
