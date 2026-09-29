@@ -33,7 +33,7 @@ ______________________________________________________________________
   - Output: Reusable npm package exporting V2 functions.
   - Configuration: `package.json` specifying `exports` map,
     `engines: { "node": ">=22" }`, and
-    `peerDependencies: { "firebase-functions": "^7.3.0" }`.
+    `peerDependencies: { "firebase-functions": ">=6.0.0" }`.
   - Usage: Consumers install package and re-export functions in `index.ts`
     (`export * from "<package-name>"`).
 
@@ -92,8 +92,8 @@ ______________________________________________________________________
 - Set `peerDependencies`:
   ```json
   "peerDependencies": {
-    "firebase-admin": "^14.2.0",
-    "firebase-functions": "^7.3.0"
+    "firebase-admin": "^11.0.0 || ^12.0.0",
+    "firebase-functions": ">=6.0.0"
   }
   ```
 - Configure `exports` map targeting ESM/CommonJS and TypeScript declarations
@@ -111,7 +111,7 @@ ______________________________________________________________________
 
 ### Step 4: Convert Lifecycle Events
 
-Map extension lifecycle events to SDK lifecycle hooks in `src/index.ts` (imported via `import { afterFirstDeploy, afterRedeploy } from "firebase-functions/lifecycle";`):
+Map extension lifecycle events to SDK lifecycle hooks in `src/index.ts`:
 
 - `onInstall` → `afterFirstDeploy({ task: { function: "initTask" } })`
 - `onUpdate` / `onConfigure` →

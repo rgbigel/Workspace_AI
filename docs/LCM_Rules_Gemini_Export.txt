@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-09-27 21:21:50 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-09-29 18:05:05 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -287,9 +287,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 8.7.0  
+Version: 8.8.0
 Status: Authoritative Policy  
-Date: 2026-09-27  
+Date: 2026-09-28
 
 ---
 
@@ -306,7 +306,8 @@ Proposals transition through the defined lifecycle via deterministic operator co
   - At Gate 1: Advances from `SUGGESTED` $\rightarrow$ `IN_PROGRESS` (initiates implementation in Normal Cycle).
   - At Gate 2: Advances from `REVIEW` $\rightarrow$ `COMMITTED` (satisfies visual review, records disposition, increments SemVer, and commits to local Git).
 - **`do <all, #n, #n-#m> Proposals`**: **Activates `DOIT` mode** (`always-proceed = $true`). Bypasses Gate 1 planning pauses and executes planned tool operations, script runs, and file edits continuously until downstream Gate 2 is reached per `RULE-EFF-004`.
-- **`ACCEPT` / `ACCEPT ALL`**: **Alias to PUSH**. Pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`) in lockstep, enforcing the remote push version synchronization per `RULE-REV-007`. Uncommitted, suggested, or in-review items are strictly excluded from push.
+- **`COMPLETE` / `COMPLETE ALL`**: Records a completed visual review, commits locally, and transitions the reviewed proposal to `COMPLETED`. It never pushes to a remote.
+- **`PUSH`**: Pushes only a preflighted cohort of `COMPLETED` proposals and `Workspace_Inventory` to their remotes in lockstep (`COMPLETED` $\rightarrow$ `PUSHED`). Suggested, in-progress, review, and uncommitted items are strictly excluded.
 - **`delete <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deleted` and clears associated CRs.
 - **`defer <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deferred`.
 - **`give open Proposals`**: Returns numbered list of active proposals (`#n`).
@@ -327,7 +328,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 
 ### RULE-LCM-005: Dual-Commit and Push Synchronization Invariant
 1. Whenever code changes in a target repository are accepted and committed, `Workspace_Inventory` `MUST ALWAYS` be updated (updating proposal state to `completed`, recording review evidence) and **committed immediately**.
-2. On any `git push` (`ACCEPT ALL`), all modified target repositories and `Workspace_Inventory` `MUST` be pushed to their respective remotes in lockstep.
+2. On any `PUSH`, all completed target repositories and `Workspace_Inventory` `MUST` pass a non-mutating lockstep preflight before any remote dispatch. A failed preflight blocks the entire cohort.
 
 ### RULE-LCM-006: Pause, Resume, and Escape Controls
 1. **`LCM OFF` (Emergency Escape Switch)**:
@@ -338,7 +339,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - Syntax validation and fast unit checks still run, but deep testing is strictly deferred to the pre-push quality gate.
    - **Deferred Failure Protocol**: If deep testing encounters errors during pre-push validation, the push is immediately aborted and the failure automatically spawns a formal **`BUG`** proposal bundle in `DOIT` mode (`RULE-LCM-008`).
 3. **Push Auto-Reset Invariant (Self-Healing Governance)**:
-   - Neither `LCM OFF` nor `Testing OFF` may remain active after publication. Upon any push invocation (`ACCEPT`, `ACCEPT ALL`, `Invoke-WorkspacePush.ps1`), both **LCM Mode** and **Testing Mode** `MUST` unconditionally reset to `ON` (`active`).
+   - Neither `LCM OFF` nor `Testing OFF` may remain active after publication. Upon any push invocation (`PUSH`, `Invoke-WorkspacePush.ps1`), both **LCM Mode** and **Testing Mode** `MUST` unconditionally reset to `ON` (`active`).
 
 ### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
 1. **Dual-State Separation**: Every proposal in `Workspace_Inventory/data/proposals/proposals.json` `MUST` track both:
@@ -394,7 +395,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent proposal bundle in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP bundle.
 
 ### RULE-LCM-013: Mandatory Pre-Push Gemini AI & Knowledge Base Synchronization Invariant
-1. **Mandatory Automated Pre-Push Execution**: Every push operation executed via `Invoke-WorkspacePush.ps1` (or `ACCEPT ALL` triggers), whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
+1. **Mandatory Automated Pre-Push Execution**: Every `PUSH` operation executed via `Invoke-WorkspacePush.ps1`, whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
 2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`Workspace_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
 3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `Workspace_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
 
@@ -421,10 +422,12 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - Gate 2: `REVIEW` $\rightarrow$ `COMMITTED` (satisfies review, records audit disposition, increments SemVer, and commits to local Git).
 2. **`do <ID>` / `do <batch>`**:
    - Activates **`DOIT` Mode** (`always-proceed = $true`), running all planned tool operations continuously from Gate 1 to Gate 2.
-3. **`ACCEPT` / `ACCEPT ALL`**:
-   - Authoritative alias to **`PUSH`**.
-   - Filters and pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`).
-   - Uncommitted, suggested, or in-review items remain strictly in their local state and are never pushed.
+3. **`COMPLETE` / `COMPLETE ALL`**:
+   - Records review completion, creates a local commit, and transitions eligible proposals to `COMPLETED`.
+   - Never invokes a remote push.
+4. **`PUSH`**:
+   - Pushes only `COMPLETED` proposal repositories in a preflighted cohort with `Workspace_Inventory`.
+   - A cohort member that is missing, lacks a remote, or is not ahead blocks all remote dispatch.
    - Enforces the Push Auto-Reset Invariant (`RULE-LCM-006`): resets `LCM Mode` and `Testing Mode` to `ON`.iew.
 
 ### RULE-LCM-017: Autonomous System Exception Boundary & 2-Attempt Loop Breaker
@@ -441,20 +444,20 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 1. **Batch Size Safety**: Multi-item batches `MUST` be segmented into manageable, verifiable increments to prevent credit, context, and token exhaustion.
 2. **Discrete Review Boundaries**: Each approved proposal or tight batch `MUST` reach a stable, verifiable state before proceeding to subsequent items, guaranteeing that uncommitted or partially modified code never leaves the workspace in an unrecoverable state.
 
-### RULE-LCM-019: Active App Context Inheritance & Automated Tripartite Synthesis on ACCEPT
+### RULE-LCM-019: Active App Context Inheritance & Automated Tripartite Synthesis on COMPLETE
 1. **Active Context Inheritance (`Workon:`)**:
    - When an active App context is set via `Workon: A<#>` (e.g. `Workon: A1`), all subsequent Change Request Proposals (`crp: ...`), Bug Reports (`bug: ...`), and tasks generated during this focus `MUST` automatically inherit the active `app_id` (e.g. `"App: 1"`) in `proposals.json`.
    - When set to `Workon: Architecture` or cleared (`Workon: Base`), proposals are recorded with `app_id: $null` (foundational system scope).
-2. **Automated Tripartite Synthesis upon `ACCEPT`**:
-   - The `ACCEPT <id>` / `complete <id>` command serves as the authoritative lifecycle trigger that concludes an App increment.
-   - Upon `ACCEPT`, the conclusive architecture decisions, technical requirements, and code manifests associated with the proposal `MUST` be synthesized into the repository's tripartite documentation under the designated `App: #` section:
+2. **Automated Tripartite Synthesis upon `COMPLETE`**:
+   - The `COMPLETE <id>` command serves as the authoritative local lifecycle trigger that concludes an App increment.
+   - Upon `COMPLETE`, the conclusive architecture decisions, technical requirements, and code manifests associated with the proposal `MUST` be synthesized into the repository's tripartite documentation under the designated `App: #` section:
      - Architectural summary $\rightarrow$ `Architecture.md` under `## App: #`
      - Normative invariants $\rightarrow$ `Requirements.md` under `## App: #`
      - Manifest table $\rightarrow$ `Implementation.md` under `## App: #`
 3. **Multi-App Problem Resolution Gating**:
    - For multi-App bugs (`BUG-###`), the proposal `MUST` explicitly declare `primary_app` (root cause) and `affected_apps` (blast radius).
    - The bug cannot be marked `completed` or `committed` until the unit tests of the primary App *and* the integration tests of all affected Apps pass 100%.
-   - On `ACCEPT`, documentation updates are synthesized across all affected App sections in a single atomic step.
+   - On `COMPLETE`, documentation updates are synthesized across all affected App sections in a single atomic step.
 
 ### RULE-LCM-020: Proposal Bundle Directory Architecture, Dual Lifecycle & Git Object Document Retrieval
 1. **Self-Contained Proposal Directory Bundles**:
@@ -482,8 +485,19 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - The authoritative macro reference in `macro-definitions.md` (`.agents/rules/macro-definitions.md`) `MUST` be updated synchronously within the same proposal or commit increment to reflect accurate tool names, current aliases, and available parameters.
    - Obsolete tool references (such as deprecated script paths or legacy trampolines) `MUST NOT` be retained as primary commands.
 2. **Antigravity IDE Bare-Word Precedence**:
-   - In Antigravity IDE environments, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`, `DO <#>`) `SHALL` be documented as the primary macro syntax to prevent collisions with the IDE's interactive context attachment menu triggered by `@`.
+   - In Antigravity IDE environments, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `COMPLETE`, `PUSH`, `DO <#>`) `SHALL` be documented as the primary macro syntax to prevent collisions with the IDE's interactive context attachment menu triggered by `@`.
    - The `@` prefix remains recognized as a backward-compatible alias.
+
+### RULE-LCM-022: Atomic Edit Consolidation & Editor Review Safety Invariant
+1. **Single-Edit Atomic Consolidation**:
+   - The AI agent `MUST` consolidate all modifications to any single target file into **one single comprehensive edit per user turn**.
+   - The AI agent `MUST NOT` issue rapid back-to-back sequential edits to the same file across consecutive tool calls or turns without explicit user review and confirmation.
+   - When updating multiple non-contiguous blocks of a file, the agent `MUST` use `multi_replace_file_content` in a single unified tool call rather than multiple separate calls.
+2. **Editor Review Queue Non-Stacking Invariant**:
+   - To prevent stacked diff review decorations and ambiguous chronological review banners in the IDE, the AI agent `MUST NOT` re-modify a file that has an unreviewed pending diff in the editor.
+   - Prior to modifying any file that was touched in the preceding turn, the agent `MUST` verify that the user has accepted or dismissed the review.
+3. **Buffer Clobber Prevention**:
+   - The agent `MUST` ensure `"files.autoSave": "off"` is maintained in workspace settings (`.vscode/settings.json`), preventing the IDE from auto-saving stale in-memory editor buffers over freshly written disk files.
 
 ---
 
@@ -506,7 +520,7 @@ Date: 2026-09-26
 ## 1. Governance Rules
 
 ### RULE-REV-001: Mandatory Review-Gated Commits & Gate 2 Non-Circumvention Invariant
-1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`ACCEPTED` or `ACCEPTED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
+1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`).
 2. **Strict Gate 2 Non-Circumvention for All Items**:
    - **Even critical, urgent, or internally generated BUGs MUST NOT circumvent Gate 2.**
    - While `BUG` items execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, they `MUST HALT` at Gate 2 for operator review before reaching `COMMITTED`.
@@ -514,11 +528,11 @@ Date: 2026-09-26
 4. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
 5. **Non-Interactive / Headless Environment Fallback**: If Beyond Compare 5 or Session 1 interactive GUI execution is physically unavailable (e.g. running inside a headless CI/CD runner, container, or non-GUI remote SSH terminal), the agent `SHALL` present unified console diffs alongside the proposal's `Walkthrough.md` verification evidence for explicit terminal disposition before committing.
 
-### RULE-REV-002: Accepted with Edits Qualification
-When a review outcome is recorded as `Accepted with Edits` (or `Accepted with Change`):
+### RULE-REV-002: Completed with Edits Qualification
+When a review outcome is recorded as `Completed with Edits` (or `Completed with Change`):
 1. The modified codebase `MUST` execute and satisfy all repository quality gates (`Test-RepoReadiness.ps1`).
 2. The modifications `MUST NOT` introduce rule violations, regression errors, or broken dependencies.
-3. Upon satisfying all quality gates, the state `SHALL` be classified as fully `ACCEPTED` and committed to Git.
+3. Upon satisfying all quality gates, the state `SHALL` be classified as fully `COMPLETED` and committed to Git.
 
 ### RULE-REV-003: Override & Force Authority for Rejected/Deferred States
 If a review outcome is `REJECTED` or `DEFERRED`:
@@ -529,7 +543,7 @@ If a review outcome is `REJECTED` or `DEFERRED`:
 The review-gating rules (`RULE-REV-001` through `RULE-REV-003`) take strict precedence over any general "all commands are permitted" or automated background execution policies in effect across the workspace.
 
 ### RULE-REV-005: Universal Audit & Change Request Traceability
-Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`) `MUST` be recorded with an immutable timestamp, reviewer identity, repository HEAD SHA, and notes into:
+Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferred`) `MUST` be recorded with an immutable timestamp, reviewer identity, repository HEAD SHA, and notes into:
 1. `Workspace_Inventory/logs/cm_activity.log` (Append-only CM audit ledger).
 2. `Workspace_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
 3. The active Change Request (CR) record in `Workspace_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
@@ -539,9 +553,9 @@ Every review disposition (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred
 2. **`Proceed` at Gate 2**: Upon operator submission of **`Proceed`** (or `Proceed <ID>`) after review inspection:
    - The proposal advances by exactly one status pulse: `REVIEW` $\rightarrow$ **`COMMITTED`**.
    - The local Git commit is created with the required SemVer increment per `RULE-REV-007`.
-3. **`ACCEPT` / `ACCEPT ALL` (Push Trigger)**:
-   - The `ACCEPT` command serves as an authoritative alias to **`PUSH`**.
-   - `ACCEPT ALL` pushes **all currently `COMMITTED` proposals only** to remote repositories (`COMMITTED` $\rightarrow$ `PUSHED`).
+3. **`PUSH` (Publication Trigger)**:
+   - `PUSH` is the only lifecycle command that may invoke a remote push.
+   - It pushes only a fully preflighted cohort of `COMPLETED` proposals and `Workspace_Inventory` in lockstep.
    - Uncommitted proposals remain strictly in their local state.
    - Enforces the Push Auto-Reset Invariant: both `LCM Mode` and `Testing Mode` unconditionally revert to `ON`.
 
@@ -1315,7 +1329,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 # update-policy: manual
 
 ## Syntax Convention: Antigravity IDE Bare-Word Standard
-In the Antigravity IDE environment, typing the `@` character triggers the IDE's interactive context-attachment popup (`@Files`, `@Docs`, `@Git`). Therefore, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`, `DO <#>`, etc.) are the primary and preferred syntax. The `@` prefix remains supported as a backward-compatible alias.
+In the Antigravity IDE environment, typing the `@` character triggers the IDE's interactive context-attachment popup (`@Files`, `@Docs`, `@Git`). Therefore, bare-word command invocations (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `COMPLETE`, `PUSH`, `DO <#>`, etc.) are the primary and preferred syntax. The `@` prefix remains supported as a backward-compatible alias.
 
 MACRO: technical
 - description: enforce strict technical, ascii-only, deterministic output
@@ -1395,13 +1409,22 @@ MACRO: BCR
   - 'bcr <repo>' or 'BCR <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
   - 'bcr <repo> <commit>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
 
-MACRO: ACCEPT
-- description: submit review result as Accepted, close Beyond Compare review window, run quality gates, and commit
-- syntax: accept [repo] | ACCEPT [repo]
-- aliases: accept, ACCEPT, accepted
+MACRO: COMPLETE
+- description: submit a completed review result, close the Beyond Compare review window, run quality gates, and commit locally
+- syntax: complete [repo] | COMPLETE [repo]
+- aliases: complete, COMPLETE, completed
 - rules:
-  - 'accept <repo>' or 'ACCEPT <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Accepted'
+  - 'complete <repo>' or 'COMPLETE <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Completed'
   - automatically closes matching Beyond Compare review window
+  - never invokes a remote push
+
+MACRO: PUSH
+- description: publish a completed proposal cohort and Workspace_Inventory to their remotes in lockstep
+- syntax: push [repo] | PUSH [repo]
+- aliases: push, PUSH
+- rules:
+  - 'push <repo>' or 'PUSH <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-WorkspacePush.ps1 -Repositories <repo>'
+  - requires every target proposal to be completed and Workspace_Inventory to be ahead before any remote dispatch
 
 MACRO: tsr (Legacy / Automated)
 - note: Superseded by persistent TimestampHeaderRule codified in InvariantRules.md. Automated on every turn; manual macro invocation is deprecated.
@@ -1434,7 +1457,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `021` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `ACCEPT`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), and Tool & Macro Synchronization Invariant (`RULE-LCM-021`). |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `022` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `COMPLETE`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), Tool & Macro Synchronization Invariant (`RULE-LCM-021`), and Atomic Edit Consolidation & Editor Review Safety Invariant (`RULE-LCM-022`). |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `015` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, and variable string interpolation & colon boundaries. |
 | **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `008`, `RULE-ENV-003` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures, DOIT autonomous execution velocity, search dispatch routing (`Search-Everything.ps1`/`rg.exe`), tool catalog discovery, zero speculative relative pathing. |
@@ -1450,7 +1473,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `008` | **HTML & UI Display Standards** | All HTML Viewers & Dashboards | Canonical CSS tokens (`StandardTableDisplay.css`), double-row sticky table headers, column filters, large sort/inspect indicators, theme persistence, and desktop dispatching. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `007` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling, central registry non-mutation invariant. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
-| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Antigravity IDE bare-word standard (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `ACCEPT`), `@tsr` superseded by persistent `TimestampHeaderRule`, `@RULEAUTH`, `@ml`. |
+| **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Antigravity IDE bare-word standard (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `COMPLETE`, `PUSH`), `@tsr` superseded by persistent `TimestampHeaderRule`, `@RULEAUTH`, `@ml`. |
 
 ---
 

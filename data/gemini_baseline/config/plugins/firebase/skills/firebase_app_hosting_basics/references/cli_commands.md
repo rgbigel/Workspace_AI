@@ -11,7 +11,7 @@ using the Firebase Console.
 - **Purpose**: Interactive command that sets up App Hosting in your local
   project. Use this command only if you are able to handle interactive CLI
   inputs well. Alternatively, you can manually edit `firebase.json` and
-  `apphosting.yaml`.
+  `apphosting.yml`.
 
 - **Effect**:
 
@@ -33,6 +33,10 @@ using the Firebase Console.
 
 - **Purpose**: Deletes a backend and its associated resources.
 
+### `npx -y firebase-tools@latest apphosting:rollouts:list <backend-id>`
+
+- **Purpose**: Lists the history of rollouts for a backend.
+
 ## Secrets Management
 
 App Hosting uses Cloud Secret Manager to securely handle sensitive environment
@@ -44,7 +48,7 @@ variables (like API keys).
   available to App Hosting.
 - **Behavior**: Prompts for the secret value (hidden input).
 
-### `npx -y firebase-tools@latest apphosting:secrets:grantaccess <secret-name> --backend <backend-id>`
+### `npx -y firebase-tools@latest apphosting:secrets:grantaccess <secret-name>`
 
 - **Purpose**: Grants the App Hosting service account permission to access the
   secret.

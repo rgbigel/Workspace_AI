@@ -31,7 +31,7 @@ Create a `firebase.js` (or `firebase.ts`) file. You can fetch your config object
 using the CLI:
 
 ```bash
-npx -y firebase-tools@latest apps:sdkconfig WEB <APP_ID>
+npx -y firebase-tools@latest apps:sdkconfig <APP_ID>
 ```
 
 Copy the output config object into your initialization file:

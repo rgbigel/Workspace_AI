@@ -23,7 +23,7 @@ Gemini in Android Studio expects skills to be located at `~/.agents/skills`.
    supports an `android_studio` agent identifier, you can run:
 
    ```bash
-   npx -y skills add firebase/agent-skills --skill "*" --yes
+   npx -y skills add firebase/agent-skills --agent android_studio --skill "*" --yes
    ```
 
    If the `skills` CLI does not support Android Studio directly, you can
@@ -33,7 +33,7 @@ Gemini in Android Studio expects skills to be located at `~/.agents/skills`.
 1. **Update Existing Skills:** To update skills, you can try:
 
    ```bash
-   npx -y skills update --yes
+   npx -y skills update --agent android_studio --yes
    ```
 
    If manual installation was used, pull the latest changes from the

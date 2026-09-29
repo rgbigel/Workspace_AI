@@ -43,11 +43,11 @@ projects.
    - Global: User Settings `mcp.json` file.
 
    *Note: If the `.vscode/` directory or `mcp.json` file does not exist, create
-   them and initialize the file with `{ "servers": {} }` before
+   them and initialize the file with `{ "mcp": { "servers": {} } }` before
    proceeding.*
 
 1. **Check Existing Configuration**: Open the `mcp.json` file and check the
-   `servers` object for a `firebase` entry.
+   `mcp.servers` object for a `firebase` entry.
 
    - It is already configured if the `command` is `"firebase"` OR if the
      `command` is `"npx"` with `"firebase-tools"` and `"mcp"` in the `args`.
@@ -75,7 +75,7 @@ projects.
    ```
 
 1. **Add or Update Configuration**: If the `firebase` block is missing or
-   incorrect, add it to the `servers` object:
+   incorrect, add it to the `mcp.servers` object:
 
    ```json
    "firebase": {
@@ -90,8 +90,8 @@ projects.
    ```
 
    *CRITICAL: Merge this configuration into the existing `mcp.json` file under
-   the `servers` object. You MUST preserve any other existing servers inside
-   `servers`.*
+   the `mcp.servers` object. You MUST preserve any other existing servers inside
+   `mcp.servers`.*
 
 1. **Verify Configuration**: Save the file and confirm the `firebase` block is
    present and properly formatted JSON.

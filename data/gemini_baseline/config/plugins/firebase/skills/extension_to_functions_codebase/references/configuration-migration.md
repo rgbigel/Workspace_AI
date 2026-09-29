@@ -112,14 +112,14 @@ Follow these rules to ensure a deterministic and safe migration:
 #### Typing & Exports
 
 - **Numbers**: If the value is used as a number, use `defineInt` or
-  `defineFloat`.
+  `defineNumber`.
 - **Secrets**: If the key contains "KEY", "SECRET", "TOKEN", or "PASSWORD", use
   `defineSecret()` or `defineJsonSecret()`.
   - *Note*: Secrets MUST be explicitly bound to the function that uses them in
     the options object (e.g., `{ secrets: [myKey, myJsonSecret] }`). Both
     `SecretParam` and `JsonSecretParam` are supported in the `secrets` array.
 - **Lists**: Use `defineList` for comma-separated lists.
-- **JSON Secrets**: Use `defineJsonSecret` for JSON objects stored in Cloud Secret Manager (or `defineString` and `JSON.parse()` at runtime for non-secret JSON strings).
+- **JSON**: Use `defineJSON` for JSON strings.
 - **Buckets**: If the param is a storage bucket, set `input: { text: {} }` or
   bucket selector.
 - **Input Validation**: Use `nonEmpty: true` inside `input.text` or
@@ -148,7 +148,7 @@ Follow these rules to ensure a deterministic and safe migration:
 #### Advanced Interpolation & Logic
 
 - **String Interpolation**: Use the `expr` tagged template literal from
-  `firebase-functions/params` (e.g., `` expr`every ${period} days` ``) instead
+  `firebase-functions/params` (e.g., `` `expr`every ${period} days` ``) instead
   of standard template literals when constructing dynamic strings with
   parameters. Do NOT call `.value()` inside `expr`.
 - **Logic Operators**: Use expressions like

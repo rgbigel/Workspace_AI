@@ -20,8 +20,8 @@ Check if the extension is already installed before proceeding:
    gemini extensions install https://github.com/firebase/agent-skills
    ```
 1. **Verify Installation**: Run the following checks to confirm installation:
-   - `gemini mcp list` -> Output should include `firebase`.
-   - `gemini skills list` -> Output should include `firebase-basics`.
+   - `gemini mcp list` -> Output should include `firebase-tools`.
+   - `gemini skills list` -> Output should include `firebase-basic`.
 
 ### 2. Restart and Verify Connection
 
@@ -38,14 +38,14 @@ If the user only wants to use the MCP server for the current project:
 ### 1. Configure and Verify Firebase MCP Server
 
 1. **Check Existing Configuration**: Run `gemini mcp list`. If the output
-   includes `firebase`, the MCP server is already configured.
+   includes `firebase-tools`, the MCP server is already configured.
 1. **Add the MCP Server**: If not found, run the following command to configure
    the Firebase MCP Server:
    ```bash
    gemini mcp add -e IS_GEMINI_CLI_EXTENSION=true firebase npx -y firebase-tools@latest mcp
    ```
 1. **Verify Configuration**: Re-run `gemini mcp list` to confirm
-   `firebase` is connected.
+   `firebase-tools` is connected.
 
 ### 2. Restart and Verify Connection
 

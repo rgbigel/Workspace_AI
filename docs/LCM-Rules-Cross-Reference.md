@@ -1,22 +1,24 @@
 # Lifecycle Model (LCM) Rules Cross-Reference Matrix
 
-**Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`  
-**Governance Authority**: `Workspace_AI` / `Workspace_Inventory`  
-**LCM Governance Baseline**: `v7.6.0`  
-**Author**: Rolf & Antigravity AI Assistant  
-**Date**: 2026-09-24  
+**Document Path**: `Workspace_AI/docs/LCM-Rules-Cross-Reference.md`
+**Governance Authority**: `Workspace_AI`
+**LCM Governance Baseline**: `v8.0.0`
+**Author**: Rolf & Antigravity AI Assistant
+**Date**: 2026-09-29
 
 ---
 
 ## 1. Rule Discovery & Junction Architecture
 
-All LCM governance rules originate from the **Canonical Hub** at the workspace root and are automatically propagated to child repositories via **NTFS Junctions**:
+All LCM governance rules physically originate from the **Canonical Physical Rule Hub** at `D:\Git_Repositories\Workspace_AI\.agents\rules`. The workspace root exposes that directory through a junction, and governed child repositories link directly to the same canonical hub.
 
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    Hub["Canonical Rule Hub<br/>D:/Git_Repositories/.agents/rules/<br/>(17 Authoritative Rule Files)"]
-    
+    Root["Root discovery junction<br/>D:/Git_Repositories/.agents/rules"]
+    Hub["Canonical Physical Rule Hub<br/>D:/Git_Repositories/Workspace_AI/.agents/rules<br/>(17 Authoritative Rule Files)"]
+
+    Root -->|NTFS Junction| Hub
     Hub -->|NTFS Junction| J1["BootEntryManager/.agents/rules"]
     Hub -->|NTFS Junction| J2["VolumeInventory/.agents/rules"]
     Hub -->|NTFS Junction| J3["Workspace_Inventory/.agents/rules"]
@@ -43,7 +45,7 @@ graph TD
 | **7** | [LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md) | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | • English language invariant for code, comments, documentation, and commit messages.<br>• ASCII-only file and directory naming. | • `WorkspaceQualityGates.psm1`<br>• Code reviewers |
 | **8** | [RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md) | `RULE-CTX-001`<br>`RULE-CTX-002`<br>`RULE-CTX-003`<br>`RULE-CTX-004` | **Context Scoping** | Child Repositories | • Active repository scope resolution.<br>• Fast-tier repository context priming (`.lcm/config.json`).<br>• Zero redundant recursive scans.<br>• Global LCM triad awareness (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`). | • `Get-WorkspaceRoot`<br>• `WorkspaceCM.psm1` |
 | **9** | [InvariantRules.md](file:///.agents/rules/InvariantRules.md) | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | • Determinism: identical input $\rightarrow$ identical output.<br>• Reproducibility and zero speculation.<br>• ASCII default (Unicode allowed in `.md` & PS comments).<br>• 2-space indentation, CRLF newlines, UTF-8 without BOM. | • Git hooks<br>• AST syntax checkers |
-| **10** | [RuleAuthority.md](file:///.agents/rules/RuleAuthority.md) | `RULE-AUTH-001`<br>`RULE-AUTH-002` | **Governance Hierarchy** | Core Governance | • **RULE-AUTH-001**: Single physical source of truth at `Workspace_Inventory\.agents\rules\` (linked to root container via junction, eliminating root commit churn).<br>• **RULE-AUTH-002**: **Mandatory Rule Matrix Synchronization** — whenever rules are added/modified, update both `AGENTS.md` and this cross-reference matrix. | • `Test-LCMRuleHealth.ps1`<br>• `Repair-LCMRules.ps1`<br>• Quality gates |
+| **10** | [RuleAuthority.md](file:///.agents/rules/RuleAuthority.md) | `RULE-AUTH-001`<br>`RULE-AUTH-002` | **Governance Hierarchy** | Core Governance | • **RULE-AUTH-001**: Single physical source of truth at `Workspace_AI\.agents\rules\`, exposed through root and child junctions without duplicate Git ownership.<br>• **RULE-AUTH-002**: **Mandatory Rule Matrix Synchronization** — whenever rules are added/modified, update both `AGENTS.md` and this cross-reference matrix. | • `Test-LCMRuleHealth.ps1`<br>• `Repair-LCMRules.ps1`<br>• Quality gates |
 | **11** | [PowerShellRules.md](file:///.agents/rules/PowerShellRules.md) | `POWERSHELL-RULES` | **Scripting Standards** | PowerShell code | • `Set-StrictMode -Version Latest`.<br>• `$ErrorActionPreference = 'Stop'`.<br>• Explicit parameter typing and CmdletBinding. | • Pester test suites<br>• Quality gates |
 | **12** | [CMDRules.md](file:///.agents/rules/CMDRules.md) | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | • Explicit echo control (`@echo off`).<br>• Error level verification (`if errorlevel 1`).<br>• ASCII-only batch character sets. | • Batch execution runners |
 | **13** | [JsonRules.md](file:///.agents/rules/JsonRules.md) | `JSON-RULES` | **Data Serialization** | `*.json` | • UTF-8 without BOM encoding.<br>• 2-space indentation formatting.<br>• `$schema` schema validation references. | • `ConvertTo-Json -Depth 5` |

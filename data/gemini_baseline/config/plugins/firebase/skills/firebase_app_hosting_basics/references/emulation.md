@@ -40,7 +40,7 @@ npx -y firebase-tools@latest emulators:start
 
 - **Builds your app**: Runs the build command defined in your `package.json` to
   generate the serving artifact.
-- **Serves locally**: Runs the app on `localhost:5002` (default). Configurable
+- **Serves locally**: Runs the app on `localhost:5004` (default). Configurable
   by setting `host` and `port` in the `emulators` block of `firebase.json`, like
   so:
 
@@ -49,7 +49,7 @@ npx -y firebase-tools@latest emulators:start
   "emulators": {
     "apphosting": {
       "host": "localhost",
-      "port": 5002
+      "port": 5004
     }
   }
 }
