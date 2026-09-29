@@ -1,5 +1,7 @@
 # LCM Local Governance Link
-.agents/
+.agents/*
+!.agents/rules/
+!.agents/rules/**
 
 # Logs & Temporary Files
 logs/

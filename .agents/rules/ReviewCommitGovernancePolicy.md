@@ -9,9 +9,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 8.1.0  
+Version: 8.2.0  
 Status: Authoritative Policy  
-Date: 2026-09-26  
+Date: 2026-09-29  
 
 ---
 
@@ -76,6 +76,13 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
 ### RULE-REV-008: Transparent Single-Session Directory Junction Review (FollowSymLinks)
 1. **Transparent Directory Junction Traversal**: Beyond Compare 5 review sessions `MUST` configure `<FollowSymLinks Value="True"/>` in `BCSessions.xml`, enabling Beyond Compare to traverse NTFS directory junctions (such as `.agents\rules`) inline within the primary review session.
 2. **Unified Single-Window Invariant**: Dual-session Beyond Compare review dispatch is retired. All repository review comparisons execute in a single Beyond Compare window without opening a separate junction review instance.
-3. **Automated Baseline Rules Provisioning**: When reviewing a child repository where the baseline Git commit does not natively track `.agents/rules`, `Invoke-BeyondCompareReview.ps1` `MUST` automatically populate the baseline rules directory (`<TempReviewRoot>\.agents\rules`) from the authoritative `Workspace_AI` baseline to ensure accurate inline diffing.
-4. **Exclusion Filter Alignment**: Review exclusion filter lists `MUST NOT` filter out `-.agents\rules\`, ensuring all governance rule diffs remain directly inspectable in the primary review pane.
+3. **Composite Local Baseline Identity**: The left pane `MUST` be exported from the target repository's explicitly resolved local `BaseCommit`; it `MUST NOT` implicitly resolve, fetch, or substitute a remote reference. Where that commit exposes a junction-backed path, the scratch tree `MUST` replace the junction with a committed rules snapshot selected in this order: the target `BaseCommit`, the nearest target-history ancestor whose Git tree contains the junction path, then the local committed `HEAD` of the live junction authority. The selected source repository, relative path, and SHA `MUST` be recorded alongside the target SHA.
+4. **Historical Junction Semantics**: The baseline `MUST` contain only files present in the selected committed rules snapshot. A file visible through the live junction but absent from every available committed snapshot `MUST` remain absent on the left and appear as a live-only addition on the right; the launcher `MUST NOT copy` mutable working-tree authority content into a historical baseline.
+5. **Identity and Cache Clarity**: The baseline cache identity and pane title `MUST` display the target local SHA, selected rules source, and selected rules SHA. A launcher `MUST NOT` invent or fall back to an unrelated version label when a real version artifact is unavailable.
+6. **Exclusion Filter Alignment**: Review exclusion filter lists `MUST NOT` filter out `-.agents\rules\`, ensuring all governance rule diffs remain directly inspectable in the primary review pane.
+
+### RULE-REV-009: Review Discovery Disclosure and Durable Governance Closure
+1. **Operator Visibility**: When an agent discovers that a review defect, tool repair, or validation result changes the durable review contract, it `MUST` tell the operator before claiming the implementation is complete. The disclosure `MUST` distinguish the implemented code change from the pending governance or documentation change.
+2. **Same-Change-Set Policy Update**: Where the finding defines a recurring review behavior, the agent `MUST` update this policy in the same governed change set, including the exact invariant, evidence fields, and required tool behavior. A tool-only repair is incomplete until this policy update is present or the operator explicitly defers it.
+3. **Synchronized Discovery Surface**: Any update under this rule `MUST` synchronize the root `AGENTS.md` rule index and `Workspace_AI/docs/LCM-Rules-Cross-Reference.md` under `RULE-AUTH-002`.
 
