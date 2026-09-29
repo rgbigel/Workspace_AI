@@ -3,9 +3,10 @@
 ```yaml
 CRP-ID: CRP-190
 Scope: Temporary Antigravity IDE tools and transient PowerShell automation
-Status: Suggested
-Plan-State: suggested
-Progress-State: undecided
+Status: Completed
+Plan-State: completed
+Progress-State: completed
+Maturity: Preliminary design record
 Target-Repositories:
 	- Workspace_AI
 	- Git_Repositories
@@ -27,6 +28,13 @@ The failure-mode catalog identifies repeatable errors in transient automation: q
 ## Non-Duplication
 
 The proposal extends, rather than replaces, current elevation policy and the atomic single-edit/editor review safeguards. It does not alter permanent-tool authoring standards.
+
+## Current Rebaseline
+
+The goals remain unchanged. The review accounts for current temporary-tool
+practice: PowerShell 7 and managed scratch scripts for stateful commands. This
+CRP remains the design and verification contract for a future guard helper; it
+does not claim that helper has already been implemented.
 
 ## Success Criteria
 
