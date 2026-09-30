@@ -1,11 +1,21 @@
 # Walkthrough: CRP-201
 
-## Gate 1 Record
+## Execution Record
 
-CRP-201 was created to capture methodology knowledge exposed during BCompare
-review and push-flow analysis. The issue is documentation reconciliation, not
-a claim that operational records or temporary uncommitted changes are invalid.
+CRP-201 reconciles methodology documentation with the operating boundary between
+BCompare visual review and legitimate tracked operational evidence. It does not
+define lifecycle state transitions, commit timing, or Control Hub actions.
 
-No methodology document, Inventory tool, review tool, or push tool has been
-modified under this CRP. It awaits explicit activation before any authoritative
-documentation is changed.
+Updated authoritative documents:
+
+- `docs/Architecture.md`: Added the visual-review scope and operational-evidence
+	boundary.
+- `docs/Requirements.md`: Added `LCM-REQ-041` for review scope, append-oriented
+	operational evidence, and release-closure reconciliation.
+- `docs/Implementation.md`: Mapped authoritative methodology, proposal bundles,
+	and CM evidence to their distinct responsibilities.
+- `docs/LCM-Configuration-Management.md`: Defined operational evidence and
+	release-closure reconciliation without redefining lifecycle transitions.
+
+Focused terminology and Markdown validation are pending. A BCompare review of
+the `Workspace_AI` documentation changes is required before any commit.

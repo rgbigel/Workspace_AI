@@ -54,9 +54,23 @@ Each review session launched via `Invoke-BeyondCompareReview.ps1` produces an is
 * **Right-Side Edit Detection**: Compares working tree status against pre-review state; if modified, classifies disposition as `AcceptedWithEdits` and runs `Test-WorkspaceReadiness.ps1` before committing.
 * **Maintenance Purge**: `Clear-BCReviewTemp.ps1 -All` purges all temp session directories and is excluded from triggering review acceptance.
 
+### C. Documentation and Operational Evidence
+
+The authoritative methodology is maintained in `Workspace_AI/docs/Architecture.md`,
+`Requirements.md`, `Implementation.md`, and `LCM-Configuration-Management.md`.
+Proposal bundles in `docs/Proposals/` and append-oriented CM records in
+`Workspace_Inventory/data/` and `Workspace_Inventory/logs/` support incremental
+delivery and auditability; they are not equivalent to permanent implementation
+assets for BCompare review purposes.
+
+At release closure, and no later than a major-version push, accepted delivery
+knowledge is reconciled from proposal bundles and walkthroughs into the
+authoritative methodology. Historical-log retention and cleanup remain
+maintenance operations, not rewriting of operational evidence.
+
 ---
 
-### C. PowerShell Modules
+### D. PowerShell Modules
 
 | Repository | Module Path | Version | Exported Functions & Scope |
 | :--- | :--- | :---: | :--- |

@@ -104,7 +104,28 @@ Automated tools must never mutate target repositories without prior proposal and
 
 ---
 
-## 6. Operational Working Context & Repository Priming Protocol
+## 6. Review Scope, Operational Evidence, and Release Closure
+
+Beyond Compare filters define what requires visual comparison in a given review
+session. They do not determine whether a tracked file is valid operational
+evidence. Ledger entries, activity logs, review receipts, inventories, and
+baseline records may be created, updated, or temporarily uncommitted while
+work is prototyped, tested, reviewed, or prepared for release.
+
+The proposal ledger and activity logs are append-oriented operational records.
+Their routine bookkeeping is not subject to source-code visual review merely
+because it is tracked. Proposal bundles and walkthroughs may retain provisional
+knowledge until it is reconciled into the authoritative methodology after
+meaningful delivery or at release closure, no later than a major-version push.
+Retention and cleanup of historical operational records are maintenance, not
+history rewriting.
+
+This section does not define lifecycle state transitions, commit timing, or
+Control Hub actions; those remain outside the scope of this methodology update.
+
+---
+
+## 7. Operational Working Context & Repository Priming Protocol
 
 To eliminate cold-start discovery scans and maintain instant conversational continuity across IDE sessions:
 

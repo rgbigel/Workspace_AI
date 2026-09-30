@@ -147,6 +147,20 @@ sequenceDiagram
   * `tight`: Stepwise review stops between intermediate sub-tasks.
 * **Exemption Policy**: `Workspace_Inventory` is **the sole exempt repository** from visual diff review because it contains purely tool-generated CM ledger data. The Root Container and all child repositories strictly require Beyond Compare 5 visual review.
 
+### 3.3 Visual Review Scope and Operational Evidence
+
+Beyond Compare filters determine visual review materiality only. They do not
+determine whether a tracked operational artifact is legitimate. Operational
+records such as proposal-ledger entries, activity logs, review receipts,
+inventories, and baseline evidence may change or remain temporarily
+uncommitted during prototyping, testing, and release preparation.
+
+Proposal bundles and their walkthroughs may hold provisional delivery knowledge
+between review cycles. The authoritative methodology is reconciled from that
+knowledge after meaningful delivery or at release closure, no later than a
+major-version push. This reconciliation boundary does not define lifecycle
+state transitions or Control Hub actions.
+
 ---
 
 ## 4. Configuration Management & Governance Diagnostics

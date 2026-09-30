@@ -156,4 +156,18 @@ Every governed repository `MUST` provide an `install/` directory containing `Ins
 2. **Structural Invariant**: `Installation.md` is unified and `MUST NOT` be split into tripartite parts. Complex installations may be divided into supporting markdown documents residing strictly within the `install/` directory.
 3. **Cross-Repository References**: Dependencies on shared components (e.g. `SharedModules`) `MUST` be referenced with their specific prerequisite requirements and installation steps.
 
+### LCM-REQ-041 - Review Scope and Documentation Reconciliation
+1. Beyond Compare filters `MUST` govern visual review materiality only; they
+	`MUST NOT` classify tracked operational records as invalid or unreviewed
+	source solely because they are filtered from a review view.
+2. Proposal ledgers and activity logs `MUST` be treated as append-oriented
+	operational evidence. Routine lifecycle bookkeeping `MUST NOT` require the
+	same visual review treatment as permanent source or architecture documents.
+3. Proposal bundles and review walkthroughs `MAY` retain provisional knowledge
+	during incremental delivery. That knowledge `MUST` be reconciled into the
+	authoritative methodology after meaningful delivery or at release closure,
+	no later than a major-version push.
+4. Retention and cleanup of historical operational records `MUST` preserve the
+	distinction between maintenance and history rewriting.
+
 

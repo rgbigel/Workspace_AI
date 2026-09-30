@@ -9,9 +9,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, Workspace_AI Governance  
-Version: 8.2.0  
+Version: 8.2.1  
 Status: Authoritative Policy  
-Date: 2026-09-29  
+Date: 2026-09-30  
 
 ---
 
@@ -24,7 +24,8 @@ Date: 2026-09-29
    - While `BUG` items execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, they `MUST HALT` at Gate 2 for operator review before reaching `COMMITTED`.
 3. **Conversational Directives Do Not Waive Gating**: Explicit user instructions in chat (e.g. "yes, remove that", "fix this error") grant authority to execute file edits and staging, but **DO NOT waive the Beyond Compare visual review gate**. The agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and await user review sign-off / folder clearance before stepping to `COMMITTED`.
 4. **Exemption Scope**: Only purely mechanical telemetry artifacts defined in `RULE-EFF-001` (`inventory.json`, `INVENTORY_DASHBOARD.md`, `out/test_results.json`, and activity logs) are exempt from visual review gating.
-5. **Non-Interactive / Headless Environment Fallback**: If Beyond Compare 5 or Session 1 interactive GUI execution is physically unavailable (e.g. running inside a headless CI/CD runner, container, or non-GUI remote SSH terminal), the agent `SHALL` present unified console diffs alongside the proposal's `Walkthrough.md` verification evidence for explicit terminal disposition before committing.
+5. **BCompare Materiality Authority**: Beyond Compare is the sole authority for whether a difference is material. The review launcher MUST enable its insignificant-difference controls, and post-review staging MUST record only explicit operator selections made in the visual session. Raw-byte, Git-diff, line-ending, or whitespace comparisons MUST NOT create review candidates or obstruct review disposition.
+6. **Non-Interactive / Headless Environment Fallback**: If Beyond Compare 5 or Session 1 interactive GUI execution is physically unavailable (e.g. running inside a headless CI/CD runner, container, or non-GUI remote SSH terminal), the agent `SHALL` present unified console diffs alongside the proposal's `Walkthrough.md` verification evidence for explicit terminal disposition before committing.
 
 ### RULE-REV-002: Completed with Edits Qualification
 When a review outcome is recorded as `Completed with Edits` (or `Completed with Change`):
