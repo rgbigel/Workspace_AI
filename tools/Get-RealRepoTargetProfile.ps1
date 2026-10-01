@@ -34,9 +34,9 @@ if ($Help) {
 Module: Get-RealRepoTargetProfile.ps1
 Purpose: Build a read-only profile of the selected real-repository dry-run target.
 Path: tools/Get-RealRepoTargetProfile.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.2.0
-Caller Contract: Called only after Workspace_AI dry-run policy validation; reads target path, git status, and adapter surface presence without writing to the target.
+Caller Contract: Called only after LCM_AI dry-run policy validation; reads target path, git status, and adapter surface presence without writing to the target.
 Changelog:
 - 2026-08-01: Handled selected repositories without a resolvable HEAD without noisy Git stderr.
 - 2026-08-01: Added read-only Git root, branch, and HEAD metadata reporting.

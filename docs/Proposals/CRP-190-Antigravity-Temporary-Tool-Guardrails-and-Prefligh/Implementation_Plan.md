@@ -2,7 +2,7 @@
 
 ## Planned Components
 
-1. Add a narrowly scoped temporary-tool policy section to the authoritative Workspace_AI rules.
+1. Add a narrowly scoped temporary-tool policy section to the authoritative LCM_AI rules.
 2. Add a reusable preflight command or module that accepts a temporary script path and optional shared-resource targets.
 3. Create the managed scratch directory contract and retention behavior.
 4. Add Pester coverage for command transport, AST failure, StrictMode initialization, resource contention detection, elevation routing, and idempotence.

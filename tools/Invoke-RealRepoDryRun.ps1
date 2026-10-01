@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Report Workspace_AI real-repository dry-run readiness without writing to any target repository.
+  Report LCM_AI real-repository dry-run readiness without writing to any target repository.
 
 .PARAMETER AsJson
   Output dry-run report in JSON format.
@@ -32,9 +32,9 @@ if ($Help) {
 
 <#
 Module: Invoke-RealRepoDryRun.ps1
-Purpose: Report Workspace_AI real-repository dry-run readiness without writing to any target repository.
+Purpose: Report LCM_AI real-repository dry-run readiness without writing to any target repository.
 Path: tools/Invoke-RealRepoDryRun.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.7.0
 Caller Contract: Called during readiness and operator preparation; reports blocked/ready state and performs read-only git status only after dry-run is enabled.
 Changelog:

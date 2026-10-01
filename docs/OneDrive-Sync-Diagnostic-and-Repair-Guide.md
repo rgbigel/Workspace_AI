@@ -1,7 +1,7 @@
 ---
 title: "OneDrive Sync Engine Diagnostic and Ghost Repair Runbook"
 description: "Authoritative technical reference and runbook for diagnosing stuck OneDrive sync loops (0.0 KB remaining 100%), SQLite database inspection, AuthorizeMasterUser ACL remediation, and ghost queue purge."
-author: "Rolf, Workspace_AI Governance"
+author: "Rolf, LCM_AI Governance"
 version: "2.1.0"
 date: "2026-08-24"
 status: "Authoritative Runbook"
@@ -10,8 +10,8 @@ status: "Authoritative Runbook"
 # OneDrive Sync Engine Diagnostic and Ghost Repair Runbook
 
 Module: OneDrive-Sync-Diagnostic-and-Repair-Guide  
-Path: `Workspace_AI/docs/OneDrive-Sync-Diagnostic-and-Repair-Guide.md`  
-Authors: Rolf, Workspace_AI Governance  
+Path: `LCM_AI/docs/OneDrive-Sync-Diagnostic-and-Repair-Guide.md`  
+Authors: Rolf, LCM_AI Governance  
 Date: 2026-08-24  
 Version: 8.1.0  
 
@@ -47,7 +47,7 @@ The repair engine strictly conforms to the workspace's authoritative **`Authoriz
 ### `Diagnose-OneDriveSync.ps1` (v2.1.0)
 Located at:
 - `D:\OneDrive\cmd\@Repair\Diagnose-OneDriveSync.ps1`
-- `D:\Git_Repositories\tools\Diagnose-OneDriveSync.ps1`
+- `D:\Git_Repositories\LCM_Tools\Diagnose-OneDriveSync.ps1`
 
 #### A. Diagnostic Mode (Audit Only):
 Deep-inspects the SQLite database in `mode=ro` and scans target folders for ACL locks:

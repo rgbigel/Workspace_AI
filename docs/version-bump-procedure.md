@@ -2,7 +2,7 @@
 
 Module: version-bump-procedure.md
 Purpose: Defines workspace documentation and operational rules for version-bump-procedure and LCM Major Version Alignment.
-Path: D:/Git_Repositories/Workspace_AI/docs/version-bump-procedure.md
+Path: D:/Git_Repositories/LCM_AI/docs/version-bump-procedure.md
 Authors: Rolf
 Version: 8.1.1
 Changelog:

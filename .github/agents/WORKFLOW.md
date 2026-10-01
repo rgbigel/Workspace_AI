@@ -2,7 +2,7 @@
 
 Module: WORKFLOW.md
 Purpose: Defines workspace operational workflow and LCM v4.2.0 change governance.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/WORKFLOW.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/WORKFLOW.md
 Authors: Rolf
 Version: 8.2.0
 Changelog:
@@ -64,7 +64,7 @@ Phase 4: Verification & Baseline Commit
 =====================================================================
 5. Change Request Bundles
 =====================================================================
-- Related micro-changes may be batched into named bundles (Workspace_Inventory/data/bundles/).
+- Related micro-changes may be batched into named bundles (LCM_Inventory/data/bundles/).
 - Bundles allow multi-step verification in a single coherent test pass.
 
 =====================================================================

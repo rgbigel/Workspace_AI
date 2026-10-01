@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Validate the active Workspace_AI .copilot profile structure.
+  Validate the active LCM_AI .copilot profile structure.
 
 .PARAMETER Help
   Displays this synopsis and usage screen.
@@ -25,14 +25,14 @@ if ($Help) {
 
 <#
 Module: Validate-CopilotProfile.ps1
-Purpose: Validate the active Workspace_AI .copilot profile structure.
+Purpose: Validate the active LCM_AI .copilot profile structure.
 Path: tools/Validate-CopilotProfile.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 4.1.0
-Caller Contract: Called from the Workspace_AI repository root or tools folder; performs read-only file existence and version checks.
+Caller Contract: Called from the LCM_AI repository root or tools folder; performs read-only file existence and version checks.
 Changelog:
 - 2026-08-15: Bumped to LCM pre-release Version 4.1.0.
-- 2026-08-12: Replaced parent-level profile validation with Workspace_AI-local profile validation.
+- 2026-08-12: Replaced parent-level profile validation with LCM_AI-local profile validation.
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
@@ -99,7 +99,7 @@ Write-Host 'RESULT: PASS'
 Write-Host ''
 
 Write-Host 'CHECK: workspace-location'
-$expectedRoot = 'D:\Git_Repositories\Workspace_AI\.copilot'
+$expectedRoot = 'D:\Git_Repositories\LCM_AI\.copilot'
 if (-not ([System.IO.Path]::GetFullPath($copilotRoot).TrimEnd('\').Equals($expectedRoot, [System.StringComparison]::OrdinalIgnoreCase))) {
     Write-Host 'RESULT: FAIL'
     Write-Host ('Expected: {0}' -f $expectedRoot)

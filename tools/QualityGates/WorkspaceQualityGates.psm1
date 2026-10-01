@@ -1,10 +1,10 @@
 <#
 Module: WorkspaceQualityGates.psm1
-Purpose: Provide reusable Workspace_AI readiness and stabilization quality gates.
+Purpose: Provide reusable LCM_AI readiness and stabilization quality gates.
 Path: tools/QualityGates/WorkspaceQualityGates.psm1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.15.1
-Caller Contract: Imported by native governance scripts; validates Workspace_AI state without writing to external repositories.
+Caller Contract: Imported by native governance scripts; validates LCM_AI state without writing to external repositories.
 Changelog:
 - 2026-08-17: Clarified SettingsPath root-container scope for Assert-IgnoredRepositories.
 - 2026-08-02: Added target-local proposal cleanup scanner validation.
@@ -81,7 +81,7 @@ function Assert-IgnoredRepositories {
     $WorkspaceRoot = Get-WorkspaceRoot
   }
 
-  $invPath = Join-Path $WorkspaceParent 'Workspace_Inventory\data\inventory.json'
+  $invPath = Join-Path $WorkspaceParent 'LCM_Inventory\data\inventory.json'
   $trackedNonGit = @()
   if (Test-Path -LiteralPath $invPath) {
     try {
@@ -335,11 +335,11 @@ function Assert-RealRepoTestPlan {
   }
 
   if ($realRepoPlan.transition_policy.write_enablement_supported -ne $false) {
-    throw 'Workspace_AI transition policy must not support write enablement during self-stabilization.'
+    throw 'LCM_AI transition policy must not support write enablement during self-stabilization.'
   }
 
   if ($realRepoPlan.transition_policy.workspace_ai_dry_run_enablement_supported -ne $false) {
-    throw 'Workspace_AI must not support local enablement of target-repo dry-run state.'
+    throw 'LCM_AI must not support local enablement of target-repo dry-run state.'
   }
 
   if (-not $realRepoPlan.PSObject.Properties['target_method_instance_policy']) {
@@ -348,7 +348,7 @@ function Assert-RealRepoTestPlan {
 
   $targetMethodInstancePolicy = $realRepoPlan.target_method_instance_policy
   if ($targetMethodInstancePolicy.target_repo_owns_method_instance -ne $true -or $targetMethodInstancePolicy.workspace_ai_role -ne 'method-baseline-only') {
-    throw 'Target repository must own the method instance while Workspace_AI remains baseline-only.'
+    throw 'Target repository must own the method instance while LCM_AI remains baseline-only.'
   }
 
   if ($targetMethodInstancePolicy.target_repo_method_root -ne 'Docs/Methods') {
@@ -365,7 +365,7 @@ function Assert-RealRepoTestPlan {
   }
 
   if ($targetMethodInstancePolicy.workspace_ai_must_not_store_target_dry_run_results -ne $true -or $targetMethodInstancePolicy.workspace_ai_must_not_store_target_work_logs -ne $true -or $targetMethodInstancePolicy.workspace_ai_must_not_store_target_repo_proposals -ne $true) {
-    throw 'Workspace_AI must not store target dry-run results, work logs, or repo proposals.'
+    throw 'LCM_AI must not store target dry-run results, work logs, or repo proposals.'
   }
 
   if ($targetMethodInstancePolicy.target_local_method_instance_auto_accepted_for_candidate_repos -ne $true) {
@@ -403,7 +403,7 @@ function Assert-RealRepoTestPlan {
   }
 
   if ($realRepoPlan.mode -eq 'dry-run' -or $realRepoPlan.dry_run.enabled -eq $true) {
-    throw 'Workspace_AI-local dry-run mode is no longer valid; target dry-run state must be target-local.'
+    throw 'LCM_AI-local dry-run mode is no longer valid; target dry-run state must be target-local.'
   }
 
   if ($realRepoPlan.target_profile.write_probe_performed -ne $false) {
@@ -485,7 +485,7 @@ function Assert-RealRepoTestPlan {
     $selectedRepository = [System.IO.Path]::GetFullPath([string]$realRepoPlan.selected_repository).TrimEnd('\')
     $workspaceRootPath = [System.IO.Path]::GetFullPath($WorkspaceRoot).TrimEnd('\')
     if ($selectedRepository.Equals($workspaceRootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-      throw 'Workspace_AI cannot be selected as its own real-repository test target.'
+      throw 'LCM_AI cannot be selected as its own real-repository test target.'
     }
 
     foreach ($offLimitsPath in @($stabilizationState.off_limits_paths)) {

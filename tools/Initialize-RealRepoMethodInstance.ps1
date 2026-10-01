@@ -56,7 +56,7 @@ if ($Help) {
 Module: Initialize-RealRepoMethodInstance.ps1
 Purpose: Create a target-local Docs/Methods method instance for a selected real repository.
 Path: tools/Initialize-RealRepoMethodInstance.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.0.0
 Caller Contract: Called only after explicit operator approval; writes method scaffolding inside the target repository and never stages or commits target changes.
 Changelog:
@@ -218,9 +218,9 @@ $manifest = [ordered]@{
 $methodReadme = @"
 # Target-Local Method Instance
 
-This directory is the target-local Workspace_AI method instance for this repository.
+This directory is the target-local LCM_AI method instance for this repository.
 
-Workspace_AI defines the baseline method. This repository owns repo-specific dry-run state, logs, results, proposals, and method application artifacts here.
+LCM_AI defines the baseline method. This repository owns repo-specific dry-run state, logs, results, proposals, and method application artifacts here.
 
 Canonical method root: Docs/Methods
 Physical method root: $relativeMethodRoot
@@ -237,7 +237,7 @@ Target-local dry-run state and read-only observation outputs belong here.
 $logReadme = @"
 # Logs
 
-Target-local method logs belong here. Workspace_AI must not store logs for this repository's work.
+Target-local method logs belong here. LCM_AI must not store logs for this repository's work.
 "@
 
 $resultReadme = @"

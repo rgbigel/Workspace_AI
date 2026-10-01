@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Run native Workspace_AI fix descriptor validation from PowerShell 7.
+  Run native LCM_AI fix descriptor validation from PowerShell 7.
 
 .PARAMETER FixName
   Name or ID of the fix module to validate.
@@ -25,7 +25,7 @@ param(
 )
 
 if ($Help) {
-  Write-Host "APPLY.ps1 - Run native Workspace_AI fix descriptor validation." -ForegroundColor Cyan
+  Write-Host "APPLY.ps1 - Run native LCM_AI fix descriptor validation." -ForegroundColor Cyan
   Write-Host ""
   Write-Host "Usage:"
   Write-Host "  pwsh -File APPLY.ps1 -FixName <string> [-NoLog] [-Help]"
@@ -43,9 +43,9 @@ if (-not $FixName) {
 
 <#
 Module: APPLY.ps1
-Purpose: Run native Workspace_AI fix descriptor validation from PowerShell 7.
+Purpose: Run native LCM_AI fix descriptor validation from PowerShell 7.
 Path: tools/APPLY.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.0.0
 Caller Contract: Called with a fix module name or id; validates declared rules, atoms, methods, and quality-check actions without modifying target content.
 Changelog:

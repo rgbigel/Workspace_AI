@@ -2,7 +2,7 @@
 
 Module: DirectoryRules.md
 Purpose: Defines workspace directory structure rules and LCM governance alignment.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/DirectoryRules.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/DirectoryRules.md
 Authors: Rolf
 Version: 8.2.0
 Changelog:
@@ -31,7 +31,7 @@ Three primary directory classes exist:
 
 1. LCM-Governed Repositories
 2. Auxiliary Containers & Standard Git Repositories
-3. Workspace_AI (Governance Workshop & Rule Authority)
+3. LCM_AI (Governance Workshop & Rule Authority)
 
 =====================================================================
 4. LCM-Governed Repositories
@@ -43,9 +43,9 @@ Mandatory Repository Structure:
 - must contain .lcm/ with config.json (including execution_context) and overrides.json
 - must contain .vscode/ with settings.json and tasks.json
 - must contain .github/agents/RepoAgentIndex.md (for Copilot custom agent discovery)
-- must contain AGENTS.md and GEMINI.md (hardlinks to Workspace_AI authority)
-- must contain .agents/rules/core (NTFS directory junction to Workspace_AI/.agents/rules)
-- must contain .copilot/Rules/core (NTFS directory junction to Workspace_AI/.copilot/Rules)
+- must contain AGENTS.md and GEMINI.md (hardlinks to LCM_AI authority)
+- must contain .agents/rules/core (NTFS directory junction to LCM_AI/.agents/rules)
+- must contain .copilot/Rules/core (NTFS directory junction to LCM_AI/.copilot/Rules)
 - must contain tools/Test-RepoReadiness.ps1 and tools/QualityGates/RepoQualityGates.psm1
 - if elevation_required is true: must contain tools/Invoke-ElevatedTest.ps1
 
@@ -61,12 +61,12 @@ Allowed contents:
 Characteristics:
 - May contain reference code or un-onboarded utilities
 - Governed by non-git or standard-git CM inventory tracking
-- Must not override Workspace_AI governance rules
+- Must not override LCM_AI governance rules
 
 =====================================================================
-6. Workspace_AI (Governance Authority)
+6. LCM_AI (Governance Authority)
 =====================================================================
-Directory name: Workspace_AI
+Directory name: LCM_AI
 Characteristics:
 - Canonical root authority for LCM governance rules, tripartite templates, and quality gate definitions
 - Contains .agents/rules/ (projected across all repos via junction)

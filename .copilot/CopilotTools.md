@@ -2,7 +2,7 @@
 
 Module: CopilotTools.md
 Purpose: Defines workspace documentation and operational rules for CopilotTools.
-Path: D:/Git_Repositories/Workspace_AI/.copilot/CopilotTools.md
+Path: D:/Git_Repositories/LCM_AI/.copilot/CopilotTools.md
 Authors: Rolf
 Version: 8.0.0
 Changelog:

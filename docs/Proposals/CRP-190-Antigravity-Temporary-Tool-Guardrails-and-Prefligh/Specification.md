@@ -8,7 +8,7 @@ Plan-State: completed
 Progress-State: completed
 Maturity: Preliminary design record
 Target-Repositories:
-	- Workspace_AI
+	- LCM_AI
 	- Git_Repositories
 ```
 

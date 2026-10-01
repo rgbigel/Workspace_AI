@@ -1,7 +1,7 @@
 # Reusable Data Atoms & Behavioral Patterns for Optimization
 
 Module: docs/Optimizations/Data-Atoms-and-Design-Patterns.md  
-Authors: Rolf, Workspace_AI Engine  
+Authors: Rolf, LCM_AI Engine  
 Version: 1.0.0  
 Status: Authoritative Design Document  
 Date: 2026-09-28  
@@ -26,8 +26,8 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
 * **Proposed Entity Schema**:
   ```json
   {
-    "repo_name": "SharedModules",
-    "root_path": "D:/Git_Repositories/SharedModules",
+    "repo_name": "LCM_Shared",
+    "root_path": "D:/Git_Repositories/LCM_Shared",
     "is_git": true,
     "current_branch": "main",
     "head_commit": "a1b2c3d",
@@ -46,14 +46,14 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
 ### Atom 2: `GovernanceJunctionAtom` (NTFS Junction & Hardlink Registry)
 
 * **Behavioral Pattern Observed**:
-  * Ad-hoc script loops verifying whether `.agents/rules` is a junction pointing to `Workspace_AI/.agents/rules`, whether `.mcp.json` is a hard link, and checking for orphaned junction targets.
+  * Ad-hoc script loops verifying whether `.agents/rules` is a junction pointing to `LCM_AI/.agents/rules`, whether `.mcp.json` is a hard link, and checking for orphaned junction targets.
 * **Proposed Entity Schema**:
   ```json
   {
-    "repo_name": "SharedModules",
+    "repo_name": "LCM_Shared",
     "link_path": ".agents/rules",
     "link_type": "Junction",
-    "target_path": "D:/Git_Repositories/Workspace_AI/.agents/rules",
+    "target_path": "D:/Git_Repositories/LCM_AI/.agents/rules",
     "is_healthy": true,
     "checked_at": "2026-09-28T20:00:00Z"
   }
@@ -66,7 +66,7 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
 ### Atom 3: `ToolCatalogAtom` (Tool Manifest & Command Trampoline Registry)
 
 * **Behavioral Pattern Observed**:
-  * Continuous crawling of `.lcm/tools/` and `Workspace_Inventory/tools/`, invoking AST parsers to extract parameters and descriptions, and generating `.cmd` trampolines.
+  * Continuous crawling of `.lcm/tools/` and `LCM_Inventory/tools/`, invoking AST parsers to extract parameters and descriptions, and generating `.cmd` trampolines.
   * Repeated regex parsing led to prefix recursion bugs (`LCMLCMLCM...ClearBCReviewTemp.cmd`).
 * **Proposed Entity Schema**:
   ```json
@@ -99,12 +99,12 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
   ```json
   {
     "id": 185,
-    "title": "Decouple .lcm operational logs and consolidate to Workspace_Inventory",
-    "origin_repo": "Workspace_Inventory",
+    "title": "Decouple .lcm operational logs and consolidate to LCM_Inventory",
+    "origin_repo": "LCM_Inventory",
     "state": "in_progress",
     "priority": "P1",
     "author": "Rolf",
-    "plan_path": "Workspace_Inventory/data/proposals/plans/Proposal-185_Plan.md",
+    "plan_path": "LCM_Inventory/data/proposals/plans/Proposal-185_Plan.md",
     "created_at": "2026-09-28T18:00:00Z",
     "updated_at": "2026-09-28T20:15:00Z"
   }
@@ -128,7 +128,7 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
     "session_id": 1,
     "command_line": "pwsh ... LcmDesktopDaemon.ps1",
     "status": "Online",
-    "active_log_file": "D:/Git_Repositories/Workspace_Inventory/data/logs/lcm-internal/LcmDesktopDaemon-20260928.log",
+    "active_log_file": "D:/Git_Repositories/LCM_Inventory/data/logs/lcm-internal/LcmDesktopDaemon-20260928.log",
     "started_at": "2026-09-28T19:30:00Z"
   }
   ```
@@ -189,6 +189,6 @@ graph TD
 ```
 
 ### Proposed Next Phase Implementation Steps
-1. **Unified State Cache Module (`LcmDataAtoms.psm1`)**: Implement a fast, in-memory caching module backed by a lightweight SQLite db or local JSON key-value store in `Workspace_Inventory/data/cache/`.
+1. **Unified State Cache Module (`LcmDataAtoms.psm1`)**: Implement a fast, in-memory caching module backed by a lightweight SQLite db or local JSON key-value store in `LCM_Inventory/data/cache/`.
 2. **Event-Driven Cache Invalidation**: Update Git review runner (`Invoke-BeyondCompareReview.ps1`) and push conductor (`Invoke-WorkspacePush.ps1`) to invalidate only the affected atoms upon commit/push.
-3. **Zero-Subprocess Query API**: Replace raw `pwsh` ad-hoc string commands with structured cmdlet calls (e.g. `Get-LcmRepoState -Repo SharedModules`).
+3. **Zero-Subprocess Query API**: Replace raw `pwsh` ad-hoc string commands with structured cmdlet calls (e.g. `Get-LcmRepoState -Repo LCM_Shared`).

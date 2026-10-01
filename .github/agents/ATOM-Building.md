@@ -2,14 +2,14 @@
 
 Module: ATOM-Building.md
 Purpose: Defines workspace documentation and operational rules for ATOM-Building.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/ATOM-Building.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/ATOM-Building.md
 Authors: Rolf
 Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
 ## 1. Purpose
-Functional atoms are the smallest stable units of behavior inside modules. They enable predictable module design, cross-repo reuse, independent versioning, deterministic testing, and clean separation of concerns. Atoms form the foundation of SharedModules.
+Functional atoms are the smallest stable units of behavior inside modules. They enable predictable module design, cross-repo reuse, independent versioning, deterministic testing, and clean separation of concerns. Atoms form the foundation of LCM_Shared.
 
 ## 2. Definition of a Functional Atom
 A functional atom is a minimal, deterministic function that:
@@ -67,7 +67,7 @@ Pure rule engines that transform raw facts into interpreted facts.
 ### 5.3 Reporting Atoms
 Formatters and controlled side-effect functions.
 
-### 5.4 SharedModules Atoms
+### 5.4 LCM_Shared Atoms
 Cross-repository utilities.
 
 ## 6. Atom Interface Specification
@@ -94,7 +94,7 @@ Atoms must be placed according to their category:
 - Discovery atoms → `Modules/Discovery`
 - Evaluation atoms → `Modules/Evaluation`
 - Reporting atoms → `Modules/Reporting`
-- Shared atoms → `SharedModules/Modules`
+- Shared atoms → `LCM_Shared/Modules`
 
 ## 9. Atom Documentation
 Each atom must have:
@@ -110,5 +110,5 @@ Atoms evolve independently:
 - new atoms can be added
 - old atoms can be deprecated
 - interfaces remain stable
-- SharedModules atoms propagate across repositories
+- LCM_Shared atoms propagate across repositories
 

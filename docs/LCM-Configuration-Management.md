@@ -1,7 +1,7 @@
 # Lifecycle Model (LCM) Configuration Management & Multi-Repository Architecture
 
 Module: docs/LCM-Configuration-Management.md  
-Authors: Rolf, Workspace_AI Engine  
+Authors: Rolf, LCM_AI Engine  
 Version: 8.3.1  
 Date: 2026-08-17  
 Status: Authoritative Methodology Specification  
@@ -12,14 +12,14 @@ Status: Authoritative Methodology Specification
 
 In a solution containing multiple independent component repositories, Configuration Management (CM) ensures global architectural integrity, version consistency, change traceability, and drift detection.
 
-The **`Workspace_Inventory`** repository serves as the authoritative CM operational engine, while **`Workspace_AI`** serves as the authoritative methodology, governance rule standard, and template baseline source.
+The **`LCM_Inventory`** repository serves as the authoritative CM operational engine, while **`LCM_AI`** serves as the authoritative methodology, governance rule standard, and template baseline source.
 
 ```mermaid
 graph TB
     subgraph SolutionWorkspace["Solution Workspace Container (D:/Git_Repositories)"]
         direction TB
-        WAI["Workspace_AI<br/>(Baseline Source & Governance Authority)"]
-        WI["Workspace_Inventory<br/>(Configuration Management Engine)"]
+        WAI["LCM_AI<br/>(Baseline Source & Governance Authority)"]
+        WI["LCM_Inventory<br/>(Configuration Management Engine)"]
         COMP["Component Repositories<br/>(VolumeInventory, BootEntryManager, etc.)"]
     end
 
@@ -38,9 +38,9 @@ graph TB
 
 | Role | Authoritative Repository | Scope & Duties |
 | :--- | :--- | :--- |
-| **Methodology & Governance Authority** | [`Workspace_AI`](file:///D:/Git_Repositories/Workspace_AI) | Defines LCM standards, quality gates, prompt instructions, core rules (`.agents/rules/`), and reusable repository scaffold templates. |
-| **Configuration Management (CM) Engine** | [`Workspace_Inventory`](file:///D:/Git_Repositories/Workspace_Inventory) | Audits all workspace directories, tracks absorbed/current LCM versions, records commit/push status, manages NTFS junction mirrors for Change Requests, and executes drift evaluations. |
-| **Reusable PowerShell Functional Atoms** | [`SharedModules`](file:///D:/Git_Repositories/SharedModules) | Central, decoupled library of reusable functional PowerShell modules: `Logging.psm1`, `VolumeAtoms.psm1`, `BcdAtoms.psm1`, `PrivatePaths.psm1`, and `TranscriptTools.psm1`. |
+| **Methodology & Governance Authority** | [`LCM_AI`](file:///D:/Git_Repositories/LCM_AI) | Defines LCM standards, quality gates, prompt instructions, core rules (`.agents/rules/`), and reusable repository scaffold templates. |
+| **Configuration Management (CM) Engine** | [`LCM_Inventory`](file:///D:/Git_Repositories/LCM_Inventory) | Audits all workspace directories, tracks absorbed/current LCM versions, records commit/push status, manages NTFS junction mirrors for Change Requests, and executes drift evaluations. |
+| **Reusable PowerShell Functional Atoms** | [`LCM_Shared`](file:///D:/Git_Repositories/LCM_Shared) | Central, decoupled library of reusable functional PowerShell modules: `Logging.psm1`, `VolumeAtoms.psm1`, `BcdAtoms.psm1`, `PrivatePaths.psm1`, and `TranscriptTools.psm1`. |
 | **Component Repositories** | `VolumeInventory`, `BootEntryManager`, etc. | Implements specific product features, maintains local `Docs/Methods/Proposals/`, and inherits governance rules via junctions. |
 
 ---
@@ -48,8 +48,8 @@ graph TB
 ## 3. Change Request (CR) Architecture
 
 ### A. NTFS Junction Link Mirroring
-* To maintain a single source of truth without duplicating files or copying content across repositories, `Workspace_Inventory` establishes directory junctions in `change_requests/<RepoName>` linking directly to `<TargetRepo>/Docs/Methods/Proposals`.
-* `Workspace_Inventory` possesses real-time filesystem visibility into every repository's proposals.
+* To maintain a single source of truth without duplicating files or copying content across repositories, `LCM_Inventory` establishes directory junctions in `change_requests/<RepoName>` linking directly to `<TargetRepo>/Docs/Methods/Proposals`.
+* `LCM_Inventory` possesses real-time filesystem visibility into every repository's proposals.
 
 ### B. 1-File-Per-CR Specification
 * Monolithic multi-CR files are strictly forbidden.
@@ -135,7 +135,7 @@ To eliminate cold-start discovery scans and maintain instant conversational cont
    * `RULE-CTX-001` (Active Scope Detection): Ingests the target repository path from the active document in IDE metadata.
    * `RULE-CTX-002` (Fast-Tier Ingestion): Automatically inspects `<TargetRepo>/.lcm/config.json`, `README.md`, and pending proposals in `docs/Methods/Proposals/` in a single targeted step.
    * `RULE-CTX-003` (Zero Redundant Scan Invariant): Forbids multi-step recursive searches across sibling directories when focused on a single repository.
-   * `RULE-CTX-004` (Methodology Awareness): Enforces continuous awareness of the `Workspace_AI` / `Workspace_Inventory` / `SharedModules` triad.
+   * `RULE-CTX-004` (Methodology Awareness): Enforces continuous awareness of the `LCM_AI` / `LCM_Inventory` / `LCM_Shared` triad.
 
 
 

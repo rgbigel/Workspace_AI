@@ -13,7 +13,7 @@
    reconciliation after meaningful delivery or at release closure. State
    transition behavior remains an explicit CRP-196 dependency.
 5. Verify terminology and links across the affected documents, then perform a
-   focused BCompare review of `Workspace_AI` before any commit.
+   focused BCompare review of `LCM_AI` before any commit.
 
 ## Acceptance Criteria
 

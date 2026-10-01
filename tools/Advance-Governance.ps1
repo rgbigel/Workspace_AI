@@ -27,9 +27,9 @@ param(
 
 <#
 Module: Advance-Governance.ps1
-Purpose: Validate native Workspace_AI governance readiness and log separation without staging or committing changes.
+Purpose: Validate native LCM_AI governance readiness and log separation without staging or committing changes.
 Path: tools/Advance-Governance.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 2.15.2
 Date: 2026-09-10
 Caller Contract: Called from VS Code tasks or terminal; validates native governance inputs and reports status.
@@ -51,7 +51,7 @@ Changelog:
 - 2026-08-01: Added real-repository dry-run status reporting.
 - 2026-08-01: Consolidated helper quality gates behind WorkspaceQualityGates module.
 - 2026-08-01: Added real-repository test plan and stabilization policy validation reporting.
-- 2026-08-01: Added Workspace_AI stabilization state and sibling repository ignore validation output.
+- 2026-08-01: Added LCM_AI stabilization state and sibling repository ignore validation output.
 - 2026-08-01: Added proposal disposition summary output.
 - 2026-08-01: Grouped generated artifact changes separately from reviewable pending changes.
 - 2026-08-01: Added optional accepted/rejected/modified proposal validation fixture check.
@@ -66,7 +66,7 @@ if ($Help) {
   Write-Host " WORKSPACE_AI ADVANCE GOVERNANCE VALIDATOR (v2.15.2)" -ForegroundColor Cyan
   Write-Host "==========================================================================" -ForegroundColor Cyan
   Write-Host "SYNOPSIS:" -ForegroundColor Yellow
-  Write-Host "  Validates native Workspace_AI governance readiness, log separation, and"
+  Write-Host "  Validates native LCM_AI governance readiness, log separation, and"
   Write-Host "  proposal status integrity without staging or committing changes."
   Write-Host ""
   Write-Host "USAGE:" -ForegroundColor Yellow
@@ -241,7 +241,7 @@ $policyValidation = Assert-StabilizationPolicy -WorkspaceRoot $workspaceRoot -St
 $realRepoPlanValidation = Assert-RealRepoTestPlan -WorkspaceRoot $workspaceRoot -StabilizationPath $StabilizationPath -RealRepoTestPlanPath $RealRepoTestPlanPath
 $realRepoPlan = Get-Content -Raw -Path $RealRepoTestPlanPath | ConvertFrom-Json
 
-Write-Host 'Workspace_AI native governance check: OK'
+Write-Host 'LCM_AI native governance check: OK'
 Write-Host "Stabilization phase: $($stabilizationState.phase)"
 Write-Host "Real repository testing enabled: $($stabilizationState.real_repository_testing_enabled)"
 Write-Host "Real repository selected: $([bool]$realRepoPlan.selected_repository)"

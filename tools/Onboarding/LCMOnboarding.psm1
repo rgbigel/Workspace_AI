@@ -2,7 +2,7 @@
 Module: LCMOnboarding.psm1
 Purpose: Implementation of the 4-Phase Lifecycle Model (LCM) Repository Onboarding Engine.
 Path: tools/Onboarding/LCMOnboarding.psm1
-Authors: Rolf, Workspace_AI Engine
+Authors: Rolf, LCM_AI Engine
 Version: 1.1.0
 Changelog:
 - 2026-08-15: Added -DryRun support to Test-LCMIntegrity, immediate preflight error return, renamed Get-WorkspaceRoot, and added Update mode support.
@@ -46,7 +46,7 @@ function Test-LCMPreFlight {
 
   # 2. Prevent Self-Onboarding (State 1 active design workshop)
   if ($targetFullPath.Equals($workspaceFullPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-    $errors += "Cannot onboard Workspace_AI into itself (Workspace_AI is the active design workshop root)."
+    $errors += "Cannot onboard LCM_AI into itself (LCM_AI is the active design workshop root)."
     return [pscustomobject]@{
       Passed     = $false
       TargetPath = $targetFullPath

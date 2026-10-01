@@ -73,7 +73,7 @@ if (-not $TargetRepositoryPath) {
 Module: Invoke-LCMOnboardRepo.ps1
 Purpose: CLI entry point for the 4-Phase Lifecycle Model (LCM) Repository Onboarding Engine.
 Path: tools/Invoke-LCMOnboardRepo.ps1
-Authors: Rolf, Workspace_AI Engine
+Authors: Rolf, LCM_AI Engine
 Version: 1.1.0
 Changelog:
 - 2026-08-15: Added -Update switch for refreshing/upgrading already onboarded repositories.

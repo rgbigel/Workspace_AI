@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Update Workspace_AI proposal disposition records deterministically.
+  Update LCM_AI proposal disposition records deterministically.
 
 .PARAMETER Id
   Target proposal identifier to update.

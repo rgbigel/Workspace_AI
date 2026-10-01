@@ -1,9 +1,9 @@
-# Workspace_AI Lifecycle Model (LCM) System Architecture
+# LCM_AI Lifecycle Model (LCM) System Architecture
 
 Module: docs/Architecture.md  
 Purpose: Authoritative architectural specification for the Lifecycle Model (LCM) multi-repository governance framework.  
-Path: D:/Git_Repositories/Workspace_AI/docs/Architecture.md  
-Authors: Rolf, Workspace_AI Engine  
+Path: D:/Git_Repositories/LCM_AI/docs/Architecture.md  
+Authors: Rolf, LCM_AI Engine  
 Version: 8.5.0  
 Status: Authoritative Architecture  
 Date: 2026-09-19  
@@ -12,7 +12,7 @@ Date: 2026-09-19
 
 ## 1. System Topology & Decoupled Governance Architecture
 
-The **Lifecycle Model (LCM) Version 7.0.0** operates across a decoupled multi-repository container architecture centered at `D:\Git_Repositories\`. It distinctly separates **Design & Baseline Authority (`Workspace_AI`)**, **Operational Configuration Management (`Workspace_Inventory`)**, **Reusable Atomic Modules (`SharedModules`)**, and the **Root Container Hub**:
+The **Lifecycle Model (LCM) Version 7.0.0** operates across a decoupled multi-repository container architecture centered at `D:\Git_Repositories\`. It distinctly separates **Design & Baseline Authority (`LCM_AI`)**, **Operational Configuration Management (`LCM_Inventory`)**, **Reusable Atomic Modules (`LCM_Shared`)**, and the **Root Container Hub**:
 
 ```mermaid
 graph TB
@@ -23,9 +23,9 @@ graph TB
         RootEntry["Root Entrypoints & Tools<br/>AGENTS.md, GEMINI.md<br/>Invoke-BeyondCompareReview.ps1,<br/>RR.ps1"]
         
         subgraph LCMTriad["LCM Architectural Triad"]
-            WAI["Workspace_AI<br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
-            WI["Workspace_Inventory<br/>(CM Engine, Proposals Ledger,<br/>Review Audit & Rule Health)"]
-            SM["SharedModules<br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
+            WAI["LCM_AI<br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
+            WI["LCM_Inventory<br/>(CM Engine, Proposals Ledger,<br/>Review Audit & Rule Health)"]
+            SM["LCM_Shared<br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
         end
 
         subgraph GovernedRepos["Governed Component Repositories"]
@@ -65,8 +65,8 @@ graph TD
     
     Hub -->|NTFS Junction| J1["BootEntryManager/.agents/rules"]
     Hub -->|NTFS Junction| J2["VolumeInventory/.agents/rules"]
-    Hub -->|NTFS Junction| J3["Workspace_Inventory/.agents/rules"]
-    Hub -->|NTFS Junction| J4["SharedModules/.agents/rules"]
+    Hub -->|NTFS Junction| J3["LCM_Inventory/.agents/rules"]
+    Hub -->|NTFS Junction| J4["LCM_Shared/.agents/rules"]
     Hub -->|NTFS Junction| J5["BackgroundModifier/.agents/rules"]
     Hub -->|NTFS Junction| J6["(All Other Governed Repos...)"]
 
@@ -76,7 +76,7 @@ graph TD
 ### Invariants:
 1. **Single Source of Truth (`RULE-AUTH-001`)**: All 13 core governance rules reside canonically at `D:\Git_Repositories\.agents\rules\`.
 2. **Zero Drift Spoke Deployment**: Every child repository contains an `.agents\rules` directory junction pointing to the root hub.
-3. **Mandatory Matrix Sync (`RULE-AUTH-002`)**: Any rule modification requires simultaneous updates to both [`AGENTS.md`](file:///d:/Git_Repositories/AGENTS.md) and [`Workspace_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/Workspace_AI/docs/LCM-Rules-Cross-Reference.md).
+3. **Mandatory Matrix Sync (`RULE-AUTH-002`)**: Any rule modification requires simultaneous updates to both [`AGENTS.md`](file:///d:/Git_Repositories/AGENTS.md) and [`LCM_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/LCM_AI/docs/LCM-Rules-Cross-Reference.md).
 4. **Git Insulation**: `.agents/` is included in each child repository's `.gitignore` to prevent committing physical rule duplicates during git pulls or clones.
 
 ---
@@ -90,7 +90,7 @@ sequenceDiagram
     autonumber
     actor User as Operator / Developer
     participant Agent as Antigravity AI Agent
-    participant PL as Workspace_Inventory (Proposals Ledger)
+    participant PL as LCM_Inventory (Proposals Ledger)
     participant BC as Beyond Compare 5 (Visual Review)
     participant Temp as Temp Review Cache (%TEMP%\BC_Review)
     participant Live as Live Working Tree (D:\Git_Repositories\<Repo>)
@@ -122,7 +122,7 @@ sequenceDiagram
         Agent->>PL: Records REVIEW-*.json Audit Receipt ("AcceptedWithEdits")
     end
     Agent->>Live: Executes Review-Gated Git Commit
-    Agent->>PL: Syncs Dual-Commit in Workspace_Inventory
+    Agent->>PL: Syncs Dual-Commit in LCM_Inventory
 
 
 ```
@@ -145,7 +145,7 @@ sequenceDiagram
 * **Review Granularity**: Configurable via `Invoke-ProposalAction.ps1 -SetGranularity <coarse|tight>`.
   * `coarse` (Default): Single review stop prior to commit across the change set.
   * `tight`: Stepwise review stops between intermediate sub-tasks.
-* **Exemption Policy**: `Workspace_Inventory` is **the sole exempt repository** from visual diff review because it contains purely tool-generated CM ledger data. The Root Container and all child repositories strictly require Beyond Compare 5 visual review.
+* **Exemption Policy**: `LCM_Inventory` is **the sole exempt repository** from visual diff review because it contains purely tool-generated CM ledger data. The Root Container and all child repositories strictly require Beyond Compare 5 visual review.
 
 ### 3.3 Visual Review Scope and Operational Evidence
 
@@ -161,11 +161,113 @@ knowledge after meaningful delivery or at release closure, no later than a
 major-version push. This reconciliation boundary does not define lifecycle
 state transitions or Control Hub actions.
 
+### 3.4 Control Hub Lifecycle and Execution Ledger
+
+The Control Hub presents a compact lifecycle rail to operators and maintains a
+separate execution ledger for the work required to advance a proposal. The rail
+is a decision surface, not a trace of every implementation detail. Validation,
+baseline preparation, review-session setup, receipt generation, local commits,
+and publication checks remain auditable internal facts.
+
+#### Proposed Control Hub Facets and Actions
+
+The proposed target state presents `Status`, `Plan State`, and `Progress Status`
+as separate visible facets. `Status` is the lifecycle rail; `Plan State` records
+the governance decision for the plan; and `Progress Status` reports current
+execution, including `Busy doing <phase>` and `Failed for <reason>` without
+creating additional lifecycle states. Priority is an integer from $0$ through
+$10$, with $10$ highest. Cohorts are ordered by numeric priority; a technical
+recommendation based on dependencies, risk, reversibility, and validation cost
+is advisory only and never overrides the operator's sequence.
+
+The proposed work area exposes the effective execution switches, including
+verification depth, testing mode, review granularity, BCR display scope, trace
+mode, and logging mode. Each execution run records the selected values as
+evidence. `Review Decision` is the operator-facing checkpoint for the `Review`
+state. `Publish` is the visible action, while `PUSH` remains a compatible
+command alias.
+
+### 3.4.1 Review Snapshot Chain
+
+An accepted BCompare review captures an immutable snapshot of the reviewed
+right-hand state in the CRP-specific review store. This capture creates only a
+new left-hand comparison candidate and never changes the live right-hand
+working tree. Each snapshot records its parent baseline or snapshot, scope,
+source review session, disposition, timestamp, and content manifest.
+
+Refreshed BCompare sessions may select any retained snapshot as the left-hand
+side and compare it with the current live right-hand tree. Selecting an earlier
+snapshot supports manual backtracking when later review decisions invalidate
+interstitial work. The pushed baseline to final live tree comparison remains
+mandatory before local commit, regardless of intermediate acceptances.
+
+| Visible status | Operator meaning | Valid primary actions |
+| :--- | :--- | :--- |
+| `Open` | Recorded work that has not started. | Start, Hold, Cancel |
+| `Active` | Design, implementation, or verification is underway. | Review, Hold, Cancel |
+| `Review` | A BCompare review is open or awaits a disposition. | Accept, Request Changes, Hold |
+| `Complete` | Review was accepted and a local commit was created. | Push, Reopen |
+| `Published` | The local commit was pushed successfully. | Open Review |
+| `Held` | Work is intentionally paused with a required reason. | Resume, Cancel |
+| `Cancelled` | Work was abandoned or superseded. | Open Review |
+
+```mermaid
+flowchart TB
+    Open[Open] -->|Start or DOIT| Active[Active]
+    Active -->|Open BCR| Review[Review]
+    Review -->|Accept and commit| Complete[Complete]
+    Review -->|Request changes| Active
+    Complete -->|Push| Published[Published]
+    Open -->|Hold| Held[Held]
+    Active -->|Hold| Held
+    Review -->|Hold| Held
+    Held -->|Resume| Active
+    Open -->|Cancel| Cancelled[Cancelled]
+    Active -->|Cancel| Cancelled
+```
+
+`Held` has a reason category of `deferred`, `blocked`, or `failed`; these are
+not separate lifecycle statuses. `Open Review` is an inspection tool, not a
+state transition. Fast completion is an exceptional, receipted action within
+`Active`, not an additional visible status.
+
+The execution ledger records the following phases and artifacts without placing
+them on the visible rail: scope selection, baseline checkpoint, change manifest,
+verification evidence, BCompare package and disposition, local commit receipt,
+and publication receipt. Verification depth is recorded as `Fast`, `Focused`,
+`Standard`, `Deep`, or `Deferred`; deferred verification requires a reason and
+a later gate.
+
+BCompare compares the pushed baseline to the live working tree. Its exclusions
+are display defaults, not evidence boundaries: the reviewer may widen the
+horizon with `Peek` and use supplied hints for useful secondary checks. A failed
+test, requested review change, or failed local commit returns the proposal to
+`Active`; a failed push leaves it `Complete`.
+
+#### Proposed Post-Commit Review Cleanup
+
+After a successful local commit is recorded, the proposed lifecycle may run a
+scoped BCR cleanup for the explicit proposal or bug and repository. It removes
+only that dynamic named session, review cache, and live/baseline junction
+artifacts after preview and ownership verification. Cleanup preserves unrelated
+saved sessions, open windows, and other proposals' artifacts. A cleanup failure
+is recorded as operational evidence and does not reverse a successful commit or
+publication state.
+
+#### Proposed Query Index Scenarios
+
+The proposed LCM Query Index catalogs versioned tool-research scenarios with
+inputs, expected artifacts, preferred provider, fallback provider, provenance,
+and result contract. Eligible scenarios prefer `es.exe`; they use `rg` when
+Everything is unavailable or cannot supply the required indexed-content
+coverage or query semantics. Direct NTFS access remains authoritative; the
+index is a projection and scenario catalog, not a replacement data store.
+
 ---
 
 ## 4. Configuration Management & Governance Diagnostics
 
-Configuration Management is administered through specialized CLI tools in `Workspace_Inventory/tools/`:
+Configuration Management is administered through specialized CLI tools in `LCM_Inventory/tools/`:
 
 ```mermaid
 flowchart TD
@@ -316,9 +418,9 @@ graph TD
 
 ---
 
-## 9. Automated Regression CRP Lifecycle & Cycle Governance ([CRP-135](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md))
+## 9. Automated Regression CRP Lifecycle & Cycle Governance ([CRP-135](file:///D:/Git_Repositories/LCM_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md))
 
-To manage cross-repository ripple effects deterministically, LCM implements automated regression proposal derivation and Directed Acyclic Graph (DAG) cycle governance established by [CRP-135](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md):
+To manage cross-repository ripple effects deterministically, LCM implements automated regression proposal derivation and Directed Acyclic Graph (DAG) cycle governance established by [CRP-135](file:///D:/Git_Repositories/LCM_Inventory/docs/Proposals/CRP-135-LCM-v7.5.0-Determining-And-Enforcing-Regression-CRPs.md):
 
 ```mermaid
 graph TD
@@ -356,7 +458,7 @@ graph TD
 
 ---
 
-## 10. App-Centric Architectural Decomposition, Active Context Engine & Cross-App Problem Governance ([CRP-048](file:///D:/Git_Repositories/Workspace_Inventory/docs/Proposals/CRP-048-LCM-v7.5.0-App-Centric-Architecture-Engine.md))
+## 10. App-Centric Architectural Decomposition, Active Context Engine & Cross-App Problem Governance ([CRP-048](file:///D:/Git_Repositories/LCM_Inventory/docs/Proposals/CRP-048-LCM-v7.5.0-App-Centric-Architecture-Engine.md))
 
 As governed repositories scale from single-purpose scripts into multifaceted systems, monolithic tripartite documentation creates cognitive friction, documentation sprawl, and excessive LLM context consumption during automated code generation. 
 
@@ -448,7 +550,7 @@ To establish 100% bidirectional traceability between documentation and code with
        App: App: 2 - Dual-State Proposal Governance
    #>
    ```
-3. **Tier 3 (Machine-Readable Catalog `apps.json`)**: Compiled automatically by `Sync-LcmAppCatalog.ps1` into `Workspace_Inventory/data/catalog/apps.json` for sub-10ms queries by daemons, CLI runners, and HTML dashboards.
+3. **Tier 3 (Machine-Readable Catalog `apps.json`)**: Compiled automatically by `Sync-LcmAppCatalog.ps1` into `LCM_Inventory/data/catalog/apps.json` for sub-10ms queries by daemons, CLI runners, and HTML dashboards.
 
 ---
 
@@ -553,7 +655,7 @@ The ultimate goal of the Lifecycle Model (LCM) methodology is to transform softw
 graph TB
     classDef default font-size:8pt;
     subgraph LEVEL3["Level 3: Repository / Solution Container"]
-        REPO["Governed Repository Ecosystem (Workspace_Inventory, Workspace_AI)"]
+        REPO["Governed Repository Ecosystem (LCM_Inventory, LCM_AI)"]
     end
 
     subgraph LEVEL2["Level 2: Apps (Macro Capabilities)"]
@@ -593,11 +695,13 @@ graph TB
 - **Lego-Brick Composability & Portability**: High-level assemblies can be reused, reconfigured, or merged across repositories (`Merge-RepositoriesToApps`) with guaranteed behavioral integrity.
 - **True Isolation & Non-Breaking Maintenance**: Updating an underlying atom or assembly automatically enhances all consuming Apps while contract boundaries prevent cross-domain breakage.
 
+<!-- FixDocumentation: CRP-196 Architecture -->
+### 3.4.2 Documentation Reconciliation Flow
 
-
-
-
-
-
-
+`FixDocumentation <CRP/BUG scope>` reconciles explicit, repository-qualified
+documentation payloads from selected proposal bundles. It produces a manifest
+by default, applies only declared content with provenance markers when
+authorized, and opens BCompare for every repository whose tripartite documents
+change.
+<!-- /FixDocumentation -->
 

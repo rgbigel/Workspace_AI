@@ -1,26 +1,26 @@
-# SharedModulesRule
+# LCM_SharedRule
 
-Module: SharedModulesRule.md
-Purpose: Defines workspace documentation and operational rules for SharedModulesRule.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/SharedModulesRule.md
+Module: LCM_SharedRule.md
+Purpose: Defines workspace documentation and operational rules for LCM_SharedRule.
+Path: D:/Git_Repositories/LCM_AI/.github/agents/LCM_SharedRule.md
 Authors: Rolf
 Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
 ## 1. Purpose
-Define deterministic rules for identifying, reusing, promoting, and maintaining SharedModules across repositories.
+Define deterministic rules for identifying, reusing, promoting, and maintaining LCM_Shared across repositories.
 
 ## 2. Scope
 Applies to all repositories under D:\Git_Repositories. Used during migration, cleanup, atom discovery, and ACTIONS.md execution.
 
-## 3. SharedModules Structure
-SharedModules contains reusable cross-repo modules.
+## 3. LCM_Shared Structure
+LCM_Shared contains reusable cross-repo modules.
 
 Structure:
-SharedModules/Modules/Discovery
-SharedModules/Modules/Evaluation
-SharedModules/Modules/Reporting
+LCM_Shared/Modules/Discovery
+LCM_Shared/Modules/Evaluation
+LCM_Shared/Modules/Reporting
 
 ## 4. Reuse Rules
 A repo must reuse a SharedModule when:
@@ -49,7 +49,7 @@ Conflicts occur when:
 Conflicts must be resolved during migration.
 
 ## 7. Promotion Rules
-A repo module is promoted to SharedModules when:
+A repo module is promoted to LCM_Shared when:
 - it is an atom
 - it is reusable
 - it has a stable interface
@@ -59,10 +59,10 @@ A repo module is promoted to SharedModules when:
 Promotion requires:
 - interface validation
 - version assignment
-- placement in correct SharedModules category
+- placement in correct LCM_Shared category
 
 ## 8. Versioning Rules
-SharedModules must use semantic versioning. Version increments occur when:
+LCM_Shared must use semantic versioning. Version increments occur when:
 - interface changes
 - behavior changes
 - new atoms added
@@ -70,25 +70,25 @@ SharedModules must use semantic versioning. Version increments occur when:
 
 ## 9. ACTIONS.md Integration
 ACTIONS.md must include:
-- SharedModules reuse analysis
-- SharedModules conflict detection
-- SharedModules override justification
-- SharedModules promotion candidates
-- SharedModules version updates
+- LCM_Shared reuse analysis
+- LCM_Shared conflict detection
+- LCM_Shared override justification
+- LCM_Shared promotion candidates
+- LCM_Shared version updates
 
 ## 10. Migration Requirements
 During migration:
-- detect SharedModules reuse
-- detect SharedModules conflicts
-- detect SharedModules overrides
-- detect SharedModules promotion candidates
+- detect LCM_Shared reuse
+- detect LCM_Shared conflicts
+- detect LCM_Shared overrides
+- detect LCM_Shared promotion candidates
 - update inventory
 - update version numbers
 
 ## 11. Inventory Rules
 Inventory must track:
-- SharedModules atoms
-- SharedModules modules
+- LCM_Shared atoms
+- LCM_Shared modules
 - version numbers
 - promotion history
 - reuse relationships
@@ -96,7 +96,7 @@ Inventory must track:
 - overrides
 
 ## 12. Completion Criteria
-SharedModules tasks are complete when:
+LCM_Shared tasks are complete when:
 - reuse resolved
 - conflicts resolved
 - overrides documented

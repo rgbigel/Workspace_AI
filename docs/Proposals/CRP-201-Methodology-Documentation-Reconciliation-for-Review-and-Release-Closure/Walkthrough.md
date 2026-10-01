@@ -18,4 +18,4 @@ Updated authoritative documents:
 	release-closure reconciliation without redefining lifecycle transitions.
 
 Focused terminology and Markdown validation are pending. A BCompare review of
-the `Workspace_AI` documentation changes is required before any commit.
+the `LCM_AI` documentation changes is required before any commit.

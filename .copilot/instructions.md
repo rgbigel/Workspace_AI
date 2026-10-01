@@ -2,7 +2,7 @@
 
 Module: instructions.md
 Purpose: Defines workspace documentation and operational rules for instructions.
-Path: D:/Git_Repositories/Workspace_AI/.copilot/instructions.md
+Path: D:/Git_Repositories/LCM_AI/.copilot/instructions.md
 Authors: Rolf Bercht
 Version: 8.0.0
 Changelog:

@@ -6,9 +6,9 @@ param(
 
 if ($Help) {
     Write-Host "==========================================================================" -ForegroundColor Cyan
-    Write-Host " LOAD RULES (Workspace_AI/tools/LoadRules.ps1)" -ForegroundColor Cyan
+    Write-Host " LOAD RULES (LCM_AI/tools/LoadRules.ps1)" -ForegroundColor Cyan
     Write-Host "==========================================================================" -ForegroundColor Cyan
-    Write-Host "SYNOPSIS: Loads Workspace_AI rule files for native governance validation."
+    Write-Host "SYNOPSIS: Loads LCM_AI rule files for native governance validation."
     Write-Host "USAGE:    pwsh tools/LoadRules.ps1 [-h]"
     Write-Host "==========================================================================" -ForegroundColor Cyan
     return
@@ -16,13 +16,13 @@ if ($Help) {
 
 <#
 Module: LoadRules.ps1
-Purpose: Load Workspace_AI rule files for native governance validation.
+Purpose: Load LCM_AI rule files for native governance validation.
 Path: tools/LoadRules.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.0.0
 Caller Contract: Called by validation scripts; returns a hashtable keyed by rule family.
 Changelog:
-- 2026-08-12: Added standard Workspace_AI script header.
+- 2026-08-12: Added standard LCM_AI script header.
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent

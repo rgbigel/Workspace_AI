@@ -1,7 +1,7 @@
 <!-- Governed by root LCM standard: D:\Git_Repositories\AGENTS.md -->
-# Antigravity Workspace Instructions - Workspace_AI
+# Antigravity Workspace Instructions - LCM_AI
 
-**Workspace**: Workspace_AI
+**Workspace**: LCM_AI
 **Root Governance Authority**: [`D:\Git_Repositories\AGENTS.md`](file:///D:/Git_Repositories/AGENTS.md)
 **Canonical Source Authority**: `.agents/rules/` (Canonical Physical Hub & Commit Gate)
 

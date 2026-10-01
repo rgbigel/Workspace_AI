@@ -1,7 +1,7 @@
 # Architecture & Design Specification: LCM Deterministic Hook Engine
 
-- **Module**: `Workspace_AI / LCM Governance`
-- **Authors**: Rolf, Workspace_AI Engine
+- **Module**: `LCM_AI / LCM Governance`
+- **Authors**: Rolf, LCM_AI Engine
 - **Version**: 1.0.0
 - **Status**: Proposed / Design Specification
 - **Date**: 2026-09-01
@@ -60,7 +60,7 @@ graph TD
 ### 1. `PreToolUse` Lifecycle Handler (`Enforce-LcmPreToolPolicy.ps1`)
 Intercepts all tool requests prior to execution:
 * **Tool: `run_command`**:
-  * **Git Guard**: Scans command string for `git commit` or `git push`. If a visual review gate (`Invoke-BeyondCompareReview.ps1`) has not recorded an `ACCEPTED` disposition in `Workspace_Inventory/data/reviews/`, the command is **blocked deterministically**.
+  * **Git Guard**: Scans command string for `git commit` or `git push`. If a visual review gate (`Invoke-BeyondCompareReview.ps1`) has not recorded an `ACCEPTED` disposition in `LCM_Inventory/data/reviews/`, the command is **blocked deterministically**.
   * **CD Prohibition Guard**: Blocks bare `cd` commands per shell invariant.
   * **Destructive Deletion Guard**: Blocks recursive forced deletions (`rmdir /s /q`, `rm -rf`) outside `scratch/` directories unless approved.
 * **Tools: `write_to_file`, `replace_file_content`, `multi_replace_file_content`**:
@@ -70,7 +70,7 @@ Intercepts all tool requests prior to execution:
 ### 2. `PostToolUse` Lifecycle Handler (`Enforce-LcmPostToolPolicy.ps1`)
 Executes immediately following tool execution:
 * **Syntax & AST Validator**: If a `.ps1` or `.py` file was modified, runs an instant non-destructive AST parser / linter (`PSScriptAnalyzer` or Python AST) and warns if syntax errors were introduced.
-* **Audit Logger**: Appends execution telemetry to `Workspace_Inventory/logs/hooks_audit.log`.
+* **Audit Logger**: Appends execution telemetry to `LCM_Inventory/logs/hooks_audit.log`.
 
 ### 3. `SessionStart` / `SessionResume` Handler (`Invoke-LcmSessionAudit.ps1`)
 * Verifies health of all `.agents/rules` junctions across child repositories.

@@ -1,12 +1,12 @@
 # Name: VSCode_Agent
 Version: 8.0.0
 # Path: .copilot/VSCode_Agent.md
-# Purpose: Define the execution model for fix-modules inside Workspace_AI.
+# Purpose: Define the execution model for fix-modules inside LCM_AI.
 
 =====================================================================
 AGENT OVERVIEW
 =====================================================================
-The Workspace_AI agent executes fix-modules defined in:
+The LCM_AI agent executes fix-modules defined in:
     .copilot/Fixes/
 
 Execution is triggered via:
@@ -84,7 +84,7 @@ Targets use glob patterns:
     **/*
 
 Resolution is relative to the workspace root:
-    Workspace_AI/
+    LCM_AI/
 
 =====================================================================
 LOGGING

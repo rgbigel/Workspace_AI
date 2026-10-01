@@ -2,7 +2,7 @@
 
 Module: version-consistency-check.md
 Purpose: Defines workspace documentation and operational rules for version-consistency-check.
-Path: D:/Git_Repositories/Workspace_AI/docs/version-consistency-check.md
+Path: D:/Git_Repositories/LCM_AI/docs/version-consistency-check.md
 Authors: Rolf
 Version: 8.1.1
 Changelog:
@@ -16,7 +16,7 @@ CHECK: MAJOR-VERSION (LCM Solution-Wide Parity)
 - .github/agents/agent.json
 - .github/agents/copilot365-agent.json
 - .vscode/settings.json
-- Workspace_AI/docs/*.md
+- LCM_AI/docs/*.md
 - tools/README.md
 - Child repos .lcm/config.json (absorbed_lcm_version)
 EXPECT: identical MAJOR ($M = \text{LCM\_MAJOR}$)

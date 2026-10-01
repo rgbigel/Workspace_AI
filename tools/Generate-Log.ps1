@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Generate native Workspace_AI step and permanent governance logs.
+  Generate native LCM_AI step and permanent governance logs.
 
 .PARAMETER OutputPath
   Destination path for generated Workspace log.
@@ -37,7 +37,7 @@ param(
 )
 
 if ($Help) {
-  Write-Host "Generate-Log.ps1 - Generate native Workspace_AI step and permanent governance logs." -ForegroundColor Cyan
+  Write-Host "Generate-Log.ps1 - Generate native LCM_AI step and permanent governance logs." -ForegroundColor Cyan
   Write-Host ""
   Write-Host "Usage:"
   Write-Host "  pwsh -File Generate-Log.ps1 [-OutputPath <path>] [-StepLogPath <path>] [-PermanentLogPath <path>] [-ProposalLogPath <path>] [-Help]"
@@ -53,9 +53,9 @@ if ($Help) {
 
 <#
 Module: Generate-Log.ps1
-Purpose: Generate native Workspace_AI step and permanent governance logs.
+Purpose: Generate native LCM_AI step and permanent governance logs.
 Path: tools/Generate-Log.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.5.0
 Caller Contract: Called from VS Code tasks or terminal; writes deterministic checkpoint and accepted-change governance logs.
 Changelog:
@@ -178,12 +178,12 @@ $generatedArtifactPaths = @(
 $statusGroups = Split-GitStatusByArtifact -StatusLines @($status) -GeneratedArtifactPaths $generatedArtifactPaths
 
 $content = @(
-  'Workspace_AI Governance Log',
+  'LCM_AI Governance Log',
   '===========================',
   '',
   '1. Header',
   '---------',
-  'Workspace name: Workspace_AI',
+  'Workspace name: LCM_AI',
   "Generated at: $generatedAt",
   "Latest commit at generation: $latestCommit",
   '',
@@ -237,7 +237,7 @@ $content += @(
   '',
   '7. Footer',
   '---------',
-  'Workspace_AI native governance log generation complete.'
+  'LCM_AI native governance log generation complete.'
 )
 
 $outputDirectory = Split-Path $OutputPath -Parent
@@ -248,7 +248,7 @@ if (-not (Test-Path -LiteralPath $outputDirectory)) {
 Set-Content -Path $OutputPath -Value $content -Encoding utf8
 
 $stepContent = @(
-  'Workspace_AI Step-Oriented Governance Log',
+  'LCM_AI Step-Oriented Governance Log',
   '=========================================',
   '',
   '1. Header',
@@ -328,13 +328,13 @@ $stepContent += @(
   '',
   '7. Footer',
   '---------',
-  'Workspace_AI step-oriented governance log generation complete.'
+  'LCM_AI step-oriented governance log generation complete.'
 )
 
 Set-Content -Path $StepLogPath -Value $stepContent -Encoding utf8
 
 $permanentContent = @(
-  'Workspace_AI Permanent Accepted Change Log',
+  'LCM_AI Permanent Accepted Change Log',
   '==========================================',
   '',
   '1. Header',
@@ -359,7 +359,7 @@ $permanentContent += @(
   '',
   '3. Footer',
   '---------',
-  'Workspace_AI permanent accepted change log generation complete.'
+  'LCM_AI permanent accepted change log generation complete.'
 )
 
 Set-Content -Path $PermanentLogPath -Value $permanentContent -Encoding utf8

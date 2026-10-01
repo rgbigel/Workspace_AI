@@ -3,12 +3,12 @@
 ```yaml
 CRP-ID: CRP-201
 Priority: High
-Scope: Workspace_AI methodology and governance documentation
+Scope: LCM_AI methodology and governance documentation
 Status: Suggested
 Plan-State: suggested
 Progress-State: undecided
 Affected-Repos:
-  - Workspace_AI
+  - LCM_AI
 ```
 
 ## Objective
@@ -41,7 +41,7 @@ unresolved lifecycle state transitions or Control Hub actions.
 
 ## Non-Goals
 
-- No changes to `Workspace_Inventory` tools, review filters, commit behavior,
+- No changes to `LCM_Inventory` tools, review filters, commit behavior,
   or push behavior.
 - No definition, correction, or documentation of lifecycle state transitions,
   commit timing, or Control Hub actions. CRP-196 owns that unresolved design.
@@ -51,7 +51,7 @@ unresolved lifecycle state transitions or Control Hub actions.
 
 ## Target Documents
 
-- `Workspace_AI/docs/Architecture.md`
-- `Workspace_AI/docs/Requirements.md`
-- `Workspace_AI/docs/Implementation.md`
-- `Workspace_AI/docs/LCM-Configuration-Management.md`
+- `LCM_AI/docs/Architecture.md`
+- `LCM_AI/docs/Requirements.md`
+- `LCM_AI/docs/Implementation.md`
+- `LCM_AI/docs/LCM-Configuration-Management.md`

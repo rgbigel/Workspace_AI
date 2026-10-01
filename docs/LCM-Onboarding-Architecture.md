@@ -2,11 +2,11 @@
 
 Module: LCM-Onboarding-Architecture.md
 Purpose: Architectural specification for the modular 4-Phase Lifecycle Model (LCM) Repository Onboarding & Update Engine.
-Path: D:/Git_Repositories/Workspace_AI/docs/LCM-Onboarding-Architecture.md
-Authors: Rolf, Workspace_AI Engine
+Path: D:/Git_Repositories/LCM_AI/docs/LCM-Onboarding-Architecture.md
+Authors: Rolf, LCM_AI Engine
 Version: 8.1.1
 Changelog:
-- 2026-08-15: Codified 4-state Workspace_AI lifecycle, LCM repository inventory, and Update mode.
+- 2026-08-15: Codified 4-state LCM_AI lifecycle, LCM repository inventory, and Update mode.
 - 2026-08-15: Initial architectural specification and interface definition.
 
 ---
@@ -19,13 +19,13 @@ created: 2026-08-15T17:46:00
 
 The **Lifecycle Model (LCM) Onboarding Engine** (`Invoke-LCMOnboardRepo`) standardizes, governs, and upgrades software repositories under `D:\Git_Repositories` managed by the parent solution workspace `D:\VSCode-Workspaces\Solution.code-workspace`.
 
-`Workspace_AI` serves as the Git-tracked design and engineering workshop where all rules, methodologies, operational templates, and onboarding tooling live.
+`LCM_AI` serves as the Git-tracked design and engineering workshop where all rules, methodologies, operational templates, and onboarding tooling live.
 
 ---
 
-## 2. Workspace_AI 4-State Lifecycle Model
+## 2. LCM_AI 4-State Lifecycle Model
 
-`Workspace_AI` is not an ordinary component repository and is never self-onboarded. It operates across four distinct lifecycle states:
+`LCM_AI` is not an ordinary component repository and is never self-onboarded. It operates across four distinct lifecycle states:
 
 ```mermaid
 stateDiagram-v2
@@ -40,7 +40,7 @@ stateDiagram-v2
 
     State2_Verification --> State3_ReleasedBaseline: Released & Published
     State3_ReleasedBaseline: State 3 - Active Global LCM Baseline
-    State3_ReleasedBaseline: Workspace_AI dormant & read-only
+    State3_ReleasedBaseline: LCM_AI dormant & read-only
     State3_ReleasedBaseline: Serves as immutable source for all child repos
 
     State3_ReleasedBaseline --> State4_UnlockedProposal: Initiate Change Proposal
@@ -49,18 +49,18 @@ stateDiagram-v2
 
 ```
 
-1. **State 1: Active Development & Design Workshop (`Workspace_AI` Unlocked)**:
+1. **State 1: Active Development & Design Workshop (`LCM_AI` Unlocked)**:
    * Rules, tools, and templates are actively modified, verified, and reviewed.
    * Self-onboarding is blocked by `Test-LCMPreFlight`.
 2. **State 2: Verification & Release Preparation**:
    * All quality gates (`Test-WorkspaceReadiness`) and syntax checks pass.
    * Semantic version increment is executed (`docs/version-bump-procedure.md`).
    * Final verification commit and tag are prepared.
-3. **State 3: Released State / Global LCM Baseline (`Workspace_AI` Dormant)**:
+3. **State 3: Released State / Global LCM Baseline (`LCM_AI` Dormant)**:
    * The released state becomes the authoritative standard for all child repositories in `Solution.code-workspace`.
-   * `Workspace_AI` remains dormant and read-only until the next change proposal.
+   * `LCM_AI` remains dormant and read-only until the next change proposal.
 4. **State 4: Unlocking for Change Proposals**:
-   * When an LCM change proposal is approved, `Workspace_AI` is unlocked, returning to State 1.
+   * When an LCM change proposal is approved, `LCM_AI` is unlocked, returning to State 1.
 
 ---
 
@@ -86,7 +86,7 @@ graph TD
 ```
 
 ### Phase 1: Discovery & Pre-Flight Audit (`Test-LCMPreFlight`)
-* **Target Validation & Self-Onboarding Guard**: Verifies target exists under `D:\Git_Repositories\<TargetRepo>` and immediately blocks self-onboarding on `Workspace_AI` or legacy directories (`Workspace_AC`, `Workspace_GC`).
+* **Target Validation & Self-Onboarding Guard**: Verifies target exists under `D:\Git_Repositories\<TargetRepo>` and immediately blocks self-onboarding on `LCM_AI` or legacy directories (`Workspace_AC`, `Workspace_GC`).
 * **LCM Inventory & Version Detection**:
   * Inspects target for `.lcm/config.json`.
   * If present, extracts `lcm_version` and determines whether the repository is up-to-date or requires an **Update / Refresh**.
@@ -98,12 +98,12 @@ graph TD
 ### Phase 2: Governance Rule Seeding (`New-LCMGovernanceLinks`)
 Deploys the **Hybrid Link Model**:
 * **Directory Junctions**:
-  * `<TargetRepo>/.agents/rules/core` $\rightarrow$ `D:\Git_Repositories\Workspace_AI\.agents\rules`
-  * `<TargetRepo>/.copilot/Rules/core` $\rightarrow$ `D:\Git_Repositories\Workspace_AI\.copilot\Rules`
+  * `<TargetRepo>/.agents/rules/core` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.agents\rules`
+  * `<TargetRepo>/.copilot/Rules/core` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.copilot\Rules`
 * **File Hardlinks**:
-  * `<TargetRepo>/AGENTS.md` $\rightarrow$ `D:\Git_Repositories\Workspace_AI\AGENTS.md`
-  * `<TargetRepo>/GEMINI.md` $\rightarrow$ `D:\Git_Repositories\Workspace_AI\GEMINI.md`
-  * `<TargetRepo>/.copilot/instructions.md` $\rightarrow$ `D:\Git_Repositories\Workspace_AI\.copilot\instructions.md`
+  * `<TargetRepo>/AGENTS.md` $\rightarrow$ `D:\Git_Repositories\LCM_AI\AGENTS.md`
+  * `<TargetRepo>/GEMINI.md` $\rightarrow$ `D:\Git_Repositories\LCM_AI\GEMINI.md`
+  * `<TargetRepo>/.copilot/instructions.md` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.copilot\instructions.md`
 * **Operator Link Tooling & Inspection**:
   * **Junction Link Magic**: The designated interactive Windows GUI utility for scanning, verifying, creating, and managing NTFS directory junctions, reparse points, and hardlinks across all repository drives. All programmatic junctions created by `LCMOnboarding.psm1` are fully compatible with and verifiable in Junction Link Magic.
 

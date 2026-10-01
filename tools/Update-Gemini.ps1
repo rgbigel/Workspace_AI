@@ -9,8 +9,8 @@
               with .txt normalization via Sync-LCMResearchSnapshot.ps1.
            3. Ingests instructions and bug reports from D:\GDrive\LCM\INBOX via Sync-GeminiInbox.ps1.
            Conforms to RULE-PS-008 (Metadata Headers), RULE-PS-009 (Audit Logging), and RULE-PS-010 (CLI Help).
-  Path: Workspace_AI/tools/Update-Gemini.ps1
-  Authors: Rolf, Workspace_AI Engine
+  Path: LCM_AI/tools/Update-Gemini.ps1
+  Authors: Rolf, LCM_AI Engine
   Version: 7.2.0
   Date: 2026-09-25
 .PARAMETER Force
@@ -122,7 +122,7 @@ try {
   }
 
   if (Test-Path -LiteralPath $geminiConfig) {
-    $baselineDir = Join-Path $workspaceRoot 'Workspace_AI\data\gemini_baseline'
+    $baselineDir = Join-Path $workspaceRoot 'LCM_AI\data\gemini_baseline'
     $targetConfig = Join-Path $baselineDir 'config'
     if (-not (Test-Path -LiteralPath $targetConfig)) {
       New-Item -Path $targetConfig -ItemType Directory -Force | Out-Null
@@ -157,7 +157,7 @@ try {
     $rootHash = (Get-FileHash -InputStream $stream -Algorithm SHA256).Hash
 
     $nowUtc = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
-    $commitSha = try { (git -C (Join-Path $workspaceRoot 'Workspace_AI') rev-parse HEAD).Trim() } catch { '' }
+    $commitSha = try { (git -C (Join-Path $workspaceRoot 'LCM_AI') rev-parse HEAD).Trim() } catch { '' }
 
     $manifest = [PSCustomObject]@{
       version     = '1.2.0'
@@ -181,8 +181,8 @@ try {
 
 Write-Host "`n==========================================================================" -ForegroundColor Cyan
 Write-Host " [SUMMARY] Gemini AI Context & Knowledge Base Pipeline Completed" -ForegroundColor Green
-Write-Host " Consolidated Rules : Workspace_AI/docs/LCM_Rules_Gemini_Export.md"
+Write-Host " Consolidated Rules : LCM_AI/docs/LCM_Rules_Gemini_Export.md"
 Write-Host " Google Drive Mirror: D:\GDrive\LCM (Code & Tripartite Docs with .txt)"
 Write-Host " Google Drive Inbox : D:\GDrive\LCM\INBOX"
-Write-Host " Baseline Manifest  : Workspace_AI/data/gemini_baseline/gemini_manifest.json"
+Write-Host " Baseline Manifest  : LCM_AI/data/gemini_baseline/gemini_manifest.json"
 Write-Host "==========================================================================" -ForegroundColor Cyan

@@ -1,7 +1,7 @@
 # Catalog of Execution Errors & Failure Modes
 
 Module: docs/Optimizations/Catalog-of-Errors-and-Failure-Modes.md  
-Authors: Rolf, Workspace_AI Engine  
+Authors: Rolf, LCM_AI Engine  
 Version: 1.0.0  
 Status: Authoritative Analysis Document  
 Date: 2026-09-28  
@@ -100,7 +100,7 @@ During prolonged autonomous and paired execution sessions, transient automation 
   * Risk of silent regression: accepting an older review diff snapshot flushes its intermediate state over the file on disk, obliterating newer edits made in subsequent tool calls.
   * Stale in-memory buffer race: saving an open editor tab containing pre-edit content overwrites the agent's disk modifications.
 * **Root Cause**:
-  When an agent makes rapid sequential modifications to the same file across successive turns (e.g. `Workspace_Inventory\docs\Requirements.md`), the IDE creates separate pending diff review sessions for each edit against the editor's in-memory buffer. Because the editor does not automatically close or coalesce prior unaccepted diffs upon receiving a newer disk version, multiple review decorations accumulate. Accepting an older diff out of order executes a backward state flush.
+  When an agent makes rapid sequential modifications to the same file across successive turns (e.g. `LCM_Inventory\docs\Requirements.md`), the IDE creates separate pending diff review sessions for each edit against the editor's in-memory buffer. Because the editor does not automatically close or coalesce prior unaccepted diffs upon receiving a newer disk version, multiple review decorations accumulate. Accepting an older diff out of order executes a backward state flush.
 * **Countermeasure**:
   1. **Atomic Edit Consolidation**: The agent `MUST` consolidate all modifications to a file into a single, comprehensive edit per turn, preventing rapid back-to-back edits on unreviewed buffers.
   2. **Fresh Disk Ingestion**: Before modifying any file that was recently touched, verify disk state against git working tree.

@@ -1,13 +1,13 @@
 ---
 name: "WorkspaceLog"
-description: "Generate a governed, human-readable log of Workspace_AI agent activity. Summarizes FIX, DOX, APPLY, RULE, AGENT, and S2 governance operations into .copilot/Logs/Workspace.log."
+description: "Generate a governed, human-readable log of LCM_AI agent activity. Summarizes FIX, DOX, APPLY, RULE, AGENT, and S2 governance operations into .copilot/Logs/Workspace.log."
 tools: [read, search, edit]
 argument-hint: "No arguments. The agent scans FIX logs, S1 logs, DOX files, Workspace-Rules, and agent metadata, then writes a unified governance log."
 user-invocable: true
 ---
 
 # WorkspaceLog Agent
-This agent produces a deterministic, human-readable governance log for Workspace_AI.
+This agent produces a deterministic, human-readable governance log for LCM_AI.
 It consolidates FIX chain results, DOX unification steps, S2 governance entries, action-marker resolutions, version bumps, and agent operations into a single file:
 
 - `.copilot/Logs/Workspace.log`

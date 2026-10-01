@@ -1,4 +1,4 @@
-﻿# Lifecycle Model (LCM) Authoritative Governance Framework
+# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
 > *Exported on: 2026-09-29 19:42:01 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
@@ -43,7 +43,7 @@
 Module: RuleAuthority  
 Purpose: Defines canonical rule authority, governance hierarchy, and mandatory cross-reference synchronization across the workspace.  
 Path: .agents/rules/RuleAuthority.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.0.0  
 Status: Authoritative Policy  
 Date: 2026-09-26  
@@ -53,8 +53,8 @@ Date: 2026-09-26
 ## 1. Governance Authority Invariants
 
 ### `RULE-AUTH-001` (Single Source of Truth & Zero Rule Forking)
-- **Canonical Physical Hub**: `Workspace_AI\.agents\rules\` is the single, authoritative physical host and primary commit gate for all LCM governance rules.
-- **Root & Child Discovery**: The root workspace container links `D:\Git_Repositories\.agents\rules\` directly to `Workspace_AI\.agents\rules\` via NTFS directory junction (`mklink /J`), avoiding rule commit churn on the root container. All governed child repositories link their local `.agents\rules` directory to this canonical hub.
+- **Canonical Physical Hub**: `LCM_AI\.agents\rules\` is the single, authoritative physical host and primary commit gate for all LCM governance rules.
+- **Root & Child Discovery**: The root workspace container links `D:\Git_Repositories\.agents\rules\` directly to `LCM_AI\.agents\rules\` via NTFS directory junction (`mklink /J`), avoiding rule commit churn on the root container. All governed child repositories link their local `.agents\rules` directory to this canonical hub.
 - **No Independent Truth**: Child repositories and IDE adapter surfaces `MUST NOT` fork, maintain conflicting local copies, or override core governance policies without an approved Change Request.
 
 ---
@@ -62,7 +62,7 @@ Date: 2026-09-26
 ### `RULE-AUTH-002` (Mandatory Rule Matrix Synchronization Invariant)
 Whenever an existing rule is updated, or a new rule/policy is created ("invented"), the author or AI agent `MUST` update all discovery entrypoints in the same change set:
 1. **Root Quick-Reference Table**: Update [`AGENTS.md`](file:///d:/Git_Repositories/AGENTS.md) with the new rule name, rule codes (`RULE-*`), domain, scope, and key invariant.
-2. **Comprehensive Matrix**: Update [`Workspace_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/Workspace_AI/docs/LCM-Rules-Cross-Reference.md) with the full metadata, enforcing scripts, and quality gate mappings.
+2. **Comprehensive Matrix**: Update [`LCM_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/LCM_AI/docs/LCM-Rules-Cross-Reference.md) with the full metadata, enforcing scripts, and quality gate mappings.
 3. **Child Junction Verification**: Verify that the newly created rule is immediately visible across all child repository `.agents\rules` junctions.
 
 ---
@@ -133,7 +133,7 @@ Date: 2026-09-26
 Module: ElevationPolicy  
 Purpose: Defines mandatory elevation, runner delegation, and privilege interception rules across all repositories.  
 Path: .agents/rules/ElevationPolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.6.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-09-26  
@@ -241,7 +241,7 @@ LANGUAGE-POLICY-RULES
 Module: RepositoryContextPolicy  
 Purpose: Defines automatic active-document repository detection, fast-tier context priming, candidate fallback, and scan optimization invariants.  
 Path: .agents/rules/RepositoryContextPolicy.md  
-Authors: Rolf, Workspace_AI  
+Authors: Rolf, LCM_AI  
 Version: 8.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-09-26  
@@ -271,9 +271,9 @@ The agent `MUST NOT` run multi-step recursive discovery scans (`list_dir`, broad
 
 ### `RULE-CTX-004` (Methodology Awareness)
 The agent `MUST` remain aware of the global LCM triad at all times:
-* **`Workspace_AI`**: Governs release baselines (v4.3.0), templates, and quality gates.
-* **`Workspace_Inventory`**: Configuration Management engine, audit ledger, and cross-repo CR indexing.
-* **`SharedModules`**: Reusable functional PowerShell atom library (`Logging`, `VolumeAtoms`, `BcdAtoms`).
+* **`LCM_AI`**: Governs release baselines (v4.3.0), templates, and quality gates.
+* **`LCM_Inventory`**: Configuration Management engine, audit ledger, and cross-repo CR indexing.
+* **`LCM_Shared`**: Reusable functional PowerShell atom library (`Logging`, `VolumeAtoms`, `BcdAtoms`).
 
 ---
 
@@ -284,9 +284,9 @@ The agent `MUST` remain aware of the global LCM triad at all times:
 # File: ProposalReviewFlowPolicy.md
 
 Module: ProposalReviewFlowPolicy  
-Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and Workspace_Inventory dual-commit synchronization.  
+Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and LCM_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.8.0
 Status: Authoritative Policy  
 Date: 2026-09-28
@@ -298,7 +298,7 @@ Date: 2026-09-28
 ### RULE-LCM-001: Proposal-First Intent Invariant
 When working in LCM mode (`active`), all user ideas, questions, and exploratory discussions `MUST` be treated as **Proposals only** (State = `suggested`).
 - The AI agent `MUST NOT` execute file modifications, code rewrites, or commits immediately upon receiving an initial idea or question.
-- When discussion yields a conclusive path of action, register the Change Request / Proposal with State `suggested` in `Workspace_Inventory\data\proposals\proposals.json`.
+- When discussion yields a conclusive path of action, register the Change Request / Proposal with State `suggested` in `LCM_Inventory\data\proposals\proposals.json`.
 
 ### RULE-LCM-002: Batch Execution & Control Commands
 Proposals transition through the defined lifecycle via deterministic operator commands:
@@ -307,28 +307,28 @@ Proposals transition through the defined lifecycle via deterministic operator co
   - At Gate 2: Advances from `REVIEW` $\rightarrow$ `COMMITTED` (satisfies visual review, records disposition, increments SemVer, and commits to local Git).
 - **`do <all, #n, #n-#m> Proposals`**: **Activates `DOIT` mode** (`always-proceed = $true`). Bypasses Gate 1 planning pauses and executes planned tool operations, script runs, and file edits continuously until downstream Gate 2 is reached per `RULE-EFF-004`.
 - **`COMPLETE` / `COMPLETE ALL`**: Records a completed visual review, commits locally, and transitions the reviewed proposal to `COMPLETED`. It never pushes to a remote.
-- **`PUSH`**: Pushes only a preflighted cohort of `COMPLETED` proposals and `Workspace_Inventory` to their remotes in lockstep (`COMPLETED` $\rightarrow$ `PUSHED`). Suggested, in-progress, review, and uncommitted items are strictly excluded.
+- **`PUSH`**: Pushes only a preflighted cohort of `COMPLETED` proposals and `LCM_Inventory` to their remotes in lockstep (`COMPLETED` $\rightarrow$ `PUSHED`). Suggested, in-progress, review, and uncommitted items are strictly excluded.
 - **`delete <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deleted` and clears associated CRs.
 - **`defer <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deferred`.
 - **`give open Proposals`**: Returns numbered list of active proposals (`#n`).
 - **`give repos under review`**: Displays repositories with uncommitted changes, their BC5 review status, and commit readiness.
 
 ### RULE-LCM-003: Review Granularity Controls
-The review frequency is governed by `review_granularity` in `Workspace_Inventory`:
+The review frequency is governed by `review_granularity` in `LCM_Inventory`:
 - **`coarse` (Default)**: Executes all proposals in the batch, runs automated quality gates, then presents a **single BC5 review stop** for the combined changes across the repository before commit.
 - **`tight`**: Implements each proposal incrementally with intermediate test runs and a **dedicated BC5 review stop per proposal**.
 - Can be set via `set review granularity <coarse|tight>` or inline `do #1-#3 Proposals --tight`.
 
 ### RULE-LCM-004: Visual Diff Review & Exemption Scope
 - **Governed Repositories & Root Container**: Every governed repository and the Root Container (`D:\Git_Repositories`) `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 <RepoName>` before commit.
-- **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `Workspace_AI\.agents`, or `.agents\rules` pointing to `Workspace_AI\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
+- **Dual-Session Junction Review**: For repositories containing NTFS directory junctions (e.g. `.agents` pointing to `LCM_AI\.agents`, or `.agents\rules` pointing to `LCM_AI\.agents\rules`), `Invoke-BeyondCompareReview.ps1` `MUST` automatically dispatch a second Beyond Compare review session targeting the live junction destination on the right pane per `RULE-REV-008`.
 - **Privileged Subsystem Data Exemption vs. Tool Scrutiny**:
-  - **Dynamic Configuration & Ledger Data Exemption (`RULE-EFF-001`)**: Ledger data, review staging receipts, baseline manifests, telemetry logs, and scratch generation outputs located in `Workspace_Inventory` (`data/`, `logs/`, `scratch/`) are auto-accepted mechanical evidence and exempt from visual diff review stops.
-  - **Executable Tools & Documentation Scrutiny**: All permanent scripts, PowerShell modules, test suites, and architectural documentation located in `Workspace_Inventory` (`tools/`, `modules/`, `docs/`, `tests/`, `Cmd/`) are first-class governed LCM software assets and `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 Workspace_Inventory` prior to commit.
+  - **Dynamic Configuration & Ledger Data Exemption (`RULE-EFF-001`)**: Ledger data, review staging receipts, baseline manifests, telemetry logs, and scratch generation outputs located in `LCM_Inventory` (`data/`, `logs/`, `scratch/`) are auto-accepted mechanical evidence and exempt from visual diff review stops.
+  - **Executable Tools & Documentation Scrutiny**: All permanent scripts, PowerShell modules, test suites, and architectural documentation located in `LCM_Inventory` (`tools/`, `modules/`, `docs/`, `tests/`, `Cmd/`) are first-class governed LCM software assets and `MUST` undergo visual diff review via `Invoke-BeyondCompareReview.ps1 LCM_Inventory` prior to commit.
 
 ### RULE-LCM-005: Dual-Commit and Push Synchronization Invariant
-1. Whenever code changes in a target repository are accepted and committed, `Workspace_Inventory` `MUST ALWAYS` be updated (updating proposal state to `completed`, recording review evidence) and **committed immediately**.
-2. On any `PUSH`, all completed target repositories and `Workspace_Inventory` `MUST` pass a non-mutating lockstep preflight before any remote dispatch. A failed preflight blocks the entire cohort.
+1. Whenever code changes in a target repository are accepted and committed, `LCM_Inventory` `MUST ALWAYS` be updated (updating proposal state to `completed`, recording review evidence) and **committed immediately**.
+2. On any `PUSH`, all completed target repositories and `LCM_Inventory` `MUST` pass a non-mutating lockstep preflight before any remote dispatch. A failed preflight blocks the entire cohort.
 
 ### RULE-LCM-006: Pause, Resume, and Escape Controls
 1. **`LCM OFF` (Emergency Escape Switch)**:
@@ -342,15 +342,15 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - Neither `LCM OFF` nor `Testing OFF` may remain active after publication. Upon any push invocation (`PUSH`, `Invoke-WorkspacePush.ps1`), both **LCM Mode** and **Testing Mode** `MUST` unconditionally reset to `ON` (`active`).
 
 ### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
-1. **Dual-State Separation**: Every proposal in `Workspace_Inventory/data/proposals/proposals.json` `MUST` track both:
+1. **Dual-State Separation**: Every proposal in `LCM_Inventory/data/proposals/proposals.json` `MUST` track both:
    - **Governance Plan State (`state`)**: Document approval state (`bug`, `suggested`, `approved`, `deferred`, `rejected`, `completed`, `pushed`).
    - **Implementation Progress State (`progress_state`)**: Physical execution progress (`undecided`, `queued`, `in_progress`, `verification`, `completed`, `pushed`, `blocked`, `failed`).
 2. **Initial Invariant**: Every newly submitted proposal and unapproved plan `MUST` initialize with `progress_state: "undecided"`.
 3. **Pushed Lifecycle Transition**: Upon successful execution of `Invoke-WorkspacePush.ps1` (or CM Control Hub Push), proposals in `completed` state whose origin repository was pushed `MUST` transition to `pushed` (`pushed_at` timestamp recorded).
 4. **Mandatory CM Plan & Walkthrough Archival**:
    - All Markdown implementation plans and execution walkthroughs `MUST` be persistently archived in the governed CM repository under:
-     - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
-     - `Workspace_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
+     - `LCM_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
+     - `LCM_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
    - Explicit relative links `plan_path` and `walkthrough_path` `MUST` be recorded in `proposals.json`.
 
 ### RULE-LCM-008: BUG Lifecycle, DOIT Mode & Gate 2 Non-Circumvention Invariant
@@ -372,7 +372,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 3. **Legacy Flat File Fallback**: Historical CRPs (e.g. `CRP-001` through `CRP-017`) authored as flat `.md` files remain valid and governed under `RULE-LCM-020` Mode 3 (Legacy Fallback).
 
 ### RULE-LCM-010: Mandatory Self-Discovered Bug Registration Invariant
-1. **Mandatory Self-Discovery Reporting**: Whenever the AI agent discovers a bug, syntax defect, unhandled runtime exception, parser failure, or regression in a permanent tool, platform script, shared module, or web UI during development, testing, or tool execution (including deferred deep testing failures per `RULE-LCM-006`), the AI agent `MUST` formally register a Bug Report in `Workspace_Inventory/data/proposals/proposals.json` and scaffold the accompanying proposal bundle.
+1. **Mandatory Self-Discovery Reporting**: Whenever the AI agent discovers a bug, syntax defect, unhandled runtime exception, parser failure, or regression in a permanent tool, platform script, shared module, or web UI during development, testing, or tool execution (including deferred deep testing failures per `RULE-LCM-006`), the AI agent `MUST` formally register a Bug Report in `LCM_Inventory/data/proposals/proposals.json` and scaffold the accompanying proposal bundle.
 2. **Immediate Remediation in `DOIT` Mode**: The self-discovered bug transitions directly into `DOIT` mode to diagnose and resolve the failure, but remains bound by the Gate 2 Non-Circumvention Invariant (`RULE-LCM-008`).
 3. **Prohibition of Silent In-Place Hotfixing**: The AI agent `MUST NOT` silently patch defects in permanent tools without registering a formal BUG entry in the Configuration Management ledger.
 
@@ -391,13 +391,13 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 3. **Legacy Flat File Fallback**: Historical Bug Reports (e.g. `BUG-024` through `BUG-094`) authored as flat `.md` files remain valid and governed under `RULE-LCM-020` Mode 3 (Legacy Fallback).
 
 ### RULE-LCM-012: Mandatory Scope-and-Version Explicit CRP Specification Generation Invariant
-1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`Specification.md`) within its proposal bundle in `Workspace_Inventory/docs/Proposals/` before or alongside ledger registration.
-2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent proposal bundle in `Workspace_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP bundle.
+1. **Mandatory Standalone Specification**: Whenever proposing, designing, or implementing new features, tools, workflows, architectural enhancements, or governance policies, the AI agent `MUST` author a formal, standalone Scope-and-Version Explicit Change Request Proposal specification (`Specification.md`) within its proposal bundle in `LCM_Inventory/docs/Proposals/` before or alongside ledger registration.
+2. **Prohibition of Orphan Feature Proposals**: Proposing or executing features or tool modifications without an authoritative, permanent proposal bundle in `LCM_Inventory/docs/Proposals/` is strictly prohibited. Every non-bug feature proposal in `proposals.json` `MUST` link to a valid `bundle_id` matching an existing CRP bundle.
 
 ### RULE-LCM-013: Mandatory Pre-Push Gemini AI & Knowledge Base Synchronization Invariant
 1. **Mandatory Automated Pre-Push Execution**: Every `PUSH` operation executed via `Invoke-WorkspacePush.ps1`, whether multi-repository or targeting a single repository (`-Repositories <repo>`), `MUST` automatically execute the `Update-Gemini.ps1` pipeline prior to pushing commits to remote Git repositories. Direct manual `git push` invocations that bypass `Invoke-WorkspacePush.ps1` are prohibited.
-2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`Workspace_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
-3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `Workspace_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
+2. **Context & Rules Mirroring Parity**: This guarantees that all 17 canonical LCM rules (`LCM_AI/docs/LCM_Rules_Gemini_Export.md`), plain-text `.txt` mirrors, tool catalogs, and full workspace knowledge base exports (`D:\GDrive\LCM`) are 100% synchronized with the pushed Git baseline at the moment of remote dispatch.
+3. **Automated Export Commit**: If the `Update-Gemini` pipeline updates the consolidated rules export in `LCM_AI`, those changes `MUST` be staged and committed immediately before dispatching the push to `origin/main`.
 
 ### RULE-LCM-014: Dual-Gate Architecture & CRP Planning Gate Invariant
 1. **CRP Birth in SUGGESTED State**: For any non-bug Change Request Proposal (`CRP`), the proposal `MUST` birth in the **`SUGGESTED`** state under the Normal Review Cycle.
@@ -426,7 +426,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
    - Records review completion, creates a local commit, and transitions eligible proposals to `COMPLETED`.
    - Never invokes a remote push.
 4. **`PUSH`**:
-   - Pushes only `COMPLETED` proposal repositories in a preflighted cohort with `Workspace_Inventory`.
+   - Pushes only `COMPLETED` proposal repositories in a preflighted cohort with `LCM_Inventory`.
    - A cohort member that is missing, lacks a remote, or is not ahead blocks all remote dispatch.
    - Enforces the Push Auto-Reset Invariant (`RULE-LCM-006`): resets `LCM Mode` and `Testing Mode` to `ON`.iew.
 
@@ -510,7 +510,7 @@ The review frequency is governed by `review_granularity` in `Workspace_Inventory
 Module: ReviewCommitGovernancePolicy  
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, forced commit overrides, audit logging, and dual-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.1.0  
 Status: Authoritative Policy  
 Date: 2026-09-26  
@@ -544,9 +544,9 @@ The review-gating rules (`RULE-REV-001` through `RULE-REV-003`) take strict prec
 
 ### RULE-REV-005: Universal Audit & Change Request Traceability
 Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferred`) `MUST` be recorded with an immutable timestamp, reviewer identity, repository HEAD SHA, and notes into:
-1. `Workspace_Inventory/logs/cm_activity.log` (Append-only CM audit ledger).
-2. `Workspace_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
-3. The active Change Request (CR) record in `Workspace_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
+1. `LCM_Inventory/logs/cm_activity.log` (Append-only CM audit ledger).
+2. `LCM_Inventory/data/reviews/REVIEW-<Repo>-<Timestamp>.json` (Structured review evidence).
+3. The active Change Request (CR) record in `LCM_Inventory/data/change_requests.json` and mirrored proposal Markdown files when modifying governed baselines.
 
 ### RULE-REV-006: Mandatory Review Stop & Lifecycle Step Invariant
 1. **Mandatory Review Stop**: Whenever an agent carries out a CRP or code modification reaching the visual review stage (Gate 2), the agent `MUST` launch `Invoke-BeyondCompareReview.ps1` and **immediately terminate the current response turn without making additional tool calls**.
@@ -555,7 +555,7 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
    - The local Git commit is created with the required SemVer increment per `RULE-REV-007`.
 3. **`PUSH` (Publication Trigger)**:
    - `PUSH` is the only lifecycle command that may invoke a remote push.
-   - It pushes only a fully preflighted cohort of `COMPLETED` proposals and `Workspace_Inventory` in lockstep.
+   - It pushes only a fully preflighted cohort of `COMPLETED` proposals and `LCM_Inventory` in lockstep.
    - Uncommitted proposals remain strictly in their local state.
    - Enforces the Push Auto-Reset Invariant: both `LCM Mode` and `Testing Mode` unconditionally revert to `ON`.
 
@@ -569,16 +569,16 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
      - DOX metadata headers of modified scripts and modules (`Version: M.Y.Z`).
      - Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`).
      - Top-level `README.md` and repository manifests.
-     - `Workspace_Inventory/data/inventory.json` repository record.
+     - `LCM_Inventory/data/inventory.json` repository record.
    - Commit messages and review receipts `MUST` record the resulting semantic version (e.g. `feat(cm): ... [v7.1.1]`).
-3. **Workspace_Inventory Operational Data Exemption**:
-   - Routine data accounting mutations within `Workspace_Inventory` (specifically `data/inventory.json`, `data/proposals/proposals.json`, `logs/cm_activity.log`, `docs/INVENTORY_DASHBOARD.md`, and `data/reviews/*`) occurring as a standard byproduct of reviews, audits, proposal lifecycle transitions, or push recording `SHALL NOT` increment `Workspace_Inventory`'s semantic version.
-   - Semantic version increments for `Workspace_Inventory` apply strictly when source code (`tools/*.ps1`, `modules/*.psm1`), specifications (`docs/*.md`), or governance policies are modified.
+3. **LCM_Inventory Operational Data Exemption**:
+   - Routine data accounting mutations within `LCM_Inventory` (specifically `data/inventory.json`, `data/proposals/proposals.json`, `logs/cm_activity.log`, `docs/INVENTORY_DASHBOARD.md`, and `data/reviews/*`) occurring as a standard byproduct of reviews, audits, proposal lifecycle transitions, or push recording `SHALL NOT` increment `LCM_Inventory`'s semantic version.
+   - Semantic version increments for `LCM_Inventory` apply strictly when source code (`tools/*.ps1`, `modules/*.psm1`), specifications (`docs/*.md`), or governance policies are modified.
 
 ### RULE-REV-008: Transparent Single-Session Directory Junction Review (FollowSymLinks)
 1. **Transparent Directory Junction Traversal**: Beyond Compare 5 review sessions `MUST` configure `<FollowSymLinks Value="True"/>` in `BCSessions.xml`, enabling Beyond Compare to traverse NTFS directory junctions (such as `.agents\rules`) inline within the primary review session.
 2. **Unified Single-Window Invariant**: Dual-session Beyond Compare review dispatch is retired. All repository review comparisons execute in a single Beyond Compare window without opening a separate junction review instance.
-3. **Automated Baseline Rules Provisioning**: When reviewing a child repository where the baseline Git commit does not natively track `.agents/rules`, `Invoke-BeyondCompareReview.ps1` `MUST` automatically populate the baseline rules directory (`<TempReviewRoot>\.agents\rules`) from the authoritative `Workspace_AI` baseline to ensure accurate inline diffing.
+3. **Automated Baseline Rules Provisioning**: When reviewing a child repository where the baseline Git commit does not natively track `.agents/rules`, `Invoke-BeyondCompareReview.ps1` `MUST` automatically populate the baseline rules directory (`<TempReviewRoot>\.agents\rules`) from the authoritative `LCM_AI` baseline to ensure accurate inline diffing.
 4. **Exclusion Filter Alignment**: Review exclusion filter lists `MUST NOT` filter out `-.agents\rules\`, ensuring all governance rule diffs remain directly inspectable in the primary review pane.
 
 ---
@@ -592,7 +592,7 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
 Module: MethodEfficiencyPolicy  
 Purpose: Defines auto-acceptance, zero-test-trigger invariants, and method efficiency rules for generated inventory telemetry, logs, DOIT mode execution velocity, and tool discovery.  
 Path: .agents/rules/MethodEfficiencyPolicy.md  
-Authors: Rolf, Workspace_AI Engine  
+Authors: Rolf, LCM_AI Engine  
 Version: 8.6.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-09-26  
@@ -611,10 +611,10 @@ To maximize **Method Efficiency** and eliminate ceremonial overhead, this policy
 
 ### RULE-EFF-001 (Mechanical Artifact Auto-Acceptance)
 Changes strictly modifying tool-generated evidence, audit databases, dashboard summaries, and logs are **automatically accepted** without requiring manual review gates. This applies to:
-* `Workspace_Inventory/data/inventory.json`
-* `Workspace_Inventory/docs/INVENTORY_DASHBOARD.md`
-* `Workspace_Inventory/data/baselines/*.json`
-* `Workspace_Inventory/logs/*.log`
+* `LCM_Inventory/data/inventory.json`
+* `LCM_Inventory/docs/INVENTORY_DASHBOARD.md`
+* `LCM_Inventory/data/baselines/*.json`
+* `LCM_Inventory/logs/*.log`
 * `*_Inventory/data/subsystem_inventory.json` (Subsystem Inventories e.g. `HaSSD06_Inventory`)
 * `*_Inventory/docs/SUBSYSTEM_DASHBOARD.md`
 * `*_Inventory/logs/*.log` and `*_Inventory/data/proposals/*.json`
@@ -684,7 +684,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 Module: PowerShellStandardsPolicy  
 Purpose: Defines mandatory PowerShell 7 (pwsh) standards for strict mode resilience, verb compliance, string interpolation, intermediate code execution, and pipeline hygiene.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.6.0  
 Status: Authoritative Policy  
 Date: 2026-09-26  
@@ -801,7 +801,7 @@ Whenever an existing script is modified, the `Date:` field (and changelog/versio
 ### RULE-PS-009: Mandatory Structured Tool Logging & Summary Invariants
 All PowerShell automation tools performing system mutations, diagnostics, remediations, repairs, or administrative tasks `MUST`:
 1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `.lcm/logs/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
-2. **Structured Log Levels**: Classify every message using standard log levels: `[INFO]`, `[WARN]`, `[ERROR]`, `[DEBUG]`, `[ACTION]`, `[SUMMARY]` (converging on the `SharedModules/Logging` standard).
+2. **Structured Log Levels**: Classify every message using standard log levels: `[INFO]`, `[WARN]`, `[ERROR]`, `[DEBUG]`, `[ACTION]`, `[SUMMARY]` (converging on the `LCM_Shared/Logging` standard).
 3. **Mandatory `[SUMMARY]` Footer**: Emit a standardized terminal and log summary block upon completion displaying:
    - Tool name
    - Version number
@@ -824,7 +824,7 @@ All PowerShell scripts, automation tools, and diagnostic reporters that launch i
 1. **Interactive Session Isolation Awareness**:
    Never assume script execution is running inside the interactive desktop. When executed from background agent sessions, IDE workers, or automated task runners (Session 0), raw `Start-Process` invocations are isolated and completely invisible on the user's physical screen.
 2. **Mandatory Desktop Dispatch Routing**:
-   Inspect whether `Invoke-InteractiveDesktop.ps1` exists in the workspace (`D:\Git_Repositories\tools\Invoke-InteractiveDesktop.ps1` or `$toolsDir`). If present, GUI execution `MUST` be routed through `Invoke-InteractiveDesktop.ps1` using:
+   Inspect whether `Invoke-InteractiveDesktop.ps1` exists in the workspace (`D:\Git_Repositories\LCM_Tools\Invoke-InteractiveDesktop.ps1` or `$toolsDir`). If present, GUI execution `MUST` be routed through `Invoke-InteractiveDesktop.ps1` using:
    ```powershell
    $dispatcher = Join-Path $toolsDir "Invoke-InteractiveDesktop.ps1"
    if (Test-Path $dispatcher) {
@@ -1015,7 +1015,7 @@ POWERSHELL-METADATA
 Module: PythonRules  
 Purpose: Authoritative rule definitions for Python code quality, import ordering, string formatting, and linter compliance.  
 Path: .agents/rules/PythonRules.md  
-Authors: Rolf, Workspace_AI Engine  
+Authors: Rolf, LCM_AI Engine  
 Version: 8.1.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-09-26  
@@ -1111,7 +1111,7 @@ Date: 2026-09-26
 Module: DocumentationStandardsPolicy  
 Purpose: Defines mandatory tripartite repository documentation standards, audience scoping, and DOX metadata invariants across all governed repositories.  
 Path: .agents/rules/DocumentationStandardsPolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.6.0  
 Status: Authoritative Policy  
 Date: 2026-09-26  
@@ -1182,7 +1182,7 @@ Every LCM-governed repository that deploys or installs operational payloads `MUS
    - For complex multi-phase deployments, steps may be cleanly separated into numbered sub-documents in `install/` (e.g., `01-Prerequisites.md`, `02-Configuration.md`, `03-Deployment.md`), centrally indexed and orchestrated by `Installation.md`.
    - `install/` contains purely procedural runbooks and deployment scripts; it `MUST NOT` contain a `README.md`.
 3. **Decoupled Cross-Repository Boundaries**:
-   - External dependencies (such as `SharedModules` or `Workspace_Inventory`) `MUST` be represented strictly as prerequisite assertions and linkage steps without duplicating foreign repository code or internals.
+   - External dependencies (such as `LCM_Shared` or `LCM_Inventory`) `MUST` be represented strictly as prerequisite assertions and linkage steps without duplicating foreign repository code or internals.
 
 ---
 
@@ -1200,7 +1200,7 @@ Whenever a new major LCM version $M$ (e.g. `v6.0.0`, `v7.0.0`) is established an
 ### RULE-DOC-006: Major Release Retention Horizon Policy & Evolution History Taxonomy
 At the time of a major release push $M$ (e.g. `v6.0.0`, `v7.0.0`):
 1. **2-Major-Release Retention Horizon ($M - 2$)**:
-   - All transient operational logs (`tools/logs/*.log`, `Workspace_Inventory/logs/*.log`), temporary scratch dumps (`scratch/`), and legacy deletion trees (`Deletions/`) from major releases older than 2 major versions ($\le M - 2$) `MUST` be completely flushed.
+   - All transient operational logs (`tools/logs/*.log`, `LCM_Inventory/logs/*.log`), temporary scratch dumps (`scratch/`), and legacy deletion trees (`Deletions/`) from major releases older than 2 major versions ($\le M - 2$) `MUST` be completely flushed.
    - For major release $M=6$, all artifacts and deletion trees from major releases $\le 4$ are purged.
    - Transient logs within the active operational window ($M$ and $M-1$) are retained.
 2. **Permanent Historical Evolution Logs Exemption**:
@@ -1247,7 +1247,7 @@ For governed repositories that scale beyond single-purpose scripts into multi-ca
 Module: SubsystemGovernancePolicy  
 Purpose: Governs disjunct Subsystem repositories (e.g. Home Assistant OS), dedicated subsystem inventories, JIT ephemeral write authentication, host hardware interlocks, and log segregation.  
 Path: .agents/rules/SubsystemGovernancePolicy.md  
-Authors: Rolf, Workspace_AI Governance  
+Authors: Rolf, LCM_AI Governance  
 Version: 8.0.0  
 Status: Authoritative Policy  
 Date: 2026-09-26  
@@ -1256,7 +1256,7 @@ Date: 2026-09-26
 
 ## 1. Scope & Motivation
 
-A **Subsystem** represents an autonomous runtime or supervisory domain (e.g., `HaSSD06` running Home Assistant OS, or `Workspace_Supervision` operating continuous task telemetry and status observation) that has specialized operational lifecycles distinct from general scripting utilities. 
+A **Subsystem** represents an autonomous runtime or supervisory domain (e.g., `HaSSD06` running Home Assistant OS, or `LCM_Supervision` operating continuous task telemetry and status observation) that has specialized operational lifecycles distinct from general scripting utilities. 
 
 While Subsystems inherit standard LCM **documentation and quality gate rules**, their internal parts (integrations, devices, tasks, telemetry ledgers, entities) require domain-specific configuration management and elevated safety protocols.
 
@@ -1266,7 +1266,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 
 ### RULE-SUB-001: Subsystem Classification & Documentation Conformance
 1. A repository classified as `subsystem` in `.lcm/config.json` `MUST` fully implement standard LCM **Tripartite Documentation** (`docs/Architecture.md`, `docs/Requirements.md`, `docs/Implementation.md`) and the universal runbook (`install/Installation.md`).
-2. The root `Workspace_Inventory` tracks Subsystems at the macro Git level, while delegating internal part tracking to the Subsystem's dedicated inventory engine.
+2. The root `LCM_Inventory` tracks Subsystems at the macro Git level, while delegating internal part tracking to the Subsystem's dedicated inventory engine.
 
 ### RULE-SUB-002: Dedicated Subsystem Inventory Engine & Auto-Acceptance Invariant
 1. Subsystems `MUST` maintain an independent internal inventory ledger at `data/subsystem_inventory.json` and a rendered summary at `docs/SUBSYSTEM_DASHBOARD.md`.
@@ -1289,7 +1289,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
    - All state modifications `MUST` execute through the 5-stage pipeline: `(1) Pre-Flight State Snapshot` $\rightarrow$ `(2) Beyond Compare Visual Payload Gate` $\rightarrow$ `(3) Atomic API Dispatch` $\rightarrow$ `(4) Tiered Polling Health & Liveness Loop (up to 10m for Add-ons, up to 20m for Core, up to 30–45m for Host OS reboots / schema migrations)` $\rightarrow$ `(5) Automated Rollback on Failure`.
 
 ### RULE-SUB-005: Strict Log & Evidence Segregation
-1. Host-level CM activities (`Workspace_Inventory/logs/cm_activity.log`) record only macro repository lifecycle milestones.
+1. Host-level CM activities (`LCM_Inventory/logs/cm_activity.log`) record only macro repository lifecycle milestones.
 2. Granular runtime events, entity modifications, and API traces `MUST` write exclusively to the Subsystem's internal log directory (`<Subsystem>/logs/subsystem_activity.log` and `<Subsystem>/logs/api_traffic.log`).
 3. Outgoing and incoming log messages `MUST` pass through automatic regex sanitization to redact any authorization headers, bearer tokens, or password strings.
 
@@ -1373,7 +1373,7 @@ MACRO: ToolExplorer
 - parameters:
   - -Audience <User|Dev|All>: pre-filter audience category (defaults to 'User')
   - -Group <Name>: pre-filter by group or subsystem (e.g. 'HaSSD06', 'LCM', 'SystemConfiguration')
-  - -Subsystem <Name>: direct filter for specific subsystem (e.g. 'HaSSD06', 'Workspace_Inventory')
+  - -Subsystem <Name>: direct filter for specific subsystem (e.g. 'HaSSD06', 'LCM_Inventory')
   - -HaSSD06 (or -Ha): quick switch to filter directly to Home Assistant HaSSD06 tools
   - -Role <RoleName>: pre-filter by functional role (e.g. 'QualityGate', 'ReviewGate', 'Elevation', 'DesktopGUI')
   - -Tool <ToolName>: pre-select and highlight specific tool
@@ -1406,25 +1406,25 @@ MACRO: BCR
 - syntax: bcr <repo> [commit] | BCR <repo> [commit]
 - aliases: bcr, BCR, @bcr
 - rules:
-  - 'bcr <repo>' or 'BCR <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
-  - 'bcr <repo> <commit>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
+  - 'bcr <repo>' or 'BCR <repo>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo>'
+  - 'bcr <repo> <commit>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-BeyondCompareReview.ps1 -RepositoryName <repo> -BaseCommit <commit>'
 
 MACRO: COMPLETE
 - description: submit a completed review result, close the Beyond Compare review window, run quality gates, and commit locally
 - syntax: complete [repo] | COMPLETE [repo]
 - aliases: complete, COMPLETE, completed
 - rules:
-  - 'complete <repo>' or 'COMPLETE <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Completed'
+  - 'complete <repo>' or 'COMPLETE <repo>' -> executes 'pwsh -File LCM_Inventory/tools/Submit-ReviewResult.ps1 -RepositoryPath <repo> -Result Completed'
   - automatically closes matching Beyond Compare review window
   - never invokes a remote push
 
 MACRO: PUSH
-- description: publish a completed proposal cohort and Workspace_Inventory to their remotes in lockstep
+- description: publish a completed proposal cohort and LCM_Inventory to their remotes in lockstep
 - syntax: push [repo] | PUSH [repo]
 - aliases: push, PUSH
 - rules:
-  - 'push <repo>' or 'PUSH <repo>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-WorkspacePush.ps1 -Repositories <repo>'
-  - requires every target proposal to be completed and Workspace_Inventory to be ahead before any remote dispatch
+  - 'push <repo>' or 'PUSH <repo>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-WorkspacePush.ps1 -Repositories <repo>'
+  - requires every target proposal to be completed and LCM_Inventory to be ahead before any remote dispatch
 
 MACRO: tsr (Legacy / Automated)
 - note: Superseded by persistent TimestampHeaderRule codified in InvariantRules.md. Automated on every turn; manual macro invocation is deprecated.
@@ -1434,9 +1434,9 @@ MACRO: ar
 - syntax: ar [offset] | AnalyzeReasoning [offset]
 - aliases: ar, AR, AnalyzeReasoning
 - rules:
-  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or .lcm/Cmd/ar.cmd)
-  - 'ar <offset>' or 'AnalyzeReasoning <offset>' -> executes 'pwsh -File Workspace_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset <offset>'
-  - generates a structured report in Workspace_Inventory/data/logs/ containing Execution Trace, Error Triage & Avoidance Matrix, and Decision Rationale
+  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or .lcm/Cmd/ar.cmd)
+  - 'ar <offset>' or 'AnalyzeReasoning <offset>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset <offset>'
+  - generates a structured report in LCM_Inventory/data/logs/ containing Execution Trace, Error Triage & Avoidance Matrix, and Decision Rationale
 
 ---
 
@@ -1449,7 +1449,7 @@ MACRO: ar
 This root container operates under the **Lifecycle Model (LCM)** architecture. All child repositories inherit governance policies from `.agents/rules/`.
 
 > [!NOTE]
-> **Comprehensive Rule Matrix**: For full cross-repository details, rule codes, enforcement scripts, and child repository junction mappings, see the authoritative [LCM Rules Cross-Reference Matrix](file:///Workspace_AI/docs/LCM-Rules-Cross-Reference.md).
+> **Comprehensive Rule Matrix**: For full cross-repository details, rule codes, enforcement scripts, and child repository junction mappings, see the authoritative [LCM Rules Cross-Reference Matrix](file:///LCM_AI/docs/LCM-Rules-Cross-Reference.md).
 
 ---
 
@@ -1459,7 +1459,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 |:---|:---|:---|:---|:---|
 | **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `022` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `COMPLETE`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), Tool & Macro Synchronization Invariant (`RULE-LCM-021`), and Atomic Edit Consolidation & Editor Review Safety Invariant (`RULE-LCM-022`). |
 | **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `015` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, and variable string interpolation & colon boundaries. |
-| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `Workspace_Inventory/data/reviews/`. |
+| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `008` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), readiness quality gate pass, audit receipts in `LCM_Inventory/data/reviews/`. |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `008`, `RULE-ENV-003` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures, DOIT autonomous execution velocity, search dispatch routing (`Search-Everything.ps1`/`rg.exe`), tool catalog discovery, zero speculative relative pathing. |
 | **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `006` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, elevated console non-auto-close invariant, and automated privilege-aware execution/elevation interception. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
@@ -1478,8 +1478,8 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 ---
 
 ## 2. Rule Discovery Architecture
-- **Canonical Hub**: `Workspace_AI\.agents\rules\` (17 authoritative rule files; physical owner & primary commit gate).
-- **Root & Child Discovery**: Root `D:\Git_Repositories\.agents\rules` links to `Workspace_AI\.agents\rules` via junction, eliminating root commit churn. Every governed child repository links `.agents/rules` directly to this hub, guaranteeing 100% rule discovery whether opening the workspace root or an individual repository folder.
+- **Canonical Hub**: `LCM_AI\.agents\rules\` (17 authoritative rule files; physical owner & primary commit gate).
+- **Root & Child Discovery**: Root `D:\Git_Repositories\.agents\rules` links to `LCM_AI\.agents\rules` via junction, eliminating root commit churn. Every governed child repository links `.agents/rules` directly to this hub, guaranteeing 100% rule discovery whether opening the workspace root or an individual repository folder.
 
 ---
 
@@ -1499,5 +1499,5 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 # GEMINI.md - LCM Governance Directive
 
 This workspace is governed by the Lifecycle Model (LCM) framework.
-See authoritative rules in `.agents/rules/`, [`AGENTS.md`](file:///AGENTS.md), and the [`LCM-Rules-Cross-Reference.md`](file:///Workspace_AI/docs/LCM-Rules-Cross-Reference.md).
+See authoritative rules in `.agents/rules/`, [`AGENTS.md`](file:///AGENTS.md), and the [`LCM-Rules-Cross-Reference.md`](file:///LCM_AI/docs/LCM-Rules-Cross-Reference.md).
 

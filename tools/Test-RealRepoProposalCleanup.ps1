@@ -49,7 +49,7 @@ if ($Help) {
 Module: Test-RealRepoProposalCleanup.ps1
 Purpose: Report target-local proposal files that are void because they are accepted and implemented.
 Path: tools/Test-RealRepoProposalCleanup.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.0.0
 Caller Contract: Performs a read-only scan of the selected target repository's method proposal queue; does not delete, stage, or commit files.
 Changelog:

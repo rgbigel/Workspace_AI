@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Discover sibling Git repositories read-only for Workspace_AI stabilization checks.
+  Discover sibling Git repositories read-only for LCM_AI stabilization checks.
 
 .PARAMETER WorkspaceParent
   Parent directory containing workspace repositories.
@@ -23,7 +23,7 @@ param(
   [string]$WorkspaceParent = 'D:\Git_Repositories',
 
   [Parameter(Mandatory = $false, HelpMessage = 'Path to currently active repository to optionally exclude.')]
-  [string]$ActiveRepository = 'D:\Git_Repositories\Workspace_AI',
+  [string]$ActiveRepository = 'D:\Git_Repositories\LCM_AI',
 
   [Parameter(Mandatory = $false, HelpMessage = 'Include active repository in discovery results.')]
   [switch]$IncludeActiveRepository,
@@ -53,11 +53,11 @@ if ($Help) {
 
 <#
 Module: Get-WorkspaceRepositories.ps1
-Purpose: Discover sibling Git repositories read-only for Workspace_AI stabilization checks.
+Purpose: Discover sibling Git repositories read-only for LCM_AI stabilization checks.
 Path: tools/Get-WorkspaceRepositories.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.0.0
-Caller Contract: Called during Workspace_AI stabilization; returns direct child directories with .git folders without modifying them.
+Caller Contract: Called during LCM_AI stabilization; returns direct child directories with .git folders without modifying them.
 Changelog:
 - 2026-08-01: Added read-only sibling repository discovery command.
 #>

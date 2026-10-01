@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Read Workspace_AI real-repository test plan state without changing it.
+  Read LCM_AI real-repository test plan state without changing it.
 
 .PARAMETER AsJson
   Output the test plan state in JSON format.
@@ -32,9 +32,9 @@ if ($Help) {
 
 <#
 Module: Get-RealRepoTestPlan.ps1
-Purpose: Read Workspace_AI real-repository test plan state without changing it.
+Purpose: Read LCM_AI real-repository test plan state without changing it.
 Path: tools/Get-RealRepoTestPlan.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.11.0
 Caller Contract: Called by operators or governance scripts when inspecting real-repository dry-run state; performs no external repository access.
 Changelog:

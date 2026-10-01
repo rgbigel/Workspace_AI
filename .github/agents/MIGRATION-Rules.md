@@ -2,17 +2,17 @@
 
 Module: MIGRATION-Rules.md
 Purpose: Defines workspace documentation and operational rules for MIGRATION-Rules.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/MIGRATION-Rules.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/MIGRATION-Rules.md
 Authors: Rolf
 Version: 8.0.0
 Changelog:
 - 2026-07-27: Normalized Markdown metadata header.
 
 ## 1. Purpose
-Define unified rules for cleaning, normalizing, and migrating repositories. Combine invariant rules, module rules, SharedModules rules, atom rules, ACTIONS.md rules, and inventory rules.
+Define unified rules for cleaning, normalizing, and migrating repositories. Combine invariant rules, module rules, LCM_Shared rules, atom rules, ACTIONS.md rules, and inventory rules.
 
 ## 2. Scope
-Applies to all repositories under D:\Git_Repositories. Covers cleanup, normalization, atom discovery, SharedModules reuse, atom promotion, ACTIONS.md generation, inventory updates, and migration execution.
+Applies to all repositories under D:\Git_Repositories. Covers cleanup, normalization, atom discovery, LCM_Shared reuse, atom promotion, ACTIONS.md generation, inventory updates, and migration execution.
 
 ## 3. Migration Workflow
 Migration is executed repo-by-repo.
@@ -20,7 +20,7 @@ Migration is executed repo-by-repo.
 Steps:
 1. Load MIGRATION-Rules
 2. Load ATOM-Building
-3. Load SharedModules rules
+3. Load LCM_Shared rules
 4. Load invariant rules
 5. Generate or open ACTIONS.md
 6. Execute ACTIONS.md
@@ -69,8 +69,8 @@ Placement:
 - deterministic naming
 - deterministic versioning
 
-## 7. SharedModules Rules
-SharedModules is the cross-repo utility library.
+## 7. LCM_Shared Rules
+LCM_Shared is the cross-repo utility library.
 
 Migration must:
 - detect reuse
@@ -81,9 +81,9 @@ Migration must:
 - maintain versioned modules
 
 Structure:
-SharedModules/Modules/Discovery
-SharedModules/Modules/Evaluation
-SharedModules/Modules/Reporting
+LCM_Shared/Modules/Discovery
+LCM_Shared/Modules/Evaluation
+LCM_Shared/Modules/Reporting
 
 ## 8. Atom Rules
 Atoms follow ATOM-Building.
@@ -92,7 +92,7 @@ Atoms follow ATOM-Building.
 Atoms must be single-responsibility, deterministic, stable interface, no hidden state, pure (except logging atoms), reusable across repos.
 
 ### 8.2 Categories
-Discovery, Evaluation, Reporting, SharedModules.
+Discovery, Evaluation, Reporting, LCM_Shared.
 
 ### 8.3 Validation
 Check responsibility, determinism, interface stability, hidden state, side-effect policy, cross-repo reusability.
@@ -101,7 +101,7 @@ Check responsibility, determinism, interface stability, hidden state, side-effec
 Modules/Discovery
 Modules/Evaluation
 Modules/Reporting
-SharedModules/Modules
+LCM_Shared/Modules
 
 ## 9. ACTIONS.md Rules
 Every repo must have an ACTIONS.md containing:
@@ -110,21 +110,21 @@ Every repo must have an ACTIONS.md containing:
 Normalize modules, apply invariant rules, apply header rules, classify modules, detect deprecated modules, detect missing documentation.
 
 ### 9.2 Atom Discovery
-Identify standalone functions, evaluate atom criteria, classify atoms, flag SharedModules candidates.
+Identify standalone functions, evaluate atom criteria, classify atoms, flag LCM_Shared candidates.
 
-### 9.3 SharedModules Reuse Analysis
+### 9.3 LCM_Shared Reuse Analysis
 Detect reuse, detect conflicts, detect overrides, recommend promotion.
 
 ### 9.4 Inventory Update Steps
 Add atoms, add modules, mark deprecated modules, mark promoted atoms, update version numbers, update migration status.
 
 ### 9.5 Completion Criteria
-Repo is migrated when modules normalized, atoms classified, SharedModules reuse resolved, inventory updated, documentation complete, versioning updated, ACTIONS.md marked complete.
+Repo is migrated when modules normalized, atoms classified, LCM_Shared reuse resolved, inventory updated, documentation complete, versioning updated, ACTIONS.md marked complete.
 
 ## 10. Inventory Rules
 Inventory file: D:\Git_Repositories\MODULES_INVENTORY_REPORT.md
 
-Must track modules, atoms, SharedModules atoms, version numbers, repo migration status, atom promotion history, deprecated modules, reuse relationships.
+Must track modules, atoms, LCM_Shared atoms, version numbers, repo migration status, atom promotion history, deprecated modules, reuse relationships.
 
 Updated repo-by-repo during migration.
 
@@ -154,7 +154,7 @@ Steps:
 6. Continue
 
 Guarantees:
-no premature migration, SharedModules grows only when needed, atoms discovered systematically, inventory consistent, migration reversible, migration traceable.
+no premature migration, LCM_Shared grows only when needed, atoms discovered systematically, inventory consistent, migration reversible, migration traceable.
 
 ## 13. Versioning
 Semantic versioning. Current version: 1.0.0

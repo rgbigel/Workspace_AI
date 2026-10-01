@@ -34,7 +34,7 @@ if ($Help) {
 Module: Get-RealRepoActionPlan.ps1
 Purpose: Build a read-only intended-action preview for a selected real-repository dry-run target.
 Path: tools/Get-RealRepoActionPlan.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.3.0
 Caller Contract: Called during real-repository dry-run preparation; reports intended adapter actions without writing to the target repository.
 Changelog:
@@ -172,7 +172,7 @@ if (-not $canObserveTarget) {
       Type = $actionType
       TargetPath = $currentSurface
       SourcePath = $currentSurface
-      SourceAuthority = 'Workspace_AI'
+      SourceAuthority = 'LCM_AI'
       SourceExists = $sourceExists
       TargetExists = $targetExists
       ComparisonState = $comparisonState

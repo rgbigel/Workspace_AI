@@ -2,12 +2,12 @@
 
 Module: Workspace-Rules.md
 Purpose: Defines workspace documentation and operational rules for Workspace-Rules.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/Workspace-Rules.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/Workspace-Rules.md
 Authors: Rolf
 Version: 8.3.0
 Changelog:
 - 2026-08-16: Reconciled with LCM v4.2.0; codified System Prerequisites mandate, ElevationPolicy.md (RULE-ELEV-001..004) authority, and Assert-RepoDocumentationFabric quality gate.
-- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_AI paths, agent registry requirements, and WorkspaceLog governance logging.
+- 2026-07-31: Consolidated Workspace-Rules authority, canonical LCM_AI paths, agent registry requirements, and WorkspaceLog governance logging.
 - 2026-07-31: Resolved DOX unification follow-ups; confirmed explicit documentation-work and custom-agent discovery rules are complete.
 - 2026-07-31: Aligned documentation editing rules with explicit DOX invocation and custom-agent frontmatter preservation.
 - 2026-07-27: Normalized Markdown metadata header.
@@ -17,21 +17,21 @@ Changelog:
 =====================================================================
 Define workspace-level rules governing documentation immutability,
 regeneration boundaries, agent behavior, deterministic output, and
-global constraints for Workspace_AI under LCM v4.2.0.
+global constraints for LCM_AI under LCM v4.2.0.
 
 =====================================================================
 2. Scope
 =====================================================================
-Workspace rules apply to Workspace_AI and to workspace-level control
-operations performed from Workspace_AI.
+Workspace rules apply to LCM_AI and to workspace-level control
+operations performed from LCM_AI.
 
 Canonical workspace root:
-- D:\Git_Repositories\Workspace_AI
+- D:\Git_Repositories\LCM_AI
 
 Canonical workspace control directories:
-- D:\Git_Repositories\Workspace_AI\.agents\rules
-- D:\Git_Repositories\Workspace_AI\.copilot\Rules
-- D:\Git_Repositories\Workspace_AI\.github\agents
+- D:\Git_Repositories\LCM_AI\.agents\rules
+- D:\Git_Repositories\LCM_AI\.copilot\Rules
+- D:\Git_Repositories\LCM_AI\.github\agents
 
 Authority order:
 1. Canonical Governance Rules (.agents/rules/ and .copilot/Rules/)
@@ -111,7 +111,7 @@ Workspace agents:
 - DOX Agent
 - MIGRATION Agent
 - ATOM Agent
-- SharedModulesRule Agent
+- LCM_SharedRule Agent
 - WorkspaceLog Agent
 
 Workspace agents must:
@@ -147,7 +147,7 @@ Workspace agents must not:
 Workspace-level files:
 - must use absolute Windows paths
 - example:
-  D:\Git_Repositories\Workspace_AI\.github\agents\Workspace-Rules.md
+  D:\Git_Repositories\LCM_AI\.github\agents\Workspace-Rules.md
 
 Repository-level files:
 - must use repo-relative paths

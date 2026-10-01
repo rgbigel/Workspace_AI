@@ -2,12 +2,12 @@
 
 Module: WorkspaceAgentIndex.md
 Purpose: Defines workspace documentation and operational rules for WorkspaceAgentIndex.
-Path: D:/Git_Repositories/Workspace_AI/.github/agents/WorkspaceAgentIndex.md
+Path: D:/Git_Repositories/LCM_AI/.github/agents/WorkspaceAgentIndex.md
 Authors: Rolf
 Version: 8.3.0
 Changelog:
 - 2026-08-16: Reconciled with LCM v4.2.0; registered ElevationPolicy.md (RULE-ELEV-001..004), codified 5 System Prerequisites, and registered Assert-RepoDocumentationFabric gate.
-- 2026-07-31: Consolidated Workspace-Rules authority, canonical Workspace_AI paths, and WorkspaceLog agent registration.
+- 2026-07-31: Consolidated Workspace-Rules authority, canonical LCM_AI paths, and WorkspaceLog agent registration.
 - 2026-07-31: Resolved DOX unification follow-ups; marked DOX role, constraints, and discovery requirements complete.
 - 2026-07-31: Aligned DOX Agent definition with unified documentation behavior.
 - 2026-07-27: Normalized Markdown metadata header.
@@ -84,7 +84,7 @@ Responsibilities:
 - improve technical writing, usage guidance, install instructions,
   and operator-facing explanations
 - unify documentation terms, source-of-truth references, and usage
-  descriptions across Workspace_AI documentation surfaces
+  descriptions across LCM_AI documentation surfaces
 - modify code only when documentation tasks require updates to help
   comments or usage strings
 - output complete updated files when proposing changes
@@ -135,7 +135,7 @@ Activation:
 - explicit user invocation
 
 =====================================================================
-9. SharedModulesRule Agent
+9. LCM_SharedRule Agent
 =====================================================================
 Purpose:
 - govern rules for shared modules across repositories
@@ -151,7 +151,7 @@ Activation:
 10. WorkspaceLog Agent
 =====================================================================
 Purpose:
-- generate the Workspace_AI governance log
+- generate the LCM_AI governance log
 
 Responsibilities:
 - summarize FIX, DOX, APPLY, RULE, and AGENT operations
@@ -198,7 +198,7 @@ Audit logs must not modify documentation.
 13. Agent Metadata
 =====================================================================
 - all workspace agents reside in:
-  D:\Git_Repositories\Workspace_AI\.github\agents\
+  D:\Git_Repositories\LCM_AI\.github\agents\
 - all workspace agents follow @technical format
 - all workspace agents must comply with:
   - Workspace-Rules.md

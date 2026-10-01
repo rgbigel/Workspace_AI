@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Run native Workspace_AI self-readiness checks before real-repository testing.
+  Run native LCM_AI self-readiness checks before real-repository testing.
 
 .PARAMETER Help
   Displays this synopsis and usage screen.
@@ -13,7 +13,7 @@ param(
 )
 
 if ($Help) {
-  Write-Host "Test-WorkspaceReadiness.ps1 - Run native Workspace_AI self-readiness checks." -ForegroundColor Cyan
+  Write-Host "Test-WorkspaceReadiness.ps1 - Run native LCM_AI self-readiness checks." -ForegroundColor Cyan
   Write-Host ""
   Write-Host "Usage:"
   Write-Host "  pwsh -File Test-WorkspaceReadiness.ps1 [-Help]"
@@ -25,9 +25,9 @@ if ($Help) {
 
 <#
 Module: Test-WorkspaceReadiness.ps1
-Purpose: Run native Workspace_AI self-readiness checks before real-repository testing.
+Purpose: Run native LCM_AI self-readiness checks before real-repository testing.
 Path: tools/Test-WorkspaceReadiness.ps1
-Authors: Workspace_AI Engine
+Authors: LCM_AI Engine
 Version: 1.8.1
 Caller Contract: Called manually before enabling real-repository tests; validates current native governance pipeline.
 Changelog:
@@ -40,7 +40,7 @@ Changelog:
 - 2026-08-01: Added real-repository dry-run contract checks.
 - 2026-08-01: Consolidated helper checks behind WorkspaceQualityGates module.
 - 2026-08-01: Added stabilization policy and stale-reference checks.
-- 2026-08-01: Added Workspace_AI readiness self-test wrapper.
+- 2026-08-01: Added LCM_AI readiness self-test wrapper.
 #>
 
 $workspaceRoot = Split-Path $PSScriptRoot -Parent
@@ -98,4 +98,4 @@ if (Test-Path $toolUpdater) {
   & $toolUpdater -Silent
 }
 
-Write-Host 'Workspace_AI readiness self-test: OK'
+Write-Host 'LCM_AI readiness self-test: OK'

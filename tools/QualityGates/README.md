@@ -1,6 +1,6 @@
-# Workspace_AI Quality Gates
+# LCM_AI Quality Gates
 
-This folder contains reusable checks for Workspace_AI readiness and stabilization.
+This folder contains reusable checks for LCM_AI readiness and stabilization.
 
 Operators should run the single public readiness command from the repository root:
 

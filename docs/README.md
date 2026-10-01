@@ -1,9 +1,9 @@
-# Workspace_AI Documentation Directory
+# LCM_AI Documentation Directory
 
 Module: docs/README.md  
 Purpose: Master documentation catalog for the Lifecycle Model (LCM) framework.  
-Path: D:/Git_Repositories/Workspace_AI/docs/README.md  
-Authors: Rolf, Workspace_AI Engine  
+Path: D:/Git_Repositories/LCM_AI/docs/README.md  
+Authors: Rolf, LCM_AI Engine  
 Version: 8.0.2  
 Status: Authoritative Standard  
 Date: 2026-08-21  
@@ -27,7 +27,7 @@ The LCM governance tooling requires:
 The authoritative Lifecycle Model (LCM) documentation is codified across three core tripartite specifications and a dedicated procedural installation runbook:
 
 - **[Requirements.md](Requirements.md)** — Normative requirements, system prerequisites, lifecycle states, and acceptance criteria.
-- **[Architecture.md](Architecture.md)** — System topology, decoupled triad (`Workspace_AI`, `Workspace_Inventory`, `SharedModules`), Hub-and-Spoke rule discovery, two-tier proposal & review stream, and the standardized repository layout.
+- **[Architecture.md](Architecture.md)** — System topology, decoupled triad (`LCM_AI`, `LCM_Inventory`, `LCM_Shared`), Hub-and-Spoke rule discovery, two-tier proposal & review stream, and the standardized repository layout.
 - **[Implementation.md](Implementation.md)** — Comprehensive inventory of PowerShell CLI tools, modules, data schemas, and requirement traceability matrix.
 - **[`install/Installation.md`](../install/Installation.md)** — Procedural installation, customization, environment prerequisites, and upgrade runbook.
 
