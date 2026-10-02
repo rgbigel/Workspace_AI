@@ -1,13 +1,21 @@
-# Lifecycle Model (LCM) Repository Inventory & Status Matrix
+# Historical Lifecycle Model (LCM) Repository Inventory Snapshot
 
 Module: LCM-Repository-Inventory.md
-Purpose: Comprehensive inventory and governance status of all repositories and directories under D:\Git_Repositories governed by Solution.code-workspace.
+Purpose: Preserves a pre-migration repository inventory snapshot for historical reference; it is not a statement of the current physical LCM-root topology.
 Path: docs/LCM-Repository-Inventory.md
 Authors: Rolf, LCM_AI Engine
 Version: 8.1.1
+Status: Historical Archive - Not Current Topology
+Classification: historical-archive
 Date: 2026-08-15
 
 ---
+
+> [!WARNING]
+> This is a historical pre-migration snapshot retained for audit context. Current
+> topology authority is the physical `LCM_*` roots and the active governance
+> rules in `LCM_AI\.agents\rules\`. Do not use the names, counts, branches, or
+> classifications below as current operating guidance.
 
 ## 1. Executive Summary & Version Baseline
 
@@ -40,7 +48,6 @@ Date: 2026-08-15
 | **`MSG file conversion`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
 | **`NextBootTray`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
 | **`OutlookVBAConversion`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
-| **`PowerBGInfo`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
 | **`ReEnableRadeonRx580`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
 | **`LCM_Shared`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
 | **`TimeStamper`** | Git | `HEAD` | - | Not LCM | Standard Git Repo (Un-onboarded) |
@@ -85,7 +92,6 @@ Date: 2026-08-15
 ### 4. Non-Git Directories (10 Directories)
 * **Status**: Codified under `git.ignoredRepositories`.
 * **Transition Path**: When targeted for onboarding, `Invoke-LCMOnboardRepo.ps1` prompts to initialize `git init -b main`, writes standard `.gitignore`, and generates an initial `pre-LCM` baseline commit before seeding governance rules.
-
 
 
 

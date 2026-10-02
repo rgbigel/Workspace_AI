@@ -1,7 +1,9 @@
-# LCM Local Governance Link
-.agents/*
-!.agents/rules/
-!.agents/rules/**
+# Purely internal & transient files in .agents (physical storage preserves rules, skills, atoms, configs, and session memory)
+.agents/logs/
+.agents/scratch/
+.agents/*.log
+.agents/*.tmp
+.agents/*.bak
 
 # Logs & Temporary Files
 logs/

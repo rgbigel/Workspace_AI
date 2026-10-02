@@ -46,11 +46,11 @@ The workstation `MUST` provide Beyond Compare 5 (`D:\Tools\Beyond Compare 5\BCom
 
 ### LCM-REQ-002 - Unambiguous Precedence Hierarchy
 When rule sources overlap, the following strict authority order `MUST` govern:
-1. Workspace-wide Invariants (`Workspace-Rules.md`, `LanguagePolicy.md`).
-2. Authoritative Rules (`.agents/rules/` and `.copilot/Rules/` in `LCM_AI`).
-3. Repository-Local Explicit Overrides (`.lcm/overrides.json`).
-4. Operational Instructions & Documentation.
-5. Generated Adapters and Templates.
+1. Repository-local executable behavior and configuration.
+2. The authoritative rules in `LCM_AI\.agents\rules\`.
+3. Root `AGENTS.md` and repository-local `AGENTS.md`.
+4. Repository-local explicit overrides (`.lcm/overrides.json`) where present.
+5. Operational instructions and documentation.
 
 ### LCM-REQ-003 - Stable Identity Standard
 All active governance tools, logs, and templates `MUST` identify the baseline system as `LCM_AI` (LCM v7.0.0). Legacy recovery prefixes (`Workspace_AC`, `Workspace_GC`) `MUST NOT` appear in active governance ledgers or filenames.
@@ -75,7 +75,7 @@ Every directory under `D:\Git_Repositories\` `MUST` be assigned an explicit clas
 - `lcm-governed`: Repositories with active LCM junctions and `.lcm/config.json`.
 - `standard-git`: Git-initialized repositories pending LCM onboarding.
 - `non-git`: Folders without `.git` (tracked under `git.ignoredRepositories`).
-- `legacy-retired`: Archived baselines (`Workspace_AC`, `Workspace_GC`).
+- `legacy-retired`: Historical material explicitly classified as archival; it is outside the active LCM-root topology.
 - `parent-infra`: Solution root infrastructure folders (`.agents`, `.copilot`, `.github`, `.venv`, `.vscode`).
 
 ### LCM-REQ-011 - Guarded State Transitions & CR-First Policy
@@ -210,4 +210,3 @@ the selected CRP/BUG scope. It MUST reject missing scope, ambiguous payloads,
 and competing updates for the same repository/document pair; it MUST NOT infer
 delivery knowledge from unrelated work.
 <!-- /FixDocumentation -->
-

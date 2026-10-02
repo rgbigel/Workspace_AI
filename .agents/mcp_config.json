@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "homeassistant-readonly": {
+      "command": "python",
+      "args": [
+        "d:/Git_Repositories/HaSSD06/mcp_ha_readonly.py"
+      ],
+      "env": {
+        "HA_URL": "http://192.168.10.6:8123"
+      }
+    }
+  }
+}

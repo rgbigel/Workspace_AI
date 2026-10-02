@@ -12,15 +12,18 @@ Date: 2026-09-19
 
 ## 1. System Topology & Decoupled Governance Architecture
 
-The **Lifecycle Model (LCM) Version 7.0.0** operates across a decoupled multi-repository container architecture centered at `D:\Git_Repositories\`. It distinctly separates **Design & Baseline Authority (`LCM_AI`)**, **Operational Configuration Management (`LCM_Inventory`)**, **Reusable Atomic Modules (`LCM_Shared`)**, and the **Root Container Hub**:
+The Lifecycle Model operates across the current physical LCM roots under
+`D:\Git_Repositories\`. It separates **baseline authority (`LCM_AI`)**,
+**operational configuration management (`LCM_Inventory`)**, **reusable modules
+(`LCM_Shared`)**, and the dedicated backup and supervision subsystems.
 
 ```mermaid
 graph TB
     classDef default font-size:8pt;
     subgraph RootContainer["Root Solution Container<br/>(D:/Git_Repositories/)"]
         direction TB
-        CanonicalHub["Canonical Rule Hub<br/>.agents/rules/<br/>(14 Authoritative Policies)"]
-        RootEntry["Root Entrypoints & Tools<br/>AGENTS.md, GEMINI.md<br/>Invoke-BeyondCompareReview.ps1,<br/>RR.ps1"]
+        CanonicalHub["Canonical Rule Hub<br/>LCM_AI/.agents/rules/<br/>(authoritative policies)"]
+        RootEntry["Root Governance Entry Point<br/>AGENTS.md"]
         
         subgraph LCMTriad["LCM Architectural Triad"]
             WAI["LCM_AI<br/>(Baseline Authority, Quality Gates<br/>& Specs)"]
@@ -28,11 +31,10 @@ graph TB
             SM["LCM_Shared<br/>(Reusable PowerShell Atoms:<br/>Logging, Volume, BCD)"]
         end
 
-        subgraph GovernedRepos["Governed Component Repositories"]
-            COMP1["BootEntryManager<br/>docs/Proposals/, .lcm/config.json"]
-            COMP2["VolumeInventory<br/>docs/Proposals/, .lcm/config.json"]
-            COMP3["BackgroundModifier<br/>docs/Proposals/, .lcm/config.json"]
-            OTHER["30+ Other Repositories"]
+        subgraph GovernedRepos["Current Physical LCM Roots"]
+            COMP1["LCM_Backup<br/>backup subsystem"]
+            COMP2["LCM_Supervision<br/>supervision subsystem"]
+            COMP3["LCM_Shared<br/>shared modules"]
         end
     end
 
@@ -42,12 +44,8 @@ graph TB
     CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP1
     CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP2
     CanonicalHub ==>|".agents/rules [NTFS Junction]"| COMP3
-    CanonicalHub ==>|".agents/rules [NTFS Junction]"| OTHER
     WAI -->|"Releases LCM Baselines"| WI
     WAI -->|"Releases LCM Baselines"| GovernedRepos
-    COMP1 ==>|"docs/Proposals [NTFS Junction]"| WI
-    COMP2 ==>|"docs/Proposals [NTFS Junction]"| WI
-    COMP3 ==>|"docs/Proposals [NTFS Junction]"| WI
     WI -->|"Audits Drift & Manages Review Receipts"| RootContainer
     WI -->|"Dispatches Automated Rule Reconciliation"| GovernedRepos
 ```
@@ -61,22 +59,22 @@ To eliminate rule divergence across multi-repository workspaces, LCM employs a *
 ```mermaid
 graph TD
     classDef default font-size:8pt;
-    Hub["Canonical Rule Hub<br/>D:/Git_Repositories/.agents/rules/<br/>(All 13 Authoritative Rules)"]
+    Hub["Canonical Rule Hub<br/>D:/Git_Repositories/LCM_AI/.agents/rules/<br/>(authoritative rules)"]
     
-    Hub -->|NTFS Junction| J1["BootEntryManager/.agents/rules"]
-    Hub -->|NTFS Junction| J2["VolumeInventory/.agents/rules"]
-    Hub -->|NTFS Junction| J3["LCM_Inventory/.agents/rules"]
-    Hub -->|NTFS Junction| J4["LCM_Shared/.agents/rules"]
-    Hub -->|NTFS Junction| J5["BackgroundModifier/.agents/rules"]
-    Hub -->|NTFS Junction| J6["(All Other Governed Repos...)"]
+    Hub -->|NTFS Junction| J1["LCM_Inventory/.agents/rules"]
+    Hub -->|NTFS Junction| J2["LCM_Shared/.agents/rules"]
+    Hub -->|NTFS Junction| J3["LCM_Backup/.agents/rules"]
+    Hub -->|NTFS Junction| J4["LCM_Supervision/.agents/rules"]
 
 
 ```
 
 ### Invariants:
-1. **Single Source of Truth (`RULE-AUTH-001`)**: All 13 core governance rules reside canonically at `D:\Git_Repositories\.agents\rules\`.
-2. **Zero Drift Spoke Deployment**: Every child repository contains an `.agents\rules` directory junction pointing to the root hub.
-3. **Mandatory Matrix Sync (`RULE-AUTH-002`)**: Any rule modification requires simultaneous updates to both [`AGENTS.md`](file:///d:/Git_Repositories/AGENTS.md) and [`LCM_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/LCM_AI/docs/LCM-Rules-Cross-Reference.md).
+1. **Single Source of Truth (`RULE-AUTHORITY`)**: The authoritative rule files reside canonically at `D:\Git_Repositories\LCM_AI\.agents\rules\`.
+2. **Zero Drift Spoke Deployment**: Each current governed LCM root projects
+   `.agents\rules` from the canonical hub as required by its active governance
+   configuration.
+3. **Mandatory Matrix Sync**: Any rule modification requires corresponding updates to both [`AGENTS.md`](file:///d:/Git_Repositories/AGENTS.md) and [`LCM_AI/docs/LCM-Rules-Cross-Reference.md`](file:///d:/Git_Repositories/LCM_AI/docs/LCM-Rules-Cross-Reference.md).
 4. **Git Insulation**: `.agents/` is included in each child repository's `.gitignore` to prevent committing physical rule duplicates during git pulls or clones.
 
 ---
@@ -704,4 +702,3 @@ by default, applies only declared content with provenance markers when
 authorized, and opens BCompare for every repository whose tripartite documents
 change.
 <!-- /FixDocumentation -->
-

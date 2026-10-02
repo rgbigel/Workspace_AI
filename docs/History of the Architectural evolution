@@ -1,0 +1,98 @@
+This Document MUST NOT be considered the source of truth for the architectural evolution. IT IS A HISTORICAL RECORD OF THE ARCHITECTURAL EVOLUTION AND SHOULD BE UPDATED AS NEEDED.
+
+1. Structural Migration & Repository Layout Understood
+Core Repository Renaming:
+Workspace_AI $\rightarrow$ 
+
+LCM_AI
+Workspace_Inventory $\rightarrow$ 
+
+LCM_Inventory
+Workspace_Supervision $\rightarrow$ 
+
+LCM_Supervision
+SharedModules $\rightarrow$ 
+
+LCM_Shared
+Root tools $\rightarrow$ 
+
+LCM_Tools
+Legacy Alias Management:
+Governed by 
+
+.lcm/config/LegacyRepositoryNames.json
+ with physical legacy workspace roots retired and replaced by LCM_Tools.
+Root Junctions & Discovery:
+Root .agents points to 
+
+LCM_AI\.agents
+.
+Root .copilot points to 
+
+LCM_AI\.copilot
+.
+Trampolines & Tool Catalog:
+
+
+.lcm/Cmd/
+ batch trampolines and 
+
+.lcm/config/tool_catalog.json
+ reflect canonical target names and paths.
+2. Core Governance Invariants Re-Verified
+Review Flow & Gating (ProposalReviewFlowPolicy.md, ReviewCommitGovernancePolicy.md):
+Proposal-first invariant (RULE-LCM-001); normal cycle suggestions halt at Gate 1; BUG items execute in DOIT mode directly to Gate 2.
+Gate 2 (Beyond Compare visual diff) is non-circumventable for code/tools/specs across all items (RULE-REV-001), with transparent junction traversal via FollowSymLinks (RULE-REV-008).
+There are two exceptions to this rule 
+1. The user can explicitly INSTRUCT (IMMEDIATELY, FORCE) to go into the Implementation Phase without confirming the review.
+2. System has detected a BUG that impedes the intended Flow in a critical manner. This is especially the case when the task would lead to a loop/recursion (which the user can't avoid or fix). There must be no more than 2 attempts to resolve the Issue.
+In either case, the fact must be logged in the BUG or CRP.
+Dual-commit synchronization with LCM_Inventory (RULE-LCM-005).
+Discrete commands: Proceed (single discrete status pulse), do (activates DOIT velocity), COMPLETE (records visual review, commits locally), PUBLISH / PUSH (preflighted lockstep remote dispatch with auto-reset to LCM ON and Testing ON).
+Mandatory SemVer auto-increment per change (RULE-REV-007).
+Proposal bundle architecture (docs/Proposals/CRP-<nnn>-[Slug]/ or BUG-<nnn>-[Slug]/) with post-push directory purge and Git object retrieval (RULE-LCM-020).
+Atomic single-edit consolidation per turn with zero editor diff stacking (RULE-LCM-022).
+PowerShell Standards (PowerShellStandardsPolicy.md, PowerShellRules.md):
+PS7 (pwsh) exclusive workspace-wide; intermediate code parity (RULE-PS-019).
+@(...) wrapping for scalar collection access under StrictMode Latest (RULE-PS-001).
+Colon-safe string interpolation ${var}: to prevent scope parsing collisions (RULE-PS-003, RULE-PS-015).
+Single-quoted here-strings for inline pwsh -Command blocks (RULE-PS-016).
+Interactive desktop dispatch via Invoke-InteractiveDesktop.ps1 for Session 1 GUI routing (RULE-PS-011).
+Efficiency & System Boundaries (MethodEfficiencyPolicy.md, ElevationPolicy.md, SubsystemGovernancePolicy.md):
+Auto-acceptance of mechanical evidence/logs with zero-test cascades (RULE-EFF-001, RULE-EFF-002).
+High-speed search dispatch via Search-Everything.ps1 or Everything HTTP REST (port 8080) and rg.exe (RULE-EFF-007).
+Tool discovery strictly via tool_catalog.json first (RULE-EFF-008).
+Zero speculative relative pathing (RULE-ENV-003).
+Privilege interception routing (RULE-ELEV-006) and elevated console persistence with -NoExit / /k (RULE-ELEV-005).
+Subsystem read-only central registry invariant (RULE-SUB-007) and JIT ephemeral write auth (RULE-SUB-004).
+3. Current Workspace Status & Inquiries for You
+Before taking any action, I would like to clarify the current intended direction:
+
+Active Repository Focus: Your open IDE tabs show files in 
+
+RollingCalendar
+ (
+
+.gitignore
+, 
+
+install/Installation.md
+, 
+
+docs/Requirements.md
+) alongside 
+
+.lcm/tools/internal/Show-LastLog.ps1
+ and 
+
+Format-LcmMarkdownDiagrams.ps1
+. Is RollingCalendar the primary target repository for the upcoming task, or are we working on an LCM infrastructure topic?
+
+In-Flight Review / Staged States: There are uncommitted changes and newly staged proposals in 
+
+LCM_Inventory
+ (related to CRP-196, CRP-206, and Test-ReviewCommitGate.ps1) and 
+
+LCM_AI
+. Should those remain as-is for now, or will you be directing actions on them?
+
