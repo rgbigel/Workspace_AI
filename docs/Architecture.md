@@ -702,3 +702,69 @@ by default, applies only declared content with provenance markers when
 authorized, and opens BCompare for every repository whose tripartite documents
 change.
 <!-- /FixDocumentation -->
+
+---
+
+## 11. Model-First Analysis Protocol & Implementation Gating Architecture (CRP-243)
+
+To eliminate speculative code changes and unconstrained hallucinations during pair programming, the Lifecycle Model enforces strict modal separation between **READ-ONLY ANALYSIS** and **GOVERNED IMPLEMENTATION**.
+
+### 11.1 Intent Wake Words & Phase Exclusion
+
+```
+[ User Prompt: "ANALYZE ..." ]
+             │
+             ▼
+┌─────────────────────────────────────────┐
+│        STATE 1: READ-ONLY ANALYSIS      │
+│  - Model Formulation                    │
+│  - Evidence Verification [VERIFIED/GAP] │◄──────────┐
+│  - Interactive Decision Gates (A, B, C) │           │ (Ambiguity /
+└────────────────────┬────────────────────┘           │  Conflict
+                     │                                │  Encountered)
+    [ User Prompt: "IMPLEMENT ..." ]                  │
+                     │                                │
+                     ▼                                │
+┌─────────────────────────────────────────┐           │
+│     STATE 2: GOVERNED IMPLEMENTATION    │           │
+│  - Bound to Selected Analysis Path      │           │
+│  - Standard LCM File / Patch Execution  │           │
+│  - Pre-execution Feasibility Check     ───► [FAILS] ─┘
+└────────────────────┬────────────────────┘
+                     │ [SUCCEEDS]
+                     ▼
+┌─────────────────────────────────────────┐
+│     STATE 3: VERIFICATION & AUDIT       │
+│  - Permanent Log / State Recorded       │
+└─────────────────────────────────────────┘
+```
+
+- **`ANALYZE` (Wake Word)**: Locks the session into `READ_ONLY_ANALYSIS`. File modification tools (`write_to_file`, `replace_file_content`, `multi_replace_file_content`), destructive shell commands, and Git mutation commands are strictly forbidden. The agent must first construct a structured model defining Entities, State Variables, Actions, and Constraints.
+- **`IMPLEMENT` (Transition Word)**: Unlocks `GOVERNED_IMPLEMENTATION`. Execution is bound strictly to the conclusions, settled facts, and path consensus reached in the preceding `ANALYZE` phase.
+- **Phase Exclusion**: During active `READ_ONLY_ANALYSIS`, formulating implementation CRPs or staging source code modifications is strictly prohibited.
+
+> [!NOTE]
+> **Operational Expectation: Mode `ANALYZE` at Review Gates & Suggested State**:  
+> Operating in `READ_ONLY_ANALYSIS` mode is explicitly expected during the initial `suggested` proposal state and whenever paused at lifecycle review gates (Gate 1 Planning Gate per `RULE-LCM-014` and Gate 2 Visual Review Gate per `RULE-REV-001`). During these checkpoints, the assistant and operator evaluate specifications, audit gaps, and formulate models without speculative file mutations or premature commits.
+
+### 11.2 The Circuit Breaker Protocol
+
+When an implementation feasibility check fails (missing API parameter, inaccessible dependency, or constraint contradiction), execution halts immediately. Speculative workarounds are forbidden.
+
+1. **State Drop**: Mode immediately drops from `GOVERNED_IMPLEMENTATION` to `CIRCUIT_BREAKER_HALT` and returns to `READ_ONLY_ANALYSIS`.
+2. **Notification Contract**: Emits `### [ANALYSIS RESUMED] - Implementation Block Encountered` detailing the gap/conflict, invalidation impact, and 2–3 decision gate choices.
+3. **Control Hub Register**: Alerts the operator with a resumption block until explicitly steered.
+
+### 11.3 Runtime State Transparency & Telemetry Registers
+
+Operating variables are synchronized to `active_session.json` and exposed directly to the LCM Control Hub:
+
+| State Variable | Type | Allowed Values | Monitoring & Enforcement Rule |
+| :--- | :--- | :--- | :--- |
+| `LCM_OperatingMode` | String | `READ_ONLY_ANALYSIS`, `GOVERNED_IMPLEMENTATION`, `CIRCUIT_BREAKER_HALT` | Prominently displayed in UI. If `READ_ONLY_ANALYSIS`, write hooks and execution runners reject modifications. |
+| `LCM_ActiveGate` | String | `STEP_001` .. `STEP_nnn` | Current position in interactive decision DAG. |
+| `LCM_SearchRadius` | Integer | Max `2` (Default) | Fences search depth from target root. |
+| `LCM_SettledFacts` | Array[ID] | e.g. `["F-001", "F-002"]` | Settled facts to avoid redundant rediscovery. |
+| `LCM_OpenHypotheses` | Array[ID] | e.g. `["HYP-001", "HYP-002"]` | Contested hypotheses under active audit. |
+| `LCM_CircuitBreaker` | Boolean | `true`, `false` | Tripped when feasibility checks fail; alerts user with resumption block. |
+
