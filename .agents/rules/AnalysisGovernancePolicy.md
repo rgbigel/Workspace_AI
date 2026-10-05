@@ -9,9 +9,9 @@ Module: AnalysisGovernancePolicy
 Purpose: Defines modal separation between Read-Only Analysis and Governed Implementation, intent wake words, provenance tagging, search fencing, circuit breaker protocol, and Control Hub runtime state transparency.  
 Path: .agents/rules/AnalysisGovernancePolicy.md  
 Authors: Rolf, LCM_AI Engine  
-Version: 8.6.0  
+Version: 8.9.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-10-04  
+Date: 2026-10-05  
 
 ---
 
@@ -24,6 +24,16 @@ To establish predictable, disciplined pair-programming collaboration, this polic
 ---
 
 ## 2. Invariant Rules
+
+### RULE-ANA-000 (Step 0 Rule-Baseline Equivalence Gate)
+1. **Mandatory First Step**: Before beginning Level 1 or any later LCM analysis level, the analyst `MUST` compare the active `.copilot/Rules/` rule source with the authoritative `LCM_AI/.agents/rules/` source.
+2. **Linkage Verification**: The comparison `MUST` verify the active rule directory's resolved junction or symbolic-link target when present. It `MUST` also compare the complete Markdown rule filename set and SHA-256 content hash of every corresponding file.
+3. **Result Marker**: Record the result at the start of the analysis artifact as exactly one of:
+   - `Check 0: OK` — linkage, filename set, and all hashes match.
+   - `Check 0: not found` — the active or authoritative rule directory cannot be read.
+   - `Check 0: mismatch` — linkage, filename set, or one or more hashes differ.
+4. **Failure Gate**: `Check 0: not found` or `Check 0: mismatch` `MUST` halt downstream code-versus-documentation comparisons. The report `MUST` identify the divergent paths and defer all later results until the operator resolves the rule baseline.
+5. **Artifact Requirement**: Retained analysis artifacts and their visualizations `MUST` include the active path, authoritative path, linkage result, compared rule count, mismatch count, and `Check 0` marker.
 
 ### RULE-ANA-001 (Intent Wake Word Gating & Read-Only Analysis Lock)
 1. **`ANALYZE` Wake Word**: When an operator prompt or session begins with the intent wake word **`ANALYZE`**, the AI assistant and runtime environment are immediately locked into **`READ_ONLY_ANALYSIS`** mode.
@@ -105,3 +115,19 @@ The analysis engine and session runners must synchronize active governance varia
 | `LCM_SettledFacts` | Array[String] | Array of IDs (e.g. `["F-001", "F-002"]`) | Prevents redundant rediscovery of settled facts. |
 | `LCM_OpenHypotheses`| Array[String] | Array of IDs (e.g. `["HYP-001", "HYP-002"]`) | Tracks open hypotheses currently under investigation. |
 | `LCM_CircuitBreaker`| Boolean | `true`, `false` | True when tripped; displays resumption block alert. |
+
+---
+
+### RULE-ANA-007 (Analysis Evidence Artifact Retention Invariant)
+1. **Persistent Analysis Artifacts**: Tool-generated inventories, correlation reports, evidence tables, and intermediate datasets that are required for a subsequent refinement step or analysis level `MUST` be stored in the active session workspace under `files/`, not in an ephemeral temporary directory.
+2. **Retention Window**: An analysis artifact `MUST NOT` be deleted merely because one analysis level has concluded. Retain it until the operator explicitly requests disposal or the dependent refinement and follow-on analysis levels have completed.
+3. **Regeneration Provenance**: If an artifact is lost and regenerated from current inputs, the regenerated artifact `MUST` record its generation timestamp, source scope, and deterministic generation method. It `MUST NOT` be represented as the original artifact.
+4. **Refinement Accessibility**: When an analysis report is intended for operator review or a later refinement, provide a compact visualization derived from the retained machine-readable artifact. The visualization may summarize branch-level evidence but `MUST` preserve the source location and ordered check outcomes for every reported named functional element.
+
+### RULE-ANA-008 (Level 1 Branch Refinement & Definition Separation)
+1. **Definition and Evidence Separation**: A consistency analysis `MUST` store approved, operator-editable intent in a definition artifact and machine-generated findings in immutable run artifacts. Evidence artifacts `MUST NOT` be manually edited to redefine an analysis.
+2. **Identifier Convention**: A definition uses `CON-nnn-Lnn`; its ordered steps use `CON-nnn-Lnn-Smmm`; each retained generated run uses `CON-nnn-Lnn-Rnnn`. A refinement `MUST` produce a new run and preserve its prior run.
+3. **Public Parameter Gates**: Level 1 conditions that test parameters of public commands or exported module functions are documentation-traceable. The runner `MUST` record referenced public parameters and apply the ordered check hierarchy from `RULE-ANA-000`.
+4. **Purpose and Design Comments**: Strong nearby comments that state a purpose, rationale, invariant, rule, safety boundary, gate, contract, compatibility constraint, design decision, or policy are semantic evidence. Deterministic literal matching `MUST NOT` claim semantic equivalence; unresolved semantic evidence is marked for semantic review.
+5. **Internal Control Flow**: Conditions that only operate on local implementation state, iteration, cleanup, serialization, diagnostics, or other non-public mechanics are retained as navigational evidence but excluded from top-level documentation-completeness discrepancies.
+6. **Parse-Limitation Transparency**: When AST construction reports unresolved cross-file type references but returns an AST, the runner `MAY` continue with that AST only after recording the source and limitation in the generated evidence/log. Any syntax or structural parser failure `MUST` halt the run.
