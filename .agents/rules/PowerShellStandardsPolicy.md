@@ -299,6 +299,3 @@ Whenever a permanent repository script (`*.ps1`, `*.psm1`, `*.psd1`) or test fil
 2. **Zero-Assumption Testing Invariant**: The agent `MUST NOT` assume or assert that code is valid, ready, or functional without executing either its unit tests (Pester) or an explicit syntax parse first. Relying on visual inspection alone or declaring ready without executing test verification is strictly prohibited.
 
 
-
-
-

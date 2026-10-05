@@ -96,3 +96,9 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
 ### RULE-REV-010: Zero-Assumption Pre-Review Gate Verification Invariant
 1. **Mandatory Mechanical Verification Before Review**: Before any proposal or change set is presented for Gate 2 visual review or commit gating, all modified or created files `MUST` have undergone mandatory mechanical syntax parsing (PowerShell AST parser, Python compile, JSON validation) and unit test execution (Pester).
 2. **Prohibition of Unverified Readiness Claims**: An AI agent or developer `MUST NEVER` launch a Beyond Compare review session, claim review readiness, or solicit operator review disposition based on visual inspection alone without prior execution evidence recorded in `Walkthrough.md`.
+
+### RULE-REV-011: ADMINMODE Rule-Change Authorization Invariant
+1. **Authorization Source**: Rule changes require `ADMINMODE = true` for the current Windows user. Eligibility is membership in the Windows local Administrators group identified by SID `S-1-5-32-544`, independent of whether the current process is elevated.
+2. **Hidden Operational State**: ADMINMODE state is not displayed by standard dashboards. It initializes on workspace open to `true` for an eligible user and `false` otherwise. `Make-Admin -Mode On|Off` may change it only for an eligible user.
+3. **Non-Admin Denial**: A non-admin request to enable ADMINMODE leaves state unchanged and records an audit denial without interactive output.
+4. **Commit Gate and Audit**: Before a CRP containing staged rule paths is committed, the review submission tool MUST enforce ADMINMODE and append the current user, SID, CRP identifier, and affected rule paths to the CM log. Administrator rights do not imply elevation, and elevation does not substitute for ADMINMODE.
