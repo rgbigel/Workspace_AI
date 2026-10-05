@@ -9,7 +9,7 @@ Module: AnalysisGovernancePolicy
 Purpose: Defines modal separation between Read-Only Analysis and Governed Implementation, intent wake words, provenance tagging, search fencing, circuit breaker protocol, and Control Hub runtime state transparency.  
 Path: .agents/rules/AnalysisGovernancePolicy.md  
 Authors: Rolf, LCM_AI Engine  
-Version: 8.9.0  
+Version: 9.0.0  
 Status: Authoritative Invariant Rule  
 Date: 2026-10-05  
 
@@ -131,3 +131,10 @@ The analysis engine and session runners must synchronize active governance varia
 4. **Purpose and Design Comments**: Strong nearby comments that state a purpose, rationale, invariant, rule, safety boundary, gate, contract, compatibility constraint, design decision, or policy are semantic evidence. Deterministic literal matching `MUST NOT` claim semantic equivalence; unresolved semantic evidence is marked for semantic review.
 5. **Internal Control Flow**: Conditions that only operate on local implementation state, iteration, cleanup, serialization, diagnostics, or other non-public mechanics are retained as navigational evidence but excluded from top-level documentation-completeness discrepancies.
 6. **Parse-Limitation Transparency**: When AST construction reports unresolved cross-file type references but returns an AST, the runner `MAY` continue with that AST only after recording the source and limitation in the generated evidence/log. Any syntax or structural parser failure `MUST` halt the run.
+
+### RULE-ANA-009 (Analysis Run Provenance & Retention)
+1. **Immutable Run Location**: Generated evidence runs `MUST` be stored under `LCM_Inventory/data/analysis/history/`; only approved, operator-editable definitions reside under `LCM_Inventory/data/analysis/definitions/`.
+2. **Immutable Provenance Minimum**: Every run `MUST` record its analysis and run identifiers, generation timestamp, definition path, definition version and SHA-256, baseline-evidence path and SHA-256, runner version, source scope, Step 0 rule-baseline result, matching method, parse limitations, summary counts, and per-element evidence.
+3. **No Overwrite Rule**: A runner `MUST` calculate the next available `Rnnn` identifier by default and reject any attempt to overwrite an existing evidence artifact.
+4. **Regenerable Presentation Artifacts**: HTML views, Markdown projections, and session-local copies are temporary visualizations. They `MAY` be deleted after the corresponding canonical JSON evidence has been retained and verified.
+5. **Major-Release Cleanup**: At major release $M$, remove superseded, unreferenced analysis evidence older than the $M-2$ retention horizon. Preserve an evidence run when it is referenced by an active, completed, published, or permanent-evolution CRP/ledger record. Retain the active definition and its versioned history irrespective of this cleanup.
