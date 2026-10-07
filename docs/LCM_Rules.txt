@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-10-02 21:29:24 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-10-05 20:42:03 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -82,9 +82,9 @@ Module: InvariantRules
 Purpose: Authoritative invariant rules for workspace behavior, encoding, determinism, and generation.  
 Path: .agents/rules/InvariantRules.md  
 Authors: Rolf  
-Version: 8.1.0  
+Version: 8.2.0  
 Status: Authoritative Invariant Rule  
-Date: 2026-09-26  
+Date: 2026-10-03  
 
 ---
 
@@ -104,6 +104,8 @@ Date: 2026-09-26
 - **utf8-without-bom**: All text and code files must be saved as UTF-8 without BOM.
 - **structure**: Clear hierarchical markdown sections, bulleted lists, and typed code blocks.
 - **no-assumptions**: State unknown facts rather than guessing; never invent facts or speculate.
+- **zero-assumption-testing**: The AI assistant `MUST NOT` assume or claim that code, scripts, configurations, or proposals are valid, functional, or ready without actively running mechanical tests, compilation, or parser verification. Relying on visual inspection alone or declaring ready without executing test verification is strictly prohibited.
+- **mandatory-pre-handoff-syntax-gate**: Every created or modified script, module, or configuration file (`*.ps1`, `*.psm1`, `*.py`, `*.json`, `*.cmd`) `MUST` pass automated syntax parsing or compilation (`ParseInput` for PowerShell, `py_compile` for Python, `ConvertFrom-Json` for JSON) before concluding a turn, proposing review, or claiming completion. Zero syntax errors or parse warnings are tolerated.
 - **no-verbosity**: Minimal, direct, and non-repetitive communication; zero conversational padding or pleasantries.
 - **zero-conversational-padding**: Prohibit conversational filler, greetings, pleasantries, or preamble/postamble framing.
 - **explicit-reasoning**: Provide clear, deterministic technical rationale for all actions, architecture, and diagnostics.
@@ -287,9 +289,9 @@ Module: ProposalReviewFlowPolicy
 Purpose: Enforces ticket-first proposals, batch commands, Beyond Compare 5 review gates, granularity controls, and LCM_Inventory dual-commit synchronization.  
 Path: .agents/rules/ProposalReviewFlowPolicy.md  
 Authors: Rolf, LCM_AI Governance  
-Version: 9.0.0
+Version: 9.2.0
 Status: Authoritative Policy  
-Date: 2026-10-02
+Date: 2026-10-03
 
 ---
 
@@ -300,16 +302,16 @@ When working in LCM mode (`active`), all user ideas, questions, and exploratory 
 - The AI agent `MUST NOT` execute file modifications, code rewrites, or commits immediately upon receiving an initial idea or question.
 - When discussion yields a conclusive path of action, register the Change Request / Proposal with State `suggested` in `LCM_Inventory\data\proposals\proposals.json`.
 
-### RULE-LCM-002: Batch Execution & Control Commands
+### RULE-LCM-002: Batch Execution, Control Commands & Flow Switch Activation
 Proposals transition through the defined lifecycle via deterministic operator commands:
-- **`Proceed` / `Proceed <ID>`**: **Single-step status increment**. Deterministically advances matching proposal(s) forward by exactly one discrete state:
-  - At Gate 1: Advances from `SUGGESTED` $\rightarrow$ `IN_PROGRESS` (initiates implementation in Normal Cycle).
-   - At the Review Decision checkpoint: Advances from `REVIEW` $\rightarrow$ `COMMITTED` (satisfies visual review, records disposition, increments SemVer, and commits to local Git).
-- **`do <all, #n, #n-#m> Proposals`**: **Activates `DOIT` mode** (`always-proceed = $true`). Bypasses Gate 1 planning pauses and executes planned tool operations, script runs, and file edits continuously until the downstream Review Decision checkpoint is reached per `RULE-EFF-004`.
-- **`COMPLETE` / `COMPLETE ALL`**: Records a completed visual review, commits locally, and transitions the reviewed proposal to `COMPLETED`. It never pushes to a remote.
-- **`PUBLISH`**: Publishes only a preflighted cohort of `COMPLETED` proposals and `LCM_Inventory` to their remotes in lockstep (`COMPLETED` $\rightarrow$ `PUBLISHED`). `PUSH` remains a backward-compatible command alias. Suggested, in-progress, review, and uncommitted items are strictly excluded.
-- **`delete <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deleted` and clears associated CRs.
-- **`defer <all, #n, #n-#m> Proposals`**: Sets matching proposals to `deferred`.
+- **`Proceed` / `Proceed <ID>`**: **Single-step status increment**. Deterministically advances matching proposal(s) forward by exactly one discrete Sync Point along the flat lifecycle continuum (`Suggested` $\rightarrow$ `Scoped` $\rightarrow$ `Decided` $\rightarrow$ `In_Progress` $\rightarrow$ `Verified` $\rightarrow$ `Committed` $\rightarrow$ `Published`).
+- **`do <all, #n, #n-#m> Proposals`**: **Sets flow switches!** Specifically activates the **`-DOIT` switch** (`always-proceed = $true`), bypassing Gate 1 planning pauses and executing continuously through `In_Progress` and verification until the downstream Review Decision checkpoint (Gate 2) is reached per `RULE-EFF-004`.
+- **`hold <all, #n, #n-#m> Proposals`**: Sets the **`HELD` disposition** with a mandatory reason, suspending active work at its current Sync Point. Pauses all active flow switches. (Supersedes legacy `defer`).
+- **`resume <all, #n, #n-#m> Proposals`**: **Reactivation action** that clears the `HELD` disposition and restores the proposal to active flow at its suspended Sync Point. Resume is an operator action, NOT a milestone or status.
+- **`COMPLETE` / `COMPLETE ALL`**: Records a completed visual review, creates local commits, and advances the reviewed proposal to `Committed`. It never pushes to a remote.
+- **`PUBLISH`**: Publishes only a preflighted cohort of `Committed` proposals and `LCM_Inventory` to their remotes in lockstep (`Committed` $\rightarrow$ `Published`). `PUSH` remains a backward-compatible command alias. Suggested, scoped, in-progress, and uncommitted items are strictly excluded.
+- **`cancel <all, #n, #n-#m>`**: **Administrative ticket withdrawal at Gate 1**. Indicates the proposal is dropped, infeasible, or superseded during intake, scoping, or planning ratification. Zero working-tree modifications, zero code reverts, and zero rule modifications occur. The proposal transitions to terminal disposition `Cancelled` and all active flow switches are unconditionally turned **OFF**.
+- **`reject <all, #n, #n-#m>`**: **Implementation rejection at Gate 2**. Indicates the physical implementation or review failed visual inspection, automated verification, or operator acceptance during the `Verified` review checkpoint. Actively rolls back and undoes working-tree modifications introduced by the proposal (for batches/cohorts, reverts all proposals in the cohort back to the clean pre-CRP baseline). The proposal transitions to terminal disposition `Rejected` and all active flow switches are unconditionally turned **OFF**.
 - **`give open Proposals`**: Returns numbered list of active proposals (`#n`).
 - **`give repos under review`**: Displays repositories with uncommitted changes, their BC5 review status, and commit readiness.
 
@@ -317,6 +319,7 @@ Proposals transition through the defined lifecycle via deterministic operator co
 The review frequency is governed by `review_granularity` in `LCM_Inventory`:
 - **`coarse` (Default)**: Executes all proposals in the batch, runs automated quality gates, then presents a **single BC5 review stop** for the combined changes across the repository before commit.
 - **`tight`**: Implements each proposal incrementally with intermediate test runs and a **dedicated BC5 review stop per proposal**.
+- **Idempotent Single-Window Review Invariant**: A review stop `MUST NOT` open a duplicate window or redundant tab if the comparison or proposal is already open or currently being reviewed. In Beyond Compare 5, re-invoking review for an open comparison must simply refresh the existing session/tab in place and bring it to focus; opening two windows for the same comparison is strictly prohibited.
 - Can be set via `set review granularity <coarse|tight>` or inline `do #1-#3 Proposals --tight`.
 
 ### RULE-LCM-004: Visual Diff Review & Exemption Scope
@@ -341,27 +344,100 @@ The review frequency is governed by `review_granularity` in `LCM_Inventory`:
 3. **Push Auto-Reset Invariant (Self-Healing Governance)**:
    - Neither `LCM OFF` nor `Testing OFF` may remain active after publication. Upon any push invocation (`PUSH`, `Invoke-WorkspacePush.ps1`), both **LCM Mode** and **Testing Mode** `MUST` unconditionally reset to `ON` (`active`).
 
-### RULE-LCM-007: Dual-State Proposal Lifecycle & CM Plan Archive Invariant
-1. **Dual-State Separation**: Every proposal in `LCM_Inventory/data/proposals/proposals.json` `MUST` track both:
-   - **Governance Plan State (`state`)**: Document approval state (`bug`, `suggested`, `approved`, `deferred`, `rejected`, `completed`, `pushed`).
-   - **Implementation Progress State (`progress_state`)**: Physical execution progress (`undecided`, `queued`, `in_progress`, `verification`, `completed`, `pushed`, `blocked`, `failed`).
-2. **Initial Invariant**: Every newly submitted proposal and unapproved plan `MUST` initialize with `progress_state: "undecided"`.
-3. **Pushed Lifecycle Transition**: Upon successful execution of `Invoke-WorkspacePush.ps1` (or CM Control Hub Push), proposals in `completed` state whose origin repository was pushed `MUST` transition to `pushed` (`pushed_at` timestamp recorded).
-4. **Mandatory CM Plan & Walkthrough Archival**:
+### RULE-LCM-007: Flat Lifecycle Continuum, Sync Points, Dispositions & CM Plan Archive Invariant
+1. **Single-Dimensional "Flat" Status Continuum**:
+   - Status is strictly single-dimensional. Multi-dimensional status architectures (such as conflicting `progress_state` vs `state` where internal state stalled on `approved` while physical progress moved secretly) are prohibited.
+   - External status binds the internal state directly at **7 canonical Sync Points (Milestones)**. When identical, the single canonical name `MUST` be used across all rules, tools, and UI displays:
+     `Suggested` $\rightarrow$ `Scoped` $\rightarrow$ `Decided` $\rightarrow$ `In_Progress` $\rightarrow$ `Verified` $\rightarrow$ `Committed` $\rightarrow$ `Published`.
+2. **Canonical Sync Points (Milestones)**:
+   - **`Suggested` (0)**: Initial proposal registration / intake. Proposal bundle scaffolded in `docs/Proposals/`; Gate 1 planning pause.
+   - **`Scoped` (1)**: Proposal bound to target repository, primary app (`App: #`), and constituent manifest.
+   - **`Decided` (2)**: Architecture, requirements, and plan ratified (`Approved` disposition); Gate 1 passed.
+   - **`In_Progress` (3)**: Active implementation underway; continuous code modifications and unit tests executing.
+   - **`Verified` (4)**: Implementation complete; minimal / automated tests passed; Gate 2 visual diff review stop dispatched.
+   - **`Committed` (5)**: Gate 2 visual review accepted (`Approved` disposition); review receipt filed in `reviews/`; local Git commit created.
+   - **`Published` (6)**: Walkthrough archived in CM; lockstep preflight verified; remotes synchronized (`Published` preferred over `Pushed`).
+3. **Dispositions vs. Status**:
+   Dispositions and Plan State are not part of any CM-flow rule as separate dimensions, but are conditions or markers resulting from status and actions:
+   - **`BUG`**: A disposition (not a substitute term for CRP). When assigned to a proposal, it sets flow switches to force flow exceptions—specifically activating the **`-DOIT` switch** (`always-proceed = $true`), bypassing Gate 1 planning pauses, while halting at Gate 2 visual review (`RULE-LCM-008`).
+   - **`HELD`**: An exceptional disposition suspending a proposal at its current Sync Point. There is NO `defer` action or status anymore—it is simply `HELD`. When `HELD`, active flow switches are paused. Cleared by the `resume` action.
+   - **`Approved`**: A disposition recorded at sync points (specifically at `Decided` for Gate 1 plan approval, and `Committed` for Gate 2 review acceptance).
+   - **`Completed`**: Disposition indicating completed review and commit prior to or at `Published`.
+   - **`Cancelled`**: Terminal administrative disposition at Gate 1 indicating ticket withdrawal (proposal dropped, infeasible, or superseded during intake, scoping, or planning ratification). Involves **zero code reverts**, zero working-tree modifications, and zero rule modifications. Reaching `Cancelled` unconditionally turns **OFF** all active flow switches.
+   - **`Rejected`**: Terminal implementation disposition at Gate 2 indicating rejection of physical modifications during visual diff review (`Verified` checkpoint). Actively triggers **rollback and removal of uncommitted working-tree modifications** introduced by the proposal back to the clean pre-CRP baseline (or full cohort rollback for batches). Reaching `Rejected` unconditionally turns **OFF** all active flow switches.
+4. **Governed Flow Switches**:
+   Flow switches modify execution behavior and velocity across sync points:
+   - **`-DOIT`** (`always-proceed = $true`): Activated by `do` command or `BUG` disposition. Bypasses Gate 1 planning pause and executes continuously through `In_Progress` to `Verified`.
+   - **`-Force` / `-Immediately`**: Authorizes bypass of Gate 2 visual diff review under strict emergency exception criteria (`RULE-REV-001`).
+   - **`-MinimalTests`**: Single-cycle execution switch restricting test DAG to fast regression checks (`RULE-LCM-023`).
+   - **`-Coarse` / `-Tight`**: Granularity switch controlling single combined review stop per batch (`-Coarse`) vs. stop per proposal (`-Tight`) (`RULE-LCM-003`).
+   - **`LCM OFF`**: Emergency escape switch suspending governance scaffolding and gating (`RULE-LCM-006`).
+   - **`Testing OFF`**: Deferred deep testing switch suppressing heavy cascades during interactive development (`RULE-LCM-006`).
+5. **Mandatory CM Plan & Walkthrough Archival**:
    - All Markdown implementation plans and execution walkthroughs `MUST` be persistently archived in the governed CM repository under:
      - `LCM_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Plan.md`
      - `LCM_Inventory/data/proposals/plans/Proposal-{ID:03d}_{CR_ID}_Walkthrough.md`
    - Explicit relative links `plan_path` and `walkthrough_path` `MUST` be recorded in `proposals.json`.
+6. **Authoritative Flat Lifecycle Matrix & State Diagram**:
 
-### RULE-LCM-008: BUG Lifecycle, DOIT Mode & Review Decision Non-Circumvention Baseline
-1. **Birth in `DOIT` Mode**: When a `BUG` is born (whether reported by the operator or self-discovered during test execution), it automatically initializes in **`DOIT` Mode** (`always-proceed = $true`).
-   - The agent scaffolds the BUG proposal bundle (`docs/Proposals/BUG-<nnn>-[Slug]/`) and immediately executes code modifications, script adjustments, and unit verification tests continuously without pausing for a Gate 1 planning approval.
+   #### A. Canonical Flat Lifecycle Matrix
+
+   | Sync Point (Milestone) | Canonical Status Name | Operator Action | Dispositions at Sync Point | Active Flow Switches | CM Side Effect & Invariant |
+   |:---|:---|:---|:---|:---|:---|
+   | **0. Suggested** | `Suggested` | `suggest` | `BUG` (sets `-DOIT`) | Default | Bundle scaffolded in `docs/Proposals/`; Gate 1 pause. |
+   | **1. Scoped** | `Scoped` | `scope` | — | Default | Bound to origin repo, primary app (`App: #`), and constituent manifest. |
+   | **2. Decided** | `Decided` | `approve` / `Proceed` | `Approved` | Default | Gate 1 passed; architecture and plan ratified. |
+   | **3. In_Progress** | `In_Progress` | `start` / `do` (sets `-DOIT`) | — | `-DOIT` (if `do`/`BUG`) | Active code modification; unit tests executing. |
+   | **4. Verified** | `Verified` | `verify` / `bcr` | — | `-MinimalTests` (optional) | Implementation complete; tests pass; Gate 2 BC5 review dispatched. |
+   | **5. Committed** | `Committed` | `reviewed` / `commit` / `COMPLETE` | `Approved`, `Completed` | `-Force` (if authorized) | Review accepted; receipt in `reviews/`; local Git commit created. |
+   | **6. Published** | `Published` | `publish` / `push` | `Completed` | Auto-Reset (`ON`) | Walkthrough archived; lockstep preflight passed; remotes pushed. |
+   | **[Condition] Held** | Current Sync Point | `hold` | `HELD` | Paused | Work suspended; reason recorded in CM ledger. Cleared by `resume`. |
+   | **[Terminal] Cancelled** | Discarded (Gate 1) | `cancel` | `Cancelled` | Turned OFF | Administrative withdrawal at Gate 1; zero working-tree modifications; zero code reverts. |
+   | **[Terminal] Rejected** | Discarded (Gate 2) | `reject` | `Rejected` | Turned OFF | Implementation rejection at Gate 2; working-tree modifications actively rolled back to pre-CRP baseline. |
+
+   #### B. Canonical Flat Lifecycle State Diagram
+
+   ```mermaid
+   stateDiagram-v2
+       direction TB
+
+       [*] --> Suggested: Intake (suggest)
+       Suggested --> Scoped: Scope (bind repo / app)
+       Scoped --> Decided: Decide / Approve Plan (Gate 1 Passed)
+       Decided --> In_Progress: Start / do (sets -DOIT)
+       In_Progress --> Verified: Verify Tests Passed
+       Verified --> Committed: Accept BC5 Review & Commit (Gate 2 Passed)
+       Committed --> Published: Publish / Push to Remote
+       Published --> [*]
+
+       %% Exception Flow: HELD Suspension
+       In_Progress --> Held: hold (sets HELD disposition)
+       Scoped --> Held: hold
+       Decided --> Held: hold
+       Held --> In_Progress: resume (clears HELD disposition)
+
+       %% Exception Flow: Gate 1 Administrative Withdrawal (Zero Reverts)
+       Suggested --> Cancelled: cancel (Gate 1 withdrawal / zero reverts)
+       Scoped --> Cancelled: cancel (Gate 1 withdrawal / zero reverts)
+       Decided --> Cancelled: cancel (Gate 1 withdrawal / zero reverts)
+
+       %% Exception Flow: Gate 2 Implementation Rejection (Rollback to Baseline)
+       Verified --> Rejected: reject (Gate 2 review rejection / rollback to baseline)
+       In_Progress --> Rejected: reject (aborted implementation / rollback to baseline)
+
+       Cancelled --> [*]
+       Rejected --> [*]
+   ```
+
+### RULE-LCM-008: BUG Disposition, DOIT Mode & Review Decision Non-Circumvention Baseline
+1. **Flow Exception via `BUG` Disposition**: When a proposal is assigned the `BUG` disposition (whether reported by the operator or self-discovered during test execution), it sets flow switches to force flow exceptions. Specifically, it automatically activates the **`-DOIT` switch** (`always-proceed = $true`).
+   - The agent scaffolds the proposal bundle (`docs/Proposals/BUG-<nnn>-[Slug]/`) and immediately executes code modifications, script adjustments, and unit verification tests continuously without pausing for a Gate 1 planning approval.
 2. **Review Decision Non-Circumvention Baseline & Authorized Exceptions**:
-   - By default, even a critical, urgent, or internally generated BUG halts at the Review Decision checkpoint (Gate 2).
-   - Once the fix is verified in the working tree and logged in `Walkthrough.md`, the agent normally dispatches the visual review session (`Invoke-BeyondCompareReview.ps1`) and awaits operator review disposition.
+   - By default, even a critical or urgent proposal with disposition `BUG` halts at the Review Decision checkpoint (Gate 2) upon reaching Sync Point `Verified`.
+   - Once the fix is verified in the working tree and logged in `Walkthrough.md`, the agent dispatches the visual review session (`Invoke-BeyondCompareReview.ps1`) and awaits operator review disposition.
    - **Authorized Gating Exceptions (`RULE-REV-001`)**: Review gate confirmation may be bypassed only if:
      1. The user explicitly instructs (`IMMEDIATELY`, `FORCE`) to advance directly into implementation or commit.
-     2. A critical system BUG impedes the intended flow and leads to an unavoidable loop/recursion that the user cannot avoid or fix, bound strictly by the 2-attempt loop breaker (`RULE-LCM-017`).
+     2. A critical system bug impedes the intended flow and leads to an unavoidable loop/recursion that the user cannot avoid or fix, bound strictly by the 2-attempt loop breaker (`RULE-LCM-017`).
      - In either case, the bypass justification `MUST` be logged in the proposal bundle and Configuration Management ledger.
 
 ### RULE-LCM-009: Scope and Version-Explicit CRP Naming Standard
@@ -516,6 +592,16 @@ The review frequency is governed by `review_granularity` in `LCM_Inventory`:
 
 ---
 
+### RULE-LCM-024: Mandatory Pre-Handoff Verification & Zero-Assumption Testing Invariant
+1. **Pre-Handoff Verification Gate**: Before advancing any proposal to `Verified`, proposing Gate 2 visual review, or handing the turn back to the operator:
+   - The AI agent `MUST` validate every created or modified script, module, or configuration file using its language's native AST parser or compiler (`[System.Management.Automation.Language.Parser]::ParseInput()` for PowerShell, `python -m py_compile` for Python, `ConvertFrom-Json` for JSON). Zero syntax errors or parse warnings are tolerated.
+   - The AI agent `MUST` execute the relevant unit test suites (Pester, pytest, or readiness scripts).
+2. **Zero-Assumption Testing Invariant**:
+   - The AI agent `MUST NOT` skip tests or assert that code is valid, ready, or functional based on visual inspection alone.
+   - Declaring or reporting completion, review readiness, or success without executing mechanical verification is strictly prohibited.
+
+---
+
 <a id="reviewcommitgovernancepolicymd"></a>
 ## Rule #7: ReviewCommitGovernancePolicy.md
 > **Category**: 2. Proposal, Review & Commit Lifecycle | **Canonical Source**: `.agents/rules/ReviewCommitGovernancePolicy.md`
@@ -526,9 +612,9 @@ Module: ReviewCommitGovernancePolicy
 Purpose: Defines mandatory review-gated commit rules, review disposition handling, authorized bypass exceptions, audit logging, and single-session directory junction reviews.  
 Path: .agents/rules/ReviewCommitGovernancePolicy.md  
 Authors: Rolf, LCM_AI Governance  
-Version: 8.4.0  
+Version: 8.6.0  
 Status: Authoritative Policy  
-Date: 2026-10-02  
+Date: 2026-10-03  
 
 ---
 
@@ -598,7 +684,7 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
 ### RULE-REV-008: Transparent Single-Session Directory Junction Review (FollowSymLinks)
 1. **Transparent Directory Junction Traversal**: Beyond Compare 5 review sessions `MUST` configure `<FollowSymLinks Value="True"/>` in `BCSessions.xml`, enabling Beyond Compare to traverse NTFS directory junctions (such as `.agents\rules`) inline within the primary review session.
 2. **Unified Single-Window Invariant**: Dual-session Beyond Compare review dispatch is retired. All repository review comparisons execute in a single Beyond Compare window without opening a separate junction review instance.
-3. **Composite Local Baseline Identity**: The left pane `MUST` be exported from the target repository's explicitly resolved local `BaseCommit`; it `MUST NOT` implicitly resolve, fetch, or substitute a remote reference. Where that commit exposes a junction-backed path, the scratch tree `MUST` replace the junction with a committed rules snapshot selected in this order: the target `BaseCommit`, the nearest target-history ancestor whose Git tree contains the junction path, then the local committed `HEAD` of the live junction authority. The selected source repository, relative path, and SHA `MUST` be recorded alongside the target SHA.
+3. **Composite Local Baseline Identity**: The left pane `MUST` be exported from the target repository's explicitly resolved local `BaseCommit`; it `MUST NOT` implicitly resolve, fetch, or substitute a remote reference. Where that commit exposes a junction-backed path, the scratch tree `MUST` replace the junction with a committed rules snapshot selected in this order: the target `BaseCommit`; the local committed junction-authority snapshot at or immediately before the target commit timestamp; the nearest target-history ancestor whose Git tree contains the junction path; then the local committed `HEAD` of the live junction authority. The selected source repository, relative path, SHA, and selection source `MUST` be recorded alongside the target SHA. A target-history snapshot that predates the target commit by a later authority snapshot `MUST NOT` be selected.
 4. **Historical Junction Semantics**: The baseline `MUST` contain only files present in the selected committed rules snapshot. A file visible through the live junction but absent from every available committed snapshot `MUST` remain absent on the left and appear as a live-only addition on the right; the launcher `MUST NOT copy` mutable working-tree authority content into a historical baseline.
 5. **Identity and Cache Clarity**: The baseline cache identity and pane title `MUST` display the target local SHA, selected rules source, and selected rules SHA. A launcher `MUST NOT` invent or fall back to an unrelated version label when a real version artifact is unavailable.
 6. **Exclusion Filter Alignment**: Review exclusion filter lists `MUST NOT` filter out `-.agents\rules\`, ensuring all governance rule diffs remain directly inspectable in the primary review pane.
@@ -607,6 +693,18 @@ Every review disposition (`Completed`, `CompletedWithEdits`, `Rejected`, `Deferr
 1. **Operator Visibility**: When an agent discovers that a review defect, tool repair, or validation result changes the durable review contract, it `MUST` tell the operator before claiming the implementation is complete. The disclosure `MUST` distinguish the implemented code change from the pending governance or documentation change.
 2. **Same-Change-Set Policy Update**: Where the finding defines a recurring review behavior, the agent `MUST` update this policy in the same governed change set, including the exact invariant, evidence fields, and required tool behavior. A tool-only repair is incomplete until this policy update is present or the operator explicitly defers it.
 3. **Synchronized Discovery Surface**: Any update under this rule `MUST` synchronize the root `AGENTS.md` rule index and `LCM_AI/docs/LCM-Rules-Cross-Reference.md` under `RULE-AUTH-002`.
+
+---
+
+### RULE-REV-010: Zero-Assumption Pre-Review Gate Verification Invariant
+1. **Mandatory Mechanical Verification Before Review**: Before any proposal or change set is presented for Gate 2 visual review or commit gating, all modified or created files `MUST` have undergone mandatory mechanical syntax parsing (PowerShell AST parser, Python compile, JSON validation) and unit test execution (Pester).
+2. **Prohibition of Unverified Readiness Claims**: An AI agent or developer `MUST NEVER` launch a Beyond Compare review session, claim review readiness, or solicit operator review disposition based on visual inspection alone without prior execution evidence recorded in `Walkthrough.md`.
+
+### RULE-REV-011: ADMINMODE Rule-Change Authorization Invariant
+1. **Authorization Source**: Rule changes require `ADMINMODE = true` for the current Windows user. Eligibility is membership in the Windows local Administrators group identified by SID `S-1-5-32-544`, independent of whether the current process is elevated.
+2. **Hidden Operational State**: ADMINMODE state is not displayed by standard dashboards. It initializes on workspace open to `true` for an eligible user and `false` otherwise. `Make-Admin -Mode On|Off` may change it only for an eligible user.
+3. **Non-Admin Denial**: A non-admin request to enable ADMINMODE leaves state unchanged and records an audit denial without interactive output.
+4. **Commit Gate and Audit**: Before a CRP containing staged rule paths is committed, the review submission tool MUST enforce ADMINMODE and append the current user, SID, CRP identifier, and affected rule paths to the CM log. Administrator rights do not imply elevation, and elevation does not substitute for ADMINMODE.
 
 ---
 
@@ -712,9 +810,9 @@ Module: PowerShellStandardsPolicy
 Purpose: Defines mandatory PowerShell 7 (pwsh) standards for strict mode resilience, verb compliance, string interpolation, intermediate code execution, and pipeline hygiene.  
 Path: .agents/rules/PowerShellStandardsPolicy.md  
 Authors: Rolf, LCM_AI Governance  
-Version: 8.6.0  
+Version: 8.7.0  
 Status: Authoritative Policy  
-Date: 2026-09-26  
+Date: 2026-10-03  
 
 ---
 
@@ -996,6 +1094,13 @@ When performing static AST validation on PowerShell scripts that utilize custom 
 
 ---
 
+### RULE-PS-021: Mandatory Pre-Handoff AST Syntax Gate & Zero-Assumption Testing Invariant
+Whenever a permanent repository script (`*.ps1`, `*.psm1`, `*.psd1`) or test file is created or modified by an AI agent or developer:
+1. **Mandatory Pre-Handoff AST Parse Gate**: The agent `MUST` validate the script using PowerShell's native AST parser `[System.Management.Automation.Language.Parser]::ParseInput()` before declaring a task complete, proposing completion, or handing control back to the operator. Zero syntax errors or parse warnings are tolerated.
+2. **Zero-Assumption Testing Invariant**: The agent `MUST NOT` assume or assert that code is valid, ready, or functional without executing either its unit tests (Pester) or an explicit syntax parse first. Relying on visual inspection alone or declaring ready without executing test verification is strictly prohibited.
+
+---
+
 <a id="powershellrulesmd"></a>
 ## Rule #10: PowerShellRules.md
 > **Category**: 3. Language & Coding Standards | **Canonical Source**: `.agents/rules/PowerShellRules.md`
@@ -1006,8 +1111,9 @@ Module: PowerShellRules
 Purpose: Authoritative rules for PowerShell script generation and normalization.
 Path: .agents/rules/PowerShellRules.md
 Authors: Rolf
-Version: 8.7.0
+Version: 8.8.0
 Changelog:
+- 2026-10-03: Added mandatory-ast-syntax-gate and zero-assumption-testing invariants to enforce pre-handoff AST validation and prohibit unvalidated completion claims.
 - 2026-09-27: Added inline-single-quotes invariant and colon-safe-interpolation rule to eliminate host shell pre-expansion and parsing errors.
 - 2026-09-26: Standardized on PS7 (pwsh) runtime exclusively; parity for intermediate code.
 - 2026-07-27: Split unified rule file; clarified ASCII constraints; stabilized PS rules.
@@ -1017,6 +1123,8 @@ POWERSHELL-RULES
 - intermediate-parity: rules apply equally to permanent scripts and inline pwsh -Command blocks
 - inline-single-quotes: inline pwsh -Command blocks MUST use single-quoted script blocks '& { ... }' or here-strings to prevent outer shell variable pre-expansion ($var)
 - colon-safe-interpolation: variables followed by colons MUST use explicit braces (${var}:)
+- mandatory-ast-syntax-gate: every created or modified *.ps1, *.psm1, *.psd1 MUST undergo explicit AST parser validation ([System.Management.Automation.Language.Parser]::ParseInput) before handoff
+- zero-assumption-testing: no tool, script, or proposal may be claimed ready without running either its unit tests or an explicit syntax parse first
 - ascii-default: ASCII required; umlauts allowed in literal strings and comments
 - utf8-without-bom: scripts must be UTF-8 without BOM
 - newline-crlf: scripts must end with CRLF
@@ -1496,14 +1604,14 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 
 | Rule File | Rule Identifiers | Domain | Scope | Core Invariant |
 |:---|:---|:---|:---|:---|
-| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `023` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `COMPLETE`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), Tool & Macro Synchronization Invariant (`RULE-LCM-021`), Atomic Edit Consolidation & Editor Review Safety Invariant (`RULE-LCM-022`), and Minimal Tests Single-Cycle Execution Switch & State Reflection Invariant (`RULE-LCM-023`). |
-| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `015` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, and variable string interpolation & colon boundaries. |
-| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `009` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), Gate 2 visual review with 2 authorized bypass exceptions (explicit operator `IMMEDIATELY`/`FORCE` instruction, or critical loop-preventing bug with max 2 attempts), reproducible local composite BCompare baselines, policy-discovery disclosure, readiness quality gate pass, audit receipts in `LCM_Inventory/data/reviews/`. |
+| **[ProposalReviewFlowPolicy.md](file:///.agents/rules/ProposalReviewFlowPolicy.md)** | `RULE-LCM-001` - `024` | **Proposal & Review Flow** | Workspace & Child Repos | Proposal-first intent, batch commands (`do`, `delete`, `defer`), Beyond Compare 5 review gate, dual-commit sync, Dual-State lifecycle, CM plan archive, Unconditional Plan Review Gate & Anti-Auto-Proceed Invariant (`RULE-LCM-014`), intake gates (`BUG:`, `CRP:`), directional `PROCEED ALL`, 2-attempt loop breaker, credit exhaustion guards, Active App Context (`Workon: A#`), multi-App problem gating, automated tripartite synthesis on `COMPLETE`, Proposal Bundle Directory Architecture (`RULE-LCM-020`), Tool & Macro Synchronization Invariant (`RULE-LCM-021`), Atomic Edit Consolidation & Editor Review Safety Invariant (`RULE-LCM-022`), Minimal Tests Single-Cycle Execution Switch & State Reflection Invariant (`RULE-LCM-023`), and Mandatory Pre-Handoff Verification & Zero-Assumption Testing Invariant (`RULE-LCM-024`). |
+| **[PowerShellStandardsPolicy.md](file:///.agents/rules/PowerShellStandardsPolicy.md)** | `RULE-PS-001` - `021` | **PowerShell Standards** | All `*.ps1`, `*.psm1`, `*.psd1` | StrictMode `@(...)` wrapping, Microsoft approved verbs (`Get-Verb`), colon-safe string interpolation, test elevation gating, header metadata & date maintenance, structured logging, `-h` help, interactive desktop dispatch routing, prohibition of bare inline `(if ...)`, `Import-Module -Name`, Smart Inheritance propagation, variable string interpolation & colon boundaries, and Mandatory Pre-Handoff AST Syntax Gate & Zero-Assumption Testing Invariant (`RULE-PS-021`). |
+| **[ReviewCommitGovernancePolicy.md](file:///.agents/rules/ReviewCommitGovernancePolicy.md)** | `RULE-REV-001` - `010` | **Commit Gating & Review** | Governed Repos & Root | Mandatory review-gated commits (`ACCEPTED`), Gate 2 visual review with 2 authorized bypass exceptions (explicit operator `IMMEDIATELY`/`FORCE` instruction, or critical loop-preventing bug with max 2 attempts), reproducible local composite BCompare baselines using time-aligned junction-authority rules snapshots, policy-discovery disclosure, readiness quality gate pass, audit receipts in `LCM_Inventory/data/reviews/`, and Zero-Assumption Pre-Review Gate Verification Invariant (`RULE-REV-010`). |
 | **[MethodEfficiencyPolicy.md](file:///.agents/rules/MethodEfficiencyPolicy.md)** | `RULE-EFF-001` - `008`, `RULE-ENV-003` | **Method Efficiency** | CM Telemetry & Evidence | Auto-acceptance of mechanical evidence, zero-test cascade on telemetry, short-circuit on quality gate failures, DOIT autonomous execution velocity, search dispatch routing (`Search-Everything.ps1`/`rg.exe`), tool catalog discovery, zero speculative relative pathing. |
 | **[ElevationPolicy.md](file:///.agents/rules/ElevationPolicy.md)** | `RULE-ELEV-001` - `006` | **Security & Privileges** | Workspace-wide | Least-privilege execution default, elevated script runner delegation, auto-detection of privileged commands, elevated console non-auto-close invariant, and automated privilege-aware execution/elevation interception. |
 | **[LanguagePolicy.md](file:///.agents/rules/LanguagePolicy.md)** | `LANGUAGE-POLICY` | **Localization & Naming** | Global Workspace | English-always invariant for code, comments, documentation, filenames, and commit messages. |
 | **[RepositoryContextPolicy.md](file:///.agents/rules/RepositoryContextPolicy.md)** | `REPO-CONTEXT` | **Context Scoping** | Child Repositories | Strict repository boundary separation, deterministic relative path resolution, CM-only cross-repo writes. |
-| **[InvariantRules.md](file:///.agents/rules/InvariantRules.md)** | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | Determinism, reproducibility, ASCII default, 2-space indentation, CRLF newlines, UTF-8 without BOM. |
+| **[InvariantRules.md](file:///.agents/rules/InvariantRules.md)** | `INVARIANT-RULES` | **Core Formatting & Output** | Workspace-wide | Determinism, reproducibility, ASCII default, 2-space indentation, CRLF newlines, UTF-8 without BOM, zero-assumption testing, and mandatory pre-handoff syntax/AST validation. |
 | **[PowerShellRules.md](file:///.agents/rules/PowerShellRules.md)** | `POWERSHELL-RULES` | **Scripting Standards** | PowerShell code | StrictMode Latest, `$ErrorActionPreference = 'Stop'`, explicit CmdletBinding. |
 | **[CMDRules.md](file:///.agents/rules/CMDRules.md)** | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | Explicit echo control (`@echo off`), errorlevel verification, ASCII character sets. |
 | **[JsonRules.md](file:///.agents/rules/JsonRules.md)** | `JSON-RULES` | **Data Serialization** | `*.json` | UTF-8 without BOM, 2-space indentation, `$schema` references. |
@@ -1511,13 +1619,14 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `007` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, $M-2$ retention horizon, and App-Centric Modular Architecture (`App: #`) with Constituent Manifests & Contract Governance. |
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `016` | **UI & Display Standards** | All UI Displays, Dashboards & GUIs | Antigravity-IDE Light Mode default palette & typography (`IBM Plex Mono/Sans`, `CM_CONTROL_HUB_IMPLEMENTATION_0.html`), Topbar & Status Rail architecture, Lucide vector icons, WPF/WinForms desktop GUIs, print-to-PDF paged media, theme persistence, desktop dispatching, IDE Canvas forward-compatibility, test window hygiene, and dynamic tool versioning. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `007` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling, central registry non-mutation invariant. |
+| **[AnalysisGovernancePolicy.md](file:///.agents/rules/AnalysisGovernancePolicy.md)** | `RULE-ANA-001` - `006` | **Analysis Governance** | Workspace & Gemini Sessions | Intent wake words (`ANALYZE` / `IMPLEMENT`), read-only tool lock, provenance tagging (`[VERIFIED]`, `[GAP]`), search radius fence ($\le 2$), Circuit Breaker protocol (`[ANALYSIS RESUMED]`), and runtime state transparency. |
 | **[RuleAuthority.md](file:///.agents/rules/RuleAuthority.md)** | `RULE-AUTHORITY` | **Governance Hierarchy** | Core Governance | Single source of truth, no rule forking, machine-readable canonical rules in `.agents/rules/`. |
 | **[macro-definitions.md](file:///.agents/rules/macro-definitions.md)** | `MACRO-DEFS` | **Operator Macros** | Interactive Shell | Antigravity IDE bare-word standard (`ToolExplorer`, `ShowTools`, `tools`, `ar`, `bcr`, `COMPLETE`, `PUSH`), `@tsr` superseded by persistent `TimestampHeaderRule`, `@RULEAUTH`, `@ml`. |
 
 ---
 
 ## 2. Rule Discovery Architecture
-- **Canonical Hub**: `LCM_AI\.agents\rules\` (17 authoritative rule files; physical owner & primary commit gate).
+- **Canonical Hub**: `LCM_AI\.agents\rules\` (18 authoritative rule files; physical owner & primary commit gate).
 - **Root & Child Discovery**: Root `D:\Git_Repositories\.agents\rules` links to `LCM_AI\.agents\rules` via junction, eliminating root commit churn. Every governed child repository links `.agents/rules` directly to this hub, guaranteeing 100% rule discovery whether opening the workspace root or an individual repository folder.
 
 ---

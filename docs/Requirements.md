@@ -105,7 +105,7 @@ Related Change Requests `MAY` be grouped into named test bundles under `LCM_Inve
 ## 6. Verification & Quality Gates
 
 ### LCM-REQ-030 - Quality Gate Self-Readiness
-Before releasing an LCM baseline or bumping versions, `LCM_AI` `MUST` pass [`Test-WorkspaceReadiness.ps1`](file:///D:/Git_Repositories/LCM_AI/tools/Test-WorkspaceReadiness.ps1) with a full `OK` status across all governance rules, dry-run profiles, and integrity checks.
+Before releasing an LCM baseline or bumping versions, `LCM_AI` `MUST` pass [`Test-WorkspaceReadiness.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Test-WorkspaceReadiness.ps1) with a full `OK` status across all governance rules, dry-run profiles, and integrity checks.
 
 ### LCM-REQ-031 - Target Repository Readiness
 Every LCM-governed component repository `MUST` provide a local `tools/Test-RepoReadiness.ps1` script backed by `tools/QualityGates/RepoQualityGates.psm1` to verify local file integrity, JSON syntax, and junction health.

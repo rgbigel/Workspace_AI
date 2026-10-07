@@ -27,7 +27,7 @@ WORKSPACE-RULES
 - instructions.md stored at: D:\Git_Repositories\LCM_AI\.copilot\instructions.md
 - MEMORY.md stored at: D:\Git_Repositories\LCM_AI\.copilot\MEMORY.md
 - macro-definitions.md stored at: D:\Git_Repositories\LCM_AI\.copilot\Rules\macro-definitions.md
-- test suite command: D:\Git_Repositories\LCM_AI\tools\Test-WorkspaceReadiness.ps1
+- test suite command: D:\Git_Repositories\LCM_Inventory\tools\Test-WorkspaceReadiness.ps1
 WORKSPACE-CONVENTIONS
 - workspace root defines authoritative context
 - all profile behavior is scoped to workspace root

@@ -16,8 +16,8 @@ Under LCM v7.0.0, the governance and execution tooling is organized into functio
 
 | Repository | Tool Path | Version | Purpose |
 | :--- | :--- | :---: | :--- |
-| **`LCM_AI`** | [`tools/Test-WorkspaceReadiness.ps1`](file:///D:/Git_Repositories/LCM_AI/tools/Test-WorkspaceReadiness.ps1) | `1.0.0` | Comprehensive readiness runner and quality gate validator for `LCM_AI`. |
-| **`LCM_AI`** | [`tools/Invoke-LCMOnboardRepo.ps1`](file:///D:/Git_Repositories/LCM_AI/tools/Invoke-LCMOnboardRepo.ps1) | `1.1.0` | 4-phase onboarding and update engine for onboarding target repositories into LCM. |
+| **`LCM_AI`** | [`tools/Test-WorkspaceReadiness.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Test-WorkspaceReadiness.ps1) | `1.0.0` | Comprehensive readiness runner and quality gate validator for `LCM_AI`. |
+| **`LCM_AI`** | [`tools/Invoke-LCMOnboardRepo.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Invoke-LCMOnboardRepo.ps1) | `1.1.0` | 4-phase onboarding and update engine for onboarding target repositories into LCM. |
 | **`LCM_Inventory`** | [`tools/Invoke-BeyondCompareReview.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Invoke-BeyondCompareReview.ps1) | `1.0.0` | Isolated visual comparison launcher comparing baseline commit snapshot against live repo. |
 | **`LCM_Inventory`** | [`tools/Submit-ReviewResult.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Submit-ReviewResult.ps1) | `1.0.0` | Interactive review outcome recorder (`Accepted`, `AcceptedWithEdits`, `Rejected`, `Deferred`). |
 | **`LCM_Inventory`** | [`tools/Invoke-WorkspaceAudit.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Invoke-WorkspaceAudit.ps1) | `1.0.0` | Multi-repository CM audit scanner; generates inventory JSON and dashboard markdown. |
@@ -74,8 +74,8 @@ maintenance operations, not rewriting of operational evidence.
 
 | Repository | Module Path | Version | Exported Functions & Scope |
 | :--- | :--- | :---: | :--- |
-| **`LCM_AI`** | [`tools/Onboarding/LCMOnboarding.psm1`](file:///D:/Git_Repositories/LCM_AI/tools/Onboarding/LCMOnboarding.psm1) | `1.0.0` | `Test-LCMPreFlight`, `New-LCMGovernanceLinks`, `Expand-LCMTemplate`, `Test-LCMIntegrity`, `Invoke-LCMOnboardRepo` |
-| **`LCM_AI`** | [`tools/QualityGates/WorkspaceQualityGates.psm1`](file:///D:/Git_Repositories/LCM_AI/tools/QualityGates/WorkspaceQualityGates.psm1) | `1.0.0` | `Test-WorkspaceQualityGates`, `Test-GovernanceRules`, `Test-DryRunEngine` |
+| **`LCM_AI`** | [`tools/Onboarding/LCMOnboarding.psm1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Onboarding/LCMOnboarding.psm1) | `1.0.0` | `Test-LCMPreFlight`, `New-LCMGovernanceLinks`, `Expand-LCMTemplate`, `Test-LCMIntegrity`, `Invoke-LCMOnboardRepo` |
+| **`LCM_AI`** | [`tools/QualityGates/WorkspaceQualityGates.psm1`](file:///D:/Git_Repositories/LCM_Inventory/tools/QualityGates/WorkspaceQualityGates.psm1) | `1.0.0` | `Test-WorkspaceQualityGates`, `Test-GovernanceRules`, `Test-DryRunEngine` |
 | **`LCM_Inventory`** | [`modules/WorkspaceCM.psm1`](file:///D:/Git_Repositories/LCM_Inventory/modules/WorkspaceCM.psm1) | `1.1.0` | `Get-WorkspaceRoot`, `Get-WorkspaceAIState`, `Get-RepoCMState`, `Update-WorkspaceInventory`, `Test-WorkspaceDrift`, `Create-WorkspaceBaseline`, `Write-CMLog` |
 | **`LCM_Inventory`** | [`modules/ChangeRequestManager.psm1`](file:///D:/Git_Repositories/LCM_Inventory/modules/ChangeRequestManager.psm1) | `2.0.0` | `Sync-CRJunctions`, `Get-ChangeRequests`, `Find-ChangeRequest`, `New-ChangeRequest`, `Get-CRBundles`, `New-CRBundle`, `Add-CRToBundle`, `Export-ChangeRequestDashboard` |
 | **`LCM Hub (tools/)`** | [`tools/modules/LcmDaemonCore.psm1`](file:///D:/Git_Repositories/.lcm/tools/internal/modules/LcmDaemonCore.psm1) | `2.1.0` | Strongly-typed OOP domain model: `DaemonEnvironment`, `DaemonActionController`, DTO classes, and `Send-DaemonJsonResponse`. |
