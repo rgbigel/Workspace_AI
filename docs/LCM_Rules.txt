@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-10-09 17:28:31 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-10-09 18:46:23 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -1382,6 +1382,13 @@ For governed repositories that scale beyond single-purpose scripts into multi-ca
    - Repositories utilizing App slicing `MUST` maintain a zero-drift machine-readable catalog at `data/catalog/apps.json`, synchronized via AST scanning.
 7. **Inter-App Contract Governance (The "Glue")**:
    - Apps `MUST NOT` communicate via private internal functions or implicit global variables. All cross-App interactions `MUST` be governed by declared, registered Public Interface Contracts (Cmdlet Exports, JSON Schemas, REST DTOs, Event Broadcasts) cataloged in `data/catalog/contracts.json`.
+8. **Submodules as an App form**: a git submodule is a normal form of the App method for subdividing a large set of functionality of a repository. Consolidating several repositories into one repository with an App per former repository is permitted, but `MUST` only be done by explicit operator decision.
+
+### RULE-DOC-008: Specification Preservation Invariant
+1. No specification or architecture document (`Architecture.md`, `Requirements.md`, `Implementation.md`, `docs/Architecture/*`) `MAY` be replaced, condensed or have sections removed without the explicit approval of the operator.
+2. Content that is outdated is updated in place (names, paths, status), and a status line marks what no longer matches the live state. It is not deleted.
+3. A change that removes or shortens more than a few lines of a specification `MUST` be proposed first, naming the sections affected, and `MUST` be listed in the commit message.
+4. Superseding a document with a new one `MUST` keep the old content reachable (restored in place, or moved to a named retired location) in the same commit.
 
 ---
 

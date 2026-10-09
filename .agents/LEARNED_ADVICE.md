@@ -29,4 +29,7 @@ How it works:
 ### Files
 - Write byte-sensitive files with latin1 or the edit tool and keep CRLF/BOM; a UTF-8 round-trip corrupted a script once. (2026-10-09, Copilot)
 
+### Versioning
+- A reset to 10.0.0 is a major release and WILL set all constituent versions (every LCM component) to 10.0.0 at once. During a major release run the normal versioning rules (parity, version lead by LCM_AI, no hand edits) stay in place; they are not suspended by the reset. (2026-10-09, operator)
+
 ## Candidates (pending review)
