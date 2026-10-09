@@ -58,13 +58,13 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 ---
 
 ### RULE-EFF-007: Mandatory Search Dispatch Standard
-- **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
-- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
-- CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
-- **Search Fallback Protocol**: If the Everything 1.5a HTTP REST API (port 8080) is unreachable or not running, tooling and agents `SHALL` fall back gracefully to `rg.exe --files` or PowerShell `Get-ChildItem` with scoped directory boundaries, ensuring operations never fail due to an inactive background daemon.
+- File-name searches **must** use Everything's `es.exe` CLI, preferably through `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`). `es.exe` is resolved from PATH (the Everything directory is a Machine PATH entry set by `Set-GitRoot.ps1` from `docs/Requisites/external-tools.json`).
+- Direct `es.exe` execution is **allowed from interactive desktop sessions** (agents, operator shells). It remains **prohibited in Session 0 and scheduled-task contexts**, where Everything's IPC is not authorized; those contexts use the wrapper, which falls back automatically.
+- Transport order of `Search-Everything.ps1`: (1) `es.exe`, (2) the Everything HTTP REST API (port 8080, only if the operator enabled it), (3) a scoped `Get-ChildItem` scan. Failure of one transport never fails the operation.
+- Content searches use `es.exe` with the `content:` filter when the Everything content index is healthy, otherwise `rg.exe` (installed machine-wide, see the Requisites manifest). Index changes are visible after a delay of usually under one second.
+- The content-index settings in `Everything.ini` (indexing enabled, workspace folder covered, required file types covered) are verified by `Test-ExternalTools.ps1` as part of workspace readiness.
 
 ---
-
 ### RULE-EFF-008: Canonical Tool Discovery Standard
 - Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `LCM_Inventory/tools/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
 - Agents are **strictly prohibited** from executing broad, unindexed grep searches across `.psm1`, `.ps1`, or `.cmd` files to locate tool signatures or parameters when `tool_catalog.json` can satisfy the query.
@@ -85,7 +85,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 - **Readiness Runners**: `Test-RepoReadiness.ps1` and `Test-WorkspaceReadiness.ps1` treat changes in log directories and `out/` as non-invalidating evidence and enforce short-circuiting on failure.
 - **Git Commit Workflow**: Automated audit syncs and baseline captures may be committed and pushed directly as `chore(audit)` or `chore(telemetry)` without entering formal Change Request review loops.
 - **Agent Execution Policy**: Agents must operate in direct execution mode; interactive approval loops in chat UI are superseded by the RR pipeline.
-- **Search Enforcement (RULE-EFF-007)**: All agents and tooling must route file-system searches through `Search-Everything.ps1` or the Everything HTTP API; `rg.exe` is the mandatory content-search tool.
+- **Search Enforcement (RULE-EFF-007)**: All agents and tooling must use `es.exe` (directly or through `Search-Everything.ps1`) for file-system searches; `rg.exe` is the fallback content-search tool when the Everything content index is unavailable.
 - **Tool Discovery Enforcement (RULE-EFF-008)**: `tool_catalog.json` is the first-query target for all tool and command discovery; broad unindexed filesystem scans are prohibited.
 - **Path Safety Enforcement (RULE-ENV-003)**: All path constructions must be grounded via `$PSScriptRoot`, registered trampolines, or explicit pre-flight resolution; speculative traversal is prohibited.
 
