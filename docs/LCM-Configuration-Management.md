@@ -78,7 +78,7 @@ Automated tools must never mutate target repositories without prior proposal and
       ▼
 [ Step 3: Governed Execution ]
       │ Invoke-LCMUpdate.ps1 -TargetRepository <Repo> -Execute
-      │ └─► Deploys rule junctions (.agents/rules/core, .copilot/Rules/core)
+      │ └─► Deploys rule junctions (.agents/rules/core, .agents/rules/core)
       │ └─► Instantiates parameterized templates (LCM_Inventory/, .vscode/, docs/, tools/)
       │ └─► Validates physical integrity
       │ └─► Creates baseline commit in target repository

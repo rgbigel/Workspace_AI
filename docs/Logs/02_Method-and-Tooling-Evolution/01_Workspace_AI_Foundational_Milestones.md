@@ -18,7 +18,7 @@ Date: 2026-08-15
 ### Key Foundational Policies:
 1. **Universal English Standard**: All code, comments, documentation, and tooling standardized strictly on English (`LanguagePolicy.md`).
 2. **Deterministic File Invariants**: Strict UTF-8 without BOM, CRLF (`\r\n`) line endings, 2-space indentation (`InvariantRules.md`, `JsonRules.md`).
-3. **Canonical Authority Root**: Reconciled authority order prioritizing `.agents/rules/` and `.copilot/Rules/` as canonical (`RuleAuthority.md`).
+3. **Canonical Authority Root**: Reconciled authority order prioritizing `.agents/rules/` and `.agents/rules/` as canonical (`RuleAuthority.md`).
 
 ---
 

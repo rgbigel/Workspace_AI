@@ -293,7 +293,7 @@ Adapter surface candidates currently checked:
 ```text
 .continuerules
 .vscode/settings.json
-.copilot/Rules/RuleAuthority.md
+.agents/rules/RuleAuthority.md
 tools/APPLY.ps1
 ```
 
@@ -367,7 +367,7 @@ The current adapter surfaces are:
 ```text
 .continuerules
 .vscode/settings.json
-.copilot/Rules/RuleAuthority.md
+.agents/rules/RuleAuthority.md
 tools/APPLY.ps1
 ```
 

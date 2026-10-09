@@ -99,7 +99,7 @@ graph TD
 Deploys the **Hybrid Link Model**:
 * **Directory Junctions**:
   * `<TargetRepo>/.agents/rules/core` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.agents\rules`
-  * `<TargetRepo>/.copilot/Rules/core` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.copilot\Rules`
+  * `<TargetRepo>/.agents/rules/core` $\rightarrow$ `D:\Git_Repositories\LCM_AI\.agents\rules`
 * **File Hardlinks**:
   * `<TargetRepo>/AGENTS.md` $\rightarrow$ `D:\Git_Repositories\LCM_AI\AGENTS.md`
   * `<TargetRepo>/GEMINI.md` $\rightarrow$ `D:\Git_Repositories\LCM_AI\GEMINI.md`

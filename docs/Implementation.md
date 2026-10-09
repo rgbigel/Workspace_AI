@@ -237,7 +237,7 @@ Instantiated in each governed repository during Phase 3 of onboarding:
     "immutable_links": {
       "junctions": [
         ".agents/rules/core",
-        ".copilot/Rules/core"
+        ".agents/rules/core"
       ],
       "hardlinks": [
         "AGENTS.md",

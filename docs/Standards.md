@@ -23,7 +23,7 @@ STANDARDS
 - variable-memory: patch-only versioning
 
 LINKING-AND-JUNCTION-STANDARDS
-- directory-junctions: used for immutable rule directories (.agents/rules/core, .copilot/Rules/core)
+- directory-junctions: used for immutable rule directories (.agents/rules/core, .agents/rules/core)
 - file-hardlinks: used for top-level entrypoints (AGENTS.md, GEMINI.md, .copilot/instructions.md)
 - visual-tool: Junction Link Magic is the designated interactive GUI utility for scanning, inspecting, and managing NTFS junctions and hardlinks across repositories
 

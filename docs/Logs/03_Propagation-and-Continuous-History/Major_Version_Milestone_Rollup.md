@@ -22,7 +22,7 @@ This ledger records consolidated milestone rollups. At each major version releas
 * **Architecture**: Formalized the 2-level LCM Proposal architecture (`Requirements.md` and `Implementation-and-Tooling.md`) spanning 9 governance domains and 72+ requirements.
 * **Lineage Sanitization**: Completed full purge of legacy crash recovery residue, eliminated obsolete `AI-` / `GC` / `AC` prefixes, and archived historical lineage under `docs/Logs/01_Pre-AI-Evolution/`.
 * **Repository Inventory**: Audited all 33 child directories under `D:\Git_Repositories\`; aligned `git.ignoredRepositories` to the exact 10 non-git directories and compiled `LCM-Repository-Inventory.md`.
-* **Onboarding Engine (`Invoke-LCMOnboardRepo`)**: Implemented modular 4-Phase onboarding and update engine (`tools/Onboarding/LCMOnboarding.psm1`) utilizing cross-drive NTFS directory junctions for `.agents/rules/core` and `.copilot/Rules/core`, plus hardlinks/fallbacks for root agent instructions.
+* **Onboarding Engine (`Invoke-LCMOnboardRepo`)**: Implemented modular 4-Phase onboarding and update engine (`tools/Onboarding/LCMOnboarding.psm1`) utilizing cross-drive NTFS directory junctions for `.agents/rules/core` and `.agents/rules/core`, plus hardlinks/fallbacks for root agent instructions.
 * **Visual Link Tooling**: Designated Junction Link Magic as the approved interactive GUI tool for scanning and managing cross-repo junctions.
 * **Quality Gates (`WorkspaceQualityGates.psm1`)**: Consolidated readiness assertions into unified, reusable gates executed by `Test-WorkspaceReadiness.ps1`.
 * **Dual Governance Flows**: Codified separate control flows for upstream design iteration in `Workspace_AI` vs downstream repository onboarding and version synchronization.
