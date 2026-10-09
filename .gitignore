@@ -14,11 +14,9 @@ scratch/
 
 # AI Tool Rule Junctions (Canonical source is .agents/rules/)
 .copilot/Rules/
-.copilot/Rules
 .continue/rules/
 .continue/rules
 
 .copilot/Atoms/
-.copilot/Atoms
 
 .copilot/Methods/
