@@ -48,4 +48,10 @@ The agent `MUST` remain aware of the global LCM triad at all times:
 3. Candidates `MUST` be reviewed (`Invoke-LearnedAdviceReview.ps1`: accept, reject, or promote to a rule) no later than publishing. `Invoke-WorkspacePush.ps1` refuses to publish while candidates are pending.
 4. Entries marked `[->rule]` are written into the matching rule file, after which the entry is replaced by a reference to that rule.
 
+### `RULE-CTX-006` (GoodMorning Session Start)
+1. At the start of every session the agent `MUST` run `Invoke-WorkspaceGoodMorning.ps1 -Auto`. It is silent (one line) when less than 7 hours have passed since the last activity; a longer gap implies a good morning and produces the full read-only report.
+2. When the report lists attention items (work in between, version disagreement, stale context, pending candidates, guardrail findings) the agent `MUST` tell the operator in its first reply, before any other work.
+3. The agent `MUST` also state that it has read `ACTIVE_CONTEXT.md` and `LEARNED_ADVICE.md`, can follow them, and name anything unclear, contradictory or stale. It `MUST NOT` rely on parts of `ACTIVE_CONTEXT.md` that the report marks as stale.
+4. GoodMorning is read-only; it `MUST NOT` be used to change, commit or publish anything.
+
 

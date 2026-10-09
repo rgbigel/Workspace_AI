@@ -54,6 +54,15 @@ MACRO: profile status
   - summarize test-suite presence
   - summarize version alignment
 
+MACRO: GoodMorning
+- description: full read-only session-start check (RULE-CTX-006): time gap, work in between, versions, context staleness, pending learned advice
+- syntax: GoodMorning
+- primary target: LCM_Inventory/tools/Invoke-WorkspaceGoodMorning.ps1 -Force
+- rules:
+  - report every attention item to the operator before other work
+  - confirm that ACTIVE_CONTEXT.md and LEARNED_ADVICE.md were read and can be followed
+  - change nothing
+
 MACRO: learn
 - description: record something learned as a candidate for LEARNED_ADVICE.md (RULE-CTX-005)
 - syntax: /learn <text> | learn <text>
