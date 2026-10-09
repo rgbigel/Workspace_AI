@@ -81,3 +81,10 @@ Over successive iterations of the Lifecycle Model (LCM) architecture, two struct
 5. All Daemon modules, classes, and service scripts run from `LCM_Inventory`.
 6. Port 9876 Daemon is healthy and actively serving requests from `LCM_Inventory`.
 7. Beyond Compare Review (`BCR`) on all repositories accurately exports rules and `.copilot` baselines without ghost orphan differences.
+
+
+---
+
+## 5. Reference: Retired .lcm to Current Paths
+
+The authoritative record of where the retired root `.lcm` folder went is [reference/lcm-to-new-paths.json](reference/lcm-to-new-paths.json) (longest `from` wins; paths relative to the workspace root). It documents the restructuring and is the input of `LCM_Inventory/tools/Invoke-LcmPathMigration.ps1`. The working copy `LCM_Inventory/config/lcm-path-map.json` stays until the LCM_Root cutover is complete; this copy is permanent.
