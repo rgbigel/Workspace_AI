@@ -15,7 +15,7 @@ Date: {{DATE}}
 To execute and test `{{REPO_NAME}}`, the host system requires:
 1. **PowerShell 7 (`pwsh.exe` 7.0+)**: Strict runtime engine for all modules and CLI scripts.
 2. **Git for Windows**: Version control and SHA auditing.
-3. **Execution Context**: Standard User privilege unless elevation is explicitly declared in `.lcm/config.json`.
+3. **Execution Context**: Standard User privilege unless elevation is explicitly declared by an `Elevation: Administrator` line in `AGENTS.md`.
 
 ---
 
