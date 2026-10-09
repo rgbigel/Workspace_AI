@@ -54,6 +54,13 @@ MACRO: profile status
   - summarize test-suite presence
   - summarize version alignment
 
+MACRO: learn
+- description: record something learned as a candidate for LEARNED_ADVICE.md (RULE-CTX-005)
+- syntax: /learn <text> | learn <text>
+- rules:
+  - add the text as a candidate with Save-AllSessionMemory.ps1 -Learn "<text>" -Author <AI name>; do nothing else
+  - candidates are reviewed with Invoke-LearnedAdviceReview.ps1 no later than push (push is refused while any are pending)
+
 MACRO: ToolExplorer
 - description: generate and launch the authoritative LCM Tool Explorer interactive HTML application via Show-ToolsExplorer.ps1
 - syntax: ToolExplorer [switches] | tools [switches] | ShowTools [switches]

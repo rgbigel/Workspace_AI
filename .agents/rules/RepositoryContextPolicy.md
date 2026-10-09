@@ -42,4 +42,10 @@ The agent `MUST` remain aware of the global LCM triad at all times:
 * **`LCM_Inventory`**: Configuration Management engine, audit ledger, and cross-repo CR indexing.
 * **`LCM_Shared`**: Reusable functional PowerShell atom library (`Logging`, `VolumeAtoms`, `BcdAtoms`).
 
+### `RULE-CTX-005` (Learned Advice)
+1. At the start of a session the agent `MUST` read `.agents/ACTIVE_CONTEXT.md` and `.agents/LEARNED_ADVICE.md`. Entries under **Accepted** are binding; entries under **Candidates** are guidance only.
+2. When the operator writes `/learn <text>` the agent `MUST` add the text as a candidate (`Save-AllSessionMemory.ps1 -Learn "<text>" -Author <AI name>`), without changing anything else. An agent `MAY` also propose a candidate on its own when it learns something durable; it `MUST` tell the operator.
+3. Candidates `MUST` be reviewed (`Invoke-LearnedAdviceReview.ps1`: accept, reject, or promote to a rule) no later than publishing. `Invoke-WorkspacePush.ps1` refuses to publish while candidates are pending.
+4. Entries marked `[->rule]` are written into the matching rule file, after which the entry is replaced by a reference to that rule.
+
 
