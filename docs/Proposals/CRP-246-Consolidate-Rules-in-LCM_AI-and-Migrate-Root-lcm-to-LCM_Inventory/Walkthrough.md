@@ -67,5 +67,5 @@ This proposal consolidates the Lifecycle Model (LCM) architecture across two cor
 
 ### Step 5: Root `Git_Repositories` Cleansing
 - Staged deletion of all 283 tracked `.lcm` files.
-- Updated `D:\Git_Repositories\.gitignore` to explicitly ignore `/.lcm/` and `/.lcm`.
+- Updated `D:\Git_Repositories\.gitignore` to explicitly ignore `/LCM_Inventory/` and `/.lcm`.
 - Root repository is now a clean meta-container.

@@ -20,7 +20,7 @@ LCM_Tools
 Legacy Alias Management:
 Governed by 
 
-.lcm/config/LegacyRepositoryNames.json
+LCM_Inventory/config/LegacyRepositoryNames.json
  with physical legacy workspace roots retired and replaced by LCM_Tools.
 Root Junctions & Discovery:
 Root .agents points to 
@@ -34,10 +34,10 @@ LCM_AI\.copilot
 Trampolines & Tool Catalog:
 
 
-.lcm/Cmd/
+LCM_Inventory/Cmd/
  batch trampolines and 
 
-.lcm/config/tool_catalog.json
+LCM_Inventory/config/tool_catalog.json
  reflect canonical target names and paths.
 2. Core Governance Invariants Re-Verified
 Review Flow & Gating (ProposalReviewFlowPolicy.md, ReviewCommitGovernancePolicy.md):
@@ -82,7 +82,7 @@ install/Installation.md
 docs/Requirements.md
 ) alongside 
 
-.lcm/tools/internal/Show-LastLog.ps1
+LCM_Inventory/tools/Show-LastLog.ps1
  and 
 
 Format-LcmMarkdownDiagrams.ps1

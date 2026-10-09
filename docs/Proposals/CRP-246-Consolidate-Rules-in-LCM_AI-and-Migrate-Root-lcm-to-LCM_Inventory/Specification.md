@@ -24,7 +24,7 @@ Over successive iterations of the Lifecycle Model (LCM) architecture, two struct
    Governance rules and policy artifacts have historically existed in multiple forms across repositories. Although `LCM_AI\.agents\rules` is the primary hub, legacy sub-junctions (such as per-repo `.agents\rules` junctions instead of leveraging higher-up `.agents` junctions where feasible, or redundant `.copilot\Rules` links) complicate baseline extraction in Beyond Compare and create drift risk. The operator directive mandates that **ALL LCM rules must reside physically and authoritatively in a single folder in `LCM_AI` (`LCM_AI\.agents\rules`)**. Child repositories and tools must access these rules via top-level linkage/junctions without introducing lower-level redundant junctions where higher-up junctions can do the job.
 
 2. **Physical Code Housed in Root `.lcm` Subsystem**:
-   Physical application code, PowerShell modules (`LcmDaemon`, `DaemonActionController.ps1`), desktop runner scripts (`LcmDesktopDaemon.ps1`, `Invoke-InteractiveDesktop.ps1`, `Register-LcmDesktopDaemon.ps1`), command wrappers (`.lcm\Cmd\`), and internal tools currently reside in `D:\Git_Repositories\.lcm\`. This causes the root multi-repo container (`Git_Repositories`) to track 280+ physical files and act as an active software repository requiring its own review-commit cycle. All LCM runtime code, daemon services, macros, and operational tools belong authoritatively in **`LCM_Inventory`**. Where sibling repositories or tools require access, clean linkage/interfaces must be established rather than code duplication.
+   Physical application code, PowerShell modules (`LcmDaemon`, `DaemonActionController.ps1`), desktop runner scripts (`LcmDesktopDaemon.ps1`, `Invoke-InteractiveDesktop.ps1`, `Register-LcmDesktopDaemon.ps1`), command wrappers (`LCM_Inventory\Cmd\`), and internal tools currently reside in `D:\Git_Repositories\LCM_Inventory\`. This causes the root multi-repo container (`Git_Repositories`) to track 280+ physical files and act as an active software repository requiring its own review-commit cycle. All LCM runtime code, daemon services, macros, and operational tools belong authoritatively in **`LCM_Inventory`**. Where sibling repositories or tools require access, clean linkage/interfaces must be established rather than code duplication.
 
 ---
 
@@ -42,19 +42,19 @@ Over successive iterations of the Lifecycle Model (LCM) architecture, two struct
 
 ### Phase B: Subsystem Relocation from Root `.lcm` to `LCM_Inventory`
 - **Module Migration**:
-  - Move `.lcm\modules\LcmDaemon\` (`LcmDaemon.psm1`, `LcmDaemon.psd1`, `DaemonActionController.ps1`, `DaemonDto.ps1`, `DaemonEnvironment.ps1`) into `LCM_Inventory\modules\LcmDaemon\`.
-  - Move `.lcm\modules\LcmProgressAtom.psm1`, `LcmToolCatalog.psm1`, `ToolValidation.psm1` into `LCM_Inventory\modules\`.
+  - Move `LCM_Inventory\modules\LcmDaemon\` (`LcmDaemon.psm1`, `LcmDaemon.psd1`, `DaemonActionController.ps1`, `DaemonDto.ps1`, `DaemonEnvironment.ps1`) into `LCM_Inventory\modules\LcmDaemon\`.
+  - Move `LCM_Inventory\modules\LcmProgressAtom.psm1`, `LcmToolCatalog.psm1`, `ToolValidation.psm1` into `LCM_Inventory\modules\`.
 - **Service & Desktop Dispatcher Migration**:
-  - Move `.lcm\tools\internal\LcmDesktopDaemon.ps1`, `Invoke-InteractiveDesktop.ps1`, and `Register-LcmDesktopDaemon.ps1` into `LCM_Inventory\tools\` (or dedicated `LCM_Inventory\tools\daemon\`).
+  - Move `LCM_Inventory\tools\LcmDesktopDaemon.ps1`, `Invoke-InteractiveDesktop.ps1`, and `Register-LcmDesktopDaemon.ps1` into `LCM_Inventory\tools\` (or dedicated `LCM_Inventory\tools\daemon\`).
   - Move daemon logging and scratch directories into `LCM_Inventory\logs\` and `LCM_Inventory\scratch\`.
 - **CLI & Command Wrappers Migration**:
-  - Move `.lcm\Cmd\` batch files (`ShowCM.cmd`, `ShowTools.cmd`, etc.) to `LCM_Inventory\cmd\`.
+  - Move `LCM_Inventory\Cmd\` batch files (`ShowCM.cmd`, `ShowTools.cmd`, etc.) to `LCM_Inventory\cmd\`.
   - Update user environment `PATH` configuration or provide unified wrappers in `d:\OneDrive\cmd\` or `LCM_Inventory\cmd\`.
 - **System & Registry Integration**:
   - Update `Register-LcmDesktopDaemon.ps1` and `HKCU:\Software\Microsoft\Windows\CurrentVersion\Run` to point to the new daemon path in `LCM_Inventory`.
   - Restart the daemon under Session 1 with zero service interruption.
 - **Root Git Cleanup**:
-  - Remove `.lcm/` from Git tracking in root `Git_Repositories`.
+  - Remove `LCM_Inventory/` from Git tracking in root `Git_Repositories`.
   - Reduce root `Git_Repositories` to a pure, lightweight governance container (~12 tracked files: `AGENTS.md`, `GEMINI.md`, `.gitignore`, `.gitattributes`, etc.).
 
 ### Phase C: Cross-Repository Linkage (Zero Code Duplication)

@@ -32,13 +32,13 @@ Priority: High
 
 ### Step 3: Migrate Subsystem Code from `.lcm` to `LCM_Inventory`
 - [ ] **Modules Migration**:
-  - Copy/move `D:\Git_Repositories\.lcm\modules\LcmDaemon\` into `D:\Git_Repositories\LCM_Inventory\modules\LcmDaemon\`.
+  - Copy/move `D:\Git_Repositories\LCM_Inventory\modules\LcmDaemon\` into `D:\Git_Repositories\LCM_Inventory\modules\LcmDaemon\`.
   - Copy/move `LcmProgressAtom.psm1`, `LcmToolCatalog.psm1`, and `ToolValidation.psm1` into `D:\Git_Repositories\LCM_Inventory\modules\`.
 - [ ] **Tools & Dispatchers**:
   - Copy/move `LcmDesktopDaemon.ps1`, `Invoke-InteractiveDesktop.ps1`, and `Register-LcmDesktopDaemon.ps1` into `D:\Git_Repositories\LCM_Inventory\tools\`.
   - Update internal paths in `LcmDesktopDaemon.ps1` and `Invoke-InteractiveDesktop.ps1` to resolve modules and logs from `LCM_Inventory`.
 - [ ] **CLI Wrappers**:
-  - Copy/move batch wrappers from `D:\Git_Repositories\.lcm\Cmd\` to `D:\Git_Repositories\LCM_Inventory\cmd\`.
+  - Copy/move batch wrappers from `D:\Git_Repositories\LCM_Inventory\Cmd\` to `D:\Git_Repositories\LCM_Inventory\cmd\`.
 - [ ] **Cross-Repository Linkage**:
   - For `LCM_Shared` or other repos needing LCM modules, configure module paths or deterministic linkage rather than copying files.
 
@@ -49,7 +49,7 @@ Priority: High
 - [ ] Verify REST API endpoints (`/status`, `/session_state`) return healthy 200 responses.
 
 ### Step 5: Clean Root `Git_Repositories`
-- [ ] Remove `.lcm/` tracking from Git in `D:\Git_Repositories`.
+- [ ] Remove `LCM_Inventory/` tracking from Git in `D:\Git_Repositories`.
 - [ ] Retain local logs/scratch in `.gitignore` or clean up as needed.
 - [ ] Verify `git status` on root `Git_Repositories`.
 

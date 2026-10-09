@@ -27,7 +27,7 @@ This proposal establishes the **`WHAT-IF` Analysis Sub-Path Protocol**: an explo
 
 ### 2.1 Trigger & Snapshot Invariant
 - **`ANALYZE WHAT-IF: <Hypothesis>`**: Initiates an exploratory sub-path linked to the active CRP.
-- **Pre-Trial Checkpoint**: Before modifying any files for the trial, the engine automatically creates a lightweight working copy snapshot in `.lcm/scratch/what_if/<CRP_ID>/checkpoint/` or via a dedicated Git stash reference (`refs/stash/what_if_<CRP_ID>`).
+- **Pre-Trial Checkpoint**: Before modifying any files for the trial, the engine automatically creates a lightweight working copy snapshot in `LCM_Inventory/scratch/what_if/<CRP_ID>/checkpoint/` or via a dedicated Git stash reference (`refs/stash/what_if_<CRP_ID>`).
 - **Telemetry Register**: `LCM_WhatIfActive = true`, `LCM_WhatIfParentCRP = <ID>`, `LCM_WhatIfHypothesis = <Text>`.
 
 ### 2.2 Trial Implementation Mode
