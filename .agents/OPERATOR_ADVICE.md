@@ -2,7 +2,7 @@
 
 Short, tested tips from the operator. Agents read this before using the tool concerned, and append new advice here (one line each, with date). Rules stay in `rules/`; this file holds hints, not obligations.
 
-Linked with [ACTIVE_CONTEXT.md](./ACTIVE_CONTEXT.md) (workspace state). On "save all" / "good night", the agent updates ACTIVE_CONTEXT.md and appends any new operator advice from the session here; it does not rewrite existing lines.
+Linked with [ACTIVE_CONTEXT.md](./ACTIVE_CONTEXT.md) (workspace state) and [AI_MEMORY.md](./AI_MEMORY.md) (AI-to-AI lessons). This file is what the operator tells the AIs, not what the AIs tell each other. On "save all" the agent appends new operator advice here; it does not rewrite existing lines.
 
 ## Working agreement
 - For a large or complex query or repair, describe the intended approach and ask the operator first; the operator often knows a faster trick. (2026-10-09)

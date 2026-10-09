@@ -59,7 +59,8 @@ graph TB
   1. `.agents/ACTIVE_CONTEXT.md` (Workspace state and active work streams)
   2. `.copilot/CopilotTools.md` (Tool paths and indexer specifications)
   3. `.agents/rules/` (Authoritative invariant rules)
-  4. [`.agents/OPERATOR_ADVICE.md`](./OPERATOR_ADVICE.md) (Operator know-how and working agreements; read it before using a tool it mentions, refresh it on "save all")
+  4. [`.agents/OPERATOR_ADVICE.md`](./OPERATOR_ADVICE.md) (Operator know-how and working agreements to the AIs)
+  5. [`.agents/AI_MEMORY.md`](./AI_MEMORY.md) (AI-to-AI lessons; read all three at session start, update on "save all")
 * **IDE Settings ([.vscode/settings.json](file:///d:/Git_Repositories/.vscode/settings.json)):**
   * `antigravity.toolExecutionPolicy`: `always-proceed`
   * `antigravity.fileAccessPolicy`: `allow`
