@@ -6,7 +6,7 @@ Path: D:/Git_Repositories/LCM_AI/.github/agents/DirectoryRules.md
 Authors: Rolf
 Version: 8.2.0
 Changelog:
-- 2026-08-16: Reconciled with LCM v4.2.0; authorized .github/agents/ for agent discovery, root AGENTS.md/GEMINI.md hardlinks, .lcm/ configuration, and governance rule junctions.
+- 2026-08-16: Reconciled with LCM v4.2.0; authorized .github/agents/ for agent discovery, root AGENTS.md/GEMINI.md hardlinks, LCM_Inventory/ configuration, and governance rule junctions.
 - 2026-07-27: Normalized Markdown metadata header.
 
 =====================================================================
@@ -40,7 +40,7 @@ Mandatory Repository Structure:
 - must contain .git/
 - must contain README.md with mandatory "## System Prerequisites" section
 - must contain docs/ with docs/README.md documentation index
-- must contain .lcm/ with config.json (including execution_context) and overrides.json
+- must contain LCM_Inventory/ with config.json (including execution_context) and overrides.json
 - must contain .vscode/ with settings.json and tasks.json
 - must contain .github/agents/RepoAgentIndex.md (for Copilot custom agent discovery)
 - must contain AGENTS.md and GEMINI.md (hardlinks to LCM_AI authority)

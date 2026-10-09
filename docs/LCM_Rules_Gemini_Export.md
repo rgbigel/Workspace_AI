@@ -153,7 +153,7 @@ To maintain predictability, prevent hanging automated runners, and enforce docum
 ## 2. Normative Elevation Rules
 
 ### `RULE-ELEV-001` (Mandatory Elevation Metadata)
-Every repository governed under LCM `MUST` declare an explicit `execution_context` block inside its `.lcm/config.json`:
+Every repository governed under LCM `MUST` declare an explicit `execution_context` block inside its `LCM_Inventory/config.json`:
 ```json
 "execution_context": {
   "elevation_required": true,
@@ -170,7 +170,7 @@ Any script within `src/` or `Source/` that implements interactive self-elevation
 3. `MUST NOT` block headless CI/CD agents, IDE test adapters, or background runners on modal GUI UAC prompts.
 
 ### `RULE-ELEV-003` (Privileged Code Declaration & Anti-Drift)
-Any code in `src/` or `Source/` utilizing privileged Windows commands (`bcdedit`, `fltmc`, `fsutil`, `Get-Partition`, `DiskPart`, `Add-BitLockerKeyProtector`, or `Verb RunAs`) `MUST` have `elevation_required: true` declared in `.lcm/config.json`.
+Any code in `src/` or `Source/` utilizing privileged Windows commands (`bcdedit`, `fltmc`, `fsutil`, `Get-Partition`, `DiskPart`, `Add-BitLockerKeyProtector`, or `Verb RunAs`) `MUST` have `elevation_required: true` declared in `LCM_Inventory/config.json`.
 * The quality gate `Assert-RepoElevationConsistency` `MUST` fail if undeclared privileged code is detected in a repository configured with `elevation_required: false`.
 
 ### `RULE-ELEV-004` (Automated Elevated Test Runner)
@@ -193,11 +193,11 @@ When an interactive script or launcher delegates execution to an elevated consol
    - The elevated worker `MUST` output a clear completion notice upon finishing indicating that the window has been intentionally kept open for operator inspection.
 
 ### `RULE-ELEV-006` (Automated Privilege-Aware Tool Execution & Elevation Interception)
-Ensure that any tool, script, or shorthand command requiring administrative privileges is never executed directly within a standard un-elevated user context. Instead, enforce automatic discovery and routing through the standardized CLI interceptor (`.lcm/tools/internal/Invoke-PrivilegedTool.ps1`), the background desktop daemon (`http://127.0.0.1:9876/execute`), or `Invoke-InteractiveDesktop.ps1`.
+Ensure that any tool, script, or shorthand command requiring administrative privileges is never executed directly within a standard un-elevated user context. Instead, enforce automatic discovery and routing through the standardized CLI interceptor (`LCM_Inventory/tools/Invoke-PrivilegedTool.ps1`), the background desktop daemon (`http://127.0.0.1:9876/execute`), or `Invoke-InteractiveDesktop.ps1`.
 
 Before executing any tool, script, or shorthand command, the AI agent or CLI launcher `MUST` perform the following validation sequence:
 1. **Catalog & Schema Lookup**:
-   - Query the authoritative tool catalog (`.lcm/config/tool_catalog.json` / `WorkspaceInventory`) to resolve the target tool's metadata record.
+   - Query the authoritative tool catalog (`LCM_Inventory/config/tool_catalog.json` / `WorkspaceInventory`) to resolve the target tool's metadata record.
    - Inspect whether the execution profile defines `"Admin": true` (or equivalent elevation requirement flag).
 2. **Context & Privilege Verification**:
    - Check whether the current runtime shell session holds elevated administrative rights (e.g. `([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)`).
@@ -205,7 +205,7 @@ Before executing any tool, script, or shorthand command, the AI agent or CLI lau
    - **Standard Execution**: If the tool does **not** require admin rights (`"Admin": false` or unset), execute it directly in the current session.
    - **Elevated Interception**: If `"Admin": true` and the current session is running under a standard un-elevated user context, **do not** execute the script directly in that session. Immediately route the call via:
      ```powershell
-     pwsh .lcm/tools/internal/Invoke-PrivilegedTool.ps1 -Tool <ToolName> [-Arguments <Args>] [-NoExit]
+     pwsh LCM_Inventory/tools/Invoke-PrivilegedTool.ps1 -Tool <ToolName> [-Arguments <Args>] [-NoExit]
      ```
    - **Automated Dispatch Pipeline**: `Invoke-PrivilegedTool.ps1` and generated `.cmd` trampolines inspect the Session 1 Desktop Daemon on port 9876 and dispatch via `POST /execute` (`{ "command": "...", "elevated": true, "noExit": true }`), falling back to `Invoke-InteractiveDesktop.ps1 -Elevated` if the daemon is offline. Console windows launched via elevation `MUST` include `-NoExit` / `/k` per `RULE-ELEV-005`.
 
@@ -260,13 +260,13 @@ At the start of every interaction or when switching focus, the agent `MUST` auto
 
 ### `RULE-CTX-002` (Fast-Tier Repository Context Priming)
 When active work begins on a specific repository (e.g. `VolumeInventory`, `BootEntryManager`, `HaSSD06`, `BackgroundModifier`), the agent `MUST` prime its working context in a single targeted tier by reading:
-1. `<TargetRepo>/.lcm/config.json` (for elevation requirements, governance version, and repository classification).
+1. `<TargetRepo>/LCM_Inventory/config.json` (for elevation requirements, governance version, and repository classification).
 2. `<TargetRepo>/README.md` (for module purpose, exported functions/atoms, and prerequisites).
 3. Any open Change Requests / proposals in `<TargetRepo>/docs/Proposals/` (or active task files).
 
 > [!NOTE]
 > **Unonboarded Candidate Fallback:**  
-> If `.lcm/config.json` is missing from an inspected target directory, the agent `SHALL` classify the repository as an `unonboarded-candidate` and reference the LCM onboarding workflow (`Invoke-LCMOnboardRepo.ps1`) rather than failing or running broad recursive scans.
+> If `LCM_Inventory/config.json` is missing from an inspected target directory, the agent `SHALL` classify the repository as an `unonboarded-candidate` and reference the LCM onboarding workflow (`Invoke-LCMOnboardRepo.ps1`) rather than failing or running broad recursive scans.
 
 ### `RULE-CTX-003` (Zero Redundant Scan Invariant)
 The agent `MUST NOT` run multi-step recursive discovery scans (`list_dir`, broad grep) across the entire workspace when operating within the scope of an identified repository.
@@ -621,7 +621,7 @@ Date: 2026-10-03
 ## 1. Governance Rules
 
 ### RULE-REV-001: Mandatory Review-Gated Commits & Gate 2 Non-Circumvention Invariant
-1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`), with transparent junction traversal via `FollowSymLinks` (`RULE-REV-008`).
+1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `LCM_Inventory/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`), with transparent junction traversal via `FollowSymLinks` (`RULE-REV-008`).
 2. **Strict Gate 2 Non-Circumvention Baseline**: Beyond Compare visual diff review is non-circumventable for code/tools/specs across all items by default. Even critical, urgent, or internally generated BUGs normally execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, but halt at Gate 2 for operator review before reaching `COMMITTED`.
 3. **Authorized Exceptions to Gating**:
    There are two (2) authorized exceptions to this rule:
@@ -768,14 +768,14 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 
 ### RULE-EFF-007: Mandatory Search Dispatch Standard
 - **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
-- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`.lcm/tools/internal/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
+- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
 - CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
 - **Search Fallback Protocol**: If the Everything 1.5a HTTP REST API (port 8080) is unreachable or not running, tooling and agents `SHALL` fall back gracefully to `rg.exe --files` or PowerShell `Get-ChildItem` with scoped directory boundaries, ensuring operations never fail due to an inactive background daemon.
 
 ---
 
 ### RULE-EFF-008: Canonical Tool Discovery Standard
-- Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `.lcm/tools/internal/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
+- Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `LCM_Inventory/tools/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
 - Agents are **strictly prohibited** from executing broad, unindexed grep searches across `.psm1`, `.ps1`, or `.cmd` files to locate tool signatures or parameters when `tool_catalog.json` can satisfy the query.
 
 ---
@@ -784,7 +784,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 - Speculative dot-traversal paths (such as `.\..lcm`, `..\..\`, or any path containing `..` without explicit validation) are **prohibited** in tool invocations and script references.
 - Tool and script invocations **must** anchor strictly to one of:
   1. `$PSScriptRoot` for same-repository references.
-  2. Registered trampolines in `.lcm/Cmd/` for cross-repository dispatch.
+  2. Registered trampolines in `LCM_Inventory/Cmd/` for cross-repository dispatch.
   3. An explicit `Resolve-Path` / `Test-Path` pre-flight check before any path is consumed.
 
 ---
@@ -925,7 +925,7 @@ Whenever an existing script is modified, the `Date:` field (and changelog/versio
 
 ### RULE-PS-009: Mandatory Structured Tool Logging & Summary Invariants
 All PowerShell automation tools performing system mutations, diagnostics, remediations, repairs, or administrative tasks `MUST`:
-1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `.lcm/logs/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
+1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `LCM_Inventory/data/logs/lcm/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
 2. **Structured Log Levels**: Classify every message using standard log levels: `[INFO]`, `[WARN]`, `[ERROR]`, `[DEBUG]`, `[ACTION]`, `[SUMMARY]` (converging on the `LCM_Shared/Logging` standard).
 3. **Mandatory `[SUMMARY]` Footer**: Emit a standardized terminal and log summary block upon completion displaying:
    - Tool name
@@ -1328,7 +1328,7 @@ Whenever a new major LCM version $M$ (e.g. `v6.0.0`, `v7.0.0`) is established an
 3. **Transformation Formula**: If a module or spec has version $X.Y.Z$ and the new LCM major version is $M$, the new version becomes:
    $$\text{NewVersion} = M.Y.Z$$
    *(Example: A module at version `2.3.1` when major version 7 is established becomes `7.3.1`).*
-4. **Baseline Synchronization**: All explicit global baseline references in configuration files (`.lcm/config.json`, `.vscode/settings.json`, `.github/agents/Config.json`), agent profiles, and DOX headers `MUST` reference the current active LCM baseline.
+4. **Baseline Synchronization**: All explicit global baseline references in configuration files (`LCM_Inventory/config.json`, `.vscode/settings.json`, `.github/agents/Config.json`), agent profiles, and DOX headers `MUST` reference the current active LCM baseline.
 
 ---
 
@@ -1400,7 +1400,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 ## 2. Invariant Rules
 
 ### RULE-SUB-001: Subsystem Classification & Documentation Conformance
-1. A repository classified as `subsystem` in `.lcm/config.json` `MUST` fully implement standard LCM **Tripartite Documentation** (`docs/Architecture.md`, `docs/Requirements.md`, `docs/Implementation.md`) and the universal runbook (`install/Installation.md`).
+1. A repository classified as `subsystem` in `LCM_Inventory/config.json` `MUST` fully implement standard LCM **Tripartite Documentation** (`docs/Architecture.md`, `docs/Requirements.md`, `docs/Implementation.md`) and the universal runbook (`install/Installation.md`).
 2. The root `LCM_Inventory` tracks Subsystems at the macro Git level, while delegating internal part tracking to the Subsystem's dedicated inventory engine.
 
 ### RULE-SUB-002: Dedicated Subsystem Inventory Engine & Auto-Acceptance Invariant
@@ -1409,16 +1409,16 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 3. **Direct Carry-Over from LCM (`RULE-EFF-001`)**: Routine Subsystem telemetry collection, entity dumps, and dashboard rendering constitute mechanical evidence and are **automatically accepted**. Telemetry synchronization runs `SHALL NOT` force manual review gates or block workflows on interactive diff sessions.
 
 ### RULE-SUB-003: Host-Side Hardware Safety Interlocks (Offline / Pre-Boot)
-1. Any host script performing physical disk operations (flashing images, disk cloning, partition restructuring) `MUST NEVER` target arbitrary disk indices (e.g., `Disk 2`) without validating explicit **Hardware Serial Numbers** and **Model Descriptors** declared in `.lcm/config.json`.
+1. Any host script performing physical disk operations (flashing images, disk cloning, partition restructuring) `MUST NEVER` target arbitrary disk indices (e.g., `Disk 2`) without validating explicit **Hardware Serial Numbers** and **Model Descriptors** declared in `LCM_Inventory/config.json`.
 2. Host tools `MUST` execute `Assert-DiskTargetSafety` to guarantee that active Windows `Boot`, `System`, or `PageFile` volumes are **never** targeted.
 3. Destructive disk operations require high-integrity Administrator elevation and explicit operator confirmation.
 
 ### RULE-SUB-004: Safe Write Protocol & Just-In-Time (JIT) Ephemeral Authentication
 1. **Dual-User Separation**: Subsystems `MUST` establish distinct service accounts:
-   - **Auditor (Read-Only)**: Uses static credentials stored in git-ignored `.lcm/secrets.json` strictly for non-modifying telemetry and inventory queries.
+   - **Auditor (Read-Only)**: Uses static credentials stored in git-ignored `LCM_Inventory/secrets.json` strictly for non-modifying telemetry and inventory queries.
    - **Operator (Write / Privileged)**: Authenticated strictly on-demand via **Just-In-Time (JIT) Ephemeral Sessions**.
 2. **Zero Disk / Zero Log Persistence for Privileged Credentials**:
-   - Write-mode passwords and tokens `MUST NOT` be stored in `.lcm/secrets.json`, configuration files, or logs.
+   - Write-mode passwords and tokens `MUST NOT` be stored in `LCM_Inventory/secrets.json`, configuration files, or logs.
    - Ephemeral session tokens generated from JIT authentication `SHALL` reside strictly in volatile memory (RAM) for the duration of the mutation batch (default 15–30 minutes) and be purged immediately upon completion.
 3. **5-Stage Safe Mutation Pipeline**:
    - All state modifications `MUST` execute through the 5-stage pipeline: `(1) Pre-Flight State Snapshot` $\rightarrow$ `(2) Beyond Compare Visual Payload Gate` $\rightarrow$ `(3) Atomic API Dispatch` $\rightarrow$ `(4) Tiered Polling Health & Liveness Loop (up to 10m for Add-ons, up to 20m for Core, up to 30–45m for Host OS reboots / schema migrations)` $\rightarrow$ `(5) Automated Rollback on Failure`.
@@ -1504,7 +1504,7 @@ MACRO: ToolExplorer
 - description: generate and launch the authoritative LCM Tool Explorer interactive HTML application via Show-ToolsExplorer.ps1
 - syntax: ToolExplorer [switches] | tools [switches] | ShowTools [switches]
 - aliases: tools, ToolsExplorer, ShowTools
-- primary target: .lcm/tools/internal/Show-ToolsExplorer.ps1 (trampolines: .lcm/Cmd/ToolExplorer.cmd, ToolsExplorer.cmd)
+- primary target: LCM_Inventory/tools/Show-ToolsExplorer.ps1 (trampolines: LCM_Inventory/Cmd/ToolExplorer.cmd, ToolsExplorer.cmd)
 - parameters:
   - -Audience <User|Dev|All>: pre-filter audience category (defaults to 'User')
   - -Group <Name>: pre-filter by group or subsystem (e.g. 'HaSSD06', 'LCM', 'SystemConfiguration')
@@ -1562,7 +1562,7 @@ MACRO: FixDocumentation
   - `-Apply` writes only explicit `Documentation Updates` payloads declared by the selected bundles
   - conflicting or ambiguous payloads stop without modifying documentation
   - an applied update requires BCompare review before local commit
-  - executes `pwsh -File LCM_Inventory/tools/Fix-Documentation.ps1 <scope>` (or `.lcm/Cmd/FixDocumentation.cmd`)
+  - executes `pwsh -File LCM_Inventory/tools/Fix-Documentation.ps1 <scope>` (or `LCM_Inventory/Cmd/FixDocumentation.cmd`)
 
 MACRO: PUBLISH
 - description: publish a completed proposal cohort and LCM_Inventory to their remotes in lockstep
@@ -1581,7 +1581,7 @@ MACRO: ar
 - syntax: ar [offset] | AnalyzeReasoning [offset]
 - aliases: ar, AR, AnalyzeReasoning
 - rules:
-  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or .lcm/Cmd/ar.cmd)
+  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or LCM_Inventory/Cmd/ar.cmd)
   - 'ar <offset>' or 'AnalyzeReasoning <offset>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset <offset>'
   - generates a structured report in LCM_Inventory/data/logs/ containing Execution Trace, Error Triage & Avoidance Matrix, and Decision Rationale
 
@@ -1634,7 +1634,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 ## 3. Durable Memory & System Troubleshooting Context
 - **Active Troubleshooting Thread**: Mouse focus/flicker investigation & background services isolation.
 - **Logitech Suppression Status**: Audited against `KillLogitechUpdateFull.ps1` (54/54 items 100% enforced, 0 reversions).
-- **Authoritative System Restore Tool**: [`tools/Restore-SystemSettings.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Restore-SystemSettings.ps1).
+- **Authoritative System Restore Tool**: [`tools/Restore-SystemSettings.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Restore-SystemSettings.ps1).
 - **Active Session State File**: [`.agents/ACTIVE_SESSION.md`](file:///D:/Git_Repositories/.agents/ACTIVE_SESSION.md).
 
 ---

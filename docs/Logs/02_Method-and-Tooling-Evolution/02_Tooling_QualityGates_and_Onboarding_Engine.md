@@ -36,7 +36,7 @@ Designed and implemented in response to the requirement to standardize repositor
 
 1. **Phase 1 (`Test-LCMPreFlight`)**: Path validation, NTFS volume checking, non-git detection with interactive `git init -b main` prompt + pre-LCM baseline commit, and token auto-discovery.
 2. **Phase 2 (`New-LCMGovernanceLinks`)**: Hybrid link deployment using directory junctions for `.agents/rules/core` and `.copilot/Rules/core`, plus NTFS hardlinks for `AGENTS.md`, `GEMINI.md`, and `.copilot/instructions.md`.
-3. **Phase 3 (`Expand-LCMTemplate`)**: Dynamic token expansion and instantiation of templates from `templates/repo-scaffold/` (`.lcm/`, `.vscode/`, `docs/`, `tools/`, `.github/agents/`).
+3. **Phase 3 (`Expand-LCMTemplate`)**: Dynamic token expansion and instantiation of templates from `templates/repo-scaffold/` (`LCM_Inventory/`, `.vscode/`, `docs/`, `tools/`, `.github/agents/`).
 4. **Phase 4 (`Test-LCMIntegrity`)**: Structural validation (JSON syntax, script tokenization, junction/hardlink resolution) with interactive operator confirmation and atomic `LCM-001` baseline commit.
-5. **Update Mode (`-Update`)**: Version-aware upgrade flow for bringing previously onboarded repositories up to the latest LCM release baseline while strictly preserving target-local `.lcm/overrides.json`.
+5. **Update Mode (`-Update`)**: Version-aware upgrade flow for bringing previously onboarded repositories up to the latest LCM release baseline while strictly preserving target-local `LCM_Inventory/overrides.json`.
 

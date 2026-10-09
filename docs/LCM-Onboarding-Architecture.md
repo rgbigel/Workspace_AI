@@ -76,7 +76,7 @@ graph TD
     E --> F[Deploy Directory Junctions & Hardlinks]
     F --> G[Phase 3: Template Instantiation & Parameterization]
     G --> H[Auto-Detect & Confirm Tokens]
-    H --> I[Instantiate Docs, Tools, .vscode, .lcm]
+    H --> I[Instantiate Docs, Tools, .vscode, LCM_Inventory]
     I --> J[Phase 4: Verification & Baseline Commit]
     J --> K[Run Structural & Hardlink Integrity Audit]
     K --> L[Interactive Operator Confirmation Gate]
@@ -88,7 +88,7 @@ graph TD
 ### Phase 1: Discovery & Pre-Flight Audit (`Test-LCMPreFlight`)
 * **Target Validation & Self-Onboarding Guard**: Verifies target exists under `D:\Git_Repositories\<TargetRepo>` and immediately blocks self-onboarding on `LCM_AI` or legacy directories (`Workspace_AC`, `Workspace_GC`).
 * **LCM Inventory & Version Detection**:
-  * Inspects target for `.lcm/config.json`.
+  * Inspects target for `LCM_Inventory/config.json`.
   * If present, extracts `lcm_version` and determines whether the repository is up-to-date or requires an **Update / Refresh**.
 * **Git Status & Baseline Initialization**:
   * If `.git` is missing: Interactively prompts the operator to run `git init -b main`, writes standard `.gitignore`, stages existing files, and creates an initial `pre-LCM` baseline commit before applying governance links.
@@ -109,8 +109,8 @@ Deploys the **Hybrid Link Model**:
 
 ### Phase 3: Template Instantiation & Parameterization (`Expand-LCMTemplate`)
 * Substitutes detected/supplied tokens across all `.template` files in `templates/repo-scaffold/`.
-* Instantiates `docs/`, `tools/`, `.vscode/`, `.github/agents/`, `.lcm/config.json`, and `.lcm/overrides.json`.
-* In **Update Mode** (`-Update`), updates standard tools and documentation templates while strictly preserving target-specific entries in `.lcm/overrides.json`.
+* Instantiates `docs/`, `tools/`, `.vscode/`, `.github/agents/`, `LCM_Inventory/config.json`, and `LCM_Inventory/overrides.json`.
+* In **Update Mode** (`-Update`), updates standard tools and documentation templates while strictly preserving target-specific entries in `LCM_Inventory/overrides.json`.
 
 ### Phase 4: Verification & Baseline Commit (`Test-LCMIntegrity`)
 * **Structural & Link Integrity**: Validates all junction targets, hardlinks, JSON syntax, and PowerShell script tokens.

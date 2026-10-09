@@ -27,11 +27,11 @@ Under LCM v7.0.0, the governance and execution tooling is organized into functio
 | **`LCM_Inventory`** | [`tools/Test-WorkspaceDrift.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Test-WorkspaceDrift.ps1) | `1.0.0` | Drift detection tool evaluating dirty copies, unpushed commits, and outdated LCM versions. |
 | **`LCM_Inventory`** | [`tools/Clear-BCReviewTemp.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Clear-BCReviewTemp.ps1) | `1.5.0` | User command to inspect, list, and purge Beyond Compare temp review directories (`%TEMP%\BC_Review`). |
 | **`LCM_Inventory`** | [`tools/Sync-IgnoredRepositories.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Sync-IgnoredRepositories.ps1) | `1.0.0` | Reconciles `git.ignoredRepositories` in `.vscode/settings.json` against workspace non-git directories. |
-| **`LCM Hub (tools/)`** | [`tools/Create-LcmTool.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Create-LcmTool.ps1) | `2.1.0` | Scaffolding engine creating standard `.ps1` tools, short names, and `.lcm/Cmd/` trampolines. |
-| **`LCM Hub (tools/)`** | [`tools/LcmDesktopDaemon.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/LcmDesktopDaemon.ps1) | `2.1.0` | Lightweight high-performance Session 1 REST bridge daemon for cross-session GUI dispatch. |
-| **`LCM Hub (tools/)`** | [`tools/Show-LcmDaemon.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Show-LcmDaemon.ps1) | `1.1.0` | Real-time telemetry probe, live status monitor, read-only log viewer, and cleanup manager. |
-| **`LCM Hub (tools/)`** | [`tools/Show-Tools.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Show-Tools.ps1) | `3.1.0` | Interactive LCM Tool Explorer dashboard runner with ShortName default view. |
-| **`LCM Hub (tools/)`** | [`tools/Update-ToolCatalog.ps1`](file:///D:/Git_Repositories/.lcm/tools/internal/Update-ToolCatalog.ps1) | `2.0.0` | Tool catalog sync engine parsing AST dependencies, taxonomy short names, and `.lcm/Cmd/` trampolines. |
+| **`LCM Hub (tools/)`** | [`tools/Create-LcmTool.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Create-LcmTool.ps1) | `2.1.0` | Scaffolding engine creating standard `.ps1` tools, short names, and `LCM_Inventory/Cmd/` trampolines. |
+| **`LCM Hub (tools/)`** | [`tools/LcmDesktopDaemon.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/LcmDesktopDaemon.ps1) | `2.1.0` | Lightweight high-performance Session 1 REST bridge daemon for cross-session GUI dispatch. |
+| **`LCM Hub (tools/)`** | [`tools/Show-LcmDaemon.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Show-LcmDaemon.ps1) | `1.1.0` | Real-time telemetry probe, live status monitor, read-only log viewer, and cleanup manager. |
+| **`LCM Hub (tools/)`** | [`tools/Show-Tools.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Show-Tools.ps1) | `3.1.0` | Interactive LCM Tool Explorer dashboard runner with ShortName default view. |
+| **`LCM Hub (tools/)`** | [`tools/Update-ToolCatalog.ps1`](file:///D:/Git_Repositories/LCM_Inventory/tools/Update-ToolCatalog.ps1) | `2.0.0` | Tool catalog sync engine parsing AST dependencies, taxonomy short names, and `LCM_Inventory/Cmd/` trampolines. |
 
 ---
 
@@ -78,8 +78,8 @@ maintenance operations, not rewriting of operational evidence.
 | **`LCM_AI`** | [`tools/QualityGates/WorkspaceQualityGates.psm1`](file:///D:/Git_Repositories/LCM_Inventory/tools/QualityGates/WorkspaceQualityGates.psm1) | `1.0.0` | `Test-WorkspaceQualityGates`, `Test-GovernanceRules`, `Test-DryRunEngine` |
 | **`LCM_Inventory`** | [`modules/WorkspaceCM.psm1`](file:///D:/Git_Repositories/LCM_Inventory/modules/WorkspaceCM.psm1) | `1.1.0` | `Get-WorkspaceRoot`, `Get-WorkspaceAIState`, `Get-RepoCMState`, `Update-WorkspaceInventory`, `Test-WorkspaceDrift`, `Create-WorkspaceBaseline`, `Write-CMLog` |
 | **`LCM_Inventory`** | [`modules/ChangeRequestManager.psm1`](file:///D:/Git_Repositories/LCM_Inventory/modules/ChangeRequestManager.psm1) | `2.0.0` | `Sync-CRJunctions`, `Get-ChangeRequests`, `Find-ChangeRequest`, `New-ChangeRequest`, `Get-CRBundles`, `New-CRBundle`, `Add-CRToBundle`, `Export-ChangeRequestDashboard` |
-| **`LCM Hub (tools/)`** | [`tools/modules/LcmDaemonCore.psm1`](file:///D:/Git_Repositories/.lcm/tools/internal/modules/LcmDaemonCore.psm1) | `2.1.0` | Strongly-typed OOP domain model: `DaemonEnvironment`, `DaemonActionController`, DTO classes, and `Send-DaemonJsonResponse`. |
-| **`LCM Hub (tools/)`** | [`tools/modules/LcmToolCatalog.psm1`](file:///D:/Git_Repositories/.lcm/tools/internal/modules/LcmToolCatalog.psm1) | `2.0.0` | HTML compiler, catalog rendering engine, switched short-name table view, and 8-mode action dropdown router. |
+| **`LCM Hub (tools/)`** | [`tools/modules/LcmDaemonCore.psm1`](file:///D:/Git_Repositories/LCM_Inventory/tools/modules/LcmDaemonCore.psm1) | `2.1.0` | Strongly-typed OOP domain model: `DaemonEnvironment`, `DaemonActionController`, DTO classes, and `Send-DaemonJsonResponse`. |
+| **`LCM Hub (tools/)`** | [`tools/modules/LcmToolCatalog.psm1`](file:///D:/Git_Repositories/LCM_Inventory/tools/modules/LcmToolCatalog.psm1) | `2.0.0` | HTML compiler, catalog rendering engine, switched short-name table view, and 8-mode action dropdown router. |
 
 ---
 
@@ -216,7 +216,7 @@ Google Antigravity provides agentic AI pair programming capabilities. The Python
 
 ## 4. Data Schemas & Configurations
 
-### A. Repository-Local Configuration (`.lcm/config.json`)
+### A. Repository-Local Configuration (`LCM_Inventory/config.json`)
 Instantiated in each governed repository during Phase 3 of onboarding:
 ```json
 {
@@ -267,7 +267,7 @@ Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.j
 | **`LCM-REQ-SYS-004`** | Python for Antigravity | `D:\Git_Repositories\.venv` (`google-antigravity`, `agy`) | **Active** |
 | **`LCM-REQ-001`** | Canonical Authority Root | `LCM_AI` authority defined; `.agents/rules/core` junctions | **Active** |
 | **`LCM-REQ-002`** | Precedence Hierarchy | `Workspace-Rules.md` & `LanguagePolicy.md` invariants | **Active** |
-| **`LCM-REQ-004`** | Repository Local Overrides | `.lcm/overrides.json` parsed by `Expand-LCMTemplate` & `Test-RepoReadiness` | **Active** |
+| **`LCM-REQ-004`** | Repository Local Overrides | `LCM_Inventory/overrides.json` parsed by `Expand-LCMTemplate` & `Test-RepoReadiness` | **Active** |
 | **`LCM-REQ-010`** | Explicit Classification | `Get-RepoCMState` classification in `WorkspaceCM.psm1` | **Active** |
 | **`LCM-REQ-011`** | Guarded State Transitions | `Invoke-LCMUpdate.ps1` default proposal mode with dry-run preview | **Active** |
 | **`LCM-REQ-021`** | 1-File-Per-CR Standard | `New-ChangeRequest` single-file generation (`Docs/Methods/Proposals/`) | **Active** |
@@ -295,6 +295,6 @@ Groups related CRs into single test sequence milestones (e.g., `BUNDLE-2026-01.j
 `LCM_Inventory/tools/Fix-Documentation.ps1` reads declared CRP/BUG
 payloads, writes a dry-run manifest or an applied receipt under the
 repository-scoped temporary log root, and dispatches BCompare per changed
-repository. `.lcm/Cmd/FixDocumentation.cmd` exposes the bare-word command.
+repository. `LCM_Inventory/Cmd/FixDocumentation.cmd` exposes the bare-word command.
 <!-- /FixDocumentation -->
 

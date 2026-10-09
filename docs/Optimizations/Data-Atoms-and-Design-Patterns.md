@@ -66,21 +66,21 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
 ### Atom 3: `ToolCatalogAtom` (Tool Manifest & Command Trampoline Registry)
 
 * **Behavioral Pattern Observed**:
-  * Continuous crawling of `.lcm/tools/` and `LCM_Inventory/tools/`, invoking AST parsers to extract parameters and descriptions, and generating `.cmd` trampolines.
+  * Continuous crawling of `LCM_Inventory/tools/` and `LCM_Inventory/tools/`, invoking AST parsers to extract parameters and descriptions, and generating `.cmd` trampolines.
   * Repeated regex parsing led to prefix recursion bugs (`LCMLCMLCM...ClearBCReviewTemp.cmd`).
 * **Proposed Entity Schema**:
   ```json
   {
     "tool_id": "Show-Subsystems",
-    "script_path": "D:/Git_Repositories/.lcm/tools/hub/Show-Subsystems.ps1",
+    "script_path": "D:/Git_Repositories/LCM_Inventory/tools/hub/Show-Subsystems.ps1",
     "short_name": "ShowSubsystems",
     "prefixed_short_name": "LCMShowSubsystems",
     "category": "Hub",
     "requires_elevation": false,
     "has_help_flag": true,
     "trampoline_files": [
-      "D:/Git_Repositories/.lcm/Cmd/ShowSubsystems.cmd",
-      "D:/Git_Repositories/.lcm/Cmd/LCMShowSubsystems.cmd"
+      "D:/Git_Repositories/LCM_Inventory/Cmd/ShowSubsystems.cmd",
+      "D:/Git_Repositories/LCM_Inventory/Cmd/LCMShowSubsystems.cmd"
     ],
     "is_retired": false,
     "hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -99,7 +99,7 @@ Agents repeatedly re-query git repository boundaries, parse the 400KB `proposals
   ```json
   {
     "id": 185,
-    "title": "Decouple .lcm operational logs and consolidate to LCM_Inventory",
+    "title": "Decouple LCM_Inventory operational logs and consolidate to LCM_Inventory",
     "origin_repo": "LCM_Inventory",
     "state": "in_progress",
     "priority": "P1",

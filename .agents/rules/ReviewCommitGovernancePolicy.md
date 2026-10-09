@@ -18,7 +18,7 @@ Date: 2026-10-03
 ## 1. Governance Rules
 
 ### RULE-REV-001: Mandatory Review-Gated Commits & Gate 2 Non-Circumvention Invariant
-1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `.lcm/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`), with transparent junction traversal via `FollowSymLinks` (`RULE-REV-008`).
+1. **Mandatory Visual Review Gate (Gate 2)**: Every Git commit action for source code, configuration, tools, modules, or structural assets (`*.ps1`, `*.psm1`, `.vscode/settings.json`, `LCM_Inventory/*`, `docs/*`) in any LCM-governed repository requires a prior validated review disposition (`COMPLETED` or `COMPLETED_WITH_EDITS`) produced via the formal Beyond Compare 5 visual review gate (`Invoke-BeyondCompareReview.ps1`), with transparent junction traversal via `FollowSymLinks` (`RULE-REV-008`).
 2. **Strict Gate 2 Non-Circumvention Baseline**: Beyond Compare visual diff review is non-circumventable for code/tools/specs across all items by default. Even critical, urgent, or internally generated BUGs normally execute in `DOIT` mode (`always-proceed = $true`) without a Gate 1 planning pause, but halt at Gate 2 for operator review before reaching `COMMITTED`.
 3. **Authorized Exceptions to Gating**:
    There are two (2) authorized exceptions to this rule:

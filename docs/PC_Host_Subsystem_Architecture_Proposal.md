@@ -125,7 +125,7 @@ pwsh -File tools/Audit-HostBaseline.ps1 -Export
 
 1. **Step 1: Initialize Repository**:
    - Create `D:\Git_Repositories\HostSystem_PC` (or `PC_Host_Configuration`).
-   - Establish `.lcm/config.json` with `type = "subsystem"` and `domain = "host_pc"`.
+   - Establish `LCM_Inventory/config.json` with `type = "subsystem"` and `domain = "host_pc"`.
    - Deploy canonical `.agents/rules` NTFS junction.
 2. **Step 2: Generate Core Tripartite Documents**:
    - `docs/Architecture.md`: Detailed hardware, OS, and software layer models.

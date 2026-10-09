@@ -14,7 +14,7 @@ This document specifies the normative requirements for the **LCM_AI Lifecycle Mo
 
 An operation or repository is LCM-conformant only when:
 - All applicable `MUST` and `MUST NOT` normative constraints are satisfied.
-- Every approved exception is explicit, scoped, reasoned, and documented in `.lcm/overrides.json`.
+- Every approved exception is explicit, scoped, reasoned, and documented in `LCM_Inventory/overrides.json`.
 - System prerequisites are verified and active.
 - Required verification evidence is captured and preserved.
 
@@ -49,14 +49,14 @@ When rule sources overlap, the following strict authority order `MUST` govern:
 1. Repository-local executable behavior and configuration.
 2. The authoritative rules in `LCM_AI\.agents\rules\`.
 3. Root `AGENTS.md` and repository-local `AGENTS.md`.
-4. Repository-local explicit overrides (`.lcm/overrides.json`) where present.
+4. Repository-local explicit overrides (`LCM_Inventory/overrides.json`) where present.
 5. Operational instructions and documentation.
 
 ### LCM-REQ-003 - Stable Identity Standard
 All active governance tools, logs, and templates `MUST` identify the baseline system as `LCM_AI` (LCM v7.0.0). Legacy recovery prefixes (`Workspace_AC`, `Workspace_GC`) `MUST NOT` appear in active governance ledgers or filenames.
 
 ### LCM-REQ-004 - Repository-Local Overrides Standard
-A repository `MAY` override standard baseline settings only via `.lcm/overrides.json`. Overrides `MUST` document the overridden rule, reason, scope, owner, and date.
+A repository `MAY` override standard baseline settings only via `LCM_Inventory/overrides.json`. Overrides `MUST` document the overridden rule, reason, scope, owner, and date.
 
 ### LCM-REQ-005 - Agent Skills Packaging Standard
 Agent workflows and specialized capabilities `MUST` be packaged under `.agents/skills/<skill_name>/` containing a standard `SKILL.md` file with YAML frontmatter.
@@ -72,7 +72,7 @@ The `Working/` directory in any repository is a temporary scratchpad. Files insi
 Every directory under `D:\Git_Repositories\` `MUST` be assigned an explicit classification by the Configuration Management system:
 - `active-design-workshop`: `LCM_AI` (incubation and baseline authority).
 - `configuration-management`: `LCM_Inventory` (inventory, auditing, and CR catalog).
-- `lcm-governed`: Repositories with active LCM junctions and `.lcm/config.json`.
+- `lcm-governed`: Repositories with active LCM junctions and `LCM_Inventory/config.json`.
 - `standard-git`: Git-initialized repositories pending LCM onboarding.
 - `non-git`: Folders without `.git` (tracked under `git.ignoredRepositories`).
 - `legacy-retired`: Historical material explicitly classified as archival; it is outside the active LCM-root topology.
@@ -89,7 +89,7 @@ Applying an LCM upgrade or template refresh `MUST` require the explicit executio
 ## 5. Ownership, Change Requests & Artifact Placement
 
 ### LCM-REQ-020 - Baseline and Instance Separation
-`LCM_AI` `MUST` own generic rules, method definitions, templates, and validators. Each component repository `MUST` own its local `Docs/Methods/Proposals/`, `.lcm/config.json`, and `.lcm/overrides.json`.
+`LCM_AI` `MUST` own generic rules, method definitions, templates, and validators. Each component repository `MUST` own its local `Docs/Methods/Proposals/`, `LCM_Inventory/config.json`, and `LCM_Inventory/overrides.json`.
 
 ### LCM-REQ-021 - 1-File-Per-CR Architecture
 Monolithic multi-CR files are strictly forbidden. Every Change Request `MUST` be stored in its own dedicated Markdown document in `<TargetRepo>/Docs/Methods/Proposals/` with YAML frontmatter (`cr_id`, `title`, `status`, `target_lcm_version`, `bundle_id`, `author`, `created_at`).
@@ -114,10 +114,10 @@ Every LCM-governed component repository `MUST` provide a local `tools/Test-RepoR
 The CM engine `MUST` continuously monitor for configuration drift, flagging dirty working copies, outdated LCM versions, unpushed commits, and broken junctions.
 
 ### LCM-REQ-033 - Privilege & Elevation Governance
-Every LCM-governed repository `MUST` declare an explicit `execution_context` block inside `.lcm/config.json` defining `elevation_required`, `minimum_privilege`, and `reason` (enforcing `RULE-ELEV-001`). Repositories requiring Administrator elevation `MUST` provide `tools/Invoke-ElevatedTest.ps1` for automated elevated test handoff.
+Every LCM-governed repository `MUST` declare an explicit `execution_context` block inside `LCM_Inventory/config.json` defining `elevation_required`, `minimum_privilege`, and `reason` (enforcing `RULE-ELEV-001`). Repositories requiring Administrator elevation `MUST` provide `tools/Invoke-ElevatedTest.ps1` for automated elevated test handoff.
 
 ### LCM-REQ-034 - Bi-directional Elevation Consistency Gate
-The local readiness quality gate `MUST` execute `Assert-RepoElevationConsistency`. The gate `MUST` fail if privileged or self-elevating code is detected in `src/` without matching `elevation_required: true` in `.lcm/config.json`, or if `elevation_required: true` is configured but `tools/Invoke-ElevatedTest.ps1` is missing.
+The local readiness quality gate `MUST` execute `Assert-RepoElevationConsistency`. The gate `MUST` fail if privileged or self-elevating code is detected in `src/` without matching `elevation_required: true` in `LCM_Inventory/config.json`, or if `elevation_required: true` is configured but `tools/Invoke-ElevatedTest.ps1` is missing.
 
 ### LCM-REQ-035 - Documentation Fabric & Prerequisites Quality Gate
 The local readiness quality gate `MUST` execute `Assert-RepoDocumentationFabric`. The gate `MUST` assert that:

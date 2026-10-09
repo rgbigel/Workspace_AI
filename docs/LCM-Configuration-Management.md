@@ -79,7 +79,7 @@ Automated tools must never mutate target repositories without prior proposal and
 [ Step 3: Governed Execution ]
       │ Invoke-LCMUpdate.ps1 -TargetRepository <Repo> -Execute
       │ └─► Deploys rule junctions (.agents/rules/core, .copilot/Rules/core)
-      │ └─► Instantiates parameterized templates (.lcm/, .vscode/, docs/, tools/)
+      │ └─► Instantiates parameterized templates (LCM_Inventory/, .vscode/, docs/, tools/)
       │ └─► Validates physical integrity
       │ └─► Creates baseline commit in target repository
       │ └─► Updates CR status to 'implemented'
@@ -133,7 +133,7 @@ To eliminate cold-start discovery scans and maintain instant conversational cont
    * Maintains persistent, single-source operational state (active Python venv, IDE execution policies, active migration/feature streams).
 2. **Authoritative Priming Policy ([.agents/rules/RepositoryContextPolicy.md](file:///d:/Git_Repositories/.agents/rules/RepositoryContextPolicy.md))**:
    * `RULE-CTX-001` (Active Scope Detection): Ingests the target repository path from the active document in IDE metadata.
-   * `RULE-CTX-002` (Fast-Tier Ingestion): Automatically inspects `<TargetRepo>/.lcm/config.json`, `README.md`, and pending proposals in `docs/Methods/Proposals/` in a single targeted step.
+   * `RULE-CTX-002` (Fast-Tier Ingestion): Automatically inspects `<TargetRepo>/LCM_Inventory/config.json`, `README.md`, and pending proposals in `docs/Methods/Proposals/` in a single targeted step.
    * `RULE-CTX-003` (Zero Redundant Scan Invariant): Forbids multi-step recursive searches across sibling directories when focused on a single repository.
    * `RULE-CTX-004` (Methodology Awareness): Enforces continuous awareness of the `LCM_AI` / `LCM_Inventory` / `LCM_Shared` triad.
 

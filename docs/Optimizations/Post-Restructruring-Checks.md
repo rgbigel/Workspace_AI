@@ -32,7 +32,7 @@ D:\Git_Repositories\.agents
 
 ### Tools
 
-Tool discovery is catalog-routed through `.lcm\config\tool_catalog.json` and launchers in `.lcm\Cmd`, rather than through a single LCM_Inventory tool junction.
+Tool discovery is catalog-routed through `LCM_Inventory\config\tool_catalog.json` and launchers in `LCM_Inventory\Cmd`, rather than through a single LCM_Inventory tool junction.
 
 - All 201 catalog targets exist.
 - All 201 catalog short names have a matching `.cmd` launcher.
@@ -61,7 +61,7 @@ The matrix covers all 17 canonical Markdown rule files, but its authority statem
 
 `git diff --check` reported whitespace findings in all audited authority areas:
 
-- Root workspace: `.lcm/docs/README.md` and `.lcm/tools/hub/Show-Subsystems.ps1`.
+- Root workspace: `LCM_Inventory/docs/README.md` and `LCM_Inventory/tools/hub/Show-Subsystems.ps1`.
 - `LCM_AI`: `AGENTS.md` and `ProposalReviewFlowPolicy.md`.
 - `LCM_Inventory`: `ProposalReviewFlowPolicy.md` and added content in `data/proposals/proposals.json`.
 

@@ -18,7 +18,7 @@ CHECK: MAJOR-VERSION (LCM Solution-Wide Parity)
 - .vscode/settings.json
 - LCM_AI/docs/*.md
 - tools/README.md
-- Child repos .lcm/config.json (absorbed_lcm_version)
+- Child repos LCM_Inventory/config.json (absorbed_lcm_version)
 EXPECT: identical MAJOR ($M = \text{LCM\_MAJOR}$)
 
 CHECK: MINOR-VERSION

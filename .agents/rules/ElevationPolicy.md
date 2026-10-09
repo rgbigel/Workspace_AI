@@ -26,7 +26,7 @@ To maintain predictability, prevent hanging automated runners, and enforce docum
 ## 2. Normative Elevation Rules
 
 ### `RULE-ELEV-001` (Mandatory Elevation Metadata)
-Every repository governed under LCM `MUST` declare an explicit `execution_context` block inside its `.lcm/config.json`:
+Every repository governed under LCM `MUST` declare an explicit `execution_context` block inside its `LCM_Inventory/config.json`:
 ```json
 "execution_context": {
   "elevation_required": true,
@@ -43,7 +43,7 @@ Any script within `src/` or `Source/` that implements interactive self-elevation
 3. `MUST NOT` block headless CI/CD agents, IDE test adapters, or background runners on modal GUI UAC prompts.
 
 ### `RULE-ELEV-003` (Privileged Code Declaration & Anti-Drift)
-Any code in `src/` or `Source/` utilizing privileged Windows commands (`bcdedit`, `fltmc`, `fsutil`, `Get-Partition`, `DiskPart`, `Add-BitLockerKeyProtector`, or `Verb RunAs`) `MUST` have `elevation_required: true` declared in `.lcm/config.json`.
+Any code in `src/` or `Source/` utilizing privileged Windows commands (`bcdedit`, `fltmc`, `fsutil`, `Get-Partition`, `DiskPart`, `Add-BitLockerKeyProtector`, or `Verb RunAs`) `MUST` have `elevation_required: true` declared in `LCM_Inventory/config.json`.
 * The quality gate `Assert-RepoElevationConsistency` `MUST` fail if undeclared privileged code is detected in a repository configured with `elevation_required: false`.
 
 ### `RULE-ELEV-004` (Automated Elevated Test Runner)
@@ -66,11 +66,11 @@ When an interactive script or launcher delegates execution to an elevated consol
    - The elevated worker `MUST` output a clear completion notice upon finishing indicating that the window has been intentionally kept open for operator inspection.
 
 ### `RULE-ELEV-006` (Automated Privilege-Aware Tool Execution & Elevation Interception)
-Ensure that any tool, script, or shorthand command requiring administrative privileges is never executed directly within a standard un-elevated user context. Instead, enforce automatic discovery and routing through the standardized CLI interceptor (`.lcm/tools/internal/Invoke-PrivilegedTool.ps1`), the background desktop daemon (`http://127.0.0.1:9876/execute`), or `Invoke-InteractiveDesktop.ps1`.
+Ensure that any tool, script, or shorthand command requiring administrative privileges is never executed directly within a standard un-elevated user context. Instead, enforce automatic discovery and routing through the standardized CLI interceptor (`LCM_Inventory/tools/Invoke-PrivilegedTool.ps1`), the background desktop daemon (`http://127.0.0.1:9876/execute`), or `Invoke-InteractiveDesktop.ps1`.
 
 Before executing any tool, script, or shorthand command, the AI agent or CLI launcher `MUST` perform the following validation sequence:
 1. **Catalog & Schema Lookup**:
-   - Query the authoritative tool catalog (`.lcm/config/tool_catalog.json` / `WorkspaceInventory`) to resolve the target tool's metadata record.
+   - Query the authoritative tool catalog (`LCM_Inventory/config/tool_catalog.json` / `WorkspaceInventory`) to resolve the target tool's metadata record.
    - Inspect whether the execution profile defines `"Admin": true` (or equivalent elevation requirement flag).
 2. **Context & Privilege Verification**:
    - Check whether the current runtime shell session holds elevated administrative rights (e.g. `([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)`).
@@ -78,7 +78,7 @@ Before executing any tool, script, or shorthand command, the AI agent or CLI lau
    - **Standard Execution**: If the tool does **not** require admin rights (`"Admin": false` or unset), execute it directly in the current session.
    - **Elevated Interception**: If `"Admin": true` and the current session is running under a standard un-elevated user context, **do not** execute the script directly in that session. Immediately route the call via:
      ```powershell
-     pwsh .lcm/tools/internal/Invoke-PrivilegedTool.ps1 -Tool <ToolName> [-Arguments <Args>] [-NoExit]
+     pwsh LCM_Inventory/tools/Invoke-PrivilegedTool.ps1 -Tool <ToolName> [-Arguments <Args>] [-NoExit]
      ```
    - **Automated Dispatch Pipeline**: `Invoke-PrivilegedTool.ps1` and generated `.cmd` trampolines inspect the Session 1 Desktop Daemon on port 9876 and dispatch via `POST /execute` (`{ "command": "...", "elevated": true, "noExit": true }`), falling back to `Invoke-InteractiveDesktop.ps1 -Elevated` if the daemon is offline. Console windows launched via elevation `MUST` include `-NoExit` / `/k` per `RULE-ELEV-005`.
 

@@ -26,7 +26,7 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 ## 2. Invariant Rules
 
 ### RULE-SUB-001: Subsystem Classification & Documentation Conformance
-1. A repository classified as `subsystem` in `.lcm/config.json` `MUST` fully implement standard LCM **Tripartite Documentation** (`docs/Architecture.md`, `docs/Requirements.md`, `docs/Implementation.md`) and the universal runbook (`install/Installation.md`).
+1. A repository classified as `subsystem` in `LCM_Inventory/config.json` `MUST` fully implement standard LCM **Tripartite Documentation** (`docs/Architecture.md`, `docs/Requirements.md`, `docs/Implementation.md`) and the universal runbook (`install/Installation.md`).
 2. The root `LCM_Inventory` tracks Subsystems at the macro Git level, while delegating internal part tracking to the Subsystem's dedicated inventory engine.
 
 ### RULE-SUB-002: Dedicated Subsystem Inventory Engine & Auto-Acceptance Invariant
@@ -35,16 +35,16 @@ While Subsystems inherit standard LCM **documentation and quality gate rules**, 
 3. **Direct Carry-Over from LCM (`RULE-EFF-001`)**: Routine Subsystem telemetry collection, entity dumps, and dashboard rendering constitute mechanical evidence and are **automatically accepted**. Telemetry synchronization runs `SHALL NOT` force manual review gates or block workflows on interactive diff sessions.
 
 ### RULE-SUB-003: Host-Side Hardware Safety Interlocks (Offline / Pre-Boot)
-1. Any host script performing physical disk operations (flashing images, disk cloning, partition restructuring) `MUST NEVER` target arbitrary disk indices (e.g., `Disk 2`) without validating explicit **Hardware Serial Numbers** and **Model Descriptors** declared in `.lcm/config.json`.
+1. Any host script performing physical disk operations (flashing images, disk cloning, partition restructuring) `MUST NEVER` target arbitrary disk indices (e.g., `Disk 2`) without validating explicit **Hardware Serial Numbers** and **Model Descriptors** declared in `LCM_Inventory/config.json`.
 2. Host tools `MUST` execute `Assert-DiskTargetSafety` to guarantee that active Windows `Boot`, `System`, or `PageFile` volumes are **never** targeted.
 3. Destructive disk operations require high-integrity Administrator elevation and explicit operator confirmation.
 
 ### RULE-SUB-004: Safe Write Protocol & Just-In-Time (JIT) Ephemeral Authentication
 1. **Dual-User Separation**: Subsystems `MUST` establish distinct service accounts:
-   - **Auditor (Read-Only)**: Uses static credentials stored in git-ignored `.lcm/secrets.json` strictly for non-modifying telemetry and inventory queries.
+   - **Auditor (Read-Only)**: Uses static credentials stored in git-ignored `LCM_Inventory/secrets.json` strictly for non-modifying telemetry and inventory queries.
    - **Operator (Write / Privileged)**: Authenticated strictly on-demand via **Just-In-Time (JIT) Ephemeral Sessions**.
 2. **Zero Disk / Zero Log Persistence for Privileged Credentials**:
-   - Write-mode passwords and tokens `MUST NOT` be stored in `.lcm/secrets.json`, configuration files, or logs.
+   - Write-mode passwords and tokens `MUST NOT` be stored in `LCM_Inventory/secrets.json`, configuration files, or logs.
    - Ephemeral session tokens generated from JIT authentication `SHALL` reside strictly in volatile memory (RAM) for the duration of the mutation batch (default 15–30 minutes) and be purged immediately upon completion.
 3. **5-Stage Safe Mutation Pipeline**:
    - All state modifications `MUST` execute through the 5-stage pipeline: `(1) Pre-Flight State Snapshot` $\rightarrow$ `(2) Beyond Compare Visual Payload Gate` $\rightarrow$ `(3) Atomic API Dispatch` $\rightarrow$ `(4) Tiered Polling Health & Liveness Loop (up to 10m for Add-ons, up to 20m for Core, up to 30–45m for Host OS reboots / schema migrations)` $\rightarrow$ `(5) Automated Rollback on Failure`.

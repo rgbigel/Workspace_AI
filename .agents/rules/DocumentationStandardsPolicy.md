@@ -90,7 +90,7 @@ Whenever a new major LCM version $M$ (e.g. `v6.0.0`, `v7.0.0`) is established an
 3. **Transformation Formula**: If a module or spec has version $X.Y.Z$ and the new LCM major version is $M$, the new version becomes:
    $$\text{NewVersion} = M.Y.Z$$
    *(Example: A module at version `2.3.1` when major version 7 is established becomes `7.3.1`).*
-4. **Baseline Synchronization**: All explicit global baseline references in configuration files (`.lcm/config.json`, `.vscode/settings.json`, `.github/agents/Config.json`), agent profiles, and DOX headers `MUST` reference the current active LCM baseline.
+4. **Baseline Synchronization**: All explicit global baseline references in configuration files (`LCM_Inventory/config.json`, `.vscode/settings.json`, `.github/agents/Config.json`), agent profiles, and DOX headers `MUST` reference the current active LCM baseline.
 
 ---
 

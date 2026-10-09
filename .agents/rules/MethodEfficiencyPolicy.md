@@ -59,14 +59,14 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 
 ### RULE-EFF-007: Mandatory Search Dispatch Standard
 - **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
-- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`.lcm/tools/internal/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
+- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
 - CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
 - **Search Fallback Protocol**: If the Everything 1.5a HTTP REST API (port 8080) is unreachable or not running, tooling and agents `SHALL` fall back gracefully to `rg.exe --files` or PowerShell `Get-ChildItem` with scoped directory boundaries, ensuring operations never fail due to an inactive background daemon.
 
 ---
 
 ### RULE-EFF-008: Canonical Tool Discovery Standard
-- Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `.lcm/tools/internal/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
+- Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `LCM_Inventory/tools/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
 - Agents are **strictly prohibited** from executing broad, unindexed grep searches across `.psm1`, `.ps1`, or `.cmd` files to locate tool signatures or parameters when `tool_catalog.json` can satisfy the query.
 
 ---
@@ -75,7 +75,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 - Speculative dot-traversal paths (such as `.\..lcm`, `..\..\`, or any path containing `..` without explicit validation) are **prohibited** in tool invocations and script references.
 - Tool and script invocations **must** anchor strictly to one of:
   1. `$PSScriptRoot` for same-repository references.
-  2. Registered trampolines in `.lcm/Cmd/` for cross-repository dispatch.
+  2. Registered trampolines in `LCM_Inventory/Cmd/` for cross-repository dispatch.
   3. An explicit `Resolve-Path` / `Test-Path` pre-flight check before any path is consumed.
 
 ---

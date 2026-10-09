@@ -25,13 +25,13 @@ At the start of every interaction or when switching focus, the agent `MUST` auto
 
 ### `RULE-CTX-002` (Fast-Tier Repository Context Priming)
 When active work begins on a specific repository (e.g. `VolumeInventory`, `BootEntryManager`, `HaSSD06`, `BackgroundModifier`), the agent `MUST` prime its working context in a single targeted tier by reading:
-1. `<TargetRepo>/.lcm/config.json` (for elevation requirements, governance version, and repository classification).
+1. `<TargetRepo>/LCM_Inventory/config.json` (for elevation requirements, governance version, and repository classification).
 2. `<TargetRepo>/README.md` (for module purpose, exported functions/atoms, and prerequisites).
 3. Any open Change Requests / proposals in `<TargetRepo>/docs/Proposals/` (or active task files).
 
 > [!NOTE]
 > **Unonboarded Candidate Fallback:**  
-> If `.lcm/config.json` is missing from an inspected target directory, the agent `SHALL` classify the repository as an `unonboarded-candidate` and reference the LCM onboarding workflow (`Invoke-LCMOnboardRepo.ps1`) rather than failing or running broad recursive scans.
+> If `LCM_Inventory/config.json` is missing from an inspected target directory, the agent `SHALL` classify the repository as an `unonboarded-candidate` and reference the LCM onboarding workflow (`Invoke-LCMOnboardRepo.ps1`) rather than failing or running broad recursive scans.
 
 ### `RULE-CTX-003` (Zero Redundant Scan Invariant)
 The agent `MUST NOT` run multi-step recursive discovery scans (`list_dir`, broad grep) across the entire workspace when operating within the scope of an identified repository.

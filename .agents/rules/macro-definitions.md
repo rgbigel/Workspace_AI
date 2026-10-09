@@ -58,7 +58,7 @@ MACRO: ToolExplorer
 - description: generate and launch the authoritative LCM Tool Explorer interactive HTML application via Show-ToolsExplorer.ps1
 - syntax: ToolExplorer [switches] | tools [switches] | ShowTools [switches]
 - aliases: tools, ToolsExplorer, ShowTools
-- primary target: .lcm/tools/internal/Show-ToolsExplorer.ps1 (trampolines: .lcm/Cmd/ToolExplorer.cmd, ToolsExplorer.cmd)
+- primary target: LCM_Inventory/tools/Show-ToolsExplorer.ps1 (trampolines: LCM_Inventory/Cmd/ToolExplorer.cmd, ToolsExplorer.cmd)
 - parameters:
   - -Audience <User|Dev|All>: pre-filter audience category (defaults to 'User')
   - -Group <Name>: pre-filter by group or subsystem (e.g. 'HaSSD06', 'LCM', 'SystemConfiguration')
@@ -116,7 +116,7 @@ MACRO: FixDocumentation
   - `-Apply` writes only explicit `Documentation Updates` payloads declared by the selected bundles
   - conflicting or ambiguous payloads stop without modifying documentation
   - an applied update requires BCompare review before local commit
-  - executes `pwsh -File LCM_Inventory/tools/Fix-Documentation.ps1 <scope>` (or `.lcm/Cmd/FixDocumentation.cmd`)
+  - executes `pwsh -File LCM_Inventory/tools/Fix-Documentation.ps1 <scope>` (or `LCM_Inventory/Cmd/FixDocumentation.cmd`)
 
 MACRO: PUBLISH
 - description: publish a completed proposal cohort and LCM_Inventory to their remotes in lockstep
@@ -135,6 +135,6 @@ MACRO: ar
 - syntax: ar [offset] | AnalyzeReasoning [offset]
 - aliases: ar, AR, AnalyzeReasoning
 - rules:
-  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or .lcm/Cmd/ar.cmd)
+  - 'ar', 'AR', or 'AnalyzeReasoning' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset 0' (or LCM_Inventory/Cmd/ar.cmd)
   - 'ar <offset>' or 'AnalyzeReasoning <offset>' -> executes 'pwsh -File LCM_Inventory/tools/Invoke-ReasoningAnalysis.ps1 -Offset <offset>'
   - generates a structured report in LCM_Inventory/data/logs/ containing Execution Trace, Error Triage & Avoidance Matrix, and Decision Rationale

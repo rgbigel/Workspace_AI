@@ -93,7 +93,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Enforce-LcmPreToolPolicy.ps1"
+          "-File", "D:/Git_Repositories/LCM_Inventory/tools/hooks/Enforce-LcmPreToolPolicy.ps1"
         ],
         "timeoutSeconds": 5
       }
@@ -106,7 +106,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Enforce-LcmPostToolPolicy.ps1"
+          "-File", "D:/Git_Repositories/LCM_Inventory/tools/hooks/Enforce-LcmPostToolPolicy.ps1"
         ],
         "timeoutSeconds": 5
       }
@@ -119,7 +119,7 @@ Executes immediately following tool execution:
         "args": [
           "-NoProfile",
           "-ExecutionPolicy", "Bypass",
-          "-File", "D:/Git_Repositories/.lcm/tools/hooks/Invoke-LcmSessionAudit.ps1"
+          "-File", "D:/Git_Repositories/LCM_Inventory/tools/hooks/Invoke-LcmSessionAudit.ps1"
         ],
         "timeoutSeconds": 10
       }

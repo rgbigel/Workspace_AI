@@ -124,7 +124,7 @@ Whenever an existing script is modified, the `Date:` field (and changelog/versio
 
 ### RULE-PS-009: Mandatory Structured Tool Logging & Summary Invariants
 All PowerShell automation tools performing system mutations, diagnostics, remediations, repairs, or administrative tasks `MUST`:
-1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `.lcm/logs/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
+1. **Persistent Audit Logging & Timestamp Precision**: Automatically write a timestamped log file (named `<ToolName>-yyyyMMdd_HHmmss.log`) to the repository-scoped `logs/` directory or `LCM_Inventory/data/logs/lcm/` (with fallback to `$env:TEMP/lcm/logs/` if repository logs are unavailable or unwritable) with at least second-level precision (`yyyy-MM-dd HH:mm:ss` or `yyyy-MM-dd HH:mm:ss.fff`). The minute-level format (`YYYYMMDD_HHMM`) is restricted strictly to assistant chat response headers and `MUST NOT` be used in tools or log entries.
 2. **Structured Log Levels**: Classify every message using standard log levels: `[INFO]`, `[WARN]`, `[ERROR]`, `[DEBUG]`, `[ACTION]`, `[SUMMARY]` (converging on the `LCM_Shared/Logging` standard).
 3. **Mandatory `[SUMMARY]` Footer**: Emit a standardized terminal and log summary block upon completion displaying:
    - Tool name

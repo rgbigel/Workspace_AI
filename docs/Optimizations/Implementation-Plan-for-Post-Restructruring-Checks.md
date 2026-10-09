@@ -75,8 +75,8 @@ Success condition: all discovery entrypoints name `LCM_AI\.agents\rules` as the 
 ### Step 4: Normalize Whitespace
 
 1. Remove trailing whitespace from changed root files:
-   - `.lcm/docs/README.md`
-   - `.lcm/tools/hub/Show-Subsystems.ps1`
+   - `LCM_Inventory/docs/README.md`
+   - `LCM_Inventory/tools/hub/Show-Subsystems.ps1`
 2. Remove unintended trailing whitespace from changed `LCM_AI` files:
    - `AGENTS.md`
    - `.agents/rules/ProposalReviewFlowPolicy.md`
@@ -94,7 +94,7 @@ Run the following read-only checks after implementation:
 3. Parse all changed standalone PowerShell files with the PowerShell AST parser.
 4. Import `LcmDaemon.psm1` to validate daemon class-loading order.
 5. Parse changed JSON files with `ConvertFrom-Json`.
-6. Validate every `.lcm/config/tool_catalog.json` target exists and every short name has a matching `.lcm/Cmd/<ShortName>.cmd` launcher.
+6. Validate every `LCM_Inventory/config/tool_catalog.json` target exists and every short name has a matching `LCM_Inventory/Cmd/<ShortName>.cmd` launcher.
 7. Run `git diff --check` in all three affected repositories.
 8. Validate edited text files are UTF-8 without BOM with CRLF line endings.
 

@@ -84,12 +84,12 @@ All rules in [.agents/rules/](file:///d:/Git_Repositories/.agents/rules/) are au
    * `RULE-EFF-002`: Zero-test cascade on log/evidence mutations.
    * `RULE-EFF-004`: Direct agent execution without chat planning blocks; gating handled exclusively downstream via Beyond Compare (`RR.ps1`).
 3. **[ElevationPolicy.md](file:///d:/Git_Repositories/.agents/rules/ElevationPolicy.md):**
-   * `RULE-ELEV-001` through `RULE-ELEV-003`: Explicit `execution_context` in `.lcm/config.json`; `-NoElevation` support for automated runners.
+   * `RULE-ELEV-001` through `RULE-ELEV-003`: Explicit `execution_context` in `LCM_Inventory/config.json`; `-NoElevation` support for automated runners.
 4. **[LanguagePolicy.md](file:///d:/Git_Repositories/.agents/rules/LanguagePolicy.md):**
    * English required across code, comments, and docs (with translation task exceptions).
 5. **[RepositoryContextPolicy.md](file:///d:/Git_Repositories/.agents/rules/RepositoryContextPolicy.md):**
    * `RULE-CTX-001`: Active document / path scope resolution.
-   * `RULE-CTX-002`: Fast-tier ingestion (`.lcm/config.json`, `README.md`, proposals) with unonboarded candidate fallback.
+   * `RULE-CTX-002`: Fast-tier ingestion (`LCM_Inventory/config.json`, `README.md`, proposals) with unonboarded candidate fallback.
    * `RULE-CTX-003`: Zero redundant scan invariant.
    * `RULE-CTX-004`: Continuous methodology triad awareness.
 
