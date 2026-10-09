@@ -133,6 +133,7 @@ All rules in [.agents/rules/](file:///d:/Git_Repositories/.agents/rules/) are au
   * Check whether Copilot really follows the `.agents` rules (it must; otherwise a solution is needed, for example `.github/copilot-instructions.md` pointing to them).
   * Check that Copilot and Antigravity both work with `ShowTools` and `ShowCM`.
   * Open question: how do we check that a proposal's goals are met before it goes to review? (A pre-review goal check, for example acceptance criteria per CRP that are verified and reported before the Beyond Compare review.)
+  * `LCM_Inventory/data/logs/lcm-internal` holds an enormous number of log items and should be cleared more often. Proposal: a 1-day recycle (keep one day, archive or delete the rest). Decide where it runs (Good Night, a scheduled task, or the logger itself) and what counts as worth keeping.
   * Analyze `LCM_Inventory/data` (what is in it, what is still needed, what belongs elsewhere or can go). In particular: is there anything in it to review, or must it be filtered in the Beyond Compare review (BCR), as the LCM Root junctions must be?
 
 ---
