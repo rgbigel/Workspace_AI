@@ -1,6 +1,6 @@
 ﻿# Lifecycle Model (LCM) Authoritative Governance Framework
 > **Consolidated Master Specification for Gemini AI, Google Drive & Subagents**
-> *Exported on: 2026-10-05 20:42:03 | Host: D5P0-SSD980-Z | Version: 1.2.0*
+> *Exported on: 2026-10-09 17:28:31 | Host: D5P0-SSD980-Z | Version: 1.2.0*
 
 ---
 
@@ -276,6 +276,18 @@ The agent `MUST` remain aware of the global LCM triad at all times:
 * **`LCM_AI`**: Governs release baselines (v4.3.0), templates, and quality gates.
 * **`LCM_Inventory`**: Configuration Management engine, audit ledger, and cross-repo CR indexing.
 * **`LCM_Shared`**: Reusable functional PowerShell atom library (`Logging`, `VolumeAtoms`, `BcdAtoms`).
+
+### `RULE-CTX-005` (Learned Advice)
+1. At the start of a session the agent `MUST` read `.agents/ACTIVE_CONTEXT.md` and `.agents/LEARNED_ADVICE.md`. Entries under **Accepted** are binding; entries under **Candidates** are guidance only.
+2. When the operator writes `/learn <text>` the agent `MUST` add the text as a candidate (`Save-AllSessionMemory.ps1 -Learn "<text>" -Author <AI name>`), without changing anything else. An agent `MAY` also propose a candidate on its own when it learns something durable; it `MUST` tell the operator.
+3. Candidates `MUST` be reviewed (`Invoke-LearnedAdviceReview.ps1`: accept, reject, or promote to a rule) no later than publishing. `Invoke-WorkspacePush.ps1` refuses to publish while candidates are pending.
+4. Entries marked `[->rule]` are written into the matching rule file, after which the entry is replaced by a reference to that rule.
+
+### `RULE-CTX-006` (GoodMorning Session Start)
+1. At the start of every session the agent `MUST` run `Invoke-WorkspaceGoodMorning.ps1 -Auto`. It is silent (one line) when less than 7 hours have passed since the last activity; a longer gap implies a good morning and produces the full read-only report.
+2. When the report lists attention items (work in between, version disagreement, stale context, pending candidates, guardrail findings) the agent `MUST` tell the operator in its first reply, before any other work.
+3. The agent `MUST` also state that it has read `ACTIVE_CONTEXT.md` and `LEARNED_ADVICE.md`, can follow them, and name anything unclear, contradictory or stale. It `MUST NOT` rely on parts of `ACTIVE_CONTEXT.md` that the report marks as stale.
+4. GoodMorning is read-only; it `MUST NOT` be used to change, commit or publish anything.
 
 ---
 
@@ -767,13 +779,13 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 ---
 
 ### RULE-EFF-007: Mandatory Search Dispatch Standard
-- **Direct execution of `es.exe` is strictly prohibited** due to IPC authorization constraints when running from non-interactive or Session 0 contexts.
-- All high-speed file searches **must** be dispatched via `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`) or directly against the Everything 1.5a HTTP REST API (port 8080).
-- CLI text searches inside file contents **must** use `rg.exe` (installed machine-wide in `D:\Tools\rg\`).
-- **Search Fallback Protocol**: If the Everything 1.5a HTTP REST API (port 8080) is unreachable or not running, tooling and agents `SHALL` fall back gracefully to `rg.exe --files` or PowerShell `Get-ChildItem` with scoped directory boundaries, ensuring operations never fail due to an inactive background daemon.
+- File-name searches **must** use Everything's `es.exe` CLI, preferably through `Search-Everything.ps1` (`LCM_Inventory/tools/Search-Everything.ps1`). `es.exe` is resolved from PATH (the Everything directory is a Machine PATH entry set by `Set-GitRoot.ps1` from `docs/Requisites/external-tools.json`).
+- Direct `es.exe` execution is **allowed from interactive desktop sessions** (agents, operator shells). It remains **prohibited in Session 0 and scheduled-task contexts**, where Everything's IPC is not authorized; those contexts use the wrapper, which falls back automatically.
+- Transport order of `Search-Everything.ps1`: (1) `es.exe`, (2) the Everything HTTP REST API (port 8080, only if the operator enabled it), (3) a scoped `Get-ChildItem` scan. Failure of one transport never fails the operation.
+- Content searches use `es.exe` with the `content:` filter when the Everything content index is healthy, otherwise `rg.exe` (installed machine-wide, see the Requisites manifest). Index changes are visible after a delay of usually under one second.
+- The content-index settings in `Everything.ini` (indexing enabled, workspace folder covered, required file types covered) are verified by `Test-ExternalTools.ps1` as part of workspace readiness.
 
 ---
-
 ### RULE-EFF-008: Canonical Tool Discovery Standard
 - Agents inspecting, modifying, or querying workspace tools or platform commands **must** query `LCM_Inventory/tools/tool_catalog.json` first as the **authoritative single source of truth** before any filesystem traversal.
 - Agents are **strictly prohibited** from executing broad, unindexed grep searches across `.psm1`, `.ps1`, or `.cmd` files to locate tool signatures or parameters when `tool_catalog.json` can satisfy the query.
@@ -794,7 +806,7 @@ Reserved for future use. See RULE-EFF-004 for current agent execution policy.
 - **Readiness Runners**: `Test-RepoReadiness.ps1` and `Test-WorkspaceReadiness.ps1` treat changes in log directories and `out/` as non-invalidating evidence and enforce short-circuiting on failure.
 - **Git Commit Workflow**: Automated audit syncs and baseline captures may be committed and pushed directly as `chore(audit)` or `chore(telemetry)` without entering formal Change Request review loops.
 - **Agent Execution Policy**: Agents must operate in direct execution mode; interactive approval loops in chat UI are superseded by the RR pipeline.
-- **Search Enforcement (RULE-EFF-007)**: All agents and tooling must route file-system searches through `Search-Everything.ps1` or the Everything HTTP API; `rg.exe` is the mandatory content-search tool.
+- **Search Enforcement (RULE-EFF-007)**: All agents and tooling must use `es.exe` (directly or through `Search-Everything.ps1`) for file-system searches; `rg.exe` is the fallback content-search tool when the Everything content index is unavailable.
 - **Tool Discovery Enforcement (RULE-EFF-008)**: `tool_catalog.json` is the first-query target for all tool and command discovery; broad unindexed filesystem scans are prohibited.
 - **Path Safety Enforcement (RULE-ENV-003)**: All path constructions must be grounded via `$PSScriptRoot`, registered trampolines, or explicit pre-flight resolution; speculative traversal is prohibited.
 
@@ -1500,6 +1512,22 @@ MACRO: profile status
   - summarize test-suite presence
   - summarize version alignment
 
+MACRO: GoodMorning
+- description: full read-only session-start check (RULE-CTX-006): time gap, work in between, versions, context staleness, pending learned advice
+- syntax: GoodMorning
+- primary target: LCM_Inventory/tools/Invoke-WorkspaceGoodMorning.ps1 -Force
+- rules:
+  - report every attention item to the operator before other work
+  - confirm that ACTIVE_CONTEXT.md and LEARNED_ADVICE.md were read and can be followed
+  - change nothing
+
+MACRO: learn
+- description: record something learned as a candidate for LEARNED_ADVICE.md (RULE-CTX-005)
+- syntax: /learn <text> | learn <text>
+- rules:
+  - add the text as a candidate with Save-AllSessionMemory.ps1 -Learn "<text>" -Author <AI name>; do nothing else
+  - candidates are reviewed with Invoke-LearnedAdviceReview.ps1 no later than push (push is refused while any are pending)
+
 MACRO: ToolExplorer
 - description: generate and launch the authoritative LCM Tool Explorer interactive HTML application via Show-ToolsExplorer.ps1
 - syntax: ToolExplorer [switches] | tools [switches] | ShowTools [switches]
@@ -1616,6 +1644,7 @@ This root container operates under the **Lifecycle Model (LCM)** architecture. A
 | **[CMDRules.md](file:///.agents/rules/CMDRules.md)** | `CMD-RULES` | **Windows Batch** | `*.cmd`, `*.bat` | Explicit echo control (`@echo off`), errorlevel verification, ASCII character sets. |
 | **[JsonRules.md](file:///.agents/rules/JsonRules.md)** | `JSON-RULES` | **Data Serialization** | `*.json` | UTF-8 without BOM, 2-space indentation, `$schema` references. |
 | **[PythonRules.md](file:///.agents/rules/PythonRules.md)** | `RULE-PY-001` - `008` | **Python Standards** | All `*.py` | No redundant f-strings (`F541`), strict import ordering, zero unused imports/variables (`F401`/`F841`), Windows UTF-8 stdout reconfiguration, template/JS interpolation safety. |
+| **[GoRules.md](file:///.agents/rules/GoRules.md)** | `LCM-RULE-GO-001` | **Go Standards** | All `*.go` | Mandatory file header block, explicit error handling and control flow, resource discipline, memory/slice/type rules, Windows platform rules. |
 | **[DocumentationStandardsPolicy.md](file:///.agents/rules/DocumentationStandardsPolicy.md)** | `RULE-DOC-001` - `007` | **Documentation Standards** | All `*.md`, `docs/`, `install/` | Tripartite specifications (`Architecture.md`, `Requirements.md`, `Implementation.md`), universal `install/Installation.md` runbook, DOX metadata headers, `M.Y.Z` major parity, $M-2$ retention horizon, and App-Centric Modular Architecture (`App: #`) with Constituent Manifests & Contract Governance. |
 | **[DisplayStandardsPolicy.md](file:///.agents/rules/DisplayStandardsPolicy.md)** | `RULE-DSP-001` - `016` | **UI & Display Standards** | All UI Displays, Dashboards & GUIs | Antigravity-IDE Light Mode default palette & typography (`IBM Plex Mono/Sans`, `CM_CONTROL_HUB_IMPLEMENTATION_0.html`), Topbar & Status Rail architecture, Lucide vector icons, WPF/WinForms desktop GUIs, print-to-PDF paged media, theme persistence, desktop dispatching, IDE Canvas forward-compatibility, test window hygiene, and dynamic tool versioning. |
 | **[SubsystemGovernancePolicy.md](file:///.agents/rules/SubsystemGovernancePolicy.md)** | `RULE-SUB-001` - `007` | **Subsystem Architecture** | Subsystem Repositories | Disjunct domains, dedicated subsystem inventories, JIT ephemeral tokens, host safety hardware interlocks, log segregation, Update-Gate & CRP bundling, central registry non-mutation invariant. |

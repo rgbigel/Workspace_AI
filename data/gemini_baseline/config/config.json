@@ -1,13 +1,28 @@
 {
   "plugins": {
     "android-cli-plugin": {
-      "enabled": true
+      "enabled": true,
+      "installedFrom": {
+        "id": "antigravity-plugins-official/plugin/android-cli-plugin",
+        "marketplace": "antigravity-plugins-official",
+        "version": "1.0.15985488"
+      }
     },
     "firebase": {
-      "enabled": true
+      "enabled": true,
+      "installedFrom": {
+        "id": "antigravity-plugins-official/plugin/firebase",
+        "marketplace": "antigravity-plugins-official",
+        "version": "1.0.3"
+      }
     },
     "google-antigravity-sdk": {
-      "enabled": true
+      "enabled": true,
+      "installedFrom": {
+        "id": "antigravity-plugins-official/plugin/google-antigravity-sdk",
+        "marketplace": "antigravity-plugins-official",
+        "version": "0.0.9"
+      }
     }
   },
   "userSettings": {
