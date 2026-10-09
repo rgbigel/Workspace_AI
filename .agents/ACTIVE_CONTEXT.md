@@ -136,9 +136,9 @@ Saved: 2026-10-09 17:28
 | HaSSD06 | NewStructure | a41fe3a | committed, unpublished: 2 |
 | HaSSD06_Inventory | NewStructure | 79aed94 | committed, unpublished: 2 |
 | InstallFonts | main | 37a275a | committed, no upstream |
-| LCM_AI | main | 7a8f597 | uncommitted: 1 |
+| LCM_AI | main | a9537da | committed, unpublished: 16 |
 | LCM_Backup | NewStructure | 4c5a37b | committed, no upstream |
-| LCM_Inventory | main | 091e225 | committed, unpublished: 25 |
+| LCM_Inventory | main | 091e225 | uncommitted: 1 |
 | LCM_Shared | NewStructure | f8836ed | committed, unpublished: 2 |
 | LCM_Supervision | NewStructure | a2d10ee | committed, unpublished: 1 |
 | MacriumTemplateUpdater | main | d12bf3e | committed, no upstream |
