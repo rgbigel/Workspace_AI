@@ -132,7 +132,7 @@ All rules in [.agents/rules/](file:///d:/Git_Repositories/.agents/rules/) are au
   * Check more in `LCM_AI/.agents/rules/MethodEfficiencyPolicy.md`, section `RULE-EFF-007` (search dispatch).
   * Check whether Copilot really follows the `.agents` rules (it must; otherwise a solution is needed, for example `.github/copilot-instructions.md` pointing to them).
   * Check that Copilot and Antigravity both work with `ShowTools` and `ShowCM`.
-  * Analyze `LCM_Inventory/data` (what is in it, what is still needed, what belongs elsewhere or can go).
+  * Analyze `LCM_Inventory/data` (what is in it, what is still needed, what belongs elsewhere or can go). In particular: is there anything in it to review, or must it be filtered in the Beyond Compare review (BCR), as the LCM Root junctions must be?
 
 ---
 
